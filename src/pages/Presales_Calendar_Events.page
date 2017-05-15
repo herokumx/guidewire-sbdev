@@ -1,0 +1,46 @@
+<apex:page controller="PresalesCalendarEventsController" sidebar="true" showchat="false"  >
+  <apex:form >
+    <apex:pageBlock id="ListOfEventsBlock" title="Presales Calendar Events">
+        <apex:pageblockButtons location="top">
+            <apex:commandButton action="{!URLFOR($Action.Presales_Calendar_Event__c.New)}" value="New Event"  />
+            &nbsp;&nbsp;Show:
+          <apex:selectList value="{!EventFilter}" size="1" >
+            <apex:selectOption itemValue="Future" itemLabel="Future"/>
+            <apex:selectOption itemValue="Past" itemLabel="Past"/>
+          </apex:selectList>
+          <apex:selectList value="{!EventRegion}" size="1" >
+            <apex:selectOption itemValue="All" itemLabel="All"/>
+            <apex:selectOption itemValue="AMER" itemLabel="AMER"/>
+            <apex:selectOption itemValue="APAC" itemLabel="APAC"/>
+            <apex:selectOption itemValue="EMEA" itemLabel="EMEA"/>
+          </apex:selectList>
+        <apex:commandButton id="SubmitButton" value="Update" action="{!reloadPage}" reRender="ListOfEventsBlock"/>
+        </apex:pageblockButtons>
+        <apex:pageBlockTable value="{!ListOfEvents}" var="thisEvent" width="80%">            
+            <apex:column style=""> 
+                <apex:commandLink action="{!URLFOR($Action.Presales_Calendar_Event__c.View,thisEvent.Id )}" value="{!thisEvent.Label__c}"  />
+                   <apex:facet name="header">Event Label</apex:facet>
+            </apex:column>
+            <apex:column style="" value="{!thisEvent.Start_Date__c}"> 
+                   <apex:facet name="header">Start</apex:facet>
+            </apex:column>
+            <apex:column style="" value="{!thisEvent.End_Date__c}"> 
+                   <apex:facet name="header">End</apex:facet>
+            </apex:column>
+            <apex:column style="" value="{!thisEvent.Region__c}"> 
+                   <apex:facet name="header">Region(s)</apex:facet>
+            </apex:column>
+            <apex:column style="" value="{!thisEvent.Sales_Consulting__c}"> 
+                   <apex:facet name="header">SC</apex:facet>
+            </apex:column>
+            <apex:column style="" value="{!thisEvent.Value_Consulting__c}"> 
+                   <apex:facet name="header">VC</apex:facet>
+            </apex:column>
+            <apex:column style="" value="{!thisEvent.Sales__c}"> 
+                   <apex:facet name="header">Sales</apex:facet>
+            </apex:column>
+        
+        </apex:pageblockTable>
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>

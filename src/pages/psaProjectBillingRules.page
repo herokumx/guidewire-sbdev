@@ -1,0 +1,246 @@
+<apex:page id="pg" showHeader="true" sidebar="true" standardController="pse__Proj__c" extensions="psaProjectBillingRulesController" title="PSA Project Billing Rules">
+    <head>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+        <script>
+            j$ = jQuery.noConflict();
+            j$(document).ready(function() 
+            {   
+                removeBillingLabelPrefix();
+                //disableInputs();
+            });
+            function removeBillingLabelPrefix(){
+                j$('label').each(function( index ) {
+                    var cleanedString = j$(this).html().replace('Billing: ', '');
+                    j$(this).html(cleanedString);
+                });
+            }
+//          function disableInputs(){
+//              j$('.notready').attr('disabled','true'); 
+//          }
+//          function showLoadingModal(){
+//              $('.modal').css({"display":"inline"});
+//          }
+//          function hideLoadingModal(){
+//              $('.modal').css({"display":"none"});
+//          }
+        </script>
+        <style type="text/css">
+            body .bPageBlock .pbBody .default .pbSubheader{
+                background-color:#CFEEF8;
+                color:#000;
+            }
+            body .bPageBlock .pbBody .default .pbSubheader h3{
+                color:#000;
+            }
+            .boldText{ font-weight: bold; }
+            table.lta {
+                border-collapse:collapse;
+                border-spacing:0;
+                width: 600px;
+            }
+
+/*
+                padding: 20px;
+
+           a:link {color: #000000; text-decoration: underline; }
+           a:active {color: #0000ff; text-decoration: underline; }
+           a:visited {color: #008000; text-decoration: underline; }
+           a:hover {color: #ff0000; text-decoration: none; }
+            input.notready{
+                background-color: lightGray;
+            }
+            .modal {
+                display:    none;
+                position:   fixed;
+                z-index:    1000;
+                top:        0;
+                left:       0;
+                height:     100%;
+                width:      100%;
+                background: rgba( 255, 255, 255, .8 )
+                            50% 50%
+                            no-repeat;
+            }
+            .box { 
+                background-color:      white;
+                border-radius:         10px;
+                -webkit-border-radius: 10px;
+                -moz-border-radius:    10px;
+                box-shadow:            0 0 20px 0 #222;
+                -webkit-box-shadow:    0 0 20px 0 #222;
+                -moz-box-shadow:       0 0 20px 0 #222;
+                position:              fixed;
+                top:                   50%;
+                left:                  50%;
+                margin-top:            -50px;
+                margin-left:           -100px;
+                height:                80px;
+                width:                 240px;
+                padding-top:           35px;
+                text-align:            center;
+            }
+*/
+        </style>
+    </head>
+<apex:form id="frm">
+<!--  <div class="modal" id="spinner">
+      <div class="box">
+           <img src="/img/loading.gif" alt="Loading"/><i id="spinner-label" style="padding-left:5px">Loading...</i>
+      </div>
+  </div>
+  <apex:outputpanel>
+        <apex:actionstatus id="status">
+            <apex:facet name="start">
+                <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb;
+                       height: 100%;opacity:0.65;width:100%;"> 
+                    <div class="waitingHolder" style="top: 74.2px; width: 91px;">
+                        <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                        <span class="waitingDescription">Please Wait...</span>
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionstatus>
+    </apex:outputpanel>
+-->
+  <!-- <apex:actionFunction action="{!refreshSchedTable}" name="refreshSched" reRender="wrapperPanel" oncomplete="hideLoadingModal();disableInputs();"/> -->
+
+    <apex:sectionHeader title="" subtitle="Manage Billing rules" />
+    <apex:pageBlock title="">
+        <apex:pageMessages id="pageMessages"/><br />
+        <apex:pageBlockButtons location="bottom">
+            <apex:commandButton id="btnSave" action="{!save}" value="Save"/>
+            <apex:commandButton id="btnSaveRtn" action="{!saveAndReturn}" value="Save and Return to Project"/>
+            <apex:commandButton id="btnCancel" action="{!cancel}" value="Cancel"/>
+<!--
+            <apex:commandButton id="btnExecuteBillingRules" action="{!applyBillingRules}" value="Execute Billing Rules"/>
+
+            <apex:commandButton id="btnRunBillingRules" action="{!applyBillingRules}" value="Apply Billing Rules" reRender="mainOutputPanel"/>
+            <apex:actionStatus id="actStatusId" >
+                <apex:facet name="start" >
+                  <img src="/img/loading.gif" />                    
+                </apex:facet>
+            </apex:actionStatus>
+-->
+        </apex:pageBlockButtons>
+
+        <apex:outputPanel id="mainOutputPanel" styleClass="default">
+        <apex:pageBlockSection title="Billing Rule Types" collapsible="false">
+            <apex:outputText id="projectName" value="{!pse__Proj__c.Name}"/>
+            <apex:inputField id="billingRulesStatus" taborderhint="1" value="{!pse__Proj__c.PSA_BR_Billing_Rules_Status__c}"/>
+            <apex:inputField id="servicesBillingType" taborderhint="2" value="{!pse__Proj__c.pse__Billing_Type__c}"/>
+            <apex:inputField taborderhint="3" value="{!pse__Proj__c.PSA_BR_Expenses_Billing_Type__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Billing Rule: Expenses Flat % (5)" collapsible="false">
+            <apex:inputField taborderhint="10" value="{!pse__Proj__c.PSA_BR_Expense_Pct_of_Services__c}"/>
+            <apex:inputField taborderhint="11" value="{!pse__Proj__c.PSA_BR_Billing_Levels_for_Expense_Pct__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Billing Rule: Expenses Flat Amount (6)" collapsible="false">
+            <apex:inputField taborderhint="20" value="{!pse__Proj__c.PSA_BR_Expense_Amt_Per_Day__c}"/>
+            <apex:inputField taborderhint="21" value="{!pse__Proj__c.PSA_BR_Billing_Levels_for_Expense_Amt__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Billing Rule: Expenses Capped as Percent of Services (7)" collapsible="false">
+            <apex:inputField taborderhint="30" value="{!pse__Proj__c.PSA_BR_Expense_Cap_Pct_Applies__c}"/>
+            <apex:inputField value="{!pse__Proj__c.PSA_BR_Expense_Total_To_Date__c}"/>
+            <apex:inputField taborderhint="31" value="{!pse__Proj__c.PSA_BR_Expense_Cap_Pct__c}"/>
+            <apex:inputField value="{!pse__Proj__c.PSA_BR_Expense_Credits_Applied_To_Date__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Billing Rule: Expenses Capped as Flat Amount (8)" collapsible="false">
+            <apex:inputField taborderhint="40" value="{!pse__Proj__c.PSA_BR_Expense_Cap_Flat_Applies__c}"/>
+            <apex:inputField value="{!pse__Proj__c.PSA_BR_Expense_Total_To_Date__c}"/>
+            <apex:inputField taborderhint="41" value="{!pse__Proj__c.PSA_BR_Expense_Cap_Amt__c}"/>
+            <apex:inputField value="{!pse__Proj__c.PSA_BR_Expense_Credits_Applied_To_Date__c}"/>
+            <apex:outputLabel value=""/>
+            <apex:inputField value="{!pse__Proj__c.PSA_BR_Expense_Amt_Remaining__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Billing Rule: Minimum Billable Hours (9)" collapsible="false">
+            <apex:inputField taborderhint="50" value="{!pse__Proj__c.PSA_BR_Minimum_Billed_Hours_Applies__c}"/>
+            <apex:outputLabel value=""/>
+            <apex:inputField taborderhint="51" value="{!pse__Proj__c.PSA_BR_Minimum_Billed_Hours_Monthly__c}"/>
+            <apex:outputLabel value=""/>
+            <apex:inputField taborderhint="52" value="{!pse__Proj__c.PSA_BR_Minimum_Hours_Bill_Rate__c}"/>
+            <apex:outputLabel value=""/> 
+            <apex:inputField taborderhint="53" value="{!pse__Proj__c.PSA_BR_Minimum_Hours_Billing_Level__c}"/>
+            <apex:outputLabel value=""/> 
+           <!-- <apex:inputField value="{!pse__Proj__c.PSA_BR_Minimum_Hours_Bill_Amount__c}"/>
+            <apex:outputLabel value=""/>-->
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Billing Rule: Services Capped as Flat Amount (10)" collapsible="false">
+            <apex:inputField taborderhint="60" value="{!pse__Proj__c.PSA_BR_Services_Cap_Flat_Applies__c}"/>
+            <apex:inputField value="{!pse__Proj__c.PSA_BR_Services_Total_To_Date__c}"/>
+            <apex:inputField taborderhint="61" value="{!pse__Proj__c.PSA_BR_Services_Cap_Amt__c}"/>
+            <apex:inputField value="{!pse__Proj__c.PSA_BR_Services_Credit_Applied_To_Date__c}"/>
+            <apex:outputLabel value=""/>
+            <apex:inputField value="{!pse__Proj__c.PSA_BR_Services_Amount_Remaining__c}"/> 
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Billing Rule: Holdback (11)" collapsible="false">
+            <apex:inputField taborderhint="70" value="{!pse__Proj__c.PSA_BR_Holdback_Applies__c}"/>
+            <apex:inputField value="{!pse__Proj__c.PSA_BR_Holdback_Applied_To_Date__c}"/>
+            <apex:inputField taborderhint="71" value="{!pse__Proj__c.PSA_BR_Holdback_Pct__c}"/>
+            <apex:inputField value="{!pse__Proj__c.PSA_BR_Holdback_Release_Applied_ToDate__c}"/>
+            <apex:inputField taborderhint="72" value="{!pse__Proj__c.PSA_BR_Holdback_End_Date__c}"/>
+            <apex:inputField value="{!pse__Proj__c.PSA_BR_Holdback_Release_Amt_Remaining__c}"/>
+
+        </apex:pageBlockSection>
+<!--        
+        <apex:pageBlockSection title="Billing Rule: Discount - Project Level (12)" collapsible="false">
+            <apex:inputField taborderhint="80" styleClass="notready" value="{!pse__Proj__c.PSA_BR_Project_Discount_Applies__c}"/>
+            <apex:inputField value="{!pse__Proj__c.PSA_BR_Discount_Applied_To_Date__c}"/>
+            <apex:inputField taborderhint="81" value="{!pse__Proj__c.PSA_BR_Project_Discount_Pct__c}"/>
+            <apex:inputField value="{!pse__Proj__c.PSA_BR_Discount_Remaining__c}"/>
+            <apex:inputField taborderhint="82" value="{!pse__Proj__c.PSA_BR_Project_Discount_End_Date__c}"/>
+            <apex:outputLabel value=""/>
+            <apex:inputField taborderhint="83" value="{!pse__Proj__c.PSA_BR_Project_Discount_Cap__c}"/>
+            <apex:outputLabel value=""/>
+            <apex:inputField taborderhint="84" value="{!pse__Proj__c.PSA_BR_Project_Discount_Type__c}"/>
+            <apex:outputLabel value=""/>
+            <apex:inputField taborderhint="85" value="{!pse__Proj__c.PSA_BR_Project_Discount_Billing_Levels__c}"/>
+            <apex:outputLabel value=""/>
+        </apex:pageBlockSection>
+-->     
+        <apex:pageBlockSection title="Billing Rule: Credit - Account Level (13)" collapsible="false">
+            <apex:inputField taborderhint="90" value="{!pse__Proj__c.PSA_BR_Account_Discount_Applies__c}"/>
+            <apex:outputField value="{!pse__Proj__c.PSA_BR_Account_Discount__r.PSA_Discount_Amount_Applied__c}"/>
+            <apex:inputField taborderhint="91" value="{!pse__Proj__c.PSA_BR_Account_Discount__c}"/>
+            <apex:outputField value="{!pse__Proj__c.PSA_BR_Account_Discount__r.PSA_Discount_Amount_Remaining__c}"/>
+            <apex:outputField value="{!pse__Proj__c.PSA_BR_Account_Discount__r.PSA_Account__r.Name}"/>
+            <apex:outputField value="{!pse__Proj__c.PSA_BR_Account_Discount__r.PSA_Discount_Eligible_Billings_To_Date__c}"/>
+            <apex:outputField value="{!pse__Proj__c.PSA_BR_Account_Discount__r.PSA_Discount_Percent__c}"/>
+            <apex:outputLabel value=""/>
+            <apex:outputField value="{!pse__Proj__c.PSA_BR_Account_Discount__r.PSA_Discount_End_Date__c}"/>
+            <apex:outputLabel value=""/>
+            <apex:outputField value="{!pse__Proj__c.PSA_BR_Account_Discount__r.PSA_Discount_Cap__c}"/>
+            <apex:outputLabel value=""/>
+            <apex:outputField value="{!pse__Proj__c.PSA_BR_Account_Discount__r.PSA_Discount_Type__c}"/>
+            <apex:outputLabel value=""/>
+            <apex:outputField value="{!pse__Proj__c.PSA_BR_Account_Discount__r.PSA_Discount_Billing_Levels__c}"/>
+            <apex:outputLabel value=""/>
+            <apex:outputField value="{!pse__Proj__c.PSA_BR_Account_Discount__r.PSA_Discount_Active__c}"/>
+            <apex:outputLabel value=""/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Domestic LTA (14)" columns="1" collapsible="false">
+        <table class="lta">
+        <tr><td colspan="5"><b>Assignments with LTA Resources<br /><br /></b></td></tr>
+        <tr bgcolor="#c1baba">
+        <th>&nbsp;&nbsp;&nbsp;</th>
+        <th>Assignment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+        <th>Resource&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+        <th>LTA Start Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+        <th>LTA Billable</th>
+        </tr>
+            <apex:repeat id="domesticLTATable1" value="{!assignments}" var="lta">
+                <tr>
+                <td>&nbsp;</td>
+                <td><a href="/{!lta.AssignmentId}">{!lta.AssignmentName}</a></td>
+                <td>{!lta.ResourceName}</td>
+                <td>{!lta.LTAStartDate}</td>
+                <td><table><tr><apex:inputCheckbox id="chk" value="{!lta.LTAIsBillable}"/></tr></table></td></tr>
+            </apex:repeat>
+
+        </table>
+        </apex:pageBlockSection>
+
+        </apex:outputPanel>
+
+    </apex:pageBlock>
+</apex:form>
+</apex:page>

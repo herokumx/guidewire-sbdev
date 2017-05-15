@@ -1,0 +1,84 @@
+<apex:page controller="VC_Dash1Controller" sidebar="true" showchat="false" >
+
+  <apex:form id="EntireForm" >
+        <apex:pageBlock title="VC Events"  id="EventsBlock">
+        <apex:pageblockButtons location="top"  >
+         Fiscal Year:&nbsp;
+          <apex:selectList value="{!MyRequestRange}" size="1" >
+            <apex:selectOption itemValue="2014" itemLabel="2014"/>
+            <apex:selectOption itemValue="2015" itemLabel="2015"/>
+            <apex:selectOption itemValue="2016" itemLabel="2016"/>
+          </apex:selectList>
+          <apex:commandButton id="SubmitButton" value="Update" action="{!reloadPage}" reRender="EventsBlock"/>
+
+        </apex:pageblockButtons>
+        
+            <apex:pageBlockTable value="{!theFilteredList}" var="thisItem" width="80%">            
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Account.View, thisItem.theEvent.Opportunity__r.Account)}" value="{! thisItem.theEvent.Opportunity__r.Account.Name}"  />
+                           <apex:facet name="header">Account</apex:facet>
+                    </apex:column>                   
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Opportunity.View, thisItem.theEvent.Opportunity__c)}" value="{! thisItem.theEvent.Opportunity__r.Name}"  />
+                           <apex:facet name="header">Opportunity</apex:facet>
+                    </apex:column>                   
+                    <apex:column style="" value="{! thisItem.theEvent.Stage__c}"> 
+                           <apex:facet name="header">Stage<br/>@ Event</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{! thisItem.theEvent.Opportunity__r.Account.BillingCountry}"> 
+                           <apex:facet name="header">Country</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{! thisItem.theEvent.Opportunity__r.Region__c}"> 
+                           <apex:facet name="header">Region</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{! thisItem.theEvent.Opportunity__r.Product_Type__c}"> 
+                           <apex:facet name="header">Products</apex:facet>
+                    </apex:column>
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Sales_Event__c.View, thisItem.theEvent.Id )}" value="{! thisItem.theEvent.Event_Type__c}"  />
+                           <apex:facet name="header">Event Type</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{! thisItem.theEvent.Status__c}"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{! thisItem.theEvent.Confirmed_End_Date__c}"> 
+                           <apex:facet name="header">Event<br/>Date</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{! thisItem.EventQuarter}"> 
+                           <apex:facet name="header">FQ</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisItem.EventYear}"> 
+                           <apex:facet name="header">FY</apex:facet>
+                    </apex:column>
+                    <!--
+                    <apex:column style="" value="{! thisItem.theEvent.Opportunity__r.FISCALQUARTER}"> 
+                           <apex:facet name="header">FQ</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisItem.theEvent.Opportunity__r.FISCALYEAR}"> 
+                           <apex:facet name="header">FY</apex:facet>
+                    </apex:column>
+                    -->
+                    <apex:column style="" value="{!thisItem.theEvent.List_Of_People__c}"> 
+                           <apex:facet name="header">Team</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{! thisItem.theEvent.Opportunity__r.Owner.Name}"> 
+                           <apex:facet name="header">Sales Rep</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{! thisItem.theEvent.Opportunity__r.StageName}"> 
+                           <apex:facet name="header">Stage</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{! thisItem.ResultDate}"> 
+                           <apex:facet name="header">Result<br/>Date</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{! thisItem.ResultQuarter}"> 
+                           <apex:facet name="header">RQ</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisItem.ResultYear}"> 
+                           <apex:facet name="header">RY</apex:facet>
+                    </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+
+  </apex:form>    
+
+</apex:page>

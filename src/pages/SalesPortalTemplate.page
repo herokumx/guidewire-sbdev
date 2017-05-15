@@ -1,0 +1,139 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0"
+            controller="cms.CoreController">
+    <apex:composition template="{!page_template}">
+        <apex:define name="header">
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+            <!-- <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" /> -->
+            <apex:stylesheet value="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css" />
+            <apex:stylesheet value="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css" />
+            <apex:stylesheet value="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+            <apex:stylesheet value="{!URLFOR($Resource.SalesPortal, 'css/Guidewire_Salesportal_20.css')}" html-media="screen,print" />
+            <apex:stylesheet value="{!URLFOR($Resource.SalesPortal, 'css/main_nav.css')}" html-media="screen,print" />
+            <apex:stylesheet value="{!URLFor($Resource.SalesPortal, 'css/print.css')}" html-media="print" />
+
+            <!-- Enable the use of OCMS Extensions -->
+            <apex:includeScript value="{!URLFOR($Resource.ocms_socfp__ocms_core, 'lib/lazyload/lazyload.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.ocms_socfp__ocms_core, 'lib/stg-ps/js/ocms-extensions.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.ocms_socfp__ocms_core, 'lib/datejs/date.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.ocms_socfp__ocms_core, 'js/main.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.SalesPortal, 'js/printview.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.SalesPortal, 'js/dynamicStyles.js')}" />
+
+            <apex:insert name="headerExtra" />
+
+        </apex:define>
+        <apex:define name="body">
+            <!-- Google Tag Manager -->
+            <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-KTML4R"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-KTML4R');</script>
+            <!-- End Google Tag Manager -->
+
+            <nav class="nav_eyebrow" style="vertical-align: middle;">
+                  <div class="pure-g">
+                    <div class="pure-u-md-2-5">
+                      <div class=" nav_eyebrow_logout">
+<!--                           <span class="fa fa-user" style="color:#000000;" aria-hidden="true"></span> 
+                          <apex:outputText value="{!$User.FirstName} {!$User.LastName}" /> <strong><apex:outputLink value="{!$Site.Prefix}/secur/logout}"><span class="nav_eyebrow_logout">Log Out</span></apex:outputLink></strong>
+ -->
+                             <cms:Panel panelName="loginStatus" panelController="{!controller}" />
+                            <apex:outputPanel layout="block" styleClass="ocmsHint" rendered="{!api.page_mode == 'edit'}">
+                          
+                        </apex:outputPanel>               
+                       </div>
+                    </div>
+                    <script>
+                       //  $(document).ready(function() {
+                        //  $('.ocmsPortalLoginComponent').css('text-align','').prepend('<span class="fa fa-user" style="color:#000000;" aria-hidden="true"></span>&nbsp;');
+                        // })
+                    </script>
+                    <div class="pure-u-md-1-5">
+                        <div class="nav_eyebrow_menu text-right">
+                            <cms:Panel panelName="eyebrow_menu" panelController="{!controller}" />
+                            <apex:outputPanel layout="block" styleClass="ocmsHint" rendered="{!api.page_mode == 'edit'}">
+                                <strong>Menu</strong>
+                            </apex:outputPanel> 
+                    </div>
+                    </div>
+                    <div class="pure-u-md-2-5">
+                        <div class="searchPanel">
+                            <cms:Panel panelName="search" panelController="{!controller}" />
+                            <apex:outputPanel layout="block" styleClass="ocmsHint" rendered="{!api.page_mode == 'edit'}">
+                                <strong>Search</strong>
+                            </apex:outputPanel> 
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <br/>
+            <nav class="main">
+                <div class="pure-g">
+                        <div class="pure-u-1-4">
+                            <div>
+                                <cms:Panel panelName="logo" panelController="{!controller}" />
+                            </div>
+                            <apex:outputPanel layout="block" styleClass="ocmsHint" rendered="{!api.page_mode == 'edit'}">
+                                <strong>Logo</strong>
+                            </apex:outputPanel> 
+                            <!-- <apex:image value="{!URLFOR($Resource.SalesPortal, 'img/logo.png')}" /> -->
+                        </div>
+
+                        <div class="pure-u-3-4">
+                            <div class="nav_main" >
+                                <cms:Panel panelName="mainMenu" panelController="{!controller}"/>
+                                <apex:outputPanel layout="block" styleClass="ocmsHint" rendered="{!api.page_mode == 'edit'}">
+                                    <strong>Main Nav Menu</strong>
+                                </apex:outputPanel>                             
+                            </div>
+                        </div>
+                </div>
+            </nav>
+
+            <div class="pagetitle_background">
+                <div class="pure-g">
+                    <div class="pure-u-1">
+                        <div class="pbreadcrumb_onpage">
+                            <cms:Panel panelName="breadcrumb" panelController="{!controller}" />
+                            <apex:outputPanel layout="block" styleClass="ocmsHint" rendered="{!api.page_mode == 'edit'}">
+                                <strong>Breadcrumb</strong>
+                            </apex:outputPanel> 
+                        </div>
+                    </div>
+                    <div class="pure-u-1">
+                        <cms:Panel panelName="pageDescription" panelController="{!controller}" />
+                        <apex:outputPanel layout="block" styleClass="ocmsHint" rendered="{!api.page_mode == 'edit'}">
+                            <strong>Page Title / Description</strong>
+                        </apex:outputPanel> 
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="mainContent">
+                <apex:insert name="main" />
+            </div>
+
+            <br/>
+
+            <footer class="footer_background">
+                <div class="pure-g">
+                    <div class="pure-u-1">
+                        <div class="footer_text">
+                            <cms:Panel panelName="footer" panelController="{!controller}" />
+                            <apex:outputPanel layout="block" styleClass="ocmsHint" rendered="{!api.page_mode == 'edit'}">
+                                <strong>Footer</strong>
+                            </apex:outputPanel>
+                        </div>                
+                    </div>
+                </div>
+            </footer>
+        </apex:define>
+    </apex:composition>
+</apex:page>

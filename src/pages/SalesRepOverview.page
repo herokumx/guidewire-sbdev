@@ -1,0 +1,206 @@
+<apex:page controller="SalesRepOverviewController" sidebar="true" showchat="false">
+
+<style> 
+fieldset > * {
+    display:inline-block;
+}
+
+.headerRow .OpportunityRowHeader {
+ background-color:#eaf3Ff;
+ color: #ff4444;
+ font-weight:bold;
+    background-image: none !important;
+}
+
+.OpportunityRow {
+ background-color:#C8E1FD;
+ color: #ff4444;
+ font-weight:bold;
+}
+
+.spanborder{
+ 
+ border:5px solid red;
+}
+
+.right
+{
+float:right;
+}
+
+.center
+{
+float:center;
+}
+
+</style>
+
+  <apex:form id="EntireForm" >
+  
+  <fieldset>   
+        Sales Executive:&nbsp;&nbsp;<apex:inputField id="viewForUserField" value="{!ViewForUser.Who__c}" required="true" />&nbsp;&nbsp;|&nbsp;&nbsp;
+        <apex:commandButton id="SubmitButton" value="Update" action="{!reloadPage}" reRender="OpportunitiesBlock"/>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <apex:inputCheckbox id="viewOption1" value="{!ShowOnlyActiveOpps}" />Only Active Opportunities&nbsp;&nbsp;|&nbsp;&nbsp;
+        <apex:inputCheckbox id="viewOption2" value="{!ShowOnlyActiveEvents}" />Only Active Events&nbsp;&nbsp;
+        <apex:inputCheckbox id="viewOption3" value="{!ShowOpenResourceRequests}" />Show Resource Requests&nbsp;&nbsp;
+        <apex:inputCheckbox id="viewOption4" value="{!ShowOpenSupportRequests}" />Show Sales Support Requests&nbsp;&nbsp;
+        
+  </fieldset>
+  
+    <apex:pageBlock id="OpportunitiesBlock">
+                <apex:repeat value="{!FilteredOpportunityList}" var="thisOpportunity">
+                    <span>
+                    <apex:pageBlockTable value="{!thisOpportunity}" var="thisOpp2"  style="border:6px solid #216C97;border-top-style:double">
+                      <apex:column styleClass="OpportunityRow" headerClass="OpportunityRowHeader" width="300">
+                         <apex:commandLink action="{!URLFOR($Action.Opportunity.View, thisOpportunity.Id )}" value="{!thisOpportunity.Name}"  target="_blank" />                        
+                          <apex:facet name="header">Opportunity</apex:facet>
+                      </apex:column> 
+                      <apex:column styleClass="OpportunityRow" width="70" >
+                          <apex:outputfield value="{!thisOpportunity.CloseDate}"/>
+                          <apex:facet name="header">Close Date</apex:facet>
+                      </apex:column> 
+                      <apex:column styleClass="OpportunityRow"  width="100" >
+                          <apex:outputText >{!thisOpportunity.StageName}</apex:outputText>
+                          <apex:facet name="header">Stage</apex:facet>
+                      </apex:column> 
+                      <apex:column styleClass="OpportunityRow" value="{!thisOpportunity.Amount}"  width="100" rendered="{!IsPresalesManager }" >
+                          <apex:facet name="header">Amount</apex:facet>
+                      </apex:column> 
+                      <apex:column styleClass="OpportunityRow"  width="70">
+                          <apex:outputText >{!thisOpportunity.Sales_Event_Count__c}</apex:outputText>
+                          <apex:facet name="header">Total Events</apex:facet>
+                      </apex:column> 
+                      <apex:column styleClass="OpportunityRow"  width="70">
+                          <apex:outputText >{!thisOpportunity.Sales_Event_Total_Hours__c}</apex:outputText>
+                          <apex:facet name="header">Tot Hours</apex:facet>
+                      </apex:column> 
+                      <apex:column styleClass="OpportunityRow"  width="70">
+                          <apex:outputText >{!thisOpportunity.Sales_Event_Total_Cust_Hours__c}</apex:outputText>
+                          <apex:facet name="header">Cust Hours</apex:facet>
+                      </apex:column> 
+                      <apex:column styleClass="OpportunityRow" width="70" >
+                          <apex:outputText >{! thisOpportunity.Sales_Event_Total_Prep_Hours__c}</apex:outputText>
+                          <apex:facet name="header">Prep Hours</apex:facet>
+                      </apex:column> 
+                      <apex:column styleClass="OpportunityRow" width="40" ><!--  -->
+                          <apex:image id="theImage" styleClass="center" value="{!URLFOR($Resource.GreenCheckCircle)}" width="18" height="18" rendered="{!thisOpportunity.SWOT_Strengths__c != null && LEN(TRIM(thisOpportunity.SWOT_Strengths__c)) > 5}"/>
+                          <apex:facet name="header">SWOT</apex:facet>
+                      </apex:column> 
+                    </apex:pageBlockTable>
+                    </span>
+                                           
+                    <apex:outputLabel rendered="{!thisOpportunity.Sales_Events__r.size > 0}" style="font-weight:bold;border:4px solid #216C97;border-style:none none none solid;"  >&nbsp;Sales Events</apex:outputLabel>
+                    <apex:pageblockTable value="{!thisOpportunity.Sales_Events__r}" var="thisEvent"  style="border:4px solid #216C97;border-top-style:none;" rendered="{!thisOpportunity.Sales_Events__r.size > 0}" >
+                        <apex:column style=""> 
+                            <apex:commandLink action="{!URLFOR($Action.Sales_Event__c.View, thisEvent.Id )}" value="{! thisEvent.Name}"  target="_blank" />                        
+                               <apex:facet name="header">Event Name</apex:facet>
+                        </apex:column>
+                    <apex:column style="" value="{!thisEvent.Event_Type__c}"  width="100"> 
+                           <apex:facet name="header">Event Type</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisEvent.Status__c}" width="70"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisEvent.Stage__c}" width="70"> 
+                           <apex:facet name="header">Stage<br/>When Created</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisEvent.Confirmed_Start_Date__c}" rendered="{!thisEvent.Status__c != 'Tentative'}"  width="70"> 
+                           <apex:facet name="header">Start</apex:facet>
+                    </apex:column>
+                    <apex:column style="" rendered="{!thisEvent.Status__c == 'Tentative'}"  width="70"> 
+                        <apex:outputText value="{!TentativeDateMapStarts[thisEvent.Id] }" escape="false" />      
+                           <apex:facet name="header">Start</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisEvent.Confirmed_End_Date__c}" rendered="{!thisEvent.Status__c != 'Tentative'}"  width="70"> 
+                           <apex:facet name="header">End</apex:facet>
+                    </apex:column>
+                    <apex:column style="" rendered="{!thisEvent.Status__c == 'Tentative'}"  width="70"> 
+                        <apex:outputText value="{!TentativeDateMapEnds[thisEvent.Id] }" escape="false" />      
+                           <apex:facet name="header">End</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisEvent.Event_Hours__c}" rendered="{!thisEvent.Status__c != 'Tentative'}" width="35"> 
+                           <apex:facet name="header">Event<br/>Hours</apex:facet>
+                    </apex:column>
+                    <apex:column style="" rendered="{!thisEvent.Status__c == 'Tentative'}" width="35"> 
+                        <apex:outputText value="{!TentativeDateMapDurations[thisEvent.Id] }" escape="false" />      
+                           <apex:facet name="header">Event<br/>Hours</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisEvent.List_Of_People__c}"> 
+                           <apex:facet name="header">Team</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisEvent.Customer_Hours__c}" width="50"> 
+                           <apex:facet name="header">Customer<br/>Hours</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisEvent.Preparation_Hours__c}" width="35"> 
+                           <apex:facet name="header">Prep<br/>Hours</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisEvent.LastModifiedDate}" width="70"> 
+                           <apex:facet name="header">Last Updated</apex:facet>
+                    </apex:column>
+
+                    </apex:pageblockTable>
+                    <apex:outputLabel rendered="{!thisOpportunity.Resource_Requests__r != null && thisOpportunity.Resource_Requests__r.size > 0  && ShowOpenResourceRequests}" style="font-weight:bold;border:4px solid #EB8B43;border-style:none none none solid;"  >&nbsp;Resource Requests</apex:outputLabel>
+                <apex:pageBlockTable value="{!thisOpportunity.Resource_Requests__r}" var="thisRequest" width="80%"  style="border:4px solid #EB8B43;border-top-style:none;"  rendered="{!thisOpportunity.Resource_Requests__r != null && thisOpportunity.Resource_Requests__r.size > 0  && ShowOpenResourceRequests}">            
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.ResourceRequest__c.View,thisRequest.Id )}" value="{!thisRequest.Name}"  target="_blank"  />
+                           <apex:facet name="header">Event Name</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Event_Type__c}"> 
+                           <apex:facet name="header">Event Type</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Status__c}"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                    <apex:column style=""  width="70"> 
+                        <apex:outputText value="{!RequestDateMapStarts[thisRequest.Id] }" escape="false" />      
+                           <apex:facet name="header">Start</apex:facet>
+                    </apex:column>
+                    <apex:column style=""  width="70"> 
+                        <apex:outputText value="{!RequestDateMapEnds[thisRequest.Id] }" escape="false" />      
+                           <apex:facet name="header">End</apex:facet>
+                    </apex:column>
+                    <apex:column style=""  width="70"> 
+                        <apex:outputText value="{!RequestDateMapDurations[thisRequest.Id] }" escape="false" />      
+                           <apex:facet name="header">Duration</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.RolesAsString__c}"> 
+                           <apex:facet name="header">Roles</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.LastModifiedDate}"> 
+                           <apex:facet name="header">Last Updated</apex:facet>
+                    </apex:column>
+                </apex:pageBlockTable>                       
+
+                    <apex:outputLabel rendered="{!thisOpportunity.Sales_Support_Requests__r != null && thisOpportunity.Sales_Support_Requests__r.size > 0  && ShowOpenSupportRequests}" style="font-weight:bold;border:4px solid #00AE00;border-style:none none none solid;"  >&nbsp;Support Requests</apex:outputLabel>
+                <apex:pageBlockTable value="{!thisOpportunity.Sales_Support_Requests__r}" var="thisRequest" width="80%"  style="border:4px solid #00AE00;border-top-style:none;"  rendered="{!thisOpportunity.Sales_Support_Requests__r != null && thisOpportunity.Sales_Support_Requests__r.size > 0 && ShowOpenSupportRequests }">            
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.ResourceRequest__c.View,thisRequest.Id )}" value="{!thisRequest.Type__c}"  target="_blank"  />
+                           <apex:facet name="header">Event Type</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Status__c}"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Assigned_To__c}"> 
+                           <apex:facet name="header">Assigned To</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Requested_Completion_Date__c}"> 
+                           <apex:facet name="header">Requested By</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Target_Completion_Date__c}"> 
+                           <apex:facet name="header">Target<br/>Completion</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Hours__c}"> 
+                           <apex:facet name="header">Hours</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.LastModifiedDate}"> 
+                           <apex:facet name="header">Last Updated</apex:facet>
+                    </apex:column>
+                </apex:pageBlockTable>                       
+
+                    <br/>
+                </apex:repeat>
+    
+    </apex:pageBlock>
+
+  </apex:form>
+</apex:page>

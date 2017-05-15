@@ -1,0 +1,12 @@
+<apex:page >
+  <apex:pageBlock >
+      <apex:pageblockSection title="Presales" >
+          <apex:outputLink value="/apex/PresalesEventMetrics2" id="theLink2">MTeam Quarterly View</apex:outputLink><br/>
+          <apex:outputLink value="/apex/PresalesEventMetrics" id="theLink">Presales Events by Month</apex:outputLink><br/>
+      </apex:pageblockSection>
+      <apex:pageblockSection title="Value Consulting" >
+          <apex:outputLink value="/apex/VC_Dash1" id="theLink2">Customer Events</apex:outputLink><br/>
+          <apex:outputLink value="/apex/VC_Dash2" id="theLink3">Support Requests</apex:outputLink>
+      </apex:pageblockSection>
+  </apex:pageBlock>
+</apex:page>

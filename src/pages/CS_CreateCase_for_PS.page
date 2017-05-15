@@ -1,0 +1,104 @@
+<apex:page standardController="pse__Assignment__c" extensions="AssignmentCaseController" tabStyle="Case" action="{!checkResource}" >
+  <apex:form >
+  
+  <script type ='text/javascript'>
+   var isClicked = false; 
+   function checkDoubleSubmit(obj)
+   { 
+     if (isClicked) 
+      { 
+        return false; 
+      }
+      else
+      {
+        isClicked = true; 
+        obj.className = 'btnDisabled'; 
+        return true; 
+      }
+   }
+  
+  </script>
+  
+       <apex:pageMessages />
+       <apex:pageBlock Title="New Case" rendered="{!usersEqual}">
+            
+            <apex:pageBlockSection title="Case Information" id="display">
+                
+                <apex:inputField value="{!NewCase.Subject}" required="true"/>
+                
+                <apex:pageBlockSectionItem >                   
+                   <apex:outputLabel for="AssetList" value="Asset" />  
+                     <apex:actionRegion >
+                       <apex:outputPanel >
+                        <div class="requiredInput">
+                          <div class="requiredBlock"></div>
+                            <apex:selectList value="{!Aset}" title="Asset" size="1" id="assets" label="Asset" required="true">
+                               <apex:selectOptions value="{!AssetList}" />
+                               <apex:actionSupport event="onchange" action="{!installationStr}" rerender="versions,Installation,Severity,envAffected">
+                                    
+                                </apex:actionSupport>
+                            </apex:selectList>
+                        </div>
+                       </apex:outputPanel>
+                    </apex:actionRegion>                
+                </apex:pageBlockSectionItem>
+                
+                <apex:inputField value="{!NewCase.CS_Project_Assignment__c}"/>
+                
+                <apex:pageBlockSectionItem >
+                  <apex:outputLabel for="versions" value="{!$ObjectType.Case.fields.CS_Product_Version__c.label}" />
+                    <apex:actionRegion >
+                      <apex:outputPanel >
+                        <div class="requiredInput">
+                          <div class="requiredBlock"></div>
+                            <apex:selectList value="{!NewCase.CS_Product_Version__c}" title="Version" size="1" id="versions" required="true" >
+                               <apex:selectOptions value="{!versionList}" />
+                            </apex:selectList>
+                        </div>
+                      </apex:outputPanel>
+                    </apex:actionRegion>  
+                </apex:pageBlockSectionItem>                
+                
+          <!--      <apex:inputField value="{!NewCase.Priority}" />  -->
+                
+                <apex:inputField value="{!NewCase.Severity__c}" required="true" Id="Severity" />
+                <apex:inputField value="{!NewCase.CS_Urgency__c}" required="true"/>
+                <apex:inputField value="{!NewCase.Environment_Affected__c}" required="true" id="envAffected" />
+                <apex:inputField value="{!NewCase.Category__c}"  required="true"/>
+                <apex:outputField value="{!pse__Assignment__c.pse__Resource__c}" /> 
+                
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="parentPicklist" columns="2">
+                <apex:inputField value="{!NewCase.Asset_Type__c}" required="true" Id="Installation" />
+            </apex:pageBlockSection>
+            
+             <apex:pageBlockSection title="Case Description" id="descript" columns="1">
+                  <apex:inputField value="{!NewCase.Description}" style="width:85%; height:100px;"/>             
+             </apex:pageBlockSection>
+           
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Create Case" action="{!saveMe}" onclick="return checkDoubleSubmit();" />
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>  
+    
+    <script>
+            //alert(document.getElementById("j_id0:j_id1:j_id29:display:ParentPicklist").value);
+            document.getElementById("j_id0:j_id1:j_id29:parentPicklist").hidden=true;
+        </script>
+    
+</apex:page>
+
+
+
+ <!--     <apex:selectList id="assts" value="{!NewCase.AssetId}" title="Asset one" size="1" >
+                <apex:selectOptions value="{!assts}"></apex:selectOptions>
+                </apex:selectList>
+           -->
+           
+ <!--   <apex:selectList id="Versions" value="{!NewCase.CS_Product_Version__c}" title="Product Versions" size="1" >
+                <apex:selectOptions value="{!versions}"></apex:selectOptions>
+                </apex:selectList>
+              -->

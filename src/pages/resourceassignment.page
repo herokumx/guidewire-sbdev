@@ -1,0 +1,22 @@
+<apex:page standardController="Resource_Assignment__c"  extensions="ResourceRequestAssignmentController" >
+  <apex:form >
+
+   <apex:pageBlock title="Assignment Details" mode="inlineEdit">
+        <apex:pageBlockButtons id="PBB" location="both">
+            <apex:commandButton id="saveButton"   value="Save"   action="{!save}"  />
+            <apex:commandButton id="cancelButton" value="Cancel" action="{!cancel}"/> 
+
+        </apex:pageBlockButtons>
+
+       <apex:pageBlockSection title="Details"  columns="1"> 
+        <apex:inputField id="whoField" value="{!ResourceAssignment.User__c}" required="true"  rendered="{!IsPresalesManager}"/>
+        <apex:outputField id="whoROField" value="{!ResourceAssignment.User__c}" rendered="{!!IsPresalesManager}"/>
+        <apex:inputField id="statusField" value="{!ResourceAssignment.Status__c}" required="true"  rendered="{!IsPresalesManager}"/>
+        <apex:outputField id="statusROField" value="{!ResourceAssignment.Status__c}" rendered="{!!IsPresalesManager}"/>
+        <apex:outputField id="roleField" value="{!ResourceAssignment.Resource_Role__r.Role__c}" />
+        <apex:inputField id="noteField"  value="{!ResourceAssignment.Note__c}" />
+
+       </apex:pageBlockSection>
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>

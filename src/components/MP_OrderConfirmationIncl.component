@@ -1,0 +1,10 @@
+<apex:component id="MP_OrderConfirmationIncl">
+    <script id="MP_OrderConfirmationIncl" type="text/template">
+    	Order Confirmation
+    </script>
+    <script>
+        jQuery(function($){
+            CCRZ.uiProperties.CheckoutNav.desktop.tmpl = 'MP_OrderConfirmationIncl';
+        });
+    </script>
+</apex:component>

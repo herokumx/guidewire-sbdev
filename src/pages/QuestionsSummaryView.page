@@ -1,0 +1,420 @@
+<apex:page controller="QuestionsSummaryViewCon">
+    <apex:pageBlock Title="Sales Event Feedback Summary List">
+    
+    <apex:pageBlockSection columns="1">
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Opportunity Name" style="font-weight:bold"></apex:outputLabel>
+            <apex:outputlink value="{!URLFOR($Action.Opportunity.View, OpportunityId)}" target="_blank">{!OpportunityName}</apex:outputlink>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Sales Event" style="font-weight:bold"></apex:outputLabel>
+            <apex:outputlink value="{!URLFOR($Action.Sales_Event__c.View, SalesEventId)}" target="_blank">{!SalesEventName}</apex:outputlink>
+        </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>
+    
+    
+    <table border="1" style="border-collapse:collapse;border-color: gray;">
+        <tr>
+            <th></th>   
+            <apex:repeat value="{!lstUserNames}" var="element">
+                <th>
+                    {!element}
+                </th>
+            </apex:repeat>
+            <th>Owner/Lead <br>Avg Score</br></th>
+            <th>Supporter <br>Avg Score</br></th>
+        </tr>
+        
+        
+        <tr>
+            <td>
+                <b>Feedback Role</b>
+            </td>
+            <apex:repeat value="{!lstFeedbackRole}" var="role">
+                <td>
+           <b> {!role} </b>
+                </td>
+            </apex:repeat>
+            <td>
+                
+            </td>
+            <td>
+               
+            </td>
+        </tr>        
+        
+        
+        <tr>
+            <td>
+                <b>Event Goal</b>
+            </td>
+            <apex:repeat value="{!lstEventGoals}" var="item">
+                <td>
+                </td>
+            </apex:repeat>
+            <td>
+                {!EventSalesNLeadScore}
+            </td>
+            <td>
+                {!EventSupporterScore}
+            </td>
+        </tr>
+                 
+        
+        <tr>
+            <td>
+                {!$Label.EVENT_GOAL_QUESTION}
+            </td>
+            <apex:repeat value="{!lstEventGoals}" var="item">
+                <apex:outputPanel rendered="{!IF(item == 'Yes', true, false)}">
+                    <td style="background:green">
+                        {!item}
+                    </td>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!!IF(item == 'Yes', true, false)}">
+                    <td style="background:red">
+                        {!item}
+                    </td>
+                </apex:outputPanel>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        
+        <tr>
+            <td>
+               <b> {!$Label.COMMENT_3} </b>
+            </td>
+            <apex:repeat value="{!lstComment1Present}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                <b>Preparation</b>
+            </td>
+            <apex:repeat value="{!lstEventGoals}" var="item">
+                <td>
+                </td>
+            </apex:repeat>
+            <td>
+                {!PrepSalesNLeadScore}
+            </td>
+            <td>
+                {!PrepSupporterScore}
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.PREPARATION_QUESTION_1}
+            </td>
+            <apex:repeat value="{!lstPrepQue1}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.PREPARATION_QUESTION_2}
+            </td>
+            <apex:repeat value="{!lstPrepQue2}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.PREPARATION_QUESTION_3}
+            </td>
+            <apex:repeat value="{!lstPrepQue3}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.PREPARATION_QUESTION_4}
+            </td>
+            <apex:repeat value="{!lstPrepQue4}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.PREPARATION_QUESTION_5}
+            </td>
+            <apex:repeat value="{!lstPrepQue5}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.PREPARATION_QUESTION_6}
+            </td>
+            <apex:repeat value="{!lstPrepQue6}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.PREPARATION_QUESTION_7}
+            </td>
+            <apex:repeat value="{!lstPrepQue7}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                <b>Domain Expertise</b>
+            </td>
+            <apex:repeat value="{!lstEventGoals}" var="item">
+                <td>
+                </td>
+            </apex:repeat>
+            <td>
+                {!DomainSalesNLeadScore}
+            </td>
+            <td>
+                {!DomainSupporterScore}
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.DOMAIN_EXPERTIES_QUESTION_1}
+            </td>
+            <apex:repeat value="{!lstDomainExpertQue1}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.DOMAIN_EXPERTIES_QUESTION_2}
+            </td>
+            <apex:repeat value="{!lstDomainExpertQue2}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        <tr>
+            <td>
+                {!$Label.DOMAIN_EXPERTIES_QUESTION_3}
+            </td>
+            <apex:repeat value="{!lstDomainExpertQue3}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        <tr>
+            <td>
+                {!$Label.DOMAIN_EXPERTIES_QUESTION_4}
+            </td>
+            <apex:repeat value="{!lstDomainExpertQue4}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.DOMAIN_EXPERTIES_QUESTION_5}
+            </td>
+            <apex:repeat value="{!lstDomainExpertQue5}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.DOMAIN_EXPERTIES_QUESTION_6}
+            </td>
+            <apex:repeat value="{!lstDomainExpertQue6}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                <b>Selling Skill</b>
+            </td>
+            <apex:repeat value="{!lstEventGoals}" var="item">
+                <td>
+                </td>
+            </apex:repeat>
+            <td>
+                {!SellingSalesNLeadScore}
+            </td>
+            <td>
+                {!SellingSupporterScore}
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.SELLING_QUESTION_1}
+            </td>
+            <apex:repeat value="{!lstSellingSkillQue1}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.SELLING_QUESTION_2}
+            </td>
+            <apex:repeat value="{!lstSellingSkillQue2}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.SELLING_QUESTION_3}
+            </td>
+            <apex:repeat value="{!lstSellingSkillQue3}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.SELLING_QUESTION_4}
+            </td>
+            <apex:repeat value="{!lstSellingSkillQue4}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.SELLING_QUESTION_5}
+            </td>
+            <apex:repeat value="{!lstSellingSkillQue5}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+        
+        <tr>
+            <td>
+                {!$Label.SELLING_QUESTION_6}
+            </td>
+            <apex:repeat value="{!lstSellingSkillQue6}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>   
+        
+        
+        <tr>
+            <td>
+               <b> {!$Label.COMMENT_4} </b>
+            </td>
+            <apex:repeat value="{!lstComment2Present}" var="item">
+                <td>
+                    {!item}
+                </td>
+            </apex:repeat>
+            <td></td><td></td>
+        </tr>
+    </table>
+    </apex:pageBlock>
+    
+    <apex:pageBlock Title="Event Goal Comments">
+        <table border="1" style="border-collapse:collapse;border-color: gray;">
+                <apex:repeat value="{!lstComment1Wrapper}" var="element">
+                    <tr>
+                        <td>
+                            {!element.UserName}
+                        </td>
+                        <td style="width:500px;text-align: center">
+                            {!element.Comment}
+                        </td>
+                    </tr>
+                </apex:repeat>
+        </table>
+    </apex:pageBlock>
+    
+    <apex:pageBlock Title="Additional Comments">
+        <table border="1" style="border-collapse:collapse;border-color: gray;">
+                <apex:repeat value="{!lstComment2Wrapper}" var="element">
+                    <tr>
+                        <td>
+                            {!element.UserName}
+                        </td>
+                        <td style="width:500px;text-align: center">
+                            {!element.Comment}
+                        </td>
+                    </tr>
+                </apex:repeat>
+        </table> <br />
+        <apex:pageBlockSection columns="1">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Last Refreshed Time" style="font-weight:bold; font-style: italic"></apex:outputLabel>
+                <apex:outputText value="{!LaunchedTime}" style="font-style: italic"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>

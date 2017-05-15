@@ -1,0 +1,9 @@
+<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        This page includes the templates for My Account and My Orders pages
+    ****************************************************************************-->
+<apex:page id="MP_MyAccountIncl">
+    <c:MP_MyAccountInc />
+    <c:MP_MyOrdersView />
+</apex:page>

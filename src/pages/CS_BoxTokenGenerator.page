@@ -1,0 +1,25 @@
+<apex:page controller="CS_BoxTokenGenerator" >
+ 
+  <apex:form >
+  
+  <apex:commandButton action="{!connectBox}" value="Connect to Box" id="theButton"/>
+
+<!--
+  <apex:commandButton action="{!downloadFile}" value="download" id="theButton1"/>
+
+  {!accessToken}
+
+ 
+
+  
+
+  <apex:commandButton action="{!tokenrefresh}" value="refresh" id="theButton2"/>
+  -->
+
+  Refresh Token is :   
+
+   {!refreshToken} 
+  
+  </apex:form> 
+
+</apex:page>

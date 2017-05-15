@@ -1,0 +1,89 @@
+<apex:page standardController="Opportunity" extensions="SWOTController" showChat="false">
+  <apex:form >
+  <center>
+   <apex:pageBlock >
+     <apex:pageBlockButtons id="PBB" location="both">
+                <apex:commandButton id="editButton"   value="Edit"   action="{!edit}" style="display:none"/>
+                <apex:commandButton id="saveButton"   value="Save and Return to Opportunity"   action="{!save}" />
+                <apex:commandButton id="quicksaveButton"   value="Quick Save"   action="{!quicksave}" />
+                <apex:commandButton id="cancelButton"   value="Cancel"   action="{!cancel}" />
+                <apex:commandButton onclick="resetInlineEdit()" id="iecancelButton" value="Cancel SWOT Changes"  style="display:none"/>
+                <apex:commandLink styleClass="Right" action="/apex/SWOT?id={!Opportunity.Id})" target="_blank" value="View SWOT Only"/>
+            </apex:pageBlockButtons>
+       <apex:pageMessages ></apex:pageMessages>
+            
+       <table border="0">
+       <tr>
+       <td style="height:200px;width:250px;">&nbsp;</td>
+       <td align="left" valign="top" style="height:200px;width:250px;border-style:solid;border-width:2px;background-color:#4BACC6">
+              <span style="font-style:italic;font-weight:bold;text-decoration: underline;font-size:large;"   title="Opportunties External To Guidewire">Opportunities</span>
+              <apex:inputfield label="Strengths" id="SWOT_O"  value="{!opportunity.SWOT_Opportunities__c}" style="height:245px;width:245px"    >
+               </apex:inputField>
+        </td>
+        <td align="left" valign="top" style="height:200px;width:250px;border-style:solid;border-width:2px;background-color:#C0504D;">
+            <span style="font-style:italic;font-weight:bold;text-decoration: underline;font-size:large;"  title="Threats External To Guidewire">Threats</span>        
+              <apex:inputfield label="Strengths" id="SWOT_T"  value="{!opportunity.SWOT_Threats__c}"  >
+               </apex:inputField>
+        </td>
+        </tr>
+        <tr>
+        <td align="left" valign="top" style="height:200px;width:250px;border-style:solid;border-width:2px;background-color:#9BBB59;">
+           <span style="font-style:italic;font-weight:bold;text-decoration: underline;font-size:large;"  title="Guidewire-specific Strengths">Strengths</span>        
+           <apex:inputfield style="width:100%"  label="Strengths" id="SWOT_S"  value="{!opportunity.SWOT_Strengths__c}"  >
+           </apex:inputField>
+         </td>
+       <td align="left" valign="top" style="height:200px;width:250px;border-style:solid;border-width:2px;">
+            <span style="font-style:italic;font-weight:bold;text-decoration: underline;font-size:large;"   title="Strategy for Opportunities in context of our Strenghts">SO Strategy</span>        
+           <apex:inputfield style="width:100%"  label="Strengths" id="SWOT_SO"  value="{!opportunity.SWOT_Strategy_SO__c}"  >
+           </apex:inputField>
+       </td>
+       <td align="left" valign="top" style="height:200px;width:250px;border-style:solid;border-width:2px;">
+            <span style="font-style:italic;font-weight:bold;text-decoration: underline;font-size:large;"   title="Strategy for Threats in context of our Strenghts">ST Strategy</span>        
+           <apex:inputfield style="width:100%"  label="Strengths" id="SWOT_ST"  value="{!opportunity.SWOT_Strategy_ST__c}"  >
+           </apex:inputField>
+       </td>
+       </tr>
+       <tr>
+       <td align="left" valign="top" style="height:200px;width:250px;border-style:solid;border-width:2px;background-color:#F79646;">
+            <span style="font-style:italic;font-weight:bold;text-decoration: underline;font-size:large;" title="Guidewire-specific Weaknesses">Weaknesses</span>        
+       <apex:inputfield label="Opportunities" id="SWOT_W"  value="{!opportunity.SWOT_Weaknesses__c}"  >
+       </apex:inputField>
+       </td>
+       <td align="left" valign="top" style="height:200px;width:250px;border-style:solid;border-width:2px;">
+            <span style="font-style:italic;font-weight:bold;text-decoration: underline;font-size:large;"   title="Strategy for Opportunities in context of our Weaknesses">WO Strategy</span>        
+           <apex:inputfield style="width:100%"  label="Strengths" id="SWOT_WO"  value="{!opportunity.SWOT_Strategy_WO__c}"  >
+           </apex:inputField>
+       </td>
+       <td align="left" valign="top" style="height:250x;width:250px;border-style:solid;border-width:2px;">
+            <span style="font-style:italic;font-weight:bold;text-decoration: underline;font-size:large;"  title="Strategy for Threats in context of our Weaknesses">WT Strategy</span>        
+           <apex:inputfield style="width:100%"  label="Strengths" id="SWOT_WT"  value="{!opportunity.SWOT_Strategy_WT__c}"  >
+           </apex:inputField>
+       </td>
+       </tr>
+        </table>       
+
+
+    </apex:pageblock>
+    </center>
+</apex:form>
+
+<style>
+.selected {background-color:#800080;background-image: none;text-decoration: line-through;
+}
+
+
+.myBoldClass {
+ background-color:#FFE600;
+ font-color: orange;
+ font-style:italic;
+ color: #ff4444;
+}
+
+.Right
+{
+float:right;
+}
+
+</style>
+
+</apex:page>

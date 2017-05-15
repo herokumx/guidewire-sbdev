@@ -1,0 +1,4 @@
+<apex:page standardController="SBQQ__Quote__c" extensions="CPQ_FX_DWP_Calc_Refresh" action="{!refreshFX}">
+<apex:form >
+</apex:form>
+</apex:page>

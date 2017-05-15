@@ -1,0 +1,39 @@
+<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        This page includes the templates for the Order Detail Page
+    ****************************************************************************-->
+<apex:page docType="html-5.0" sidebar="false" showHeader="false" standardStylesheets="false" applyHtmlTag="false">
+    <c:MP_OrderHeader />
+    <style>
+    	.wishButtons{
+        	display:none !important;
+        }
+    </style>
+    <script>
+        jQuery(function($) {
+            CCRZ.pubSub.on('view:cartCheckoutView:awaitingSubViewInit',function(theView){
+                if(CCRZ.Checkout.shipping){
+                    CCRZ.Checkout.shipping.register(theView);
+                }
+                if(CCRZ.Checkout.payment){
+                    CCRZ.Checkout.payment.register(theView);
+                }
+                CCRZ.pubSub.trigger('view:cartCheckoutView:subViewInit');
+            });
+
+            CCRZ.pubSub.on('view:ShippingView:refresh',function(theView)
+            {
+                var proceedButton = $('.processShippingInfo');
+                proceedButton.removeClass('proceed');
+                proceedButton.removeClass('processShippingInfo');
+                proceedButton.removeClass('right');
+                proceedButton.attr('id', 'myId');
+                $('#myId').click(function () {
+                    CCRZ.pubSub.trigger('action:processPayment', {});
+                });
+            });
+        });
+    </script>
+
+</apex:page>

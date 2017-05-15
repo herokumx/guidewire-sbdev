@@ -1,0 +1,145 @@
+<!--
+Name            : psaAssignmentSummary
+Author          : CLD
+Created Date    : January 23, 2015
+Description     : This is an inline VF page to show Assignment Staffing Summary visualization on Project object.
+
+-->
+<apex:page StandardController="pse__Proj__c" extensions="psaAssignmentSummaryController" sidebar="false" id="pg">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+<script>
+    $(document).ready(function(){
+      var table1 = $(document.getElementById('pg:pb:pbtable'));
+      var totalSched = 0 ;
+      var totalAct = 0 ;
+      var totalToGo = 0 ;
+      var tcomplete = 0 ;
+      var totalPlan = 0;
+
+      // Adds commas where needed to the specific number
+      var formatNumber = function(nStr) {
+          nStr += '';
+          x = nStr.split('.');
+          x1 = x[0];
+          x2 = x.length > 1 ? '.' + x[1] : '';
+          var rgx = /(\d+)(\d{3})/;
+          while (rgx.test(x1)) {
+              x1 = x1.replace(rgx, '$1' + ',' + '$2');
+          }
+          return x1 + x2;
+      };
+
+      table1.find('tbody tr').each(function(){
+          var tdSchedVal = ($(this).find('td:eq(4)').text() || "").replace(/,/g, "");
+          if(!isNaN(parseFloat( tdSchedVal ))) {
+            totalSched += parseFloat(tdSchedVal);
+          }
+
+          var tdPlanVal = ($(this).find('td:eq(5)').text() || "").replace(/,/g, "");
+          if(!isNaN(parseFloat(tdPlanVal))) {
+            totalPlan += parseFloat(tdPlanVal);
+          }
+
+          var tdAcctVal = ($(this).find('td:eq(6)').text() || "").replace(/,/g, "");
+          if(!isNaN(parseFloat(tdAcctVal))){
+            totalAct += parseFloat(tdAcctVal);
+          }
+
+          var tdTotalVal = ($(this).find('td:eq(7)').text() || "").replace(/,/g, "");
+          if(!isNaN(parseFloat(tdTotalVal))){
+            totalToGo += parseFloat(tdTotalVal);
+          }
+
+          /*if(!isNaN(parseFloat($(this).find('td:eq(8)').text()))){
+            tcomplete += parseFloat($(this).find('td:eq(8)').text());
+          }*/
+
+          /*if(totalPlan!=0 && totalAct!=0){
+              //alert(totaltsh);
+              //alert(totaltah);
+              tcomplete = totalAct/totalPlan*100;
+          }*/
+      });
+
+      table1.find('tr:last td').css('border-bottom','1px solid black');
+      table1.find('tr:last').after('<tr onfocus="if (window.hiOn){hiOn(this);}" onblur="if (window.hiOff){hiOff(this);}" onmouseout="if (window.hiOff){hiOff(this);} " onmouseover="if (window.hiOn){hiOn(this);} " class="dataRow odd last"> <td colspan="1" id="">Total</td> <td colspan="1" id=""></td> <td colspan="1" id=""></td> <td style="width: 170px;" colspan="1" id=""> <td colspan="1" id="idtsh">'+formatNumber(totalSched.toFixed(2))+'</td> <td colspan="1" id="idtph">'+formatNumber(totalPlan.toFixed(2))+'</td> <td colspan="1" id="idtah">'+formatNumber(totalAct.toFixed(2))+'</td> <td colspan="1" id="idtgh">'/*+formatNumber(totalToGo.toFixed(2))+*/'</td> <td colspan="1" id="idcomplete">'/*+tcomplete.toFixed(2)+*/'%</td> </tr>');
+      table1.find('tr:last td').css('font-weight','bold');
+
+    });
+</script>
+<!-- Assignment Summary -->
+    <apex:pageBlock id="pb" title="Staffing Summary-Assignments">
+        <apex:pageBlockTable value="{!assignmentSummary}" var="assign" id="pbtable">
+          <apex:column >
+            <apex:facet name="header">
+              Resource
+            </apex:facet>
+            <apex:outputText value="{!assign.pse__Resource__r.Name}" />
+          </apex:column>
+          <apex:column >
+            <apex:facet name="header">
+              Start Date
+            </apex:facet>
+            <apex:outputField value="{!assign.pse__Start_Date__c}" />
+          </apex:column>
+          <apex:column >
+            <apex:facet name="header">
+              End Date
+            </apex:facet>
+            <apex:outputField value="{!assign.pse__End_Date__c}" />
+          </apex:column>
+          <apex:column style="width:170px;">
+            <apex:facet name="header">
+             Progress
+            </apex:facet>
+            <!-- <apex:outputPanel style="width:150px;border:1px solid #000;height:15px;" layout="block"> -->
+                <!-- BAR CHART USING SCHEDULE HRS: <div style="width:{!IF(assign.pse__scheduled_hours__c !=0,IF(assign.Actual_Hours__c !=0,IF((assign.Actual_Hours__c/assign.pse__scheduled_hours__c)*100 > 100, 100,(assign.Actual_Hours__c/assign.pse__scheduled_hours__c)*100),0),0)}%;background-color:{!IF(assign.Actual_Hours__c > assign.pse__scheduled_hours__c,'#FF0033','#A0EDA7')};height:15px;float:left;">&nbsp;</div> -->
+
+                <!-- <div style="width:{!IF(assign.pse__planned_hours__c !=0,IF(assign.Actual_Hours__c !=0,IF((assign.Actual_Hours__c/assign.pse__planned_hours__c)*100 > 100, 100,(assign.Actual_Hours__c/assign.pse__planned_hours__c)*100),0),0)}%;background-color:{!IF(assign.Actual_Hours__c > assign.pse__planned_hours__c,'#FF0033','#A0EDA7')};height:15px;float:left;">&nbsp;</div> -->
+
+              <!-- <progress value= "{!IF(assign.pse__scheduled_hours__c !=0,IF(assign.Actual_Hours__c !=0,IF((assign.Actual_Hours__c/assign.pse__scheduled_hours__c)*100 > 100, 100,(assign.Actual_Hours__c/assign.pse__scheduled_hours__c)*100),0),0)}%;background-color:{!IF(assign.Actual_Hours__c > assign.pse__scheduled_hours__c,'#FF0033','#A0EDA7')}" max= "{!barMax}"/> -->
+
+               <progress value= "{!assign.PSA_Percent_Complete_Plan__c}" max= "{!barMax}"/>
+
+            <!-- </apex:outputPanel> -->
+          </apex:column>
+            
+          <apex:column >
+            <apex:facet name="header">
+              Actual Hours
+            </apex:facet>
+            <apex:outputField value="{!assign.PSA_Actual_Hours__c}" />
+          </apex:column>
+
+          <apex:column >
+            <apex:facet name="header">
+              Scheduled Hours
+            </apex:facet>
+            <apex:outputField value="{!assign.pse__Scheduled_Hours__c}" />
+          </apex:column>
+
+         <!--  <apex:column >
+            <apex:facet name="header">
+              Planned Hours
+            </apex:facet>
+            <apex:outputField value="{!assign.pse__Planned_Hours__c}" />
+          </apex:column> -->
+
+          <apex:column >
+            <apex:facet name="header">
+              ToGo Hours
+            </apex:facet>
+            <apex:outputField value="{!assign.To_Go_Hours__c}" />
+          </apex:column>
+
+          <apex:column >
+            <apex:facet name="header">
+              % Complete (Plan)
+            </apex:facet>
+            <apex:outputText value="{!ROUND(IF(assign.pse__Scheduled_Hours__c !=0,IF(assign.PSA_Actual_Hours__c !=0,(assign.PSA_Actual_Hours__c/assign.pse__Scheduled_Hours__c)*100,0),0),2)}" />
+          </apex:column>
+
+        </apex:pageBlockTable>
+
+    </apex:pageBlock>
+</apex:page>

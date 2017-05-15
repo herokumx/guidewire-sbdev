@@ -1,0 +1,25 @@
+<apex:component id="MP_OrderHeader">
+    <script id="MP_OrderHeader-Desktop" type="text/template">
+
+    </script>
+
+    <script id="MP_OrderHeader-Mobile" type="text/template">
+
+    </script>
+
+    <script id="MP_CheckoutHeader-Desktop" type="text/template">
+
+    </script>
+
+    <script id="MP_CheckoutHeader-Mobile" type="text/template">
+
+    </script>
+
+    <script type="text/javascript">
+        CCRZ.uiProperties.OrderNav.desktop.tmpl = "MP_OrderHeader-Desktop";
+        CCRZ.uiProperties.OrderNav.phone.tmpl = "MP_OrderHeader-Mobile";
+
+        CCRZ.uiProperties.CheckoutNav.desktop.tmpl = "MP_CheckoutHeader-Desktop";
+        CCRZ.uiProperties.CheckoutNav.phone.tmpl = "MP_CheckoutHeader-Mobile";
+    </script>
+</apex:component>

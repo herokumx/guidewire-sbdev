@@ -1,0 +1,9 @@
+<apex:component >
+    <script>
+    	$(document).ready(function(){
+            $(".popReview").parent('div').addClass('reviewButtonDiv');
+            //$(".search_form").append($(".acctsec"));
+            $('[data-Id="price"]').hide();
+        });
+    </script>
+</apex:component>

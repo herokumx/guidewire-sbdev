@@ -1,0 +1,216 @@
+<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the My Account Page
+    ****************************************************************************-->
+<apex:component id="MP_MyAccountInc">
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+		Template for the Account/Contact Information
+    ****************************************************************************-->
+	<script id="MP_MyAccountView" type="text/template">
+    	<div class="main_content_large_right_container">
+        	{{#ifEquals this.commerceType "B2B"}}
+				<fieldset>
+         			<legend>{{pageLabelMap 'MyAccount_Profile_Account_Information'}}&nbsp;&nbsp;<div class="myAccProfileNote">{{pageLabelMap 'MyAccount_Profile_Note'}}</div></legend>
+		 			<div class="my_account_information">
+            			{{#ifDisplay 'reg.addlInf'}}
+            				<div class="row myAccProfileCompany">
+             					<label>{{pageLabelMap 'MyAccount_Profile_Company'}}:</label>
+             					<span class="value">{{accountBean.name}}</span>
+            				</div>
+            			{{/ifDisplay}}
+                        <div class="row myAccAccountGroup">
+                            <label>{{pageLabelMap 'MyAccount_Profile_Account_Group'}}:</label>
+                            <span class="value">{{accountBean.accountGroupName}}</span>
+                        </div>
+                        <div class="row myAccProfilePhone">
+                            <label>{{pageLabelMap 'MyAccount_Profile_Phone'}}:</label>
+                            <span class="value">{{accountBean.phone}}</span>
+                        </div>
+                        <div class="row myAccBillingAddr">
+                            <label><strong>{{pageLabelMap 'MyAccount_Profile_Account_Billing_Address'}}:</strong><br /></label>
+                        </div>
+                        <div class="row myAccBillingAddr_Value">
+                            <span class="address_selection_display">
+                                {{#ifDisplay 'SO.DsplAddrCompany'}}
+                                    {{#if accountBean.name}}<span class="addr_company">{{accountBean.name}}</span><br/>{{/if}}
+                                {{/ifDisplay}}
+                                <span class="addr_line1 addr_line">{{this.accountBean.billingAddress.address1}}</span><br/>
+                                {{#if this.accountBean.billingAddress.address2}}<span class="addr_line2 addr_line">{{this.accountBean.billingAddress.address2}}</span><br/>{{/if}}
+                                {{#if this.accountBean.billingAddress.address3}}<span class="addr_line3 addr_line">{{this.accountBean.billingAddress.address3}}</span><br/>{{/if}}
+                                <span class="addr_city">{{this.accountBean.billingAddress.city}}</span>{{#if this.accountBean.billingAddress.state}}<span class="addr_state">, {{this.accountBean.billingAddress.state}}</span> {{else}}{{#if this.accountBean.billingAddress.stateCode}}<span class="addr_state">, {{this.accountBean.billingAddress.stateCode}}</span>{{/if}}  {{/if}}<span class="addr_postal">&nbsp;{{this.accountBean.billingAddress.postalCode}}</span><br/>
+                                <span class="addr_country">{{this.accountBean.billingAddress.country}}</span><br/>
+                                <span class="addr_extId">{{this.accountBean.billingAddress.partnerId}}</span>
+                            </span>
+                            <!--{{> addressDisplay this.accountBean.billingAddress}}-->
+                        </div>
+                        <!--<div class="row myAccShippingAddr">--->
+                        <!--<label><strong>{{pageLabelMap 'MyAccount_Profile_Account_Shipping_Address'}}:</strong><br /></label>
+                        <span class="address_selection_display">
+                            {{#ifDisplay 'SO.DsplAddrCompany'}}
+                                {{#if accountBean.name}}<span class="addr_company">{{accountBean.name}}</span><br/>{{/if}}
+                            {{/ifDisplay}}
+                            <span class="addr_line1 addr_line">{{this.accountBean.shippingAddress.address1}}</span><br/>
+                            {{#if this.accountBean.shippingAddress.address2}}<span class="addr_line2 addr_line">{{this.accountBean.shippingAddress.address2}}</span><br/>{{/if}}
+                            {{#if this.accountBean.shippingAddress.address3}}<span class="addr_line3 addr_line">{{this.accountBean.shippingAddress.address3}}</span><br/>{{/if}}
+                            <span class="addr_city">{{this.accountBean.shippingAddress.city}}</span>{{#if this.accountBean.shippingAddress.state}}<span class="addr_state">, {{this.accountBean.shippingAddress.state}}</span> {{else}}{{#if this.accountBean.shippingAddress.stateCode}}<span class="addr_state">, {{this.accountBean.shippingAddress.stateCode}}</span>{{/if}}  {{/if}}<span class="addr_postal">&nbsp;{{this.accountBean.shippingAddress.postalCode}}</span><br/>
+                            <span class="addr_country">{{this.accountBean.shippingAddress.country}}</span><br/>
+                            <span class="addr_extId">{{this.accountBean.shippingAddress.partnerId}}</span>
+                        </span>
+                        {{> addressDisplay this.accountBean.shippingAddress}}-->
+                        <!--</div>-->
+					</div>
+				</fieldset>
+                <br/>
+                <hr/>
+                <fieldset>
+                    <legend>{{pageLabelMap 'MyAccount_Profile_Contact_Information'}}</legend>
+                    <div class="my_account_information">
+                        <div class="row myAccProfileName">
+                            <label class="shortest">{{pageLabelMap 'MyAccount_Profile_Name'}}:</label>
+                            {{#if contactBean.firstName}}
+                                <span class="value">{{contactBean.firstName}} {{contactBean.lastName}}</span>
+                            {{else}}
+                                <span class="value"><i>No name stored.</i></span>
+                            {{/if}}
+                        </div>
+                        <div class="row myAccProfilePhone">
+                            <label class="shortest">{{pageLabelMap 'MyAccount_Profile_Phone'}}:</label>
+                            {{#if contactBean.phone}}
+                                <span class="value">{{contactBean.phone}}</span>
+                            {{else}}
+                                <span class="value"><i>No phone number stored.</i></span>
+                            {{/if}}
+                        </div>
+                        <div class="row myAccMailingAddr">
+                            <label><strong>{{pageLabelMap 'MyAccount_Profile_Contact_Mailing_Address'}}:</strong><br /></label>
+                        </div>
+                        <div class="row myAccMailingAddr_value">
+                            <span class="address_selection_display">
+                                {{#ifDisplay 'SO.DsplAddrCompany'}}
+                                    {{#if accountBean.name}}<span class="addr_company">{{accountBean.name}}</span><br/>{{/if}}
+                                {{/ifDisplay}}
+                                <span class="addr_line1 addr_line">{{this.contactBean.mailingAddress.address1}}</span><br/>
+                                {{#if this.contactBean.mailingAddress.address2}}<span class="addr_line2 addr_line">{{this.contactBean.mailingAddress.address2}}</span><br/>{{/if}}
+                                {{#if this.contactBean.mailingAddress.address3}}<span class="addr_line3 addr_line">{{this.contactBean.mailingAddress.address3}}</span><br/>{{/if}}
+                                <span class="addr_city">{{this.contactBean.mailingAddress.city}}</span>{{#if this.contactBean.mailingAddress.state}}<span class="addr_state">, {{this.contactBean.mailingAddress.state}}</span> {{else}}{{#if this.contactBean.mailingAddress.stateCode}}<span class="addr_state">, {{this.contactBean.mailingAddress.stateCode}}</span>{{/if}}  {{/if}}<span class="addr_postal">&nbsp;{{this.contactBean.mailingAddress.postalCode}}</span><br/>
+                                <span class="addr_country">{{this.contactBean.mailingAddress.country}}</span><br/>
+                                <span class="addr_extId">{{this.contactBean.mailingAddress.partnerId}}</span>
+                            </span>
+                            <!-- {{> addressDisplay this.contactBean.mailingAddress}}-->
+                        </div>
+                        <!-- <div class="row myAccOtherAddr">
+                            <label><strong>{{pageLabelMap 'MyAccount_Profile_Contact_Other_Address'}}</strong><br /></label>
+                            {{> addressDisplay this.contactBean.otherAddress}}
+                        </div>-->
+          			</div>
+                </fieldset>
+                <br/>
+			{{/ifEquals}}
+			<!--<fieldset>
+			<legend>{{pageLabelMap 'MyAccount_Profile_Account_Information'}}</legend>
+				<div class="my_account_information">
+           			<div class="row myAccName">
+            			<label class="shorter"><strong>{{pageLabelMap 'MyAccount_Profile_Name'}}:</strong></label>
+            			<span>{{userFirstName}} {{userLastName}}</span>
+           			</div>
+                    <div class="row myAccPhone">
+                    <label class="shorter"><strong>{{pageLabelMap 'MyAccount_Profile_Phone'}}:</strong></label>
+                    <span>{{userPhone}}</span>
+                    </div>
+                    <div class="row myAccUserName">
+                        <label class="shorter"><strong>{{pageLabelMap 'MyAccount_Profile_Username'}}:</strong></label>
+                        <span>{{username}}</span>
+                    </div>
+                    <div class="row myAccEmailAddr">
+                        <label class="shorter"><strong>{{pageLabelMap 'MyAccount_Profile_Email'}}:</strong></label>
+                        <span>{{emailAddress}}</span>
+                    </div>
+                    <div class="row myAccLanguage">
+                        <label class="shorter"><strong>{{pageLabelMap 'MyAccount_Profile_Language'}}:</strong></label>
+                        <span>{{language}}</span>
+                    </div>
+                    <div class="row myAccCurrency">
+                        <label class="shorter"><strong>{{pageLabelMap 'MyAccount_Profile_Currency'}}:</strong></label>
+                        <span>{{currencyName}}</span>
+                    </div>
+                    {{#ifDisplay 'reg.tmZn'}}
+                        <div class="row myAccTimeZone">
+                            <label class="shorter"><strong>{{pageLabelMap 'MyAccount_Profile_TimeZone'}}:</strong></label>
+                            <span>{{timeZone}}</span>
+                        </div>
+                    {{/ifDisplay}}
+          		</div>
+			</fieldset>-->
+        	<br/>      
+            {{#if hideEditProfile}} {{else}}
+                <!--<input type="button" class="gotoSectionContactInfoEdit button left" value="{{pageLabelMap 'MyAccount_EditProfile'}}" /><br/>-->
+            {{/if}}
+		</div>
+    </script>
+
+    <script id="MP_MyAccount-Nav-Desktop" type="text/template">
+		<ul class="side_navigation_dropdown" id="side_nav">
+        	<div class="title_header">
+            	<h2 class="title">{{pageLabelMap 'Component_SiteHeader_MyAccount'}}</h2>
+            </div>
+            <div class="accountNavigationList">
+                {{#each this}}
+                	<li class="acctStep{{this.index}} acctStepNav"><a href="#" class="gotoSection" data-index="{{this.index}}">{{pageLabelMap this.title}}</a></li>
+                {{/each}}
+             </div>
+        </ul>
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the My Carts section
+    ****************************************************************************-->
+    <script id="MP_MyCarts" type="text/template">
+		<h2 class="title">{{pageLabelMap 'MyAccount_MyCarts'}}</h2>
+        <div class="main_content_large_solo_container">
+			<table id="cartTable" class="table">
+				<tr class="even">
+                	<td class="right_align">{{pageLabelMap 'MyCartsInc_CartName'}}</td>
+					<td class="right_align">{{pageLabelMap 'MyCartsInc_LastUpdate'}}</td>
+             		<!--<td class="right_align">{{pageLabelMap 'MyCartsInc_SubAmount'}}</td>-->
+             		<td class="right_align" style="width: 110px">{{pageLabelMap 'MyCartsInc_Actions'}}</td>
+            	</tr>
+            	{{#each this}}
+             		<tr class="odd myAccCartRows">
+              			<td class="right_align"><a href="#" data-id="{{encryptedId}}" class="gotoCartDetails">{{name}}</a></td>
+              			<td class="right_align" >{{lastModifiedDateStr}}</td>
+              			<!--<td class="right_align" >{{price subtotal}}</td>-->
+              			<td class="right_align" nowrap="true">
+                              <!--<input type="button" class="clone" data-id="{{sfid}}" value="{{pageLabelMap 'Action_Clone'}}"/>&#160;-->
+                              <a href="#renameMod_{{sfid}}" data-toggle="modal"><input type="button" value="{{pageLabelMap 'Action_Rename'}}"/></a>&#160;
+                              <input type="button" class="deleteCart" data-id="{{sfid}}" value="{{pageLabelMap 'Action_Delete'}}"/>&#160;
+              			</td>
+             		</tr>
+            	{{/each}}
+			</table>
+           	{{#each this}}
+            	<div id="renameMod_{{sfid}}" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+             		<div class="modal-header">
+              			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              			<h3 id="myModalLabel">{{pageLabelMap 'Title_ModifyCart' name }}</h3>
+             		</div>
+             		<form class="modal-body renameForm">
+              			<input type="text" value="{{name}}" name="rename_{{sfid}}" class="rename_{{sfid}}">
+             		</form>
+             		<div class="modal-footer"><input type="button" class="renameCart" data-id="{{sfid}}" value="{{pageLabelMap 'Save'}}"/></div>
+            	</div>
+			{{/each}}
+		</div>
+	</script>
+    
+    <script>
+        jQuery(function($){   
+            CCRZ.uiProperties.contactInfoView.desktop.tmpl = 'MP_MyAccountView';
+            CCRZ.uiProperties.myAccountNavView.desktop.tmpl = 'MP_MyAccount-Nav-Desktop';
+            CCRZ.uiProperties.myCartsView.desktop.tmpl = 'MP_MyCarts';
+        });
+    </script>
+</apex:component>

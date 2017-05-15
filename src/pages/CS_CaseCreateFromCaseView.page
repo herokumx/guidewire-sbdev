@@ -1,0 +1,97 @@
+<apex:page standardcontroller="Case" extensions="CS_CaseCreateFromCaseView" action="{!redirect}">
+     
+    <apex:form >
+  
+  <script type ='text/javascript'> 
+   var isClicked = false; 
+   function checkDoubleSubmit(obj)
+   { 
+     if (isClicked) 
+      { 
+        return false; 
+      }
+      else
+      {
+        isClicked = true; 
+        obj.className = 'btnDisabled'; 
+        return true; 
+      }
+   }
+  
+  </script>
+  
+       <apex:pageMessages />
+       <apex:pageBlock Title="New Case" rendered="{!usersEqual}">
+            
+            <apex:pageBlockSection title="Case Information" id="display">
+                
+                <apex:inputField value="{!NewCase.Subject}" required="true"/>
+                
+                <apex:pageBlockSectionItem >                   
+                   <apex:outputLabel for="AssetList" value="Asset" />  
+                     <apex:actionRegion >
+                       <apex:outputPanel >
+                        <div class="requiredInput">
+                          <div class="requiredBlock"></div>
+                            <apex:selectList value="{!Aset}" title="Asset" size="1" id="assets" label="Asset" required="true">
+                               <apex:selectOptions value="{!AssetList}" />
+                               <apex:actionSupport event="onchange" rerender="versions" />
+                            </apex:selectList>
+                        </div>
+                       </apex:outputPanel>
+                    </apex:actionRegion>                
+                </apex:pageBlockSectionItem>
+                
+                <apex:outputField value="{!NewCase.AccountId}" />
+                
+                <apex:pageBlockSectionItem >                   
+                   <apex:outputLabel for="ProductList" value="Product" />  
+                     <apex:actionRegion >
+                       <apex:outputPanel >
+                        <div class="requiredInput"> 
+                          <div class="requiredBlock"></div>
+                            <apex:selectList value="{!product}" title="Product" size="1" id="prds" label="Product" required="true">
+                               <apex:selectOptions value="{!ProductList}" />
+                               <apex:actionSupport event="onchange" rerender="versions" />
+                            </apex:selectList>
+                        </div>
+                       </apex:outputPanel>
+                    </apex:actionRegion>                
+                </apex:pageBlockSectionItem>
+                
+                <apex:inputField value="{!NewCase.CS_Urgency__c}" required="true" />
+                
+                <apex:pageBlockSectionItem >
+                  <apex:outputLabel for="versions" value="{!$ObjectType.Case.fields.CS_Product_Version__c.label}" />
+                    <apex:actionRegion >
+                      <apex:outputPanel >
+                        <div class="requiredInput">
+                          <div class="requiredBlock"></div>
+                            <apex:selectList value="{!NewCase.CS_Product_Version__c}" title="Version" size="1" id="versions" required="true" >
+                               <apex:selectOptions value="{!versionList}" />
+                            </apex:selectList>
+                        </div>
+                      </apex:outputPanel>
+                    </apex:actionRegion>  
+                </apex:pageBlockSectionItem> 
+                
+                <apex:inputField value="{!NewCase.Environment_Affected__c}"/>
+                
+                <apex:inputField value="{!NewCase.Severity__c}" required="true" />
+                
+                <apex:inputField value="{!NewCase.Category__c}"  required="true"/>
+                
+            </apex:pageBlockSection>
+            
+             <apex:pageBlockSection title="Case Description" id="descript" columns="1">
+                  <apex:inputField value="{!NewCase.Description}" style="width:85%; height:100px;"/>             
+             </apex:pageBlockSection>
+           
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Create Case" action="{!saveMe}" onclick="return checkDoubleSubmit();" />
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form> 
+
+</apex:page>

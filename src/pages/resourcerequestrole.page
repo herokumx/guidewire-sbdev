@@ -1,0 +1,21 @@
+<apex:page standardController="Resource_Role__c" extensions="ResourceRequestRoleController" >
+  <apex:form >
+
+   <apex:pageBlock title="Role Details" >
+        <apex:pageBlockButtons id="PBB" location="both">
+            <apex:commandButton id="saveButton"   value="Save"   action="{!save}"  />
+            <apex:commandButton id="cancelButton" value="Cancel" action="{!cancel}"/> 
+
+        </apex:pageBlockButtons>
+
+       <apex:pageBlockSection title="Details"  columns="1"> 
+        <apex:inputField id="roleField" value="{!ResourceRole.Role__c}" required="true" rendered="{!ResourceRole.Role__c == null}" />
+        <apex:outputField id="roleFieldRO" value="{!ResourceRole.Role__c}" rendered="{!ResourceRole.Role__c != null}" />
+        <apex:inputField id="statusField" value="{!ResourceRole.Status__c}" required="true"/>
+        <apex:inputField id="notesField" value="{!ResourceRole.Note__c}" />
+
+       </apex:pageBlockSection>
+    </apex:pageBlock>
+  </apex:form>
+
+</apex:page>

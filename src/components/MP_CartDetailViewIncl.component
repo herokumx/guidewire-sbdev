@@ -1,0 +1,360 @@
+<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the Cart Detail Page Components
+    ****************************************************************************-->
+<apex:component id="MP_CartDetailViewIncl" controller="MP_CartDetailViewInclCtrl">
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the Cart Detail Page - Desktop
+    ****************************************************************************-->
+    <script id="MP_CartDetailView" type="text/template">
+		<div class="main_content_large_right_container hidden-phone">
+        	<h1>{{pageLabelMap 'CartInc_ShoppingCart'}}</h1>
+           	{{#if this.cartItems}}
+           		<p><h3>{{pageLabelMap 'CartInc_YouHave'}} {{this.cartItems.length}} {{pageLabelMap 'CartInc_ItemsInYourCart'}}</h3></p>
+           	{{else}}
+    			<p><h3>{{pageLabelMap 'CartInc_YouHave'}} 0 {{pageLabelMap 'CartInc_ItemsInYourCart'}}</h3></p>
+            {{/if}}
+       		<div id="cart_items_container" class="">
+        		{{> headerSection}}
+        		<div class="cart_item_list">
+         			{{#ifNotEquals this.cartItems.length 0}}
+         				<table class="table">
+          					<thead>
+          						<tr>
+                                    <td width="25%">Product Name</td>
+                                    <td width="55%">Description</td>
+                                    <td width="20%">Date Added</td>
+                                    <td width="10%"></td>
+          						</tr>
+          					</thead>
+          					<tbody>
+          						{{#each this.cartItems.models}}
+          							{{#with this.attributes}}
+          								<tr>
+          									<td>
+              									<!-- <div class="cart_item wishFinder {{this.attributes.itemID}}" data-sku="{{this.prodBean.sku}}">-->
+                        							<!--	<div class="cart_item_viewport">
+                                    				<a href="#" class="prodLink" data-id="{{mockProduct.sku}}">{{{displayImage mediaWrapper 'cart'}}}</a>
+                                				</div>-->
+                                			<p class="item_title">
+                                    			<a href="#" class="prodLink" data-id="{{mockProduct.sku}}">{{displayProductName 'Aggregate_Display' displayProductBean.name mockProduct.name }}</a>
+                                			</p>
+                        					</td>
+                            				<td>
+                                				{{#if showIncludedItems }}
+                                    				<a href="#included_items{{itemID}}" class="includedItemsLink" id="includedItemsLink{{itemID}}" data-desktop="true" data-toggle="modal" data-id="{{itemID}}">{{pageLabelMap 'CartInc_IncludedItems'}}</a>
+                                    				{{#ifDisplay 'C.DsplAddtInfo'}} &#160;|&#160;{{/ifDisplay}}
+                                    				{{> CraneIncIncludedDisplay}}
+                                                {{/if}}
+                                				{{#ifDisplay 'C.DsplAddtInfo'}}
+                                    				<!--<a class="included_items" href="#additional_info{{itemID}}" id="additionalInfoLink" data-toggle="modal">{{pageLabelMap 'AdditionalInfo'}}</a>
+                                    				{{> cartItemAdditional}}-->
+                                 					{{unescape mockProduct.shortDesc}}
+                                				{{/ifDisplay}}
+                                                {{#if this.isSubscription}}
+                                                    <p class="subscriptionSummary">{{subscriptionSummary 'Cart_Subscription_' this.subscriptionFrequency mockProduct.sku itemTotal}}</p>
+                                                {{/if}}
+                                                {{#each minorLines}}
+                                                    {{#if this.isSubscription}}
+                                                        <p class="subscriptionSummary">{{subscriptionSummary 'Cart_Subscription_' this.subscriptionFrequency mockProduct.sku itemTotal}}</p>
+                                                    {{/if}}
+                                                {{/each}}        
+                            				</td>
+                            				<td>
+                                   				{{extendedOrderData this}}
+                                    			{{#eachInMap cartItemDateAddedMap}}
+                                                    {{#ifEquals this.key ../itemID}}
+                                                        {{this.value}}
+                                                    {{/ifEquals}}
+                                    			{{/eachInMap}}
+                            				</td>
+                                            <td>
+                                                <div class=" wishFinder" data-sku="{{mockProduct.sku}}">
+                                                    <button type="button" class="btn slim deleteItem removeItemButton" data-dismiss="modal" aria-hidden="true" data-id="{{itemID}}" >{{pageLabelMap 'Action_Delete'}}</button>
+                                                </div>
+                                            </td>
+                                    		<!--</td></div>-->
+           								</tr>
+             						{{/with}}
+          						{{/each}}
+          					</tbody>
+          				</table>
+         			{{/ifNotEquals}}
+				</div>
+			</div>
+			{{> emailModal}}
+       		{{> wishModal}}
+       		{{> actionsTotals}}
+       		<div id="modalSec"></div>
+       		<div class="clear"></div>
+		</div>
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Template for the Cart Actions
+    ****************************************************************************-->
+    <script id="MP-CartActionTotals-View" type="text/template">
+		<ul class="shopping_cart">
+        	<li><button class="btn slim continueShoppingButton" name="" type="button" >{{pageLabelMap 'CartInc_ContinueShopping'}}</button></li>
+			{{#ifNotEquals this.cartItems.length 0}}    
+				{{#if {!ISPICKVAL($User.UserType, 'Guest')} }}
+					{{#ifDisplay 'C.EmailAnon'}}
+						<li><button class="btn slim pipe" type="button" >|</button></li>
+                        <li><a href="#emailModal" id="emailCartLink" data-toggle="modal"><button class="btn slim remove" type="button" >{{pageLabelMap 'CartOrderEmailer_Header'}}</button></a></li>
+                    {{/ifDisplay}}
+                {{else}}
+                    {{#ifDisplay 'C.EnableEmailCart'}}
+                    	<li><button class="btn slim pipe" type="button" >|</button></li>
+                        <li><a href="#emailModal" id="emailCartLink" data-toggle="modal"><button class="btn slim remove" type="button" >{{pageLabelMap 'CartOrderEmailer_Header'}}</button></a></li>
+                    {{/ifDisplay}}
+                {{/if}}
+            {{/ifNotEquals}}
+            <!-- rfq button -->
+            {{#if {!ISPICKVAL($User.UserType, 'Guest')} }}
+            	{{#ifDisplay 'rfq.GuestUser'}}
+                	<li><a href="#rfqModal" id="rfqLink" data-toggle="modal"><button class="btn slim remove" type="button" >{{pageLabelMap 'CartRFQForm_Header'}}</button></a></li>
+                {{/ifDisplay}}
+           	{{else}}
+                {{#ifDisplay 'rfq.LoggedIn'}}
+					{{#ifEquals this.extrinsic.showRFQ 'true'}}
+                    	<li><a href="#rfqModal" id="rfqLink" data-toggle="modal"><button class="btn slim remove" type="button" >{{pageLabelMap 'CartRFQForm_Header'}}</button></a></li>
+					{{/ifEquals}}
+            	{{/ifDisplay}}
+            {{/if}}
+            {{#ifEquals this.extrinsic.requiresOverride 'true'}}
+            	<li><a href="javascript:CCRZ.subsc.createCreditCase('{{this.sfid}}');" id="creditOverride"><button class="btn slim remove" type="button" >{{pageLabelMap 'CraneInc_CreditOverrideBtn'}}</button></a></li>
+            {{/ifEquals}}
+            <!-- rfq button -->
+     		<!--   </ul>
+        	<ul class="checkout clear_right">-->
+            {{#if subTotal}}
+            	<li class="grand_total">{{pageLabelMap 'CartInc_Subtotal'}}: {{{price subTotal}}}</li>
+            {{/if}}
+            {{#if this.totalInfo}}
+            	<li class="cart_total_amount">{{this.totalInfo}}</li>
+            {{/if}}
+            <li class="totalsmessagingSection"></li>
+            {{#if this.cartItems}}
+                {{#ifNotEquals this.cartItems.length 0}}
+                    {{#if this.allowCheckout}}
+                        {{#ifEquals this.preventCheckout false}}
+                            <li>
+                                <button type="button" class="btn btn-primary wide checkOutBtn" >{{pageLabelMap 'CartInc_Checkout'}}</button>
+                            </li>
+                        {{/ifEquals}}
+                   	{{else}}
+                        <li>
+                        	{{pageLabelMap 'CartInc_CannotCheckout'}}
+                    	</li>
+                	{{/if}}
+            	{{/ifNotEquals}}
+			{{/if}}
+        </ul>
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the Cart Item Line Item - Desktop
+    ****************************************************************************-->
+    <script id="MPCartItemDetail-View-Desktop" type="text/template">
+		{{#with this.attributes}}
+        	{{#ifEquals itemStatus 'Invalid'}}
+            	<div class="alert alert-error">
+                	<p class="item_title">
+                        <a href="#" class="prodLink" data-id="{{mockProduct.sku}}">{{displayProductName 'Aggregate_Display' displayProductBean.name mockProduct.name }}</a>
+                    </p>
+                    <div class="clear"></div>
+                    <button type="button" class="btn slim deleteItem removeItemButton" data-dismiss="modal" aria-hidden="true" data-id="{{itemID}}" >{{pageLabelMap 'Action_Delete'}}</button>
+                </div>
+            {{else}}
+                <div class="quantity" data-id="{{itemID}}">
+                    {{#ifNotEquals cartItemType 'Coupon'}}
+                        <p class="section2 plus_minus" data-id="{{itemID}}">
+                            {{> cartItemsQty}}
+                        </p>
+                    {{/ifNotEquals}}
+                    <div class="price">
+                        <p class="price">
+                            {{#if extrinsic.QuotedItem}}
+                                {{#if extrinsic.QuotedPrice}}
+                                    <strong>{{pageLabelMap 'CraneInc_Quote'}} {{{price extrinsic.QuotedPrice}}}</strong>
+                                {{else}}
+                                    {{#if price}}
+                                        {{pageLabelMap 'CartInc_Price'}}: {{{price price}}}<br />
+                                    {{/if}}
+                                    {{#if itemTotal}}
+                                        <strong>{{pageLabelMap 'CartInc_Total'}}: {{{price itemTotal}}}</strong>
+                                    {{/if}}
+                                {{/if}}
+                            {{else}}
+                                {{#if price}}
+                                    {{pageLabelMap 'CartInc_Price'}}: {{{price price}}}<br />
+                                {{/if}}
+                                {{#if itemTotal}}
+                                    <strong>{{pageLabelMap 'CartInc_Total'}}: {{{price itemTotal}}}</strong>
+                                {{/if}}
+                            {{/if}}
+                        </p>
+                    </div>
+                </div>
+                {{#ifEquals cartItemType 'Coupon'}}
+                    <p class="item_title coupon_title" data-id="{{mockProduct.sku}}">
+                        <span class="couponCartLabel">{{pageLabelMap 'CartInc_AppliedCoupon'}}</span>{{mockProduct.name}}
+                    </p>
+                {{else}}
+                 	<table style="width=100%">
+                    	<tr>
+                        	<td>
+                        		<div class="cart_item_viewport">
+                                    <a href="#" class="prodLink" data-id="{{mockProduct.sku}}">{{{displayImage mediaWrapper 'cart'}}}</a>
+                                </div>
+                                <p class="item_title">
+                                    <a href="#" class="prodLink" data-id="{{mockProduct.sku}}">{{displayProductName 'Aggregate_Display' displayProductBean.name mockProduct.name }}</a>
+                                </p>
+                        	</td>
+                            <td>
+                                {{#if showIncludedItems }}
+                                    <a href="#included_items{{itemID}}" class="includedItemsLink" id="includedItemsLink{{itemID}}" data-desktop="true" data-toggle="modal" data-id="{{itemID}}">{{pageLabelMap 'CartInc_IncludedItems'}}</a>
+                                    {{#ifDisplay 'C.DsplAddtInfo'}} &#160;|&#160;{{/ifDisplay}}
+                                    {{> CraneIncIncludedDisplay}}
+                                {{/if}}
+                                {{#ifDisplay 'C.DsplAddtInfo'}}
+                                    <!--<a class="included_items" href="#additional_info{{itemID}}" id="additionalInfoLink" data-toggle="modal">{{pageLabelMap 'AdditionalInfo'}}</a>
+                                    {{> cartItemAdditional}}-->
+                                 	{{unescape mockProduct.shortDesc}}
+                                {{/ifDisplay}}
+                                {{#if this.isSubscription}}
+                                    <p class="subscriptionSummary">{{subscriptionSummary 'Cart_Subscription_' this.subscriptionFrequency mockProduct.sku itemTotal}}</p>
+                                {{/if}}
+                                {{#each minorLines}}
+                                    {{#if this.isSubscription}}
+                                        <p class="subscriptionSummary">{{subscriptionSummary 'Cart_Subscription_' this.subscriptionFrequency mockProduct.sku itemTotal}}</p>
+                                    {{/if}}
+                                {{/each}}        
+                            </td>
+                            <td>
+                                   {{extendedOrderData this}}
+                                    {{#eachInMap cartItemDateAddedMap}}
+                                    	{{#ifEquals this.key ../itemID}}
+                                    		{{this.value}}
+                                    	{{/ifEquals}}
+                                    {{/eachInMap}}
+                            </td>
+                            <td>
+                            	<div class=" wishFinder" data-sku="{{mockProduct.sku}}">
+                                    <button type="button" class="btn slim deleteItem removeItemButton" data-dismiss="modal" aria-hidden="true" data-id="{{itemID}}" >{{pageLabelMap 'Action_Delete'}}</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--<div class="clear"></div>-->
+                {{/ifEquals}}
+                <div class="alert alert-error messagingSection-{{itemID}}-Error" style="display: none"></div>
+                <div class="alert alert-info messagingSection-{{itemID}}-Info" style="display: none"></div>
+            {{/ifEquals}}
+        {{/with}}
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the Cart Line Item Additional Info
+    ****************************************************************************-->
+    <script id="MPCartItemDetail-AdditionalInfo-Desktop" type="text/template">
+		<div id="additional_info{{itemID}}" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        	<div class="modal-header">
+            	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+            	<h3 id="myModalLabel">{{displayProductName 'Aggregate_Display' displayProductBean.name mockProduct.name }} {{pageLabelMap 'ProductsInc_MiscDetails'}}</h3>
+           	</div>
+			<div class="modal-body">
+            	{{#if miscDetails}}
+             		{{miscDetails}}<br/><br/>
+            	{{/if}}
+            	{{#ifDisplay 'C.DsplAddtlShortDesc'}}
+             		{{unescape mockProduct.shortDesc}}<br/><br/>
+            	{{/ifDisplay}}
+           	</div>
+		</div>
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Template for the Cart Item Detail Page, Pagination
+    ****************************************************************************-->
+    <script id="MPCartItemDetail-HeaderSection-Desktop" type="text/template">
+		<div class="alert alert-error messagingSection-Error" style="display: none"></div>
+        <div class="alert alert-error messagingAction-Error" style="display: none">
+        	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&#215;</button>
+        </div>
+		<div class="alert alert-warning messagingSection-Warning" style="display: none"></div>
+        <div class="alert alert-warning messagingAction-Warning" style="display: none">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&#215;</button>
+        </div>
+        <div class="alert alert-info messagingSection-Info" style="display: none"></div>
+        <div class="alert alert-info messagingAction-Info" style="display: none">
+        	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&#215;</button>
+        </div>
+        <div class="cart_sort">
+        	<div class="cart_sort_text">{{pageLabelMap 'Sort'}}</div>
+            <div class="cart_sort_text"><a href="#" class="cart_sort_item" data-sort="name">{{pageLabelMap 'Name'}}</a></div>
+            <div class="cart_sort_text"><a href="#" class="cart_sort_item" data-sort="dateAdded">{{pageLabelMap 'Date_Added'}}</a></div>
+		</div>
+    </script>
+    <script id="MPCartItemDetail-Quantity-Desktop" type="text/template">
+    	{{#if qtySkipIncrement}}
+        	<input type="button" value="{{pageLabelMap 'Prod_QtyDecrFF'}}" class="plus_minus minusFF">
+        {{/if}}
+        {{#ifEquals qtyIncrement 1}}
+        	<input id="entry_{{itemID}}" type="hidden" name="qty" value="{{quantity}}" class="input-text entry plus_minus" maxlength="7" />
+        {{else}}
+        	<input id="entry_{{itemID}}" type="hidden" readonly="true" name="qty" value="{{quantity}}" class="entry plus_minus" maxlength="7" />
+        {{/ifEquals}}
+		<input type="hidden" name="qtyIncrement" value="{{qtyIncrement}}" class="item_qtyIncrement" />
+		<input type="hidden" name="qtySkipIncrement" value="{{qtySkipIncrement}}" class="item_qtySkipIncrement" />
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the Email Cart modal
+    ****************************************************************************-->
+   <script id="MP_emailModalTemplate" type="text/template">
+		<div id="emailModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">{{pageLabelMap 'CartOrderEmailer_Header'}}</h3>
+			</div>
+			<div class="modal-body" id="productListHeader">
+				<form id="emailForm">
+					<span class="row"><label for="email_to">{{pageLabelMap 'CartOrderEmailer_ToEmail'}}</label></span>
+					<span class="row"><input type="text" id="email_to" name="toEmailAddress"/></span>
+                   	<span class="row"><label for="subject">{{pageLabelMap 'CartOrderEmailer_Subject'}}</label></span>
+                   	<span class="row"><input type="text" id="subject" name="subject"/></span>
+                    <span class="row"><label for="description">{{pageLabelMap 'CartOrderEmailer_Description'}}</label></span>
+                    <span class="row"><textarea id="description" rows="10" name="description"></textarea></span>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="sendEmailBtn">Send</button>
+			</div>
+		</div>
+	</script>
+    <script>
+        jQuery(function($){
+            Handlebars.registerPartial("cartItemsDesktop", $(CCRZ.uiProperties.CartDetailView.partials.cartItemsDesktop).html());
+            CCRZ.uiProperties.CartDetailView.desktop.tmpl = 'MP_CartDetailView';
+            CCRZ.uiProperties.CartDetailView.partials.actionsTotals = '#MP-CartActionTotals-View';
+            CCRZ.uiProperties.CartDetailView.partials.cartItemsDesktop = '#MPCartItemDetail-View-Desktop';
+            var extendedModel = {!extendedOrderJSON};
+            Handlebars.registerHelper("extendedOrderData", function(currModel) {
+                _.extend(currModel, extendedModel.extOrderData);
+            });
+            CCRZ.uiProperties.CartDetailView.partials.cartItemAdditional = '#MPCartItemDetail-AdditionalInfo-Desktop';
+            CCRZ.uiProperties.CartDetailView.partials.headerSection = '#MPCartItemDetail-HeaderSection-Desktop';
+            CCRZ.uiProperties.CartDetailView.partials.cartItemsQty = '#MPCartItemDetail-Quantity-Desktop';
+            CCRZ.uiProperties.CartDetailView.partials.emailModal = '#MP_emailModalTemplate';
+        });
+    </script>
+</apex:component>

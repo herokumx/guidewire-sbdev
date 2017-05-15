@@ -1,0 +1,140 @@
+<!-- 
+PageName - CaseDataReportWithTeam 
+ApexClass - CaseDataController
+Description - Today there is a Salesforce limitation with printing the Case Team Role Name. Further, some of the data in sub-table Case Team Role Names had to be printed as a Column Header 
+and the Name corresponding to the role aggregated as a value of the column. 
+Styling & JQuery  - This VF Page used DataTable.Net and its relevant JQuery data. 
+-->
+<apex:page controller="CaseDataReportwithTeam" readOnly="true" showHeader="true" docType="HTML-5.0">
+    <head>
+   <apex:includeScript value="/soap/ajax/26.0/connection.js"/>
+         
+        <apex:includeScript value="/support/console/37.0/integration.js"/>
+       
+        
+        <script src="/soap/ajax/26.0/connection.js"></script>
+        <script src="/soap/ajax/26.0/apex.js"></script>
+        
+        <script type="text/javascript">
+     
+     
+    
+            function openNewCaseInSubTab1(String sendUrl){     
+            alert (sendUrl);        
+                  srcUp("/" + sendUrl + "?isdtp=vw"); here, i hardcoded the value for testing purpose.
+                  }
+    
+            function openPrimaryTab(String IDval) {
+    
+                sforce.console.openPrimaryTab(IDval,
+                 '/', true, 'example');
+    
+            }
+    
+            //The callback function that openSubtab will call once it has the ID for its primary tab
+            var callOpenSubtab=function callOpenSubtab(result) {
+                sforce.console.openSubtab(result.id,
+                   '/',, true, 'example');
+            };
+            
+            function subTab(String parentIdVa,String subTabID, String tabLabelVal) {
+                sforce.console.openSubtab(result.id,'/',, true,tabLabelVal, subTabID);
+            }
+             
+            function openSubtab() {
+                sforce.console.getEnclosingPrimaryTabId(callOpenSubtab);
+            }
+    
+           //Sets the title of the current tab to "Example"
+           function setTitle() {
+                sforce.console.setTabTitle('Example');
+            }
+    
+            //The callback function that closeTab will call once it has the ID for its tab
+            var callCloseTab= function callCloseTab(result) {
+                sforce.console.closeTab(result.id);
+            }
+            function closeTab() {
+                sforce.console.getEnclosingTabId(callCloseTab);
+    
+            }
+    
+      </script>
+
+    </head>
+    <body>
+
+  
+  
+    <apex:form id="theform">
+        <p/>
+             
+        <apex:selectList value="{!userSelected }" id="theUserId" size="1" onChange="fetchData(this.options[this.selectedIndex].value);">
+        <apex:selectOptions value="{!UserIDs}" />
+      
+        </apex:selectList>
+        <apex:actionFunction action="{!processRequests}" name="fetchData" reRender="theform" immediate="true" status="processing..">
+        <apex:param assignTo="{!userSelected}" name="userList" value=""/>
+        </apex:actionFunction>
+        <p/>    
+          
+        <apex:includeScript value="{!URLFOR($Resource.DataTable, 'DataTable/js/jquery-1.11.1.min.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.DataTable, 'DataTable/js/jquery.dataTables.min.js')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.DataTable, 'DataTable/css/jquery.dataTables.css')}"/>
+        
+        <script>
+            j$ = jQuery.noConflict();
+            j$(document).ready( function () {
+                var contactTable = j$('[id$="contacttable"]').DataTable({
+                    
+                });
+            });
+            
+        </script>
+    <table id="contacttable" class="display">
+            <thead>
+                <tr>
+                    <th>Case#</th>
+                    <th>Case Owner</th>
+                    <th>Parent Asset</th>
+                    <th>Case Opened Date</th>
+                    <th>Last Modified Date</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Severity</th>
+                    <th>Leads</th>
+                    <th>Follow The Sun </th>
+                    <th>Collaborator</th>
+                    <th>Primary Support</th>
+                    <th>Customer Contact </th>
+                </tr>
+            </thead>
+            <tbody>
+                <apex:repeat value="{!caseList}" var="case">
+                    <tr>
+                        <td><apex:outputLink value="#"  onClick="javascript:srcUp('/{!case.caseRecord.ID}?isdtp=vw', '{!case.caseRecord.CaseNumber}');" >{!case.caseRecord.CaseNumber}</apex:outputLink></td>
+                        <td>
+                            <apex:OutputText escape="false" value="{!case.caseOwnerStartTag}"></apex:OutputText>
+                            <apex:outputLink value="#"  onClick="javascript:srcUp('/{!case.caseRecord.OwnerID}?isdtp=dw','{!case.caseRecord.Owner.Name}')" >{!case.caseRecord.Owner.Name}</apex:outputLink>
+                            <apex:OutputText escape="false" value="{!case.caseOwnerEndTag}"></apex:OutputText>
+                        </td>
+                        <td><apex:outputLink value="#"  onClick="javascript:srcUp('/{!case.caseRecord.Asset.Parent}?isdtp=vw','{!case.caseRecord.Asset.Parent.Name}');"  >{!case.caseRecord.Asset.Parent.Name}</apex:outputLink>
+                        </td>
+                        <td><apex:outputtext >{!case.createdDateFormated}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.lastModDateFormated}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.caseRecord.Subject}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.caseRecord.Status}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.caseRecord.Severity__c}</apex:outputtext> </td>
+                        <td><apex:OutputText escape="false" value="{!case.leads}"></apex:OutputText></td>
+                        <td><apex:OutputText escape="false" value="{!case.followtheSun}"></apex:OutputText></td>
+                        <td><apex:OutputText escape="false" value="{!case.collaborator}"></apex:OutputText></td>
+                        <td><apex:OutputText escape="false" value="{!case.assetPrimaryContact}"></apex:OutputText></td>
+                        <td><apex:outputLink value="#" onClick="javascript:srcUp('/{!case.caseRecord.Contact.ID}?isdtp=dw','{!case.caseRecord.Contact.Name}');">{!case.caseRecord.Contact.Name}</apex:outputLink></td>
+                     </tr>
+                </apex:repeat>
+            </tbody>
+        </table>
+
+        </apex:form>
+    </body>
+</apex:page>

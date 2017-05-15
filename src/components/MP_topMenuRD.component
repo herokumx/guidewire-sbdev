@@ -1,0 +1,81 @@
+<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the Menu Bar
+    ****************************************************************************-->
+<apex:component id="MP_topMenuRD" controller="MP_NavCtrl">
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the Menu Bar
+    ****************************************************************************-->
+    <script id="MP_menu-desktop-template" type="text/template">
+        <div class="navbar main_navigation_container navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container"> 
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- TODO pull the phoneLogo from proper source. -->
+                    <a class="brand_phone visible-phone" id="phoneLogo" href="#"><img src="/marketplace/resource/1468923858000/MP_CC_Guidewire_Theme/images/phone_logo.png" width="200" height="39" /></a>
+                    <a class="brand visible-tablet">{{pageLabelMap 'Main_Navigation'}}</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            {{setLastIndex .}}
+                            {{#each .}}
+                                {{#ifEquals this.isLast 'true'}}
+                                    <li><a id="gotocommunity" class="menuTypeURL" href="javascript:void(0);" data-href="{!communityUrl}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>{{../this.lastIndex}} {{pageLabelMap 'GoToCommunity'}}</a></li>
+                                {{else}}
+                                    {{#if children}}
+                                        <li class="dropdown">
+                                            <a id="{{displayName}}" data-toggle="dropdown" class="dropdown-toggle " href="{{linkURL}}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>{{displayName}}  <b class="caret"></b></a>
+                                            <ul class="dropdown-menu">
+                                                {{> subMenuItem}}
+                                            </ul>
+                                        </li>
+                                    {{else}}
+                                        {{#ifEquals mType 'Category'}}
+                                            {{#ifEquals displayName 'Browse Accelerators'}}
+                                                {{#ifEquals '{!browseSelected}' 'true'}}
+                                                    <li><a id="browseAccelerators" class="category menu-selected" href="javascript:void(0);" data-id="{{linkURL}}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>{{displayName}}</a></li> 
+                                                {{else}}
+                                                    <li><a id="browseAccelerators" class="category" href="javascript:void(0);" data-id="{{linkURL}}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>{{displayName}}</a></li> 
+                                                {{/ifEquals}}
+                                             {{else}}
+                                                <li><a id="{{displayName}}" class="category" href="javascript:void(0);" data-id="{{linkURL}}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>{{displayName}}</a></li>
+                                            {{/ifEquals}}
+                                        {{/ifEquals}}
+                                        {{#ifEquals mType 'Product'}}
+                                            <li><a id="{{displayName}}" class="product" href="javascript:void(0);" data-id="{{linkURL}}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>{{displayName}}</a></li>
+                                        {{/ifEquals}}
+                                        {{#ifEquals mType 'URL'}}
+                                            {{#ifEquals '{!homeSelected}' 'true'}}
+                                                <li><a id="{{displayName}}" class="menuTypeURL menu-selected" href="javascript:void(0);" data-href="{{linkURL}}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>{{displayName}}</a></li>
+                                            {{else}}
+                                                <li><a id="{{displayName}}" class="menuTypeURL" href="javascript:void(0);" data-href="{{linkURL}}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>{{displayName}}</a></li>
+                                            {{/ifEquals}}
+                                        {{/ifEquals}}
+                                        {{#ifEquals mType 'None'}}
+                                            <li><a id="{{displayName}}" href="javascript:void(0);" data-menuid="{{menuId}}">{{displayName}}</a></li>
+                                        {{/ifEquals}}
+                                    {{/if}}
+                                {{/ifEquals}}
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/javascript">
+        CCRZ.uiProperties.Menu.desktop.tmpl = 'MP_menu-desktop-template';
+        CCRZ.communityUrl = '{!communityUrl}';        
+        Handlebars.registerHelper("setLastIndex", function(value, options) { 
+            if('{!communityUrl}' != '')          
+            options.data.root[value.length-1].isLast = 'true';
+        }); 
+    </script>
+</apex:component>

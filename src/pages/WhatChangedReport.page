@@ -1,0 +1,127 @@
+<apex:page controller="WhatChangedReport" showheader="false" action="{!Init}" tabstyle="Product__c">
+    <apex:form id="WhatChangedReportForm">
+                <apex:pageBlock Title="Forecast Region Reports">
+                    <apex:pageblockSection >
+                        <apex:pageblockSectionItem >
+                            <apex:outputLabel value="Old Date: " for="oldDate"/>
+                            <apex:inputText id="oldDate" value="{!OldDate}" size="10" onfocus="DatePicker.pickDate(false, '{!$Component.oldDate}', false);"/>
+                        </apex:pageblockSectionItem>
+                        <apex:pageblockSectionItem >
+                            <apex:outputLabel value="Latest Date: "  for="latestDate"/>
+                            <apex:inputText id="latestDate" value="{!LatestDate}" size="10" onfocus="DatePicker.pickDate(false, '{!$Component.latestDate}', false);"/>
+                        </apex:pageblockSectionItem>
+                            <apex:commandButton value="Refresh" action="{!GenerateReport}" status="processingStatus" reRender="AMERForecastPB,AMERPipelinePB,EMEAForecastPB,EMEAPipelinePB,APACForecastPB,APACPipelinePB" />
+                            <apex:actionStatus id="processingStatus" startText="Processing..." stopText=""></apex:actionStatus>
+                        </apex:pageblockSection>
+
+                    <apex:pageblock id="AMERForecastPB" Title="AMER Forecast">
+                        
+                        <apex:pageblocktable value="{!lstAMERForecastWrapperClass}" var="ptable">
+                            <apex:column headervalue="Region" value="{!ptable.Region}"></apex:column>
+                            <apex:column headervalue="Category" value="{!ptable.Category}"></apex:column>
+                            <apex:column headervalue="Opportunity" value="{!ptable.opportunityName}"></apex:column>
+                            <apex:column headervalue="Account Name" value="{!ptable.AccountName}"></apex:column>
+                            <apex:column headervalue="Amount Old" value="{!ptable.Amountold}"></apex:column>
+                            <apex:column headervalue="Amount Old Converted " value="{!ptable.AmountoldConverted}"></apex:column>
+                            <apex:column headervalue="Amount Latest " value="{!ptable.AmountLatest }"></apex:column>
+                            <apex:column headervalue="Amount Latest Converted " value="{!ptable.AmountLatestConverted}"></apex:column>
+                            <apex:column headervalue="ForeCast Period Old " value="{!ptable.ForeCastPeriodold}"></apex:column>
+                            <apex:column headervalue="ForeCast Period Latest " value="{!ptable.ForeCastPeriodLatest}"></apex:column>
+                            <apex:column headervalue="ForeCast Category Old" value="{!ptable.ForeCastCategoryold}"></apex:column>
+                            <apex:column headervalue="ForeCast Category Latest" value="{!ptable.ForeCastCategoryLatest}"></apex:column>
+                            <apex:column headervalue="Notes" width="300" value="{!ptable.Notes}"></apex:column>
+                        </apex:pageblocktable>
+                    </apex:pageblock>
+              
+                    <apex:pageblock id="AMERPipelinePB" Title="AMER Pipeline">
+                        <apex:pageblocktable value="{!lstAMERPipelineWrapperClass}" var="ptable">
+                            <apex:column headervalue="Region" value="{!ptable.Region}"></apex:column>
+                            <apex:column headervalue="Category" value="{!ptable.Category}"></apex:column>
+                            <apex:column headervalue="Opportunity" value="{!ptable.opportunityName}"></apex:column>
+                            <apex:column headervalue="Account Name" value="{!ptable.AccountName}"></apex:column>
+                            <apex:column headervalue="Amount Old" value="{!ptable.Amountold}"></apex:column>
+                            <apex:column headervalue="Amount Old Converted " value="{!ptable.AmountoldConverted}"></apex:column>
+                            <apex:column headervalue="Amount Latest " value="{!ptable.AmountLatest }"></apex:column>
+                            <apex:column headervalue="Amount Latest Converted " value="{!ptable.AmountLatestConverted}"></apex:column>
+                            <apex:column headervalue="ForeCast Period Old " value="{!ptable.ForeCastPeriodold}"></apex:column>
+                            <apex:column headervalue="ForeCast Period Latest " value="{!ptable.ForeCastPeriodLatest}"></apex:column>
+                            <apex:column headervalue="ForeCast Category Old" value="{!ptable.ForeCastCategoryold}"></apex:column>
+                            <apex:column headervalue="ForeCast Category Latest" value="{!ptable.ForeCastCategoryLatest}"></apex:column>
+                            <apex:column headervalue="Notes" width="300" value="{!ptable.Notes}"></apex:column>
+                        </apex:pageblocktable>
+                    </apex:pageblock>
+
+                    <apex:pageblock id="EMEAForecastPB" Title="EMEA Forecast">
+                        <apex:pageblocktable value="{!lstEMEAForecastWrapperClass}" var="ptable">
+                            <apex:column headervalue="Region" value="{!ptable.Region}"></apex:column>
+                            <apex:column headervalue="Category" value="{!ptable.Category}"></apex:column>
+                            <apex:column headervalue="Opportunity" value="{!ptable.opportunityName}"></apex:column>
+                            <apex:column headervalue="Account Name" value="{!ptable.AccountName}"></apex:column>
+                            <apex:column headervalue="Amount Old" value="{!ptable.Amountold}"></apex:column>
+                            <apex:column headervalue="Amount Old Converted " value="{!ptable.AmountoldConverted}"></apex:column>
+                            <apex:column headervalue="Amount Latest " value="{!ptable.AmountLatest }"></apex:column>
+                            <apex:column headervalue="Amount Latest Converted " value="{!ptable.AmountLatestConverted}"></apex:column>
+                            <apex:column headervalue="ForeCast Period Old " value="{!ptable.ForeCastPeriodold}"></apex:column>
+                            <apex:column headervalue="ForeCast Period Latest " value="{!ptable.ForeCastPeriodLatest}"></apex:column>
+                            <apex:column headervalue="ForeCast Category Old" value="{!ptable.ForeCastCategoryold}"></apex:column>
+                            <apex:column headervalue="ForeCast Category Latest" value="{!ptable.ForeCastCategoryLatest}"></apex:column>
+                            <apex:column headervalue="Notes" width="300" value="{!ptable.Notes}"></apex:column>
+                        </apex:pageblocktable>
+                    </apex:pageblock>
+
+                    <apex:pageblock id="EMEAPipelinePB" Title="EMEA Pipeline">
+                        <apex:pageblocktable value="{!lstEMEAPipelineWrapperClass}" var="ptable">
+                            <apex:column headervalue="Region" value="{!ptable.Region}"></apex:column>
+                            <apex:column headervalue="Category" value="{!ptable.Category}"></apex:column>
+                            <apex:column headervalue="Opportunity" value="{!ptable.opportunityName}"></apex:column>
+                            <apex:column headervalue="Account Name" value="{!ptable.AccountName}"></apex:column>
+                            <apex:column headervalue="Amount Old" value="{!ptable.Amountold}"></apex:column>
+                            <apex:column headervalue="Amount Old Converted " value="{!ptable.AmountoldConverted}"></apex:column>
+                            <apex:column headervalue="Amount Latest " value="{!ptable.AmountLatest }"></apex:column>
+                            <apex:column headervalue="Amount Latest Converted " value="{!ptable.AmountLatestConverted}"></apex:column>
+                            <apex:column headervalue="ForeCast Period Old " value="{!ptable.ForeCastPeriodold}"></apex:column>
+                            <apex:column headervalue="ForeCast Period Latest " value="{!ptable.ForeCastPeriodLatest}"></apex:column>
+                            <apex:column headervalue="ForeCast Category Old" value="{!ptable.ForeCastCategoryold}"></apex:column>
+                            <apex:column headervalue="ForeCast Category Latest" value="{!ptable.ForeCastCategoryLatest}"></apex:column>
+                            <apex:column headervalue="Notes" width="300" value="{!ptable.Notes}"></apex:column>
+                        </apex:pageblocktable>
+                    </apex:pageblock>
+                    <apex:pageblock id="APACForecastPB" Title="APAC Forecast">
+                        <apex:pageblocktable value="{!lstAPACForecastWrapperClass}" var="ptable">
+                            <apex:column headervalue="Region" value="{!ptable.Region}"></apex:column>
+                            <apex:column headervalue="Category" value="{!ptable.Category}"></apex:column>
+                            <apex:column headervalue="Opportunity" value="{!ptable.opportunityName}"></apex:column>
+                            <apex:column headervalue="Account Name" value="{!ptable.AccountName}"></apex:column>
+                            <apex:column headervalue="Amount Old" value="{!ptable.Amountold}"></apex:column>
+                            <apex:column headervalue="Amount Old Converted " value="{!ptable.AmountoldConverted}"></apex:column>
+                            <apex:column headervalue="Amount Latest " value="{!ptable.AmountLatest }"></apex:column>
+                            <apex:column headervalue="Amount Latest Converted " value="{!ptable.AmountLatestConverted}"></apex:column>
+                            <apex:column headervalue="ForeCast Period Old " value="{!ptable.ForeCastPeriodold}"></apex:column>
+                            <apex:column headervalue="ForeCast Period Latest " value="{!ptable.ForeCastPeriodLatest}"></apex:column>
+                            <apex:column headervalue="ForeCast Category Old" value="{!ptable.ForeCastCategoryold}"></apex:column>
+                            <apex:column headervalue="ForeCast Category Latest" value="{!ptable.ForeCastCategoryLatest}"></apex:column>
+                            <apex:column headervalue="Notes" width="300" value="{!ptable.Notes}"></apex:column>
+                        </apex:pageblocktable>
+                    </apex:pageblock>
+                    <apex:pageblock id="APACPipelinePB" Title="APAC Pipeline">
+                        <apex:pageblocktable value="{!lstAPACPipelineWrapperClass}" var="ptable">
+                            <apex:column headervalue="Region" value="{!ptable.Region}"></apex:column>
+                            <apex:column headervalue="Category" value="{!ptable.Category}"></apex:column>
+                            <apex:column headervalue="Opportunity" value="{!ptable.opportunityName}"></apex:column>
+                            <apex:column headervalue="Account Name" value="{!ptable.AccountName}"></apex:column>
+                            <apex:column headervalue="Amount Old" value="{!ptable.Amountold}"></apex:column>
+                            <apex:column headervalue="Amount Old Converted " value="{!ptable.AmountoldConverted}"></apex:column>
+                            <apex:column headervalue="Amount Latest " value="{!ptable.AmountLatest }"></apex:column>
+                            <apex:column headervalue="Amount Latest Converted " value="{!ptable.AmountLatestConverted}"></apex:column>
+                            <apex:column headervalue="ForeCast Period Old " value="{!ptable.ForeCastPeriodold}"></apex:column>
+                            <apex:column headervalue="ForeCast Period Latest " value="{!ptable.ForeCastPeriodLatest}"></apex:column>
+                            <apex:column headervalue="ForeCast Category Old" value="{!ptable.ForeCastCategoryold}"></apex:column>
+                            <apex:column headervalue="ForeCast Category Latest" value="{!ptable.ForeCastCategoryLatest}"></apex:column>
+                            <apex:column headervalue="Notes" width="300" value="{!ptable.Notes}"></apex:column>
+                        </apex:pageblocktable>
+                    </apex:pageblock>
+                </apex:pageBlock>
+        <!--<apex:pageblock ><apex:pageblocktable value="{!lstWrapData}" var="ptable"><apex:column headervalue="Region" value="{!ptable.Region}"></apex:column><apex:column headervalue="Category" value="{!ptable.Category}"></apex:column><apex:column headervalue="Opportunity" value="{!ptable.opportunityName}"></apex:column><apex:column headervalue="Account Name" value="{!ptable.AccountName}"></apex:column><apex:column headervalue="Amount Old" value="{!ptable.Amountold}"></apex:column><apex:column headervalue="Amount Old Converted " value="{!ptable.AmountoldConverted}"></apex:column><apex:column headervalue="Amount Latest " value="{!ptable.AmountLatest }"></apex:column><apex:column headervalue="Amount Latest Converted " value="{!ptable.AmountLatestConverted}"></apex:column><apex:column headervalue="ForeCast Period Old " value="{!ptable.ForeCastPeriodold}"></apex:column><apex:column headervalue="ForeCast Period Latest " value="{!ptable.ForeCastPeriodLatest}"></apex:column><apex:column headervalue="ForeCast Category Old" value="{!ptable.ForeCastCategoryold}"></apex:column><apex:column headervalue="ForeCast Category Latest" value="{!ptable.ForeCastCategoryLatest}"></apex:column><apex:column headervalue="Notes" value="{!ptable.Notes}"></apex:column></apex:pageblocktable></apex:pageblock>--><!--
+         <apex:actionFunction name="GenerateReport" action="{!GenerateReport}" status="processingStatus" reRender="WhatChangedReportForm"/>  -->
+     </apex:form>
+</apex:page>

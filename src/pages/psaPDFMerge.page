@@ -1,0 +1,23 @@
+<!--
+    Revisions: 03/16/2016  Klassen  Added page formatting logic (page break after each receipt image)
+-->
+<apex:page controller="psaPDFMergeController" renderAs="pdf" showheader="false" applyBodyTag="false">
+    <head>
+        <style>
+            @media print {
+                p {page-break-after: always;}
+            }
+        </style>
+    </head>
+    <body>
+        <apex:repeat var="attach" value="{!expAttachWrapperList}">
+                <apex:outputText value="{!attach.expAttachment.resourceName}_{!attach.expAttachment.expType}_{!attach.expAttachment.ExpenseName}_{0,date,dd'-'MMM'-'yyyy}" rendered="{!attach.expAttachment.FirstAttachment}">
+                <apex:param value="{!attach.expAttachment.expDate}" /> 
+                </apex:outputText>
+                <br/>
+
+                <apex:image width="90%" height="90%" url="/servlet/servlet.FileDownload?file={!attach.expAttachment.AttachmentId}"/>
+            <apex:outputPanel rendered="{!attach.expAttachment.AttachmentId!=lastAttachmentId}"><p></p></apex:outputPanel>
+        </apex:repeat>
+    </body>
+</apex:page>

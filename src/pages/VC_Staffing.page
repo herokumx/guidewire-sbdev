@@ -1,0 +1,1152 @@
+<apex:page showHeader="false" sidebar="false" controller="StaffingViewController">
+
+<apex:includeScript value="{!URLFOR($Resource.JS_JQuery1_9_1UI1_10_3, '/jquery1.9.1.min.js')}"  />
+<apex:includeScript value="{!URLFOR($Resource.JS_JQuery1_9_1UI1_10_3, '/jquery-ui1.10.3.min.js')}"  />
+<apex:includeScript value="{!URLFOR($Resource.KeyboardShortcuts)}"  />
+<apex:includeScript value="{!URLFOR($Resource.JS_Staffing_Base, '/date.js')}"  />
+<apex:includeScript value="{!URLFOR($Resource.JS_Staffing_Base, '/jquery.qtip.js')}"  />
+<apex:includeScript value="{!URLFOR($Resource.JS_Staffing_Base, '/raphael-min.js')}"  />
+<apex:includeScript value="{!URLFOR($Resource.JS_Staffing_Base, '/xmlbuilder.js')}"  />
+<!-- need to include scc.js here eventually -->
+
+<apex:stylesheet value="{!URLFOR($Resource.JS_JQuery1_9_1UI1_10_3, '/jquery-ui-1.10.3.css')}"  />
+<apex:stylesheet value="{!URLFOR($Resource.CSS_Staffing_Base, 'scc.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.CSS_Staffing_Base, 'jquery.qtip.css')}" />
+
+<style> 
+                #InputDate2{
+                    position: absolute; 
+                    left: 100px; 
+                    right: 10px; 
+                    top: 10px; 
+                    bottom: 10px; 
+                } 
+</style>
+
+<script>
+
+    var REGION = 'VC';
+    var PAGE_NAME = REGION + '_Staffing';
+    var PAGE_TITLE = REGION + ' Staffing';
+
+
+    var CANVAS_WIDTH = 3500
+    var CANVAS_HEIGHT = 800
+    var DAY_WIDTH = 40
+    var START_DATE = Date.today()
+    if(Date.today().is().sunday()) START_DATE = START_DATE.add(1).days();  // fix for the fact that Sunday should show starting with next monday
+    
+    var DURATION  = 84  //in days
+    var END_DATE = START_DATE.clone().add(DURATION).days();
+    
+    var topLeftDayX = 120
+    var topLeftDayY = 50
+    
+    var BOTTOM_ROW_Y = topLeftDayY;
+    
+    var MIN_Y_POS = 230
+
+    var DATE_PICKER_FORMAT = 'M dd yy';
+    var INPUT_DATE_FORMAT = "mm/dd/yy";
+    
+    var dateXVals = {}
+    var personYVals = {}
+    var personYOffsets = {}
+
+    var teamRowLastDateVals = []
+    var teamRowYVals = []
+    
+    var UPDATE_TIME;
+
+    var AMER_TOP_Y;
+    var AMER_BOTTOM_Y;
+    var EMEA_TOP_Y;
+    var EMEA_BOTTOM_Y;
+    var APAC_TOP_Y;
+    var APAC_BOTTOM_Y;
+    var MGMT_TOP_Y;
+    var MGMT_BOTTOM_Y;
+    
+    var teamYVal = 60
+    
+    var prepHidden = false
+    var prepObjects = []
+    var prepText
+    
+   // Creates canvas 1000 × 750 at 10, 10
+    var paper
+
+    $(document).ready(function () {
+    
+    $.params = function(param_name){
+        var value = new RegExp('[\\?&]' + param_name + '=([^&#]*)').exec(window.location.href);
+        if(!value) return null;
+        return value[1];
+    }
+    
+        $( "#InputDate" ).datepicker({
+              dateFormat: INPUT_DATE_FORMAT,
+              showButtonPanel: true,
+              onSelect: function(dateText) {
+//                 alert("Selected date: " + dateText + "; input's current value: " + this.value);
+//                  alert(dateText.replace(/\//g, ''));
+                  var newURL = '/apex/VC_Staffing?startdate=' + dateText.replace(/\//g, '');
+//                    alert(newURL);
+                  window.location.assign( newURL  );
+              }
+            });
+            
+        if($.params('startdate'))
+        {
+           var dateStr = $.params('startdate').substring(0,2) + '/' + $.params('startdate').substring(2,4) + '/' + $.params('startdate').substring(4,8);
+            $( "#InputDate" ).datepicker('setDate', dateStr);        
+            
+            START_DATE  = new Date(dateStr );    
+            END_DATE = START_DATE.clone().add(DURATION).days();
+        }
+        else
+            $( "#InputDate" ).datepicker('setDate', 'today');
+        
+        if(! START_DATE.is().monday()) START_DATE = START_DATE.last().monday()
+
+
+    
+    
+        teamRowLastDateVals[0] = (10).years().ago();
+        teamRowYVals[0] = topLeftDayY + 20
+        //alert(teamRowLastDateVals[0])
+        //alert($(teamRowLastDateVals).length)
+
+        paper = Raphael(10, 10, CANVAS_WIDTH, CANVAS_HEIGHT);
+        
+        setupTitle(paper)
+
+            Mousetrap.bind(['command+p', 'ctrl+p'], function(e) {
+                togglePrep();
+                return false;
+            }); 
+
+            Mousetrap.bind(['command+s', 'ctrl+s'], function(e) {
+                $( "#InputDate" ).val('');
+                $( "#InputDate" ).focus();
+                return false;
+            }); 
+                
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.StaffingViewController.getVCXML}',
+            'ALL',
+            $( "#InputDate" ).val(),
+            function(result, event){
+
+            //calculate height
+            var peopleCount = 0;
+            var groupCount = 0;
+            var rowCount = $(result).find('CalendarRow').each(function() {
+                var rowType = $(this).find("Type").text();
+                if(rowType == 'Person') peopleCount++;
+                else if(rowType == 'Grouping') groupCount++;                
+            })
+            //alert('People Count: ' + peopleCount);
+            //alert('Group Count: ' + groupCount);
+            
+            var rowCount = peopleCount + groupCount;
+
+            var CANVAS_HEIGHT = rowCount * 40 + 400
+
+            paper.setSize(CANVAS_WIDTH,CANVAS_HEIGHT);
+
+
+
+          //var xmlstr =  (new XMLSerializer()).serializeToString(result);
+ 
+//              console.log(result)
+                
+            //need to pass over the data twice...once to get they Y values
+            
+            var UpdateTimeStr = $(result).find('UpdateTime').text()
+            UPDATE_TIME = Date.parse(convertDateStringFromXML(UpdateTimeStr))
+            var timeString = UpdateTimeStr.split('T')[1]
+            var hourStr = timeString.split(':')[0]
+            var minStr = timeString.split(':')[1]
+            UPDATE_TIME.setHours(hourStr)
+            UPDATE_TIME.setMinutes(minStr)
+            
+            var maxTopYVal = 0;
+
+            INK_ON = false;
+    
+/****************** FIRST PASS ******************************/
+                        
+            $(result).find('Event').each(function() {
+                var title = $(this).find("Title").text();
+                var titleShort = $(this).find("TitleShortName").text();
+                var eventType = $(this).find("EventType").text();
+                var subType = $(this).find("EventSubType").text();
+                var products = $(this).find("Product").text();
+                var desc = $(this).find("Description").text();
+                var url = $(this).find("EventURL").text();
+                var who = $(this).find("Who").text();
+                var startDateConfirmed = $(this).find("StartDateConfirmed").text();
+                var endDateConfirmed = $(this).find("EndDateConfirmed").text();
+                
+                
+                if(startDateConfirmed != null &&startDateConfirmed !=""  && 
+                   endDateConfirmed != null  &&endDateConfirmed !="" )
+                {
+                    var parsedSDC = Date.parse(convertDateStringFromXML(startDateConfirmed))
+                    var parsedEDC = Date.parse(convertDateStringFromXML(endDateConfirmed))
+                    if(parsedSDC < START_DATE) parsedSDC = START_DATE.clone()       
+                    //if(parsedEDC > END_DATE) parsedEDC = END_DATE.clone().add(-1).days();       
+                    //if(parsedEDC >= START_DATE &&  parsedEDC < END_DATE)
+                        drawRange(who, parsedSDC ,parsedEDC,products,eventType, subType, "confirmed",titleShort,title, desc,url)
+                }else
+                {
+                    //handle the tentatives
+                    var firstRect
+                    var lastRect
+                    var lastRectY
+                    
+                    $(this).find("DateSet").each(function() {
+                        var parsedStart =  Date.parse(convertDateStringFromXML($(this).find("StartDate").text()));
+                        if(parsedStart < START_DATE) parsedStart = START_DATE.clone();                              
+                        var parsedEnd = Date.parse(convertDateStringFromXML($(this).find("EndDate").text()));
+                        var status = $(this).find("Status").text();
+
+//                        if(who == 'teamopp') yVal = getTeamYVal(who, parsedStart, parsedEnd, products, eventType, titleShort, title,desc, url, lastRectY)
+//                        else if(who == 'teamreq') yVal = getTeamYVal(who, parsedStart, parsedEnd, products, eventType, titleShort, title,desc, url, lastRectY)
+                        
+                        
+                        if(eventType != 'pendingsalesrequest' || (eventType == 'pendingsalesrequest' && who == 'teamreq' ) ||
+                           (eventType == 'pendingsalesrequest' && who != 'teamreq' && {!isPresalesManager} ))
+                        {
+                            lastRect = drawRange(who, parsedStart ,parsedEnd,products, eventType,subType, status,titleShort,title, desc,url, lastRectY)
+                            if(lastRect != null) 
+                              lastRectY = lastRect.getBBox().y2 - 15
+                            if(firstRect == null) firstRect = lastRect
+                            //need to store lastRectY correctly
+                            
+                        }
+                        
+
+
+                        
+                    })
+                    
+                    //now connect the options
+                    if(firstRect != lastRect)
+                    {
+                        // alert('Need to connect');
+                        var yVal = firstRect.getBBox().y2 -12
+                        var xLeft = firstRect.getBBox().x2-10
+                        var xRight = lastRect.getBBox().x+10
+                        // alert(firstRect.getBBox().x2)
+                        // alert(firstRect.getBBox().y2)
+                        
+                        if(INK_ON)
+                        {
+                        var l = paper.path("M" + xLeft  + "," + yVal + "L" + xRight  + "," + yVal)
+                        l.attr('stroke-dasharray','- .')
+                        }
+                        
+                    }
+                
+                
+                }
+                
+                
+            });
+            
+/**********************  END FIRST PASS****************************/            
+            INK_ON = true;
+            
+            var topHeight = getTopHeight();
+            //alert('topHeight ' + topHeight);
+
+            setupNames(paper, result)
+            
+            paper.setSize(CANVAS_WIDTH,BOTTOM_ROW_Y + 10);
+            
+
+            setupBackground(paper)
+            setupLegend(paper)
+
+
+            //now reset 
+           teamRowLastDateVals = []
+            teamRowYVals = []
+            teamRowLastDateVals[0] = (10).years().ago();
+            teamRowYVals[0] = topLeftDayY + 20
+          
+
+            //add in holidays
+            
+            $(result).find('Block').each(function() {
+                var title = $(this).find("Title").text();
+                var titleShort = $(this).find("TitleShortName").text();
+                var startDateConfirmed = $(this).find("StartDateConfirmed").text();
+                var endDateConfirmed = $(this).find("EndDateConfirmed").text();
+                var region = $(this).find("Region").text();
+
+                var parsedSDC = Date.parse(convertDateStringFromXML(startDateConfirmed));
+                var parsedEDC = Date.parse(convertDateStringFromXML(endDateConfirmed));          
+                var xStart = dateXVals[$.datepicker.formatDate('ddM', parsedSDC)];
+                var xEnd =  dateXVals[$.datepicker.formatDate('ddM', parsedEDC.add(1).days())];
+                if(xStart != null)
+                {
+                    if(xEnd == null) xEnd = dateXVals[$.datepicker.formatDate('ddM', END_DATE)];
+                    var thisRect;
+                    var thisRect2;
+                    var yForLabel;
+                    var yForLabel2;
+                    if(region == 'AMER') 
+                    {
+                        thisRect = paper.stripedRect(xStart,AMER_TOP_Y, xEnd-xStart, AMER_BOTTOM_Y - AMER_TOP_Y, 6, {lineSpacing: 10, angle: 45});
+                        yForLabel = AMER_TOP_Y + 8;
+                        thisRect2 = paper.stripedRect(xStart,MGMT_TOP_Y, xEnd-xStart, MGMT_BOTTOM_Y - MGMT_TOP_Y, 6, {lineSpacing: 10, angle: 45});
+                        yForLabel2 = MGMT_TOP_Y + 8;
+                    }
+                    else if(region == 'EMEA') 
+                    {
+                      thisRect = paper.stripedRect(xStart,EMEA_TOP_Y, xEnd-xStart, EMEA_BOTTOM_Y - EMEA_TOP_Y, 6, {lineSpacing: 10, angle: 45});
+                        yForLabel = EMEA_TOP_Y + 8;
+                    }
+                    else if(region == 'APAC')
+                    {
+                      thisRect = paper.stripedRect(xStart,APAC_TOP_Y, xEnd-xStart, APAC_BOTTOM_Y - APAC_TOP_Y, 6, {lineSpacing: 10, angle: 45});
+                        yForLabel = APAC_TOP_Y + 8;
+                    }
+                    if(thisRect!= null)
+                    {
+                    
+                        thisRect.attr('fill','#CCCCCC');
+                        thisRect[1].attr({stroke: '#FFFFFF'});
+               
+                        var t = paper.text(xStart + ((xEnd-xStart)/2), yForLabel, titleShort);
+                        t.attr('title',  title )
+                    }
+                    if(thisRect2!= null)
+                    {
+                    
+                        thisRect2.attr('fill','#CCCCCC');
+                        thisRect2[1].attr({stroke: '#FFFFFF'});
+               
+                        var t = paper.text(xStart + ((xEnd-xStart)/2), yForLabel2, titleShort);
+                        t.attr('title',  title )
+                    }
+                }
+            });
+            
+            
+            //now reset 
+           teamRowLastDateVals = []
+            teamRowYVals = []
+            teamRowLastDateVals[0] = (10).years().ago();
+            teamRowYVals[0] = topLeftDayY + 20
+
+            $(result).find('Event').each(function() {
+                var title = $(this).find("Title").text();
+                var titleShort = $(this).find("TitleShortName").text();
+                var eventType = $(this).find("EventType").text();
+                var subType = $(this).find("EventSubType").text();
+                var products = $(this).find("Product").text();
+                var desc = $(this).find("Description").text();
+                var url = $(this).find("EventURL").text();
+                var who = $(this).find("Who").text();
+                var startDateConfirmed = $(this).find("StartDateConfirmed").text();
+                var endDateConfirmed = $(this).find("EndDateConfirmed").text();
+                
+                
+                if(startDateConfirmed != null &&startDateConfirmed !=""  && 
+                   endDateConfirmed != null  &&endDateConfirmed !="" )
+                {
+                    var parsedSDC = Date.parse(convertDateStringFromXML(startDateConfirmed))
+                    var parsedEDC = Date.parse(convertDateStringFromXML(endDateConfirmed))
+                    if(parsedSDC < START_DATE) parsedSDC = START_DATE.clone()       
+                    //if(parsedEDC > END_DATE) parsedEDC = END_DATE.clone().add(-1).days();       
+                    //if(parsedEDC >= START_DATE &&  parsedEDC < END_DATE)
+                        drawRange(who, parsedSDC ,parsedEDC,products,eventType, subType, "confirmed",titleShort,title, desc,url)
+                }else
+                {
+                    //handle the tentatives
+                    var firstRect
+                    var lastRect
+                    var lastRectY
+                    
+                    $(this).find("DateSet").each(function() {
+                        var parsedStart =  Date.parse(convertDateStringFromXML($(this).find("StartDate").text()));
+                        if(parsedStart < START_DATE) parsedStart = START_DATE.clone();                              
+                        var parsedEnd = Date.parse(convertDateStringFromXML($(this).find("EndDate").text()));
+                        var status = $(this).find("Status").text();
+
+//                        if(who == 'teamopp') yVal = getTeamYVal(who, parsedStart, parsedEnd, products, eventType, titleShort, title,desc, url, lastRectY)
+//                        else if(who == 'teamreq') yVal = getTeamYVal(who, parsedStart, parsedEnd, products, eventType, titleShort, title,desc, url, lastRectY)
+                        
+                        
+                        if(eventType != 'pendingsalesrequest' || (eventType == 'pendingsalesrequest' && who == 'teamreq' ) ||
+                           (eventType == 'pendingsalesrequest' && who != 'teamreq' && {!isPresalesManager} ))
+                        {
+                            lastRect = drawRange(who, parsedStart ,parsedEnd,products, eventType,subType, status,titleShort,title, desc,url, lastRectY)
+                            if(lastRect != null) 
+                              lastRectY = lastRect.getBBox().y2 - 15
+                            if(firstRect == null) firstRect = lastRect
+                            //need to store lastRectY correctly
+                            
+                        }
+                        
+
+
+                        
+                    })
+                    
+                    //now connect the options
+                    if(firstRect != lastRect)
+                    {
+                        // alert('Need to connect');
+                        var yVal = firstRect.getBBox().y2 -12
+                        var xLeft = firstRect.getBBox().x2-10
+                        var xRight = lastRect.getBBox().x+10
+                        // alert(firstRect.getBBox().x2)
+                        // alert(firstRect.getBBox().y2)
+                        
+                        var l = paper.path("M" + xLeft  + "," + yVal + "L" + xRight  + "," + yVal)
+                        l.attr('stroke-dasharray','- .')
+
+                        
+                    }
+                
+                
+                }
+                
+                
+            });
+            
+            //now hide the prep
+           // togglePrep()
+            
+            
+            //finally, write the update time of the file
+            
+                var subt2 = paper.text(100, 4, 'Last Updated: ' );
+                subt2.attr('font-size',12)
+                subt2.attr('font-style','italic')
+                subt2.attr('text-anchor','start')
+
+                var subt3 = paper.text(100, 20, $.datepicker.formatDate(DATE_PICKER_FORMAT,UPDATE_TIME)  );
+                subt3.attr('font-size',12)
+                subt3.attr('font-style','italic')
+                subt3.attr('text-anchor','start')
+
+                // alert(UPDATE_TIME)
+                // alert(UPDATE_TIME.getHours())
+                var timeHour = UPDATE_TIME.getHours()
+                var timeMins = (UPDATE_TIME.getMinutes()<10?'0':'') + UPDATE_TIME.getMinutes()
+                
+                var subt4 = paper.text(175, 20, timeHour + ":" + timeMins  );
+                subt4.attr('font-size',12)
+                subt4.attr('font-style','italic')
+                subt4.attr('text-anchor','start')
+
+            
+//              var eventsXMLObj = $.parseXML($.trim($(result).text()));
+                    
+                    //log response to console
+                //  console.log($.parseXML($.trim($(result).text())))
+         
+            },{ buffer: true, escape: false, timeout: 30000 }
+            
+            
+        );  //end of ajax block
+        
+        //finally, generate the toggle
+                var toggleLink = paper.text(800, 20, "Hide Prep"  );
+                toggleLink.attr('font-size',12)
+                toggleLink.attr('font-style','italic')
+                toggleLink.attr('text-anchor','start')
+                toggleLink.attr('style','cursor: pointer;')
+                toggleLink.click(function() {
+                    togglePrep()
+                })      
+                prepText = toggleLink
+                
+        //generate links to other regions 
+                var toggleLink = paper.text(900, 10, 'EMEA Staffing');
+                toggleLink.attr('font-size',12)
+                toggleLink.attr('font-style','italic')
+                toggleLink.attr('text-anchor','start')
+                toggleLink.attr('style','cursor: pointer;')
+                toggleLink.click(function() {
+                    window.location.assign("/apex/EMEA_Staffing");
+                })      
+                
+        //generate links to other regions 
+                var toggleLink = paper.text(900, 25, 'APAC Staffing');
+                toggleLink.attr('font-size',12)
+                toggleLink.attr('font-style','italic')
+                toggleLink.attr('text-anchor','start')
+                toggleLink.attr('style','cursor: pointer;')
+                toggleLink.click(function() {
+                    window.location.assign("/apex/APAC_Staffing");
+                })      
+        //generate links to other regions 
+                var toggleLink = paper.text(1015, 10, 'AMER Staffing');
+                toggleLink.attr('font-size',12)
+                toggleLink.attr('font-style','italic')
+                toggleLink.attr('text-anchor','start')
+                toggleLink.attr('style','cursor: pointer;')
+                toggleLink.click(function() {
+                    window.location.assign("/apex/AMER_EventsByRep");
+                })      
+        //generate links to other regions 
+                var toggleLink = paper.text(1015, 25, 'AMER Rep Events');
+                toggleLink.attr('font-size',12)
+                toggleLink.attr('font-style','italic')
+                toggleLink.attr('text-anchor','start')
+                toggleLink.attr('style','cursor: pointer;')
+                toggleLink.click(function() {
+                    window.location.assign("/apex/AMER_EventsByRep");
+                })      
+                
+    });
+    
+    
+    function togglePrep()
+    {
+        if(prepText != null)
+        {
+            prepText.remove()
+            var textToShow = "Hide Prep"
+            if(!prepHidden) textToShow = "Show Prep"
+            
+                var toggleLink = paper.text(800, 20, textToShow  );
+                toggleLink.attr('font-size',12)
+                toggleLink.attr('font-style','italic')
+                toggleLink.attr('text-anchor','start')
+                toggleLink.attr('style','cursor: pointer;')
+                toggleLink.click(function() {
+                    togglePrep()
+                })      
+                prepText = toggleLink
+
+            
+        }
+    
+        //alert(prepHidden)
+        for(var i = 0; i< prepObjects.length; i++)
+        {
+            if(!prepHidden)
+                prepObjects[i].hide()
+            else
+                prepObjects[i].show()
+            
+
+        }
+        prepHidden = !prepHidden
+    }
+    
+    //TODO:  Deal with having all dates on same row
+    function getTeamYVal(person, startDate, endDate, product, status, label, longName, description, url, forcedYVal)
+    {
+       // alert('getTeamYVal called');
+            var startDateAsDate = startDate
+            var endDateAsDate = endDate
+            
+            //teamRowLastDateVals
+            //  var teamRowYVals = {}
+
+            //setup the defaults
+            var indexVal = 0
+            
+            if(forcedYVal != null)
+            {
+                //need to update the date before returning the forced value
+                for(var i = 0; i < teamRowYVals.length; i++)
+                {
+                    if(teamRowYVals[i] == forcedYVal)
+                    {
+                        if(teamRowLastDateVals[i] < endDateAsDate)
+                            teamRowLastDateVals[i] = endDateAsDate                   
+                    }
+                    
+                }
+                
+                return forcedYVal
+            }
+            
+            while(true)
+            {
+                //console.log("Looking at index: " + indexVal)
+                //console.log("  Length: " + $(teamRowLastDateVals).length)
+                //console.log("  Length: " + $(teamRowYVals).length)
+                if($(teamRowLastDateVals).length<= indexVal)
+                {  //need to grow the containers and obviously this is a fit
+                    //  alert('creating row  ' + indexVal);
+                    // console.log("Growing references for: " + indexVal)
+                    teamRowLastDateVals[indexVal] = (10).years().ago();
+                    teamRowYVals[indexVal] =teamRowYVals[indexVal -1] + 20
+                }
+
+                // console.log("Comparing " + teamRowLastDateVals[indexVal]  + " to " + startDateAsDate)
+                
+                if(teamRowLastDateVals[indexVal] <= startDateAsDate)
+                { // can go beside, so update end
+                      //  alert('here 3');
+                    teamRowLastDateVals[indexVal] = endDateAsDate
+                    // console.log("Returning: " + teamRowYVals[indexVal])
+                    // alert("")
+                    return teamRowYVals[indexVal]
+                }
+                indexVal++// = index + 1
+                
+                if(indexVal == 15) 
+                {
+                    //console.log("Breaking forced");
+                    break;
+                }
+            }
+            
+            
+    //      teamYVal +=20
+    //      return teamYVal
+    }
+    
+    
+    
+    function getOffSet(person)
+    {
+        var retval = personYOffsets[person]
+        if(retval == null || retval == 5)
+        {
+            personYOffsets[person] = -5
+            retval = 5  // in case it was null
+        }
+        else if(retval == -5)
+        {
+            personYOffsets[person] = 5      
+        }
+        
+        return retval
+
+    }
+    
+    
+    function drawRange(person, startDate, endDate, product, eventType, subType, status, label, longName, description, url, forcedYVal)
+    {
+        // suiteLegend.attr('fill','red')
+        //alert('next');
+//      if(person == 'teamopp') return
+        // console.log("ET: " + eventType)
+        
+        var yVal = personYVals[person];
+
+        if(person == 'teamopp') yVal = getTeamYVal(person, startDate, endDate, product, status, label, longName,description, url, forcedYVal)
+        else if(person == 'teamreq') yVal = getTeamYVal(person, startDate, endDate, product, status, label, longName,description, url, forcedYVal)
+        else if(person == 'teamsupportreq') yVal = getTeamYVal(person, startDate, endDate, product, status, label, longName,description, url, forcedYVal)
+        else if(eventType == 'prep')
+        {
+            if(yVal){ 
+              yVal = yVal + 15 }
+        }
+        else
+        {
+            if(yVal){yVal = yVal + getOffSet(person) }
+        
+        }
+        
+        //if here an no yval, bail on this.  MATT:  This will stop mistakes from drawing.
+        if(!yVal) return;
+        
+        
+        //calculate start and end
+        var xStart = dateXVals[$.datepicker.formatDate('ddM',startDate)]
+        var xEnd =  dateXVals[$.datepicker.formatDate('ddM',endDate.add(1).days())]
+        
+               //let's compare start and end...and if they are out of bounds, round to edge
+               if(!xStart) xStart = topLeftDayX - .4*DAY_WIDTH;
+        if(!xEnd) xEnd = CANVAS_WIDTH;
+        
+        var rect 
+
+        if(eventType == "prep" && yVal  && INK_ON)
+        {   //prep goes across the middle as a 4 pix line
+            //Updated to 13 from 6 for prep events
+            rect = paper.rect(xStart,yVal, xEnd-xStart, 13, 6);
+            prepObjects[prepObjects.length] = rect
+            
+            var t = paper.text(xStart + ((xEnd-xStart)/2), yVal+2, label);
+            t.attr('font-size',8)
+            t.attr('title',  longName + '\n' + description +'\n' + product)
+            if(status == 'tentative') t.attr('font-style','italic')
+            t.click(function() {
+                window.open(url,'_blank'); //
+            })      
+            prepObjects[prepObjects.length] = t
+
+        }
+        else if(subType == "RFx" && INK_ON)
+        {
+//          rect = paper.ellipse( xStart + 20, yVal + 10, 10, 6)
+            rect = paper.rect(xStart +8 ,yVal, (xEnd-xStart)-16, 15, 0);
+
+        }
+        else if((eventType == 'Dossier' || eventType == 'VITO Letter' || eventType == 'Value Hypothesis' || eventType == 'Representative Case' ) && INK_ON) 
+        {
+               // paper.path("M10,100L120,120L120,40Z")
+//            rect = paper.path("M"+(xStart + 2) + "," + (yVal + 7) + "L" + (xStart + 17) + "," + yVal + "L" + (xStart + 32) + "," + (yVal+7) + "L" + (xStart + 17) + "," + (yVal + 15) + "Z")
+            rect = paper.path("M"+(xStart + 8) + "," + (yVal + 15) + "L" + (xStart + 17) + "," + yVal + "L" + (xStart + 26) + "," + (yVal+15) + "Z")
+//            rect = paper.rect(xStart,yVal, 30, 15, 0);
+            //rect.rotate(45,rect.centerX,rect.centerY)
+            rect.attr('stroke-width',0)
+
+        }//rect.attr({'stroke-dasharray': '.'})
+        else if( INK_ON)
+        {
+            rect = paper.rect(xStart,yVal, xEnd-xStart, 15, 6);
+        
+        }
+        
+        if(INK_ON)
+        {
+        //before we determine the color, remove non products
+        var productWithoutTechnical = product;
+        
+        productWithoutTechnical = productWithoutTechnical.replace('Technical;','');
+        productWithoutTechnical = productWithoutTechnical.replace(';Technical','');
+        productWithoutTechnical = productWithoutTechnical.replace('Shadow;','');
+        productWithoutTechnical = productWithoutTechnical.replace(';Shadow','');
+        productWithoutTechnical = productWithoutTechnical.replace('Observation;','');
+        productWithoutTechnical = productWithoutTechnical.replace(';Observation','');
+        productWithoutTechnical = productWithoutTechnical.replace('Value Consulting;','');
+        productWithoutTechnical = productWithoutTechnical.replace(';Value Consulting','');
+        
+//        alert(productWithoutTechnical);
+        //if it resulted in stripping out everything, we need to figure what it WAS
+        if(productWithoutTechnical == 'Value Consulting')
+        {
+//            alert(subType);
+            product = subType;
+//            alert(product);
+        }
+
+        if(product == 'PolicyCenter' || productWithoutTechnical == 'PolicyCenter') rect.attr('fill','#7A68AE')
+        else if(product == 'ClaimCenter' || productWithoutTechnical == 'ClaimCenter' ) rect.attr('fill','#49A942')
+        else if(product == 'BillingCenter' || productWithoutTechnical == 'BillingCenter') rect.attr('fill','#F47B20')
+        else if(product == 'Technical' || productWithoutTechnical == 'Technical') rect.attr('fill','#33FFFF')
+        else if(product == 'Live' || productWithoutTechnical == 'Live') rect.attr('fill','#FFCC33')
+        else if(product == 'Shadow' || productWithoutTechnical == 'Shadow') rect.attr('fill','#D0D0D0')
+        else if(product == 'Observation' || productWithoutTechnical == 'Observation') rect.attr('fill','#A0A0A0')
+        
+        else if(product == 'Data Management' || productWithoutTechnical == 'Data Management') rect.attr('fill','#FF9999')        
+        else if(product == 'InfoCenter' || productWithoutTechnical == 'InfoCenter') rect.attr('fill','#FF9999')        
+        else if(product == 'DataHub' || productWithoutTechnical == 'DataHub') rect.attr('fill','#FF9999')        
+        else if(product == 'InfoCenter;DataHub' || productWithoutTechnical == 'InfoCenter;DataHub') rect.attr('fill','#FF9999')        
+        else if(product == 'DataHub;InfoCenter' || productWithoutTechnical == 'DataHub;InfoCenter') rect.attr('fill','#FF9999')        
+
+
+        else if(product == 'Value Consulting' || productWithoutTechnical == 'Value Consulting') rect.attr('fill','#0EBFE9')        
+        else if(product == 'Research' || productWithoutTechnical == 'Research') rect.attr('fill','#0EBFE9')        //ECC3BF
+
+        else  if(eventType == 'teamproject') rect.attr('fill','#006666')
+        else  if(eventType == 'personal') rect.attr('fill','lightgray')
+        else  if(eventType == 'project') rect.attr('fill','yellow')
+        else  if(eventType == 'prep') rect.attr('fill','#FFFFCC')   
+        else  if(eventType == 'Dossier' || eventType == 'VITO Letter' || eventType == 'Value Hypothesis' || eventType == 'Representative Case') rect.attr('fill','#0EBFE9')  
+        else  if(product == '') rect.attr('fill','#006666')  //project
+        else rect.attr('fill','red')
+        
+        rect.attr('opacity',.8)
+        rect.attr('title',  longName + '\n' + description + '\n' + product)
+//      if(status == 'tentative') rect.attr('stroke-dasharray','-  ')
+//      if(status == 'tentative') rect.attr('stroke','red')
+        if(status == 'tentative') rect.attr('stroke-width',0)
+        if(status == 'confirmed') rect.attr('stroke-width',3)
+        
+
+        if(eventType == 'Dossier' || eventType == 'VITO Letter' || eventType == 'Value Hypothesis' || eventType == 'Representative Case') 
+        {
+            rect.attr('stroke-width',0)
+        }
+        
+        // $(rect).addClass('tooltip');
+        // $(rect).qtip()
+//      alert($(rect).hasClass('tooltip'))
+        
+        //alert('here')
+        
+        rect.click(function() {
+            window.open(url,'_blank'); //window.open(this.href, '_blank');
+//          window.open(url, 'SCC', 'window settings');
+//            return false;
+        })
+        
+        
+        // rect.qtip({
+           // content: longName + '\n' + description,
+           // show: 'mouseover',
+           // hide: 'mouseout'
+        // })
+
+        if(eventType == 'salesrequest')
+        {
+            var shadowObj = rect.glow({
+                color: '#CC00CC',
+                width: 20,
+                offsety: 1,
+                offsetx: 1
+            });
+        
+        }
+        if(eventType == 'pendingsalesrequest')
+        {
+            var shadowObj = rect.glow({
+                color: '#ff7f24',
+                width: 20,
+                offsety: 1,
+                offsetx: 1
+            });
+        
+        }
+
+        if(eventType != "prep")
+        {
+            var t = paper.text(xStart + ((xEnd-xStart)/2), yVal+8, label);
+            t.attr('font-size',10)
+            t.attr('title',  longName + '\n' + description+ '\n' + product)
+            if(status == 'tentative') t.attr('font-style','italic')
+            t.click(function() {
+                window.open(url,'_blank'); //
+            })      
+        }
+        
+        }
+        return rect
+        
+
+    }
+    
+
+    function getTopHeight()
+    {
+       var yPos = teamRowYVals[teamRowYVals.length-1] + 30
+       if(yPos < MIN_Y_POS) yPos = MIN_Y_POS;
+    
+       return yPos;
+    }
+
+    function setupNames(paper, result)
+    {
+    
+       var isFirst = true;
+    
+       var yPos = getTopHeight();                        
+        
+        newX = topLeftDayX
+        newY = topLeftDayY
+
+        $(result).find('CalendarRow').each(function() {
+            var label = $(this).find("Label").text();
+            var rowType = $(this).find("Type").text();
+            var rowColor = $(this).find("Color").text();
+        
+            if(rowType == 'Person')
+        {
+        
+               var t = paper.text(topLeftDayX - 25, yPos+4, label);
+               t.attr('text-anchor','end')
+                   personYVals[label] = yPos
+               
+               //print the name in each weekend as well
+                var needed = DURATION/7 -1
+                var count = 0
+                var     newX3 = topLeftDayX
+    
+                while(count < needed)
+                {
+                    newX3 += 7*DAY_WIDTH
+                       var t = paper.text(newX3 - (DAY_WIDTH *0.4) - DAY_WIDTH, yPos-2, label);
+                   t.attr('text-anchor','center')
+                   t.attr('opacity',.5)
+                    count++
+                }
+                var offset = 0
+                l = paper.path("M" + (newX - (DAY_WIDTH *0.4) + offset)  + "," + (yPos+22) + "L" + (CANVAS_WIDTH)  + "," + (yPos+22))
+                l.attr('stroke-dasharray','. ')
+
+                MGMT_BOTTOM_Y = yPos+22;
+                BOTTOM_ROW_Y = yPos+22;
+           
+            }
+            else if(rowType == 'Grouping')
+            {
+                yPos = yPos - 30;
+                var offset = -100
+            
+
+
+                if(label == "AMER")
+                {
+                    AMER_TOP_Y = yPos+44;                           
+                }
+                else if(label == "EMEA")
+                {
+                    AMER_BOTTOM_Y = yPos+21;
+                    EMEA_TOP_Y = yPos+44;                           
+                }
+                else if(label == "APAC")
+                {
+                    EMEA_BOTTOM_Y = yPos+21;
+                    APAC_TOP_Y = yPos+44;                           
+                }
+                else if(label == "MGMT")
+                {
+                    APAC_BOTTOM_Y = yPos+21;
+                    MGMT_TOP_Y = yPos+44;                           
+                }
+
+
+                l = paper.path("M" + (newX - (DAY_WIDTH *0.4) + offset)  + "," + (yPos+22) + "L" + (CANVAS_WIDTH)  + "," + (yPos+22))
+            
+                //if we want to mirror date in between sections, do it here.
+                yPos += 21
+                l = paper.path("M" + (newX - (DAY_WIDTH *0.4) + offset)  + "," + (yPos+22) + "L" + (CANVAS_WIDTH)  + "," + (yPos+22))
+
+                var sDate = START_DATE.clone()
+                sDate.add(-1).days()
+                
+                
+                for(x = -1; x < DURATION; x++)
+                {
+                    newX2 = topLeftDayX + DAY_WIDTH + (x*DAY_WIDTH)
+                    newY2 = yPos
+                
+                    var t = paper.text(newX2 + 2, newY2 + 12 , $.datepicker.formatDate('dd M',sDate.add(1).days()));
+                    t.attr('opacity',.5)
+                    
+                }
+                
+                //now draw the bubble for the team              
+                var groupLegend = paper.rect(topLeftDayX - 90, yPos + 4, 50, 15, 3);
+                
+                if(rowColor != null && rowColor != '')  groupLegend.attr('fill',rowColor)
+                t = paper.text(topLeftDayX-68, yPos+11, label);              
+                
+            }
+           else alert('Type is: ' + rowType);
+            
+            yPos += 30
+            
+        });
+        
+    }
+    
+    function setupLegend(paper)
+    {
+        //draw the 4 boxes
+        var suiteLegend = paper.rect(topLeftDayX - 70, topLeftDayY + 20, 50, 20, 5);
+        suiteLegend.attr('fill','red')
+        var t = paper.text(topLeftDayX-48, topLeftDayY + 28, 'Suite');
+        
+        var policyLegend = paper.rect(topLeftDayX - 70, topLeftDayY + 45, 50, 20, 5);
+        policyLegend.attr('fill','#7A68AE')
+        t = paper.text(topLeftDayX-48, topLeftDayY + 53, 'Policy');
+        
+        var billingLegend = paper.rect(topLeftDayX - 70, topLeftDayY + 70, 50, 20, 5);
+        billingLegend.attr('fill','#F47B20')
+        t = paper.text(topLeftDayX-48, topLeftDayY + 78, 'Billing');
+
+        var claimsLegend = paper.rect(topLeftDayX - 70, topLeftDayY + 95, 50, 20, 5);
+        claimsLegend.attr('fill','#49A942')
+        t = paper.text(topLeftDayX-48, topLeftDayY + 103, 'Claims');
+
+        var dataManagementLegend = paper.rect(topLeftDayX - 70, topLeftDayY + 120, 50, 20, 5);
+        dataManagementLegend.attr('fill','#FF9999')
+        t = paper.text(topLeftDayX-48, topLeftDayY + 128, 'Data/BI');
+
+        var liveLegend = paper.rect(topLeftDayX - 70, topLeftDayY + 145, 50, 20, 5);
+        liveLegend.attr('fill','#FFCC33')
+        t = paper.text(topLeftDayX-45, topLeftDayY + 153, 'CRM/Live');
+
+//        var liveLegend = paper.rect(topLeftDayX - 118, topLeftDayY + 120, 45, 20, 5);
+//        liveLegend.attr('fill','#')
+//        t = paper.text(topLeftDayX-96, topLeftDayY + 128, 'Field');
+
+        var liveLegend = paper.rect(topLeftDayX - 118, topLeftDayY + 145, 45, 20, 5);
+        liveLegend.attr('fill','#0EBFE9') //ECC3BF
+        t = paper.text(topLeftDayX-96, topLeftDayY + 153, 'Research');
+
+        var confLegend = paper.rect(510, 8, 50, 20, 5);
+        confLegend.attr('fill','white')
+        confLegend.attr('stroke-width',3)
+        var t = paper.text(535, 18, 'Confirmed');
+
+        var tentLegend = paper.rect(580, 8, 50, 20, 5);
+        tentLegend.attr('fill','white')
+        tentLegend.attr('stroke-width',1)
+        var t = paper.text(605, 18, 'Tentative');
+
+        var srLegend = paper.rect(650, 8, 80, 20, 5);
+        srLegend.attr('fill','white')
+        srLegend.attr('stroke-width',1)
+        var t = paper.text(690, 18, 'Sales Request');
+
+        var confLegend = paper.rect(750, 8, 30, 20, 0);
+        confLegend.attr('fill','white')
+        confLegend.attr('stroke-width',3)
+        var t = paper.text(764, 18, 'RFP');
+
+        
+         srLegend.glow({
+                color: '#CC00CC',
+                width: 20,
+                offsety: 1,
+                offsetx: 1
+            });
+        
+    }
+    
+    function setupTitle(paper)
+    {
+            //center on canvas
+                var t = paper.text(CANVAS_WIDTH/10, 10, "Global Value Consulting" );
+                t.attr('font-size',20)
+                var endDate = START_DATE.clone()
+                endDate = endDate.add(DURATION).days()
+    
+                var subt = paper.text(CANVAS_WIDTH/10, 26, $.datepicker.formatDate(DATE_PICKER_FORMAT,START_DATE) + " - " + $.datepicker.formatDate('M dd yy',endDate)   );
+                subt.attr('font-size',12)
+                subt.attr('font-style','italic')
+    }
+    
+    function setupBackground(paper)
+    {
+        var sDate = START_DATE // Date.today()
+        if(!sDate.is().monday()) sDate = sDate.last().monday()
+        START_DATE= sDate.clone()
+
+            newX = topLeftDayX
+            newY = topLeftDayY
+        var t = paper.text(newX, newY, $.datepicker.formatDate('dd M',sDate));
+        t.rotate(-45)
+        
+            //store in array
+            dateXVals[$.datepicker.formatDate('ddM',sDate)] = newX - (DAY_WIDTH *0.4)
+        
+        var l = paper.path("M" + (newX - (DAY_WIDTH *0.4))  + "," + (newY+10) + "L" + (newX - (DAY_WIDTH*0.4))  + "," + (BOTTOM_ROW_Y) )
+            l.attr('stroke-dasharray','. ')
+        
+        
+        
+        for(x = 0; x < DURATION; x++)
+        {
+            newX = topLeftDayX + DAY_WIDTH + (x*DAY_WIDTH)
+            newY = topLeftDayY
+        
+            var t = paper.text(newX, newY , $.datepicker.formatDate('dd M',sDate.add(1).days()));
+            t.rotate(-45)
+            //t.attr('opacity',.5)
+            //draw the dotted line for the side bars
+
+            //store in array
+            dateXVals[$.datepicker.formatDate('ddM',sDate)] = newX - (DAY_WIDTH *0.4)
+
+            
+            var l = paper.path("M" + (newX - (DAY_WIDTH *0.4))  + "," + (newY+10) + "L" + (newX - (DAY_WIDTH *0.4))  + "," + (BOTTOM_ROW_Y))
+            l.attr('stroke-dasharray','. ')
+            
+        }
+        
+        //draw the weekends 
+            newX = topLeftDayX
+            newY = topLeftDayY
+            //add 5 days for start
+            newX += 5*DAY_WIDTH
+            var weekendFill = paper.rect(newX - (DAY_WIDTH *0.4), newY-10, DAY_WIDTH*2, BOTTOM_ROW_Y - (newY-10), 5);
+            weekendFill.attr('fill','#EEEEEE')
+            weekendFill.toBack()
+            weekendFill.attr('stroke-width',0)
+            
+            //repeat for duration /7 -1
+            
+            var needed = DURATION/7 -1
+            var count = 0
+            while(count < needed)
+            {
+
+                newX += 7*DAY_WIDTH
+                weekendFill = paper.rect(newX - (DAY_WIDTH *0.4), newY-10, DAY_WIDTH*2, BOTTOM_ROW_Y - (newY-10), 5);
+                weekendFill.attr('fill','#EEEEEE')
+                weekendFill.toBack()
+                weekendFill.attr('stroke-width',0)
+                
+                count++
+            
+            }
+            
+        
+        
+    
+    }
+    
+// DIAGONAL LINES RAPHAEL
+Raphael.fn.stripedRect = function (x1, y1, width, height, corner, options) {
+    options = options || {};
+    var boxEl = this.rect(x1, y1, width, height,corner);
+    var xShift = options.lineSpacing || 10;
+    var angle = options.angle || 45;
+ 
+    var radians = (90 - angle) * (Math.PI / 180);
+    var yShift = xShift / Math.tan(radians);
+ 
+    var moveX = x1,
+        moveY = y1,
+        finalX = x1 + width,
+        finalY = y1 + height,
+        lineX = x1,
+        lineY = y1,
+        pathString = [];
+ 
+    while (moveX < finalX) {
+        moveX += xShift;
+        lineY += yShift;
+        if (lineY > finalY) {
+            lineX += xShift;
+            lineY = finalY;
+        }
+        if (moveX > finalX) {
+            moveY += yShift;
+            moveX = finalX;
+        }
+        pathString = pathString.concat(['M', moveX, moveY, 'L', lineX, lineY]);
+    }
+    while (moveY < finalY) {
+        moveY += yShift;
+        lineX += xShift;
+        if (lineX > finalX) {
+            lineY += yShift;
+            lineX = finalX;
+        }
+        if (lineX > x1 && lineY < finalY) {
+            lineY += yShift;
+            lineX = x1;
+        }
+        if (lineY > finalY) {
+            lineY = finalY;
+        }
+        pathString = pathString.concat(['M', moveX, moveY, 'L', lineX, lineY]);
+        if (moveY + yShift > finalY) {
+            break;
+        }
+    }
+    var stripe = this.path(pathString);
+ 
+    var collection = this.set();
+    collection.push(boxEl, stripe);
+    return collection;
+};    
+        
+
+</script>
+
+<apex:form >
+ <apex:variable var="isPresalesManagerVar" value="{!IsPresalesManager}"  /> 
+&nbsp;&nbsp;Start:<br/><input type="text" id="InputDate" size="10" />
+</apex:form></apex:page>

@@ -1,0 +1,740 @@
+<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the Home Page components
+    ****************************************************************************-->
+<apex:component id="MP_PageFullWidth">
+    <script>
+		$(".deskLayout").toggleClass('container container-fluid');
+    	$(".contentBody").toggleClass('container-fluid container');
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Header Template
+    ****************************************************************************-->
+    <script id="MP_HeaderView" type="text/template">
+        <div class="container">
+            <div class="top_navigation">
+                <div class="misc-function" />
+                <p>
+                    <span>
+                        <span class="guidewiresec">
+                            <a id="guidewire" href="https://www.guidewire.com" target="_blank">
+                                Visit <b>Guidewire.com</b>
+                            </a> 
+                         </span>
+                        {{#ifNotEquals '{!$Profile.Name}' 'Guidewire Marketplace Profile'}}
+                            <span class="acctsec">
+                                <a class="acct" id="goToAccount" href="#" >&nbsp;&nbsp;{{pageLabelMap 'Component_SiteHeader_MyAccount'}}</a> 
+                            </span><!--*************************************-->
+                            <span class="cartsec">
+                                <a id="cartHeader" class="chead cartHeaderLink" href="#">&nbsp;&nbsp;</a> 
+                            </span>
+                        {{/ifNotEquals}}
+                        <span class="loginoutsec"></span>
+                    </span>
+                </p>
+            </div>
+            <div class="logo_tagline hidden-phone">
+                <div class="logo">
+                    <a href="#" id="logoUrl">
+                        <img src="{{this.logoUrl}}"/>
+                    </a>
+                </div>
+            </div>
+            <div class="search_form" />
+        </div>
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Template for the Cart link on the Header for Phone
+    ****************************************************************************-->
+    <script id="MP_CartHeaderPhone" type="text/template">
+		<p><a href="#" id="cart_btn_phone" class='chead' data-toggle="modal">{{this.cartCount}}/{{price this.cartTotal}}</a></p>
+	</script>
+	<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Template for the Cart Link on the Header for Desktop
+    ****************************************************************************-->
+	<script id="MP_CartHeaderBrowser" type="text/template">
+    	&nbsp;&nbsp; {{pageLabelMap 'Component_SiteHeader_MyCart'}}<!--: {{this.cartCount}} {{pageLabelMap 'Component_MiniCart_Item'}}-->
+	</script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+		Template for the Login/Logout Links
+    ****************************************************************************-->
+    <script id="MP_MyAccount-Desktop" type="text/template">
+		{{#if this}}
+			{{#ifEquals this.UserType 'Guest'}}
+        		<a href="{!$Site.CurrentSiteUrl}apex/SiteLogin" class="goToLogin"><i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;{{pageLabelMap 'Component_SiteHeader_Login'}}</a>
+			{{else}}
+				<a href="#logout" class="doLogout">&nbsp;&nbsp;{{pageLabelMap 'Component_SiteHeader_Logout'}} {{this.FirstName}} {{this.LastName}}</a>
+			{{/ifEquals}}
+		{{else}}
+			<a href="#login">{{pageLabelMap 'Component_SiteHeader_Login'}}</a>
+		{{/if}}
+	</script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Template for the Product Search on the Header
+    ****************************************************************************-->
+    <script id="MP_productSearchView" type="text/template">
+		<div class="left_column">
+        	<div class="product_search_container">
+                <div class="product_search">
+                <span>
+                    <form class="form-search">
+                        <button name="" id="doSearch" type="button" value="Search" class="btn btn-primary"> Search </button> </span>
+                        <input name="" id="searchText" class="input-medium search-query" type="text" placeholder="{{pageLabelMap 'ProductSearch'}}" title="{{pageLabelMap 'ProductSearch_Tooltip'}}"/>
+                        <!--<input name="" id="doSearch" type="image" src="{{image 'Static Resource' 'images/phone_search.png' locale=locale}}" />-->
+                    </form>
+                    <span>
+                        <div class="alert alert-error searchBoxWidgetError" style="display:none;"></div>
+                    </span>
+                </div>
+        	</div>
+       </div>
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Template for the Add to Wishlist
+    ****************************************************************************-->
+    <script id="MP_quickWishDetailsView" type="text/template">
+		<div class="quick_wishlist">
+            <!--**************************************************-->
+            <div class="orderPaginationSec" /> 
+            <!--**************************************************-->
+            <form id="deskQuickWishForm" class="wishForm">
+            	{{#ifNotEquals this.itemData.length 0}}
+                    <p class="leftside">
+                        <button type="button" class="btn btn-primary slim addItem topAddItemButton" data-id="{{uid}}">{{pageLabelMap 'Component_MiniwishList_AddToCart'}}</button>
+                    </p>     
+                    {{#each_upto this.itemData 250}}
+                        <div class="quick_wishlist_item">
+                            <div class="cart_item_viewport">
+                                <a href="javascript:void(0);">{{{displayImage this.mediaWrapper 'prodLink wishEntry' dataId=this.prodBean.sku}}}</a>
+                            </div>
+                            <p class="leftside">
+                                <a href="javascript:void(0);" class="productName prodLink" data-id="{{this.prodBean.sku}}">{{this.prodBean.name}}</a><br/>
+                                {{#if this.miscDetails}}
+                                    {{unescape this.miscDetails}}<br/>
+                                {{/if}}
+                            </p>
+                            <p class="rightside">
+                                {{#if this.qtySkipIncrement}}
+                                    <input type="button" value="{{pageLabelMap 'Prod_QtyDecrFF'}}" class="plus_minus minusFF">
+                                {{/if}}
+                                {{#ifNotEquals this.qtySingleIncrement 1}}
+                                     <input type="button" value="{{pageLabelMap 'Prod_QtyDecrSingle'}}" class="plus_minus minus">
+                                     <input type="hidden" readonly="true" name="quickadd[{{index}}].qty" value="0" class="qty entry plus_minus" maxlength="7" />
+                                     <input type="button" value="{{pageLabelMap 'Prod_QtyIncrSingle'}}" class="plus_minus plus">
+                                {{else}}
+                                    <input type="hidden" id="qty{{index}}" name="quickadd[{{index}}].qty" value="0" class="input-text qty entry plus_minus" maxlength="7" />
+                                {{/ifNotEquals}}
+                                {{#if this.qtySkipIncrement}}
+                                    <input type="button" value="{{pageLabelMap 'Prod_QtyIncrFF'}}" class="plus_minus plusFF">
+                                {{/if}}
+                                 <input type="hidden" name="qtyIncrement" value="{{this.qtySingleIncrement}}" class="item_qtyIncrement" />
+                                 <input type="hidden" name="qtySkipIncrement" value="{{this.qtySkipIncrement}}" class="item_qtySkipIncrement" />
+                                 <input type="hidden" name="quickadd[{{index}}].sku" value="{{this.prodBean.sku}}" />
+                                 {{#if this.showPricing}}
+                                    {{#ifDisplay 'WL.DsplPrc' }}
+                                        {{#if this.price}}
+                                            <span class="price">{{pageLabelMap 'CartInc_Price'}}: {{{price this.price}}}</span>
+                                        {{/if}}
+                                    {{/ifDisplay}}
+                                {{/if}}
+                            </p>
+                        </div>
+                    {{/each_upto}}
+                    <p class="leftside"><button type="button" class="btn btn-primary slim addItem" data-id="{{uid}}">{{pageLabelMap 'Component_MiniwishList_AddToCart'}}</button></p>
+				{{/ifNotEquals}}
+			</form>
+		</div>
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Template for the Spotlight and Featured Products
+    ****************************************************************************-->
+    <script id="MP_spotlightView-Desktop" type="text/template">
+		{{#if this.Spotlight}}
+			<div class="product_spotlight_container" >
+            	<div class="title_header">
+            		<h2 class="title">
+             			{{#if this.crossSell}}
+              				{{pageLabelMap 'CrossSell_AlsoConsider'}}
+             			{{else}}
+              				{{pageLabelMap 'Spotlight_Title'}}
+             			{{/if}}
+            		</h2>
+             	</div>
+            	<div class="product_spotlight">
+             		{{#each this.Spotlight}}
+              			<div class="product_spotlight_item">
+                            <div class="product_spotlight_viewport">
+                                <a href="javascript:void(0);" class="productName" data-id="{{this.mockProduct.sku}}">
+                                    {{displayImage this.mediaWrapper 'spot' alt=this.mockProduct.name dataId=this.mockProduct.sku}}
+                                </a>
+                            </div>
+                            <p>
+                                <a href="javascript:void(0);" class="productName" data-id="{{this.mockProduct.sku}}">{{this.mockProduct.name}}</a>
+                                <br/>
+                                <strong>{{pageLabelMap 'CartInc_SKU'}}</strong>&#160;{{this.mockProduct.sku}}
+                            </p>
+                            <div class="description richtext">
+                                {{unescape this.mockProduct.shortDesc}}
+                            </div>
+                            {{#if this.showNewSubscriptionSelection}}
+                                <p class="price priceSubscription">
+                                    <strong>{{pageLabelMap 'Prod_SpotLightPrice' (price this.price) (price this.minSubPrice) (price this.maxSubPrice)}}</strong>
+                                </p>
+                            {{else}}
+                            	<!--********************************************************-->
+                            	{{#if this.maxPrice}} 
+                                    <!--*******************************************-->
+                                    <p class="price"> 
+                                        {{#ifbothPricesZero this.minPrice this.maxPrice}}
+                                            {{pageLabelMap 'CartInc_Price'}}: <strong>{{displayRangePrice 'ProductDetails_PriceRangeFormat' this.minPrice this.maxPrice}}</strong>      
+                                        {{/ifbothPricesZero}}
+                                    </p> 
+                            	{{else}}
+                                    {{#if this.displayPrice}}
+                                        <p class="price displayPrice">
+                                            {{pageLabelPrefixMap 'DisplayPrice_' this.displayPrice}}
+                                        </p>
+                                    {{else}}
+                                        <p class="price">
+                                            {{pageLabelMap 'CartInc_Price'}}: <strong>{{price this.price}}</strong>
+                                        </p>
+                                	{{/if}}
+								{{/if}}
+							{{/if}}
+              			</div>
+					{{/each}}
+				</div>
+			</div>
+		{{/if}}
+		{{#if this.Featured}}
+			<div class="featured_products_container">
+				<div class="title_header">
+                    <h2 class="title">
+                        {{#if this.crossSell}}
+                            {{pageLabelMap 'CrossSell_AlsoConsider'}}
+                        {{else}}
+                            {{pageLabelMap 'Featured_Title'}}
+                        {{/if}}
+                    </h2>
+             	</div>
+            	<div class="featured_products"> 
+            		{{#eachStyles this.Featured this.colNum "featured_products_item"}}
+                		<div class="{{styleClass}}">
+                            <div class="featured_products_viewport">
+                                {{#ifNotEquals '{!$Profile.Name}' 'Guidewire Marketplace Profile'}}
+                                    <a href="javascript:void(0);" class="productName" data-id="{{this.mockProduct.sku}}">
+                                        {{displayImage this.mediaWrapper 'featured' alt=this.mockProduct.name dataId=this.mockProduct.sku}}
+                                    </a>
+                                {{/ifNotEquals}}
+                                {{#ifEquals '{!$Profile.Name}' 'Guidewire Marketplace Profile'}}
+                                    {{displayImage this.mediaWrapper 'featured' alt=this.prodBean.name}}
+                                {{/ifEquals}}
+                 			</div>
+               				<div class="featuredDiv">
+                                {{#ifNotEquals '{!$Profile.Name}' 'Guidewire Marketplace Profile'}}
+                                    <a href="javascript:void(0);" class="productName" data-id="{{this.mockProduct.sku}}">{{this.mockProduct.name}}</a>
+                                    <br/>
+                                {{/ifNotEquals}}
+                                {{#ifEquals '{!$Profile.Name}' 'Guidewire Marketplace Profile'}}
+                                    <p class="productInactive">{{this.mockProduct.name}}</p>
+                                {{/ifEquals}}     
+                                <div class="description">
+                                    {{unescape this.mockProduct.shortDesc}}
+                                </div>
+                   				{{#ifNotEquals '{!$Profile.Name}' 'Guidewire Marketplace Profile'}}
+                                    <span class="wishFinder" data-sku="{{this.mockProduct.sku}}">
+                                        <div class="productListItem-actions">
+                                            <ul>
+                                                <li>
+                                                    <button type="button" class="productName btn btn-primary slim learn_more" data-id="{{this.mockProduct.sku}}">{{pageLabelMap 'ProductDetailsInc_LearnMore'}}</a>
+                                                </li>
+                                                <li class="pipe">|</li>
+                                                <li>
+                                                    <button type="button" class="btn btn-primary slim add_to_cart_desktop_button" data-id="{{this.mockProduct.id}}" data-inventory="{{this.productInventory}}"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;{{pageLabelMap 'Component_MiniwishList_AddToCart'}}</a> 
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </span>
+                        		{{/ifNotEquals}}
+							</div>
+                        	{{#if this.showNewSubscriptionSelection}}
+                            <p class="price priceSubscription">
+                                <strong>{{pageLabelMap 'Prod_SpotLightPrice' (price this.price) (price this.minSubPrice) (price this.maxSubPrice)}}</strong>
+                            </p>
+                        	{{else}}
+                                <!--********************************************************-->
+                                {{#if this.maxPrice}} 
+                                    <!--*******************************************-->
+                                    <p class="price"> 
+                                        {{#ifbothPricesZero this.minPrice this.maxPrice}}
+                                            {{pageLabelMap 'CartInc_Price'}}: <strong>{{displayRangePrice 'ProductDetails_PriceRangeFormat' this.minPrice this.maxPrice}}</strong>  
+                                        {{/ifbothPricesZero}}
+                                    </p>
+                                {{else}}
+                                    {{#if this.displayPrice}}
+                                        <p class="price displayPrice"></p>
+                                    {{else}}
+                                        <p class="price"></p>
+                                    {{/if}}
+                                {{/if}}
+							{{/if}}
+              			</div>
+             		{{/eachStyles}}
+            	</div>
+           </div>
+          {{/if}}
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Template for the Mini Cart widget on the right for desktop
+    ****************************************************************************-->
+    <script id="MP_MiniCartView" type="text/template">
+		{{#ifNotEquals '{!$Profile.Name}' 'Guidewire Marketplace Profile'}}
+			<div class="products_1_row_medium_container Mini_Cart">
+          		<div class="mini_cart_header">
+          			<h2 class="title">{{pageLabelMap 'Header_MyCart'}}</h2>
+          		</div>
+          		<div class="my_cart mini_cart">
+           			{{#ifDisplay 'MC.Ext'}}
+            			{{#ifGreater cartItemCount 0}}
+             				{{#ifDisplay 'MC.DsplItem'}}
+            					<p>You have {{this.cartItems.length}} {{pageLabelMap 'Component_MiniCart_Item'}}:</p>
+              					<!--<div class="header">
+                					<div class="product">{{pageLabelMap 'MiniCart_Product'}}</div>
+              					</div>-->
+              					{{#each this.cartItems}}
+               						<div class="cart_item">
+                						<a href="#" class="productNameLink" data-sku="{{this.mockProduct.sku}}">{{this.mockProduct.name}}</a>
+               						</div>
+              					{{/each}}
+             				{{/ifDisplay}}
+                            <div class="summary">
+                                <p> 
+                                    <input type="button" class="loggedInAction" value="{{pageLabelMap 'Component_MiniCart_Action'}}"/>
+                                </p>
+                            </div>
+            			{{else}}
+             				<p>{{pageLabelMap 'Component_MiniCart_NoItems'}}</p>
+            			{{/ifGreater}}
+					{{else}} 
+                  		{{#ifGreater cartItemCount 0}}
+             				<p>
+                            	{{#ifEquals cartItemCount 1}}
+                            		{{pageLabelMap 'Component_MiniCart_ThereIs'}}&#160;{{cartItemCount}}&#160;{{pageLabelMap 'Component_MiniCart_Item'}}
+                              	{{else}}
+                               		{{pageLabelMap 'Component_MiniCart_ThereAre'}}&#160;{{cartItemCount}}&#160;{{pageLabelMap 'Component_MiniCart_Items'}}
+                              	{{/ifEquals}}
+             				</p>
+             				<p class="minitotal">
+              					{{pageLabelMap 'Component_MiniCart_Subtotal'}}:&#160;<strong>{{price subTotal}}</strong>
+             				</p>
+             				<p>
+              					{{#ifStoreSetting 'UseGatingCart__c'}}
+               						<input type="button" value="{{pageLabelMap 'Component_MiniCart_Action'}}" class="loggedInAction"/>
+              					{{else}}
+                                    {{#if false }}
+                                    	<input type="button" value="{{pageLabelMap 'Component_MiniCart_Action'}}" class="gotoLogin"/>
+               						{{/if}}
+               						{{#if true }}
+                						<input type="button" value="{{pageLabelMap 'Component_MiniCart_Action'}}" class="loggedInAction"/>
+               						{{/if}}
+              					{{/ifStoreSetting}}
+             				</p>
+            			{{else}}
+             				<p>{{pageLabelMap 'Component_MiniCart_NoItems'}}</p>
+            			{{/ifGreater}}
+					{{/ifDisplay}} 
+          		</div>
+				<div id="modalSec"></div>
+			</div>
+		{{/ifNotEquals}}
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+     	Minicart template for Phone
+    ****************************************************************************-->
+    <script id="MP_spotlightView_phone" type="text/template">
+		{{#if this.Spotlight}}
+			<div class="products_1_row_medium_container">
+				<h2 class="title">
+					{{#if this.crossSell}}
+						{{pageLabelMap 'CrossSell_AlsoConsider'}}
+					{{else}}
+						{{pageLabelMap 'Spotlight_Title'}}
+					{{/if}}
+				</h2>
+            	<div class="products_1_row_medium">
+             		{{#each this.Spotlight}}
+              			<div class="products_1_row_medium_item">
+               				<div class="product_listing_viewport">
+                				<a href="#" class="productName" data-id="{{this.mockProduct.sku}}">
+                 					{{displayImage this.mediaWrapper 'spot' alt=this.mockProduct.name dataId=this.mockProduct.sku}}
+                				</a>
+               				</div>
+               				<p>
+                				<a href="#" class="productName" data-id="{{this.mockProduct.sku}}">{{this.mockProduct.name}}</a>
+               				</p>
+               				<p class="included_items">
+                				<a class="included_items" href="#additional_info{{this.mockProduct.sku}}" id="additionalInfoLink" data-toggle="modal">{{pageLabelMap 'AdditionalInfo'}}</a>
+                				<div id="additional_info{{this.mockProduct.sku}}" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                 					<div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h3 id="myModalLabel">{{this.mockProduct.name}} {{pageLabelMap 'ProductsInc_MiscDetails'}}</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{this.miscMessage}}
+                                    </div>
+                				</div>
+               				</p>
+               				<p>
+                				<span>
+                 					<strong class="price">
+										{{#if this.showNewSubscriptionSelection}}
+                                        	<p class="price priceSubscription">
+                                            	<strong>{{pageLabelMap 'Prod_SpotLightPrice' (price this.price) (price this.minSubPrice) (price this.maxSubPrice)}}</strong>
+											</p>
+										{{else}}
+                                        	<!--********************************************************-->
+                                            {{#if this.maxPrice}} 
+                                            	<!--*******************************************-->
+                                             	<p class="price"> 
+                                             		{{#ifbothPricesZero this.minPrice this.maxPrice}}
+                                            			{{pageLabelMap 'CartInc_Price'}}: <strong>{{displayRangePrice 'ProductDetails_PriceRangeFormat' this.minPrice this.maxPrice}}</strong>      
+                                             		{{/ifbothPricesZero}}
+                                                </p> 
+											{{else}}
+                                                {{#if this.displayPrice}}
+                                                    <p class="price displayPrice">
+                                                        {{pageLabelPrefixMap 'DisplayPrice_' this.displayPrice}}
+                                                    </p>
+                                                {{else}}
+                                                    <p class="price">
+                                                        {{pageLabelMap 'CartInc_Price'}}: <strong>{{price this.price}}</strong>
+                                                    </p>
+                                                {{/if}}
+											{{/if}}
+										{{/if}}
+									</strong>
+								</span>
+							</p>
+               				<p class="">{{{this.mockProduct.shortDesc}}}
+              			</div>   
+					{{/each}}
+				</div>
+			</div>
+		{{/if}}
+		{{#if this.Featured}}
+        	<div class="products_1_row_medium_container">
+            	<h2 class="title">
+                    {{#if this.crossSell}}
+                        {{pageLabelMap 'CrossSell_AlsoConsider'}}
+                    {{else}}
+                        {{pageLabelMap 'Featured_Title'}}
+                    {{/if}}
+            	</h2>
+            	<div class="products_1_row_medium">
+             		{{#each this.Featured}}
+              			<div class="products_1_row_medium_item">
+               				<div class="product_listing_viewport">
+              					{{#ifNotEquals '{!$Profile.Name}' 'Guidewire Marketplace Profile'}}
+                      				<a href="#" class="productName" data-id="{{this.mockProduct.sku}}">
+                         				{{displayImage this.mediaWrapper 'featured' alt=this.mockProduct.name dataId=this.mockProduct.sku}}
+                        			</a>
+                				{{/ifNotEquals}}
+                                {{#ifEquals '{!$Profile.Name}' 'Guidewire Marketplace Profile'}}
+                                	{{displayImage this.mediaWrapper 'featured' alt=this.mockProduct.name}}
+                                {{/ifEquals}}
+               				</div>
+               				<p>
+                				{{#ifNotEquals '{!$Profile.Name}' 'Guidewire Marketplace Profile'}}
+                    				<a href="#" class="productName" data-id="{{this.mockProduct.sku}}">{{this.mockProduct.name}}</a>
+                    				<br/>
+                   				{{/ifNotEquals}}
+                               	{{#ifEquals '{!$Profile.Name}' 'Guidewire Marketplace Profile'}}
+                                	<p class="productInactive">{{this.mockProduct.name}}</p>
+                                  	<br/>
+                               	{{/ifEquals}}   
+               				</p>
+               				<p class="included_items">
+                				<!--<a class="included_items" href="#additional_info{{this.mockProduct.sku}}" id="additionalInfoLink" data-toggle="modal">{{pageLabelMap 'AdditionalInfo'}}</a>-->
+                				<div id="additional_info{{this.mockProduct.sku}}" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                 					<div class="modal-header">
+                  						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  						<h3 id="myModalLabel">{{this.mockProduct.name}} {{pageLabelMap 'ProductsInc_MiscDetails'}}</h3>
+                 					</div>
+                                    <div class="modal-body">
+                                    	{{this.miscMessage}}
+                                    </div>
+                				</div>
+               				</p>
+               				<p>
+                				<span>
+                 					<strong class="price">
+										{{#if this.showNewSubscriptionSelection}}
+                                        	<p class="price priceSubscription">
+                                            	<strong>{{pageLabelMap 'Prod_SpotLightPrice' (price this.price) (price this.minSubPrice) (price this.maxSubPrice)}}</strong>
+                                            </p>
+                                        {{else}}
+                                        	<!--********************************************************-->
+                                            {{#if this.maxPrice}} 
+                                            	<!--*******************************************-->
+                                                <p class="price"> 
+                                             		{{#ifbothPricesZero this.minPrice this.maxPrice}}
+                                                		{{pageLabelMap 'CartInc_Price'}}: <strong>{{displayRangePrice 'ProductDetails_PriceRangeFormat' this.minPrice this.maxPrice}}</strong>      
+                                                	{{/ifbothPricesZero}}
+                                                </p>
+                                            {{else}}
+                                            	{{#if this.displayPrice}}
+                                                	<!--<p class="price displayPrice">
+                                                    	{{pageLabelPrefixMap 'DisplayPrice_' this.displayPrice}}
+                                                 	</p>-->
+                                                {{else}}
+                                                	<!--<p class="price">
+                                                    	{{pageLabelMap 'CartInc_Price'}}: <strong>{{price this.price}}</strong>
+                                                    </p>-->
+                                                {{/if}}
+                                            {{/if}}
+                                        {{/if}}
+                 					</strong>
+                				</span>
+               				</p>
+               				<p class="">{{{this.mockProduct.shortDesc}}}
+              			</div>   
+					{{/each}}
+				</div>
+			</div>
+		{{/if}}
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Header template for Phone
+    ****************************************************************************-->
+    <script id="MP_HeaderView_Phone" type="text/template">
+		<div class="phone_header">
+            <div class="products_phone">
+                <p><a href="#products" data-toggle="modal" id="productHeaderLink">{{pageLabelMap 'Component_SiteHeader_Products'}}</a></p>
+            </div>
+      		<div id="products" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        			<h3 id="myModalLabel">{{pageLabelMap 'Component_SiteHeader_ProductsNavigation'}}</h3>
+       			</div>
+       			<div class="modal-body" id="productListHeader"></div>
+      		</div>
+   	      	<div class="locale_header lssec" ></div>
+            <div class="account_sign_in_products"></div>
+      		<div id="login" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        			<h3 id="myModalLabel">{{pageLabelMap 'Component_SiteHeader_Login'}}</h3>
+       			</div>
+       			<div class="modal-body">
+        			<div class="message_container" style="display:none;">
+                    	<span class="error-msg"></span>
+        			</div>
+        			<form>
+                  		<label>{{pageLabelMap 'Component_SiteHeader_EmailAddress'}}</label>
+                     	<input name="" type="email" id="modal_email">
+                     	<label>{{pageLabelMap 'Component_SiteHeader_Password'}}</label>
+                     	<input name="" type="password" id="modal_password">
+                 	</form>
+				</div>
+       			<div class="modal-footer">
+					<input type="button" class="btn btn-primary" id="signInButton" value="{{pageLabelMap 'Component_SiteHeader_SignIn'}}"/>
+                    {{#ifDisplay 'Login.DsplReg'}}
+                    	<input type="button" class="btn btn-primary" id="siteRegister" style="margin-top:10px; margin-left:0px;" value="{{pageLabelMap 'SiteLogin_CreateAccount'}}"/>
+                    {{/ifDisplay}}
+        			<a href="#" id="forgotPasswordButton" style="margin-top:10px;float:right;">{{pageLabelMap 'Component_SiteHeader_ForgotPassword'}}</a>
+       			</div>
+			</div>
+      		<div id="forgotPassword" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        			<h3 id="myModalLabel">{{pageLabelMap 'Component_SiteHeader_ForgotPassword'}}</h3>
+       			</div>
+                <div class="modal-body">
+                    <form>
+                        <p>{{pageLabelMap 'ForgotPassword_PleaseEnterEmail'}}</p>
+                        <label>{{pageLabelMap 'Component_SiteHeader_EmailAddress'}}</label>
+                        <input name="" type="email" id="fpEmailField">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-primary" id="submitBtn" value="{{pageLabelMap 'Component_SiteHeader_Submit'}}"/>
+                    <a href="#" id="backToLogin" style="margin-top:10px;float:right;">{{pageLabelMap 'Component_SiteHeader_BackLogin'}}</a>
+                </div>
+			</div>
+      		<div id="account" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h3 id="myModalLabel">{{pageLabelMap 'Component_SiteHeader_Account'}}</h3>
+                </div>
+                <div class="modal-body">
+        			<ul class="modal-navigation">
+                		{{#each this.myAccountLinks}}
+                    		<li>
+                                <a href="javascript:void(0);" class="gotoMA {{this.viewState}}" data-vs="{{this.viewState}}">
+                                    {{pageLabelMap this.linkLabel}}
+                                </a>
+                        	</li>
+                    	{{/each}}
+                    	<li><a href="#" class="doLogout">{{pageLabelMap 'Component_SiteHeader_Logout'}}</a></li>
+					</ul>
+				</div>
+			</div>
+    		{{#ifNotEquals '{!$Profile.Name}' 'Guidewire Marketplace Profile'}}
+				<div class="cart_products" id="cartHeader"></div>
+      			<div id="cart" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       				<div class="modal-header">
+        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        				<h3 id="myModalLabel">{{pageLabelMap 'Component_SiteHeader_MyCart'}}</h3>
+       				</div>
+       				<!--**********************************************************************************************************-->
+       				<div class="modal-footer">
+        				<input type="button" value="{{pageLabelMap 'Component_SiteHeader_CheckOut'}}" class="btn btn-primary" automation-id="checkOut"/>
+       				</div>
+      			</div>
+        	</div>
+        	<div class="phone_header_misc">
+         		<div class="misc-function"></div>
+        	</div>
+       	{{/ifNotEquals}}
+    </script>
+    <script>
+        jQuery(function($){
+            
+            CCRZ.uiProperties.spotlightView.desktop.tmpl = 'MP_spotlightView-Desktop';
+            CCRZ.uiProperties.spotlightView.phone.tmpl = 'MP_spotlightView_phone';
+            CCRZ.uiProperties.quickWishDetailsView.desktop.tmpl = 'MP_quickWishDetailsView';
+            CCRZ.uiProperties.miniCartView.desktop.tmpl = 'MP_MiniCartView';            
+            CCRZ.uiProperties.headerView.desktop.tmpl = 'MP_HeaderView';
+            CCRZ.uiProperties.headerView.phone.tmpl = 'MP_HeaderView_Phone';
+            CCRZ.uiProperties.productSearchView.desktop.tmpl = 'MP_productSearchView';
+            CCRZ.uiProperties.cartHeaderView.desktop.tmpl = 'MP_CartHeaderBrowser';
+            CCRZ.uiProperties.cartHeaderView.phone.tmpl = 'MP_CartHeaderPhone';
+            CCRZ.uiProperties.myAccountHeaderView.desktop.tmpl = 'MP_MyAccount-Desktop';
+                     
+            CCRZ.pubSub.on('view:spotlightView:refresh', function(){
+                if (CCRZ.MP_SpotlightPageView === undefined){
+                    CCRZ.MP_SpotlightPageView = new CCRZ.views.MP_spotlightView();
+                }
+            });
+            var relatedProducts = ("false" === "true");
+            CCRZ.views.MP_spotlightView = CCRZ.CloudCrazeView.extend({
+                templatePhone : CCRZ.util.template(CCRZ.uiProperties.spotlightView.phone.tmpl),
+                templateDesktop : CCRZ.util.template('MP_spotlightView-Desktop'),
+                viewName : "MP_spotlightView",
+                events: {
+                    "click .productName" : "gotoProductDetail",
+                    "click .add_to_cart_desktop_button" : "addToCart"
+                },
+                addToCart : function(event){
+                var objLink = $(event.currentTarget);
+                console.log('objLink: ' + objLink);
+                var productId = objLink.data("id");
+                var sellerId = objLink.data("seller");
+                var qtyInput = objLink.parents(".products_1_row_medium_item").find(".entry");
+                var qty = 1;
+                var scrubbedQty = CCRZ.util.scrubQuantity(qty);
+                if(qty !== scrubbedQty || qty < 1) {
+                 CCRZ.pubSub.trigger("pageMessage", CCRZ.createPageMessage('WARN', "messagingSection-Warning", 'Invalid_Qty'));
+                 qtyInput.val(scrubbedQty);
+                } else {
+                 var inventory = objLink.data("inventory");
+                 var subscriptionFrequencyMap = new Object();
+                 objLink.parents(".products_1_row_medium_item").find(".subscriptionFrequencySelection").map(
+                  function(){
+                   subscriptionFrequencyMap[$(this).data('subscription')]=$(this).val();
+                  }
+                 );
+                 this.className = 'cc_RemoteActionController';
+                 this.processAddItem(productId,qty,subscriptionFrequencyMap, sellerId);
+                                document.body.scrollTop = document.documentElement.scrollTop = 0;
+                }
+               },
+                
+                processAddItem: function(productId, qty, subscriptionFrequencyMap, sellerId) {
+                this.invokeContainerLoadingCtx(
+                 $(".products_1_row_medium")
+                 ,'addItem'
+                 ,productId
+                 ,qty
+                 ,''
+                 ,$.isEmptyObject(subscriptionFrequencyMap) ? null : subscriptionFrequencyMap
+                 ,sellerId
+                 ,function(response){
+                  cartId = response.data;
+                  CCRZ.pagevars.currentCartID = cartId;
+                  //cart change will update cookie
+                  CCRZ.pubSub.trigger('cartChange', cartId);
+                  this.className = 'cc_ctrl_ProductListRD';
+                  if (CCRZ.pagevars.pageConfig.isTrue('pl.g2c')) {
+                   cartDetails();
+                  }
+                     var btn = $("li").find("[data-id='" + productId + "']");
+                     btn.html('<i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;'+CCRZ.processPageLabelMap('MP_AddedToCart')); 
+                     /*setTimeout(function() {
+                          btn.html('<i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;' +CCRZ.processPageLabelMap('Component_MiniwishList_AddToCart')); 
+                      }, 1500);*/
+                 }
+                );
+               },
+                init : function(){
+                    this.model = new CCRZ.models.Spotlight();
+                    var v = this;
+                    if(relatedProducts){
+                        CCRZ.pubSub.on("action:CartDetailView:cartItemsRefreshed", function(){
+                            v.model.fetch(function() {
+                                v.render();
+                            });
+                        });
+                    }else{
+                        v.model.fetch(function() {
+                            v.render();
+                        });
+                    }
+                },
+                renderDesktop : function(){
+                    var v = this;
+                    this.setElement($(CCRZ.uiProperties.spotlightView.desktop.selector));
+                    this.$el.html(v.templateDesktop(v.model.toJSON()));
+                },
+                renderPhone : function(){
+                    var v = this;
+                    this.setElement($(CCRZ.uiProperties.spotlightView.phone.selector));
+                    this.$el.html(v.templatePhone(v.model.toJSON()));
+                },
+                postRender : function(){
+                    var v = this;
+                    if(v.model.get("colNum") == 1) {
+                      $(".featured_products>div").first().addClass( "featured_products_item_single_col" );
+                    }
+                                    // CCRZ.pubSub.trigger("view:"+this.viewName+":refresh", this);
+                },
+                gotoProductDetail: function (event) {
+                    var objLink = $(event.target);
+                    var id = objLink.data("id");
+                    productDetails(id);
+                }
+            });
+        });
+    </script>
+</apex:component>

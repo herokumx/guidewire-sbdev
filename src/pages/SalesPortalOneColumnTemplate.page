@@ -1,0 +1,14 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0"
+						controller="cms.CoreController">
+
+	<apex:composition template="SalesPortalTemplate">
+		<apex:define name="main">
+			<br/>
+				<div class="pure-g ">
+					<div class="pure-u-1-1">
+						<cms:Panel panelName="col1" panelController="{!controller}"/>
+					</div>
+				</div>
+		</apex:define>
+	</apex:composition>
+</apex:page>

@@ -1,0 +1,39 @@
+<apex:page id="pg" showHeader="true" sidebar="true" Controller="psaBillingEventRegenerateController" title="PSA Billing Event Regenerate" action="{!startRegenerateProcess}">
+    <head>
+        <style type="text/css">
+            body .bPageBlock .pbBody .default .pbSubheader{
+                background-color:#CFEEF8;
+                color:#000;
+            }
+            body .bPageBlock .pbBody .default .pbSubheader h3{
+                color:#000;
+            }
+            .boldText{ font-weight: bold; }
+        </style>
+    </head>
+<apex:form id="frm">
+    <apex:sectionHeader title="" subtitle="Billing Event Regeneration Status" />
+
+    <apex:outputPanel id="spinnerDisplay" rendered="{!pollerEnabled}">
+    <apex:outputText id="processingText" value="Please Standby Until the Process Is Complete" style="font-style: italic; font-weight: bold; color: red; font-size: 14px; "/><br/>
+    <apex:outputText id="startDateTime" value="Started at: {!startDateTime}"/><br/>
+    <span class="page-block-spinner">
+        <img class="spinner-image" src="/resource/1366192113000/pse__appirioCommon/progress-rotation.gif" />
+    </span>
+    </apex:outputPanel>
+
+    <apex:pageMessages id="pageMessages"/><br />
+
+    <apex:pageBlock title="" id="pbStatus" rendered="{! Not(pollerEnabled)}">
+        <apex:pageBlockSection title="Billing Event" columns="2" collapsible="false">
+            Billing Event: 
+            <apex:outputLink id="newBillingEvent" value="{!newBEURL}" style="font-weight: bold; font-size: 14px; ">{!newBEName}</apex:outputLink>
+            Started - Finished: 
+            <apex:outputText id="startDateTime" value="{!startedFinishedDateTime}"/>
+        </apex:pageBlockSection>
+
+    </apex:pageBlock>
+
+    <apex:actionPoller id="refreshStatusPollerLong" action="{!reloadPage}" interval="10" enabled="{!pollerEnabled}" />
+</apex:form>
+</apex:page>

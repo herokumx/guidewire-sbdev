@@ -1,0 +1,857 @@
+<apex:page standardstylesheets="true"
+           showheader="true"
+           cache="false"
+           sidebar="false"
+           standardController="pse__Expense_Report__c"
+           extensions="psaExpenseAttachmentManagementController">
+
+<apex:remoteObjects >
+    <!--
+    Each proxy object is defined by an apex:remoteObjectModel tag. The name attribute is set to the API name of the SObject you want to perform DML operations on.
+    The jsShorthand attribute is set to the JavaScript object name used to instantiate it.
+    The fields attribute is set to a comma-delimited list of SObjectFields you want to load/create.
+    -->
+    <apex:remoteObjectModel name="Attachment"
+                            jsShorthand="AttachmentGateway"
+                            fields="Id, Name, BodyLength, ParentId"/>
+
+</apex:remoteObjects>
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <head>
+    <!--
+        Include lightning design, font-awesome-icons, and dropzone styling
+    -->
+    <link rel="stylesheet" href="{!URLFOR($Resource.SLDS092,'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+    <link rel="stylesheet" href="{!URLFOR($Resource.PSAjsComponents,'vendor/css/font-awesome.min.css')}" />
+    <link rel="stylesheet" href="{!URLFOR($Resource.PSAjsComponents,'vendor/components/dropzone/dropzone.css')}" />
+
+
+    <!--
+        Include javascript libs
+    -->
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/jquery/jquery.min.js')}"></script>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/jquery.ui/jquery.ui.min.js')}"></script>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/jquery.tablesorter/jquery.tablesorter.min.js')}"></script>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/moment/moment.js')}"></script>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/dropzone/dropzone.js')}"></script>
+
+    <!--
+        Custom page styles
+    -->
+    <style>
+        /* grey page out ... */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 9999;
+        }
+
+
+        /* big spinner box*/
+        .overlay-spinner-box {
+            font-size: 10.2em;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -50px;
+        }
+
+
+        .cursor-pointer { cursor:pointer }
+
+
+        /* lookup field override styling */
+        .slds .lookupInput a {
+          display:block;
+          position: absolute;
+          top:0px;
+          padding: 6px 12px;
+        }
+        .slds  .lookupInput img {
+          float:right;
+        }
+        .slds span.lookupInput {
+          position: relative;
+          display: block;
+        }
+        .slds .lookupInput a, .lookupInput a {
+          border:none !important;
+          background: none !important;
+        }
+        /* end lookup field override */
+
+
+        /** style up our dropzone **/
+        .dropzone {
+            border: 2px dashed rgba(0, 0, 0, 0.3);
+            text-align:initial;
+            min-height: 100px;
+            padding: 1px 1px;
+        }
+
+        /* shrink the dropzone preview image */
+        .dropzone .dz-preview .dz-image {
+            width: 110px;
+            height: 110px;
+        }
+
+
+        .expense-items-card {
+            overflow: auto;
+        }
+
+
+        .slds .dropzone-tr-hidden {
+            display:none
+        }
+
+        .slds .slds-table--bordered td.dropzone-td{
+            border-top:0px;
+            white-space: normal;
+            text-align:center;
+        }
+
+        /* decrease table row padding*/
+        .slds .slds-table td {
+          padding:6px;
+        }
+
+
+        .hasAttachmentYes {
+            /*color:green;*/
+        }
+
+        .hasAttachmentNo {
+            /*color:red;*/
+        }
+
+
+    </style>
+    <!-- initialize the AJAX toolkit for attachment upload ?? -->
+    <script type="text/javascript"> var __sfdcSessionId = '{!GETSESSIONID()}'; </script>
+    <script src="/soap/ajax/29.0/connection.js" type="text/javascript"></script>
+
+  </head>
+
+  <apex:form id="frm">
+
+    <!--
+        Lightning design system is realized under our slds class
+    -->
+    <div class="slds">
+
+        <!-- container for our refresh spinner -->
+        <div id="overlay-spinner" class="overlay" style="display:none">
+            <div class="overlay-spinner-box slds-spinner--large">
+                <img src="{!URLFOR($Resource.SLDS092,'/assets/images/spinners/slds_spinner_brand.gif')}" alt="Loading..." style="max-width: inherit;"/>
+            </div>
+        </div>
+
+        <!--
+          Page Header
+        -->
+        <div class="slds-page-header" role="banner">
+
+            <div class="slds-grid">
+                <div class="slds-col slds-has-flexi-truncate">
+                    <h1 class="slds-text-heading--medium slds-truncate" title="Expense Attachment Management">
+                        Expense Attachment Management
+                    </h1>
+                </div>
+
+
+                <div class="slds-col slds-no-flex slds-align-bottom">
+                  <div class="slds-grid">
+                        <div class="slds-button-group">
+                            <!-- back to expense report -->
+                            <a href="/{!userExpenseReport.Id}" class="slds-button slds-button--neutral">
+                                <i class="fa fa-reply"></i>
+                                Back to Expense Report
+                            </a>
+                      </div>
+
+
+                  </div>
+                </div>
+            </div>
+            <p class="slds-text-body slds-m-top--x-small">
+                <span id="heading-message">
+                    <a href="/{!userExpenseReport.Id}">Expense Report : {!userExpenseReport.Name} - {!userExpenseReport.pse__Resource__r.Name}</a>
+                    <br/>
+                    <a href="/{!userExpenseReport.pse__Project__c}">Project : {!userExpenseReport.pse__Project__r.Name}</a>
+                    <br/>
+                </span>
+            </p>
+        </div> <!-- end banner / page header -->
+
+        <div style="clear:both ; padding-bottom:15px"></div>
+
+        <!--
+          Panel rendered when there is a page error!
+        -->
+        <apex:outputPanel rendered="{! hasPageError }">
+
+           <div class="errorContainer" style="">
+
+              <div class="slds-notify-container"                  style="position:initial" >
+
+                <div class="slds-notify slds-notify--toast slds-theme--error" role="alert"   style="min-height:60px;width:85%;">
+                  <span class="slds-assistive-text">Error</span>
+                  <button class="slds-button slds-button--icon-inverse slds-notify__close"
+                          onclick='$(".errorContainer").css({"display":"none"}); return false;'>
+
+
+                          <i class="fa fa-times" style="font-size: 24px; color: white;"></i>
+
+                    <span class="slds-assistive-text">Close</span>
+                  </button>
+                  <div class="notify__content slds-grid" >
+
+                    <i class="fa fa-exclamation-triangle" style="font-size: 24px; padding-right:15px;"></i>
+
+                    <div class="slds-col slds-align-middle">
+                      <h2 class="slds-text-heading--small"     style="text-align:center;">
+                        <apex:outputText value="{!pageErrorMessage}"  />
+                      </h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="clear:both ; padding-bottom:15px"></div>
+
+            </div>
+
+        </apex:outputPanel>
+
+        <!-- todo...start card to display expense items
+        -->
+        <div class="slds-card expense-items-card">
+            <!-- header -->
+            <div class="slds-card__header"> </div>
+            <div class="slds-card__body">
+
+                <table class="slds-table slds-table--bordered slds-no-row-hover tablesorter" id="card-transaction-table">
+                    <thead>
+                        <tr style="background-color: #f4f6f9;">
+                            <!-- expense -->
+                            <th class="slds-text-heading--label slds-size--1-of-8" scope="col">Expense</th>
+                            <!-- date -->
+                            <th class="slds-text-heading--label slds-size--1-of-8" scope="col">Date</th>
+                            <!-- expense type -->
+                            <th class="slds-text-heading--label slds-size--1-of-8" scope="col">Expense Type</th>
+                            <!-- billable -->
+                            <th class="slds-text-heading--label slds-size--1-of-8" scope="col">Billable</th>
+                            <!-- description -->
+                            <th class="slds-text-heading--label slds-size--1-of-8" scope="col">Description</th>
+                            <!-- Amount -->
+                            <th class="slds-text-heading--label slds-size--1-of-8" scope="col">Amount</th>
+                            <!-- Has Attachment? -->
+                            <th class="slds-text-heading--label slds-size--1-of-8" scope="col">Has Attachment?</th>
+                            <!-- Attachment -->
+                            <th class="slds-text-heading--label slds-size--1-of-8" scope="col">Attachment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:variable var="color" value="#fff"/>
+                        <apex:repeat value="{!userExpenseLines}" var="expenseLine" id="userExpenseLines">
+                            <tr style="background-color: {!color}">
+
+                                <!-- expense -->
+                                <td>
+                                    <a href="/{!expenseLine.expense.Id}" target="_blank">
+                                        <apex:outputField value="{!expenseLine.expense.Name}" />
+                                    </a>
+                                </td>
+                                <!-- date -->
+                                <td>
+                                    <apex:outputField value="{!expenseLine.expense.pse__Expense_Date__c}" />
+                                </td>
+                                <!-- expense type -->
+                                <td>
+                                    <apex:outputField value="{!expenseLine.expense.pse__Type__c}" />
+                                </td>
+                                <!-- billable -->
+                                <td>
+                                    <apex:outputField value="{!expenseLine.expense.pse__Billable__c}" />
+                                </td>
+                                <!-- description -->
+                                <td style="white-space: normal">
+                                    <apex:outputField value="{!expenseLine.expense.pse__Description__c}" />
+                                </td>
+                                <!-- amount -->
+                                <td>
+                                    <apex:outputField value="{!expenseLine.expense.pse__Amount__c}" />
+                                </td>
+                                <!-- has attachment -->
+                                <td>
+
+                                    <span id="{!expenseLine.expense.id}-hasAttachments">
+                                            <!-- rendered when there are attachments on the expense line -->
+                                            <apex:outputPanel rendered="{! expenseLine.hasAttachments }">
+                                                <span class="hasAttachmentYes">
+                                                    <image src="/img/checkbox_checked.gif"/>
+                                                    Yes
+                                                </span>
+                                            </apex:outputPanel>
+                                            <!-- rendered when there are NO attachments on the expense line -->
+                                            <apex:outputPanel rendered="{! !expenseLine.hasAttachments }">
+                                                <span class="hasAttachmentNo">
+                                                    <image src="/img/checkbox_unchecked.gif"/>
+                                                    No
+                                                </span>
+
+                                            </apex:outputPanel>
+
+                                    </span>
+
+
+                                    <span id="{!expenseLine.expense.id}-hasAttachments-spinner" style="display:none">
+
+                                        <img src="{!URLFOR($Resource.SLDS092,'/assets/images/spinners/slds_spinner.gif')}"
+                                             alt="Loading..." style="height:34px"/>
+
+                                    </span>
+
+                                </td>
+
+                                <!-- attachment -->
+                                <td>
+                                  <a href="#"
+                                     style="white-space: nowrap"
+                                     class="slds-button slds-button--neutral slds-button--small"
+                                     onclick="toggleDropzone('{! expenseLine.expense.Id }'); return false;">
+
+                                        Attachments
+                                        <!-- chevron right -->
+                                        <span class="chevronright-{! expenseLine.expense.Id }">
+                                            <i class="fa fa-chevron-right"></i>
+                                        </span>
+
+                                        <!-- chevron down -->
+                                        <span class="chevrondown-{! expenseLine.expense.Id } dropzone-tr-hidden">
+                                            <i class="fa fa-chevron-down"></i>
+                                        </span>
+                                    </a>
+                                </td>
+
+
+                                <script>
+                                    // when the dom loads...trigger toggling of this dropzone..
+                                    $(function() {
+                                        toggleDropzone('{! expenseLine.expense.Id }');
+                                    });
+                                </script>
+
+                            </tr>
+
+                            <!--
+                                Initially hidden row, contains the dropzone container for the specific expense,
+                                displayed when attachments are clicked/expanded; hidden when attachments are collapsed
+                            -->
+                            <tr class="dropzone-tr-hidden expand-child"
+                                id="dropzone-tr-{! expenseLine.expense.Id }"
+                                style="background-color: {!color};">
+                                <td colspan="8" class="dropzone-td">
+                                    <!--
+                                        progress spinner displayed when loading attachments
+                                     -->
+                                    <div class="inner-spinner-{! expenseLine.expense.Id } slds-spinner--medium"
+                                         style="display:none">
+                                        <img src="{!URLFOR($Resource.SLDS092,'/assets/images/spinners/slds_spinner.gif')}" alt="Loading..."
+                                        style="width: 56px;height: 56px;"/>
+                                    </div>
+
+                                    <!--
+                                        ELEMENT DROP ZONE
+                                    -->
+                                    <div id="dropzone-{! expenseLine.expense.Id }"
+                                         class="dropzone"
+                                         data-parent-id="{!expenseLine.expense.id}">
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <apex:variable var="color" value="{!IF(color == '#fff', '#f4f6f9', '#fff')}"/>
+
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </div> <!-- end "slds-card__body" -->
+
+            <div class="slds-card__footer"> </div>
+
+        </div> <!-- end "slds-card" -->
+
+        <div style="padding-top:15px; text-align:center;">
+                <!-- back to expense report -->
+                <a href="/{!userExpenseReport.Id}" class="slds-button slds-button--brand">
+                    <i class="fa fa-reply"></i>
+                    Back to Expense Report
+                </a>
+        </div>
+
+    </div> <!-- end slds wrapper -->
+
+
+
+
+  </apex:form>
+
+  <script>
+
+    // determine if we should only allow image attachments:
+    //var imagesOnlyDropzone = "{!userExpenseReport.pse__Project__r.PSA_Customer_Requires_Expense_Receipts__c}".toLowerCase() == "true";
+    //WITH THE INTRODUCTION OF THE FILE CONVERT PROCESS (NON-IMAGE TO IMAGE FILE), WE NO LONGER NEED THIS RESTRICTION (CKLASSEN 2/12/16)
+    var imagesOnlyDropzone = false;
+
+    // define remote object for working with attachments
+    var attachmentGateway   = new SObjectModel.AttachmentGateway();
+
+    // disable auto discover of Dropzone (were going to inject/initialize these below)!
+    Dropzone.autoDiscover = false;
+
+    // ------------------------------------------------------------------------
+    // define the 'url' function for dropzone;
+    // grabs the data-parent-id value (aka: expense-id) and uploads the file
+    // ------------------------------------------------------------------------
+    var dropzoneUrlFn = function(files) {
+        //console.log('dropzoneUrlFn called');
+        // console.log(files);
+        if (typeof files !== 'undefined' && files.length && files.length > 0) {
+            var parentid = $(files[0].previewElement).attr('data-parent-id');
+            uploadFiles(files, parentid);
+        }
+    }
+
+
+    // ------------------------------------------------------------------------
+    // when items are added to a dropzone
+    // * inject the containing tr data-parent-id (added in html) into the preview element
+    // * inject the specific attachment-id (created new or retrieved from existing) into the preview element
+    // * customize the preview container, to allow the dz-filename to link to the SFDC file
+    // ------------------------------------------------------------------------
+    var handleAddedDropzoneFile = function(file) {
+        var dzelement = $(this.element);
+        var parentid = $(dzelement).attr("data-parent-id"); // retrieve the elements parent-id
+
+        // inject parent-id into element name
+        dzelement.find(".dz-preview:last-child").attr('data-parent-id', parentid);
+
+        // inject attachment id, if provided
+        var attachmentid = file["data-attachment-id"];
+        if (typeof attachmentid !== 'undefined' && attachmentid != null) {
+           dzelement.find(".dz-preview:last-child").attr('data-attachment-id', attachmentid);
+        }
+
+        // grab the file preview container
+        var filePreviewElement = $(file.previewElement);
+
+        // ------ * customize portions of the preview container
+        // ------ * make the name link to the file...
+        // ------
+
+        // grab the filename from preview
+        if (typeof filePreviewElement !== 'undefined' && filePreviewElement != null) {
+            var dzFilenameSpan = filePreviewElement.find(".dz-filename span");
+
+            var dzRemoveLink = filePreviewElement.find(".dz-remove");
+
+            if (typeof dzFilenameSpan !== 'undefined' && dzFilenameSpan != null) {
+                // make the filename a link to the image.....
+                var viewFile = Dropzone.createElement("<a href='#' style='cursor:pointer'>" + file.name + "</a>");
+
+                // Capture the Dropzone instance as closure.
+                var _this = this;
+
+                // Listen to the click event
+                viewFile.addEventListener("click", function(e) {
+                    // Make sure the button click doesn't submit the form:
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    //alert(" VIEW ???");
+
+                    var dzelement = $(file.previewElement);
+                    if (typeof dzelement !== 'undefined' && dzelement != null) {
+
+
+                        if (!filePreviewElement.hasClass("dz-error")) {
+                            // grab the attachment id from the preview element, and open the attachment in a new window
+                            var attachmentId = $(dzelement).attr("data-attachment-id");
+                            window.open("/servlet/servlet.FileDownload?file=" + attachmentId, "_blank");
+                        }
+                        else {
+                            // if the element is invalid....trigger the remove file logic....
+                            //dzRemoveLink.click();
+                            _this.removeFile(file);
+
+                        }
+                    }
+
+                });
+                // render our dropzone file
+                dzFilenameSpan.html(viewFile);
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // when items are removed from a dropzone
+    // * remove the attachment from the dropzone and server
+    // ------------------------------------------------------------------------
+    var handleRemovedDropzoneFiles = function(file) {
+        var dzelement = $(file.previewElement);
+        var parentId = $(dzelement).attr("data-parent-id");
+        var attachmentId = $(dzelement).attr("data-attachment-id");
+        if (typeof attachmentId !== 'undefined' && attachmentId != null) {
+                removeAttachment(attachmentId, parentId);
+
+                // update our hasattachment line indicator
+                countAttachments(parentId);
+        }
+    }
+
+
+    // ------------------------------------------------------------------------
+    // when attachment button is clicked on each row
+    // * display / lazily initialize the dropzone for the specific expense id
+    // ------------------------------------------------------------------------
+    function toggleDropzone(expenseId) {
+        var $dropzone = $("#dropzone-tr-" +expenseId);
+
+        // grab the attachment chevron icons
+        var $chevronRight = $(".chevronright-" + expenseId);
+        var $chevronDown = $(".chevrondown-" + expenseId);
+
+
+        if ($dropzone.hasClass("dropzone-tr-hidden")) {
+            // render dropzone!!!
+            $dropzone.removeClass("dropzone-tr-hidden");
+
+            // when the expense line / attachments button is exapnded:
+            // ensure were displaying the chevrondown and hiding the chevronrigt
+            $chevronDown.removeClass("dropzone-tr-hidden");
+            $chevronRight.addClass("dropzone-tr-hidden");
+
+            //  load attachments for expense
+            this.loadAttachments(expenseId);
+
+        }
+        else {
+            // collapse dropzone!
+            $dropzone.addClass("dropzone-tr-hidden");
+
+            // when the expense line / attachment buttons is collapse:
+            // ensure were displaying the chevronright and hiding the chevrondown
+            $chevronDown.addClass("dropzone-tr-hidden");
+            $chevronRight.removeClass("dropzone-tr-hidden");
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // hide row spinner
+    // ------------------------------------------------------------------------
+    var hideInnerSpinner = function(expenseId){
+        $("#dropzone-" + expenseId).css({"display":""});          // show the dropzone
+        $(".inner-spinner-" + expenseId).css({"display":"none"}); // hide the sppiner
+    }
+
+    // ------------------------------------------------------------------------
+    // show row spinner
+    // ------------------------------------------------------------------------
+    var showInnerSpinner = function(expenseId){
+        $("#dropzone-" + expenseId).css({"display":"none"});         // hide the dropzone
+        $(".inner-spinner-" + expenseId).css({"display":"initial"}); // show the spinner
+    }
+
+
+    // container for expenseId to dropzone......
+    // * We will maintain the dropzones by expense id in this object!
+    // * e.g expenseIdDropzones[<expense-id>] = dropzone-instance
+    var expenseIdDropzones = {};
+
+    // ------------------------------------------------------------------------
+    // loads attachments for specific expense id
+    // * looks up or initialize the dropzone associated with the expense-id
+    // * queries remote object to retrieve attachments associated with expense-id
+    // ** and includes them into the dropzone preview.
+    // ------------------------------------------------------------------------
+    function loadAttachments(expenseId) {
+        // initialize our dropzone (if needed)
+        var myDropzone = expenseIdDropzones[expenseId]; // lookup from page....
+
+        if (typeof myDropzone === 'undefined' || myDropzone == null) {
+            /*
+                The dropzone instance for the expense id does not yet exist.
+                ...lets initialize it with any attachments associated with the expense line
+            */
+            // show row spinner
+            this.showInnerSpinner(expenseId);
+
+            // define dropzone options
+            var dropzoneOptions = {
+                url: dropzoneUrlFn,
+                addRemoveLinks: true,
+                dictRemoveFileConfirmation: "Are you sure you want to delete the attachment?"
+            };
+
+            // limit the dropzone to only accept images when indicated on the project
+            if (typeof imagesOnlyDropzone !== 'undefined' && imagesOnlyDropzone == true) {
+                dropzoneOptions.acceptedFiles = "image/*"
+            }
+
+            // create the dropzone
+            myDropzone = new Dropzone("#dropzone-" + expenseId, dropzoneOptions);
+            myDropzone.on("addedfile", handleAddedDropzoneFile);
+            myDropzone.on("removedfile", handleRemovedDropzoneFiles);
+
+            myDropzone.on("reset", function() {
+                var dzelement = $(this.element);
+                if (typeof dzelement !== 'undefined' && dzelement != null) {
+
+                    var existingPreivewElements = dzelement.find(".dz-preview");
+                    if (existingPreivewElements !=null && existingPreivewElements.length > 0) {
+                        // console.log hide it!!!!
+                        if (! dzelement.hasClass("dz-started")) {
+                            dzelement.addClass("dz-started");
+                        }
+                    } else {
+                        //console.log show it!!!
+                        if (dzelement.hasClass("dz-started")) {
+                            dzelement.removeClass("dz-started");
+                        }
+                    }
+                }
+            });
+
+            // Maintain our constructed dropzones!!!
+            expenseIdDropzones[expenseId] = myDropzone; // store to page
+
+             // query the remote object for our attachments!
+                var criteria = {where: {ParentId: {eq: expenseId}} };
+                attachmentGateway.retrieve(criteria, function(error, results, event) {
+                    if (error) {
+                        alert(error.message); // TODO HANDLE ERROR....render to page...
+
+                        // stop spinner....
+                        this.hideInnerSpinner(expenseId);
+
+                        // halt processing
+                        return;
+                    }
+
+                    // iterate over our retrieved results adding the attachments to the dropzone
+                    results.forEach(function(element, index, array) {
+                        // render elements to page...
+                        var e_id         = element.get("Id");
+                        var e_parentId   = element.get("ParentId");
+                        var e_name       = element.get("Name");
+                        var e_bodyLength = element.get("BodyLength");
+
+
+                        // Create the mock file:
+                        var mockFile = { name: e_name,
+                                         size: e_bodyLength,
+                                         "data-attachment-id": e_id};
+
+                        // Call the default addedfile event handler
+                        myDropzone.emit("addedfile", mockFile);
+
+                        mockFile.previewElement.classList.add('dz-processing');
+
+                        var dzMockThumbUrl = "/servlet/servlet.FileDownload?file=" + e_id;
+
+                        // use a default thumnail for PDF / DOC files
+                        // by evaluating the file name when ends with docx or pdf
+                        if (endsWith(e_name, ".pdf")) {
+                            dzMockThumbUrl = "{!URLFOR($Resource.PSAjsComponents, 'vendor/images/pdf_icon_large.thumbnail.jpg')}";
+                        } else if (endsWith(e_name, ".docx")) {
+                            dzMockThumbUrl = "{!URLFOR($Resource.PSAjsComponents, 'vendor/images/word_doc_icon.jpg')}";
+                        }
+
+                        // And optionally show the thumbnail of the file:
+                        myDropzone.emit("thumbnail", mockFile, dzMockThumbUrl);
+
+                        /*
+                        // Or if the file on your server is not yet in the right
+                        // size, you can let Dropzone download and resize it
+                        // callback and crossOrigin are optional.
+                        // ******** NOTE: currently causes crossOrigin tainted canvas error when used in vfpage
+                        myDropzone.createThumbnailFromUrl(mockFile, "/servlet/servlet.FileDownload?file=");
+                        */
+
+                        mockFile.previewElement.classList.add('dz-success');
+
+                        // Make sure that there is no progress bar, etc...
+                        myDropzone.emit("complete", mockFile);
+
+                        // set these so the render works correctly!
+                        mockFile.previewElement.classList.add('dz-complete');
+
+                                    // If you use the maxFiles option, make sure you adjust it to the
+                                    // correct amount:
+                                    //var existingFileCount = 1; // The number of files already uploaded
+                                    //myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+
+
+
+                    });
+                    // stop the spinner...
+                    this.hideInnerSpinner(expenseId);
+                });
+
+        } // end if !defined
+    }
+
+    // returns true if the specific str ends with the suffix,returns false otherwise
+    function endsWith(str, suffix) {
+        return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    }
+
+    // ------------------------------------------------------------------------
+    // remove attachment, through the remote object
+    // ------------------------------------------------------------------------
+    function removeAttachment(attachmentid, parentId) {
+        attachmentGateway.del([attachmentid],function(err, reslults, event){
+            if (err) {
+                    alert(err);
+            } else {
+
+// TODO: perhaps some visual indicator that the remove was successful?
+                console.log("successfully removed attachment");
+
+            }
+        });
+    }
+
+        // hides the checkbox field and displays the loading spinner
+        var showHasAttachmentSpinner = function(expenseId) {
+            $("#" + expenseId + "-hasAttachments").css({"display":"none"});     // hide has attachment checkbox
+            $("#" + expenseId + "-hasAttachments-spinner").css({"display":""}); // show has-attachment spinner
+        }
+
+        // hides the loading spinner rendering the checkbox field
+        var showHasAttachmentCbox = function(expenseId){
+            $("#" + expenseId + "-hasAttachments").css({"display":""});             // show has attachment checkbox
+            $("#" + expenseId + "-hasAttachments-spinner").css({"display":"none"}); // hide has-attachment spinner
+        }
+
+
+    // ------------------------------------------------------------------------
+    // determine if attachments are still applied to the expense line
+    // ------------------------------------------------------------------------
+    function countAttachments(expenseId) {
+
+        showHasAttachmentSpinner(expenseId);
+
+        // Use the remote object to retrieve attachments for the specific events
+        // and render the hasAttachments accordingly
+        var criteria = {where: {ParentId: {eq: expenseId}} };
+        attachmentGateway.retrieve(criteria, function(error, results, event) {
+            if (error) {
+                console.log(error.message);
+                showHasAttachmentCbox(expenseId);
+                return; // halt processing
+            }
+
+
+            if (results.length && results.length > 0) {
+                $("#" + expenseId + "-hasAttachments").html('<span class="hasAttachmentYes"><image src="/img/checkbox_checked.gif"/> Yes</span>');
+            }
+            else {
+                $("#" + expenseId + "-hasAttachments").html('<span class="hasAttachmentNo"><image src="/img/checkbox_unchecked.gif"/>No</span>');
+            }
+
+            showHasAttachmentCbox(expenseId);
+        });
+    }
+
+
+    // ------------------------------------------------------------------------
+    // logic for uploading files, using the ajax toolkit and HTML5 FileReader
+    // ------------------------------------------------------------------------
+    function uploadFiles(filesToUpload, parentId) {
+        showHasAttachmentSpinner(parentId);
+
+        for(var i = 0, f; f = filesToUpload[i]; i++) {
+            var reader = new FileReader();
+
+            // Keep a reference to the File in the FileReader so it can be accessed in callbacks
+            reader.file = f;
+
+            reader.onerror = function(e) {
+                switch(e.target.error.code) {
+                    case e.target.error.NOT_FOUND_ERR:
+                        alert('File Not Found!');
+                        break;
+                    case e.target.error.NOT_READABLE_ERR:
+                        alert('File is not readable');
+                        break;
+                    case e.target.error.ABORT_ERR:
+                        break; // noop
+                    default:
+                        alert('An error occurred reading this file.');
+                };
+            };
+
+            reader.onabort = function(e) {
+                alert('File read cancelled');
+            };
+
+            reader.onload = function(e) {
+                var att = new sforce.SObject("Attachment");
+                att.Name = this.file.name;
+                att.ContentType = this.file.type;
+                att.ParentId = parentId;
+
+                att.Body = (new sforce.Base64Binary(e.target.result)).toString();
+
+                sforce.connection.create([att], {
+                    onSuccess : function(result, source) {
+                        // console.log("on success .... 1");
+                        // console.log(result);
+
+                        if (result[0].getBoolean("success")) {
+                            // add the new attachment-id to the preview image (so we can delete it!)
+                            if (reader.file && reader.file.previewElement) {
+                                $(reader.file.previewElement).attr("data-attachment-id", result[0].id);
+                            }
+                        }
+                        else {
+                            alert("failed to create attachment " + result[0]);
+                        }
+
+                        // update our hasattachment line indicator
+                        countAttachments(parentId);
+
+                    },
+                    onFailure : function(error, source) {
+                        // re-enable buttons
+                        alert("An error has occurred " + error);
+                    }
+                });
+            };
+
+            reader.readAsBinaryString(f);
+        }
+    }
+
+
+    $(function() {
+      // Now that the DOM is fully loaded:
+
+      // initialize the default table sorter
+      $("table#card-transaction-table").tablesorter({});
+    });
+
+
+  </script>
+
+</html>
+</apex:page>

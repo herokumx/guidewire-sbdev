@@ -1,0 +1,26 @@
+<!--
+*****************************************************************************************************************************
+VF Page Name - CS_PreventACPDelete
+
+Purpose-  Prevents ACP Deletion
+*****************************************************************************************************************************
+
+Name             Email              Date             Notes 
+Mani                                                Initial Creation
+
+*****************************************************************************************************************************
+-->
+<apex:page action="{!if($User.ProfileId !='00e30000000cGt8',
+    null,
+    urlFor($Action.CS_Asset_Contact_Permissions__c.Delete, $CurrentPage.Parameters.id, [retURL='/a6r'], true)
+    )
+    }"
+  standardController="CS_Asset_Contact_Permissions__c">
+     <apex:pageBlock >
+        <apex:PageMessage summary="You are not allowed to delete the ACP Record, If you need to remove access to customer Contact  or Partner
+         contact  from the Asset ,please deactivate the ACP record"
+            severity="Warning"
+            strength="3"/>
+        <apex:pageMessages />
+    </apex:pageBlock>
+</apex:page>

@@ -1,0 +1,3 @@
+<apex:page showHeader="false" sidebar="false" id="loginPage" controller="CommunitiesLoginController"  title="{!$Label.site.site_login}">
+<script>window.location.href='https://community.guidewire.com/s/login';</script>
+</apex:page>

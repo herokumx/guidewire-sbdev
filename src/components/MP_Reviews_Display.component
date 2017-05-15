@@ -1,0 +1,47 @@
+<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the displaying Reviews
+    ****************************************************************************-->
+<apex:component id="MP_Reviews_Display">
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for displaying reviews
+    ****************************************************************************-->
+    <script id="MP-Reviews-Display" type="text/template">
+		<div class="title_header"> 
+        	<h2 class="title">Customer Reviews</h2><input type="button" class="popReview" value="&#xf044;&nbsp;&nbsp;Write a Review"/>
+		</div>
+      	<!--     <div id="avgRating" class="rateit" data-rateit-value="{{this.avgRating}}" data-rateit-ispreset="true" data-rateit-readonly="true">
+			<div class="label">{{pageLabelMap 'NumberofReviews' this.numberOfReviews }}</div>
+		</div>-->
+        <div class="reviewHeader">
+			<table class="table">
+            	{{#each this.reviews}}
+                	<tr> 
+						<td class="reviewStars">
+                 			<div class="review-item">
+                				<!-- <div class="reviewSubject">{{this.subject}}</div> -->
+                				<!-- <div id="reviewRating" class="rateit" data-rateit-value="{{this.rating}}" data-rateit-ispreset="true" data-rateit-readonly="true"></div> -->
+                			<div class="reviewRating">
+                    			{{#for 1 this.rating 1}}
+                    				<div class="filledstar"></div>
+                    			{{/for}}
+                     			{{#for 1 this.diffRating 1}}
+                    				<div class="greystar"></div>
+                    			{{/for}}
+                     		</div>
+						</td>
+                 		<!--<div class="reviewRating">{{escape this.starRating}}</div>-->
+                 		<!--<div class="username">{{this.userName}}</div>-->
+                 		<!--<div class="reviewDt">{{this.reviewDate}}</div>-->
+                		<td class="reviewStarsText"><div class="reviewText">"{{this.userReview}}"</div>
+                		</div>
+                    	</td>
+					</tr>
+				{{/each}}
+        	</table>
+		<div id="modalSec"></div>
+    </script>
+</apex:component>

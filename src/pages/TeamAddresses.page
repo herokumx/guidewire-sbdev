@@ -1,0 +1,36 @@
+<apex:page controller="TeamAddressesController" sidebar="true" showchat="false" > <!-- showHeader="false" showchat="false" sidebar="false"> -->
+
+  <apex:form id="EntireForm" >
+        <apex:pageBlock title="Team Addresses" id="AddressBlock">
+                <apex:pageBlockTable value="{!FullTeamAddresses}" var="thisUser" width="80%">            
+                    <apex:column style=""> 
+<!--                        <apex:commandLink action="{!URLFOR($Action.Sales_Event__c.View,thisSEvent.event.Id )}" value="{!thisSEvent.event.Name}"  /> -->
+                            <apex:outputField value="{!thisUser.Name}"/>
+                           <apex:facet name="header">Name</apex:facet>
+                    </apex:column>
+                    <apex:column style=""> 
+                            <apex:outputField value="{!thisUser.Street}"/>
+                           <apex:facet name="header">Street</apex:facet>
+                    </apex:column>
+                    <apex:column style=""> 
+                            <apex:outputField value="{!thisUser.City}"/>
+                           <apex:facet name="header">City</apex:facet>
+                    </apex:column>
+                    <apex:column style=""> 
+                            <apex:outputField value="{!thisUser.State}"/>
+                           <apex:facet name="header">State</apex:facet>
+                    </apex:column>
+                    <apex:column style=""> 
+                            <apex:outputField value="{!thisUser.Country}"/>
+                           <apex:facet name="header">Country</apex:facet>
+                    </apex:column>
+                    <apex:column style=""> 
+                            <apex:outputField value="{!thisUser.PostalCode}"/>
+                           <apex:facet name="header">Postal Code</apex:facet>
+                    </apex:column>
+                </apex:pageblockTable>
+                    
+        </apex:pageBlock>
+  </apex:form>
+
+</apex:page>

@@ -1,0 +1,178 @@
+<apex:page showheader="true" id="thePage" standardcontroller="Software_Access_Request__c" extensions="SoftwareAccessRequestController" title="Software Access Request">
+    <style>
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader {
+            background-color: #1797c0;
+            border-color: #1797c0;
+        }
+        body input.btn, body input.btnDisabled, body input.btnCancel {
+            padding: 4px 17px;
+        }
+        table.list tr.dataRow td{
+            font-size: 10px;
+        }
+        .apexp .bPageBlock .detailList .list {
+            width: 50%;
+            white-space: nowrap;
+        }
+        .apexp .detailList .list td, .apexp .detailList .list th, .apexp .editPage .bPageBlock .detailList .list tr td, .apexp .editPage .bPageBlock .detailList .list tr th {
+            text-align: center;
+            padding: 0px 0px 0px 4px;
+        }
+        multiSelectPicklistTable {
+            display: none;
+        }
+        
+    </style>
+    <apex:image url="{!$Resource.logo_guidewire}" />
+    <apex:messages style="color: orangered" />
+    <apex:sectionheader title="{!sarObjVar.Name}({!sarObjVar.Status__c})" rendered="{!(sarObjVar.Name != null)}" />
+    <apex:pageblock id="theblock">
+        <apex:form id="theform">
+            <!--    <apex:pageblocksection id="reqInfo" title="Requestor Information">
+                <apex:pageblocksectionitem >
+                    <apex:outputlabel value="Name" />
+                    <apex:outputtext value="{!$User.FirstName} {!$User.LastName}"></apex:outputtext>
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                    <apex:outputlabel value="Email" />
+                    <apex:outputtext value="{!$User.Email}"></apex:outputtext>
+                </apex:pageblocksectionitem>
+              </apex:pageblocksection> -->
+
+            <apex:pageblocksection id="customerInfo" title="Customer/Partner Information">
+                <apex:inputfield value="{!sarObjVar.Customer_Name__c}" rendered="{!!isDetail}"></apex:inputfield>
+                <apex:outputfield value="{!sarObjVar.Customer_Name__c}" rendered="{!isDetail}"></apex:outputfield>
+                <apex:inputfield value="{!sarObjVar.Customer_Contact_Name__c}" rendered="{!!isDetail}">
+                    <apex:actionsupport event="onchange"
+                                        action="{!getCustomerContactDetails}"
+                                        rerender="theform" />
+                </apex:inputfield>
+                <apex:outputfield value="{!sarObjVar.Customer_Contact_Name__c}" rendered="{!isDetail}" />
+                <apex:outputfield value="{!sarObjVar.Sales_account_manager__c}" rendered="{!(sarObjVar.Request_type__c != 'Partner requirement' && sarObjVar.Request_type__c != '(Other)' && isDetail && sarObjVar.Sales_account_manager__c != null)}" />
+                <apex:outputfield value="{!sarObjVar.Services_account_manager__c}" rendered="{!(sarObjVar.Request_type__c != 'Partner requirement' && sarObjVar.Request_type__c != '(Other)' && isDetail && sarObjVar.Services_account_manager__c != null)}" />
+                <apex:outputfield value="{!sarObjVar.Customer_Owner__c}" rendered="{!(sarObjVar.Request_type__c != 'Partner requirement' && sarObjVar.Request_type__c != '(Other)' && isDetail && sarObjVar.Customer_Owner__c != null)}" />
+
+            </apex:pageblocksection>
+            <apex:outputpanel id="customerContactDetails" rendered="{!displayCustomerContactDetails}">
+                <apex:pageblocksection title="Customer/Partner Contact Details">
+                    <apex:outputfield value="{!acrVar.Contact__r.Name}"></apex:outputfield>
+                    <apex:outputfield value="{!acrVar.Contact__r.Title}"></apex:outputfield>
+                    <apex:outputfield value="{!acrVar.Contact__r.Email}"></apex:outputfield>
+                    <apex:outputfield value="{!acrVar.Contact__r.Phone}"></apex:outputfield>
+                </apex:pageblocksection>
+            </apex:outputpanel>
+            <apex:pageblocksection title="Product Selection" columns="4">
+                <apex:repeat value="{!productWRPCLassList}" var="pWrp">
+                    <apex:outputpanel style="white-space: nowrap;">
+                        <apex:inputcheckbox value="{!pWrp.productIncluded}" disabled="{!isDetail}">
+                            <apex:actionsupport event="onchange"
+                                                action="{!assignCustomSettings}"
+                                                rerender="theform" />
+                        </apex:inputcheckbox>
+                        <apex:outputlabel style=" font-size: 91%; color: #4a4a56; font-weight: bold;" value=" {!pWrp.productName} " /><br /><br />
+                        <apex:outputlabel style=" font-size: 91%; color: #4a4a56; font-weight: bold; padding-right: 10px;" value="{!pWrp.dependentFieldLable}" rendered="{!(pWrp.productIncluded && pWrp.fieldApiName != '' && pWrp.productName != 'Standards Based Templates')}" />
+                        <apex:inputfield id="dependentProductVal" value="{!sarObjVar[pWrp.fieldApiName]}" rendered="{!(pWrp.productIncluded && pWrp.fieldApiName != '' && !isDetail && pWrp.productName != 'Standards Based Templates')}" />
+                        <apex:outputfield id="dependentProductValDetail" value="{!sarObjVar[pWrp.fieldApiName]}" rendered="{!(pWrp.productIncluded && pWrp.fieldApiName != '' && isDetail)}" />
+                        <apex:outputpanel rendered="{!(pWrp.productIncluded && pWrp.fieldApiName != '' && pWrp.productName == 'Standards Based Templates')}">
+                            <apex:pageblocktable value="{!pWrp.sbtWrpClassVar}" var="sbt" rendered="{!!isDetail}">
+                                <apex:column headervalue="Content Items" rendered="{!!isDetail}">
+                                    <apex:inputcheckbox value="{!sbt.included}" disabled="{!isDetail}">
+                                        <apex:actionsupport event="onchange"
+                                                            action="{!assignContentItems}"
+                                                            rerender="theform" />
+                                    </apex:inputcheckbox>
+                                    <apex:outputlabel value="{!sbt.name}"></apex:outputlabel>
+                                </apex:column>
+                                <apex:column headervalue="State" rendered="{!!isDetail}">
+                                    <apex:inputfield value="{!sbt.sarVarTemp.State__c}" style="{!IF(sbt.included,'','display: none;')}">
+                                        <apex:selectoptions value="{!sbt.states}" />
+                                        <apex:actionsupport event="onchange"
+                                                            action="{!assignContentItems}"
+                                                            rerender="dependentProductVal" />
+                                    </apex:inputfield>
+                                </apex:column>
+                            </apex:pageblocktable>
+                        </apex:outputpanel>
+                    </apex:outputpanel>
+                </apex:repeat>
+            </apex:pageblocksection>
+            <apex:pageblocksection title="Request and Additional Information">
+                <apex:inputfield value="{!sarObjVar.Request_type__c}" rendered="{!(!isDetail)}">
+                    <apex:actionsupport event="onchange"
+                                        rerender="theform" />
+                </apex:inputfield>
+                <apex:outputfield value="{!sarObjVar.Request_type__c}" rendered="{!isDetail}">
+                    <apex:actionsupport event="onchange"
+                                        rerender="theform" />
+                </apex:outputfield>
+                <apex:inputfield value="{!sarObjVar.Date_needed__c}" rendered="{!(!isDetail)}" />
+                <apex:outputfield value="{!sarObjVar.Date_needed__c}" rendered="{!isDetail}" />
+                <apex:inputfield value="{!sarObjVar.Service_standard__c}" rendered="{!(sarObjVar.Request_type__c == 'New customer') && !isDetail}" />
+                <apex:outputfield value="{!sarObjVar.Service_standard__c}" rendered="{!(sarObjVar.Request_type__c == 'New customer') && isDetail}" />
+                <apex:inputfield value="{!sarObjVar.Delivery_type__c}" rendered="{!(sarObjVar.Request_type__c == 'Early Adopters') && !isDetail}" />
+                <apex:outputfield value="{!sarObjVar.Delivery_type__c}" rendered="{!(sarObjVar.Request_type__c == 'Early Adopters') && isDetail}" /> 
+                <apex:inputfield value="{!sarObjVar.Customer_time_zone__c}" rendered="{!(sarObjVar.Request_type__c == 'New customer') && !isDetail}" />
+                <apex:outputfield value="{!sarObjVar.Customer_time_zone__c}" rendered="{!(sarObjVar.Request_type__c == 'New customer') && isDetail}" /> 
+                <apex:inputfield value="{!sarObjVar.Software_Removal_Date__c}" rendered="{!(sarObjVar.Request_type__c == 'Temporary prospect' || sarObjVar.Request_type__c == 'Early Adopters') && !isDetail}" />
+                <apex:outputfield value="{!sarObjVar.Software_Removal_Date__c}" rendered="{!(sarObjVar.Request_type__c == 'Temporary prospect' || sarObjVar.Request_type__c == 'Early Adopters') && isDetail}" />
+           
+                <apex:inputfield value="{!sarObjVar.Thunderhead_End_Date__c}" rendered="{!(!isDetail && isThunderhead)}" />
+                <apex:outputfield value="{!sarObjVar.Thunderhead_End_Date__c}" rendered="{!(isDetail && isThunderhead)}" />
+                
+                <apex:inputfield value="{!sarObjVar.Opportunity__c}" rendered="{!(!isDetail && isThunderhead)}">
+                    <apex:actionsupport event="onchange"
+                                        action="{!getOpportunityDetails}"
+                                        rerender="theform" />
+                </apex:inputfield>
+                <apex:outputfield value="{!sarObjVar.Opportunity__c}" rendered="{!isDetail}" /> 
+                
+                
+                   <apex:outputfield value="{!oppVar.CurrencyISOCode}" rendered="{!displayOpportunityDetails}"></apex:outputfield> 
+                <!--    <apex:outputfield value="{!oppVar.Term_Annual_License_Fee__c}" rendered="{!displayOpportunityDetails}"></apex:outputfield> -->
+                   <apex:outputText label="Term - Annual Fee" value="{0, number, ###,###,##0.00}" rendered="{!displayOpportunityDetails}">
+                      <apex:param value="{!oppVar.Term_Annual_License_Fee__c}" />
+                   </apex:outputText>
+                   
+                  <apex:outputfield value="{!oppVar.Term_Length_Years__c}" rendered="{!displayOpportunityDetails}"></apex:outputfield>
+                <!--    <apex:outputfield value="{!oppVar.Premium_In_Scope__c}" rendered="{!displayOpportunityDetails}"></apex:outputfield>  -->
+                  <apex:outputText label="Premium in Scope" value="{0, number,000,000.00}" rendered="{!displayOpportunityDetails}">
+                     <apex:param value="{!oppVar.Premium_In_Scope__c}" />
+                  </apex:outputText>
+                  
+                
+                <apex:inputfield value="{!sarObjVar.Predictive_Products_Start_Date__c}" rendered="{!(!isDetail && isPredictiveAnalytics)}" />
+                <apex:outputfield value="{!sarObjVar.Predictive_Products_Start_Date__c}" rendered="{!(isDetail && isPredictiveAnalytics)}" />
+                
+                <apex:inputfield value="{!sarObjVar.Predictive_Products_End_Date__c}" rendered="{!(!isDetail && isPredictiveAnalytics)}" />
+                <apex:outputfield value="{!sarObjVar.Predictive_Products_End_Date__c}" rendered="{!(isDetail && isPredictiveAnalytics)}" />
+         
+                <apex:inputfield value="{!sarObjVar.Additional_comments__c}" style="width: 400px;" rendered="{!(!isDetail)}" />
+                <apex:outputfield value="{!sarObjVar.Additional_comments__c}" style="width: 400px;" rendered="{!isDetail}" />
+               
+            </apex:pageblocksection>
+            
+
+          <!--   <apex:outputpanel id="OpportunityDetails" rendered="{!(!isDetail)}" >
+                <apex:pageblocksection title="Opportunity Information"> 
+                
+                </apex:pageblocksection>
+            </apex:outputpanel>
+         -->
+    
+            <apex:pageblocksection rendered="{!(sarObjVar.Status__c != 'Submitted' && sarObjVar.Status__c != 'Completed')}">
+                <apex:outputpanel >
+                    <apex:commandbutton value="Save" action="{!save}" rendered="{!!isDetail}" />
+                    <apex:commandbutton value="Submit" onclick="return confirm('This Action will Submit the Software Request, no further changes will be allowed to the request. Do you want to proceed?');" action="{!submitRequest}" rendered="{!isDetail}" />
+                    <apex:commandbutton value="Edit" action="{!edit}" />
+                    <apex:commandbutton value="Cancel" action="{!cancel}" />
+                </apex:outputpanel>
+            </apex:pageblocksection>
+            <apex:pageblocksection rendered="{!sarObjVar.Status__c = 'Submitted'}"> 
+                <apex:outputpanel >
+                    <apex:commandbutton value="Complete Request" onclick="return confirm('This Action will Mark Software Request as Completed. Do you want to proceed?');"  action="{!completeReq}" />
+                </apex:outputpanel>
+            </apex:pageblocksection>
+        </apex:form>
+        <apex:relatedlist subject="{!sarObjVar}" list="CombinedAttachments" />
+    </apex:pageblock>
+</apex:page>

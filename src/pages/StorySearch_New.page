@@ -1,0 +1,415 @@
+<apex:page controller="StorySearch_NewController" id="thepage" action="{!selectSearchType}" title="Story Search">
+
+<style>
+
+.classB{    background-color: #ffffff;      }
+.classA{    background-color: lightyellow;  }
+    
+#noborder tr{ border:0px;   }
+#noborder2 tr{ border:0px;  }
+#noborder3 tr{ border:0px;  } 
+#prodRow tr{ height:15px; }  
+</style>
+
+<script>
+
+//  ------------------------------------------------------  
+//  Search on enterkey
+//  ------------------------------------------------------
+    function noenter(e){               
+        if(window.event){                    
+            key = window.event.keyCode;     
+            //IE
+        } else{ 
+            key = e.which;     
+            //firefox               
+        }
+        if(key == 13) {
+            var ele=document.getElementById('thepage:theblock:theform:section:search:searchbtn');       
+            ele.click();                    
+            return false;              
+        } else{                   
+            return true;              
+        }         
+    }     
+
+//  ------------------------------------------------------  
+//  Collapse/Expand Faality& Screen Details
+//  ------------------------------------------------------  
+    function showhide(thisid, labelid){
+        if(document.getElementById(thisid).style.display == "none"){
+            document.getElementById(thisid).style.display = "block";
+            document.getElementById(labelid).innerHTML = "▼";
+        } else {
+            document.getElementById(thisid).style.display = "none";
+            document.getElementById(labelid).innerHTML = "►";
+        }   
+    }   
+
+//  ------------------------------------------------------------        
+//  Expand/Collapse all rows
+//  Note: hidden section IDs are prefixed with "dynamic"  
+//        to target them & not other sections
+//  ------------------------------------------------------------    
+    var currentstate = 'none';
+    function expandall(){
+        if(currentstate == 'none')currentstate = 'block';
+        else(currentstate = 'none');
+        x = document.getElementById('thepage:theblock:theform:results').getElementsByTagName("div");
+        for (i=0;i<x.length;i++){ 
+            if(x[i].id.indexOf("dynamic") != -1)x[i].style.display = currentstate;
+        }               
+        y = document.getElementById('thepage:theblock:theform:results').getElementsByTagName("label");
+        for (i=0;i<y.length;i++){ 
+            if(currentstate == "block")y[i].innerHTML = "▼";
+            else y[i].innerHTML = "►";
+        }
+    }
+
+</script>
+
+    <apex:sectionHeader title="Story Search"/>
+
+    <apex:pageBlock title="Search" id="theblock">
+    
+        <apex:form id="theform">
+            <apex:PageBlockSection title="Criteria" columns="1" id="section">
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputlabel value="Search Type"/>
+                    <apex:outputPanel >
+                        <apex:commandLink value="Customer Story" style="{!IF(searchType == 'story', 'font-weight:bold','')}" rerender="theform, results" action="{!SelectSearchType}" status="status">
+                            <apex:param name="searchType" assignTo="{!searchType}" value="story"/>
+                        </apex:commandLink>                     
+                        │
+                        <apex:commandLink value="Customer Information" style="{!IF(searchType == 'info', 'font-weight:bold','')}" rerender="theform, results" action="{!SelectSearchType}" status="status">
+                            <apex:param name="searchType" assignTo="{!searchType}" value="info"/>
+                        </apex:commandLink>                     
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem> 
+                                
+                <apex:pageBlockSectionItem rendered="{!searchType == 'story'}">
+                    <apex:outputlabel value="Keyword"/>
+                    <apex:inputText value="{!keyword}" size="50" onkeypress="return noenter(event);"/>
+                </apex:pageBlockSectionItem> 
+
+                <apex:pageBlockSectionItem id="item">
+                    <apex:outputlabel value="Filters"/>             
+                    <apex:outputPanel id="thefilters">
+                        <apex:dataTable value="{!filters}" var="f" cellpadding="2px;" id="table" cellspacing="5px;">
+                            
+                            <apex:column headerValue="#" style="font-weight:bold;vertical-align:middle;min-width:20px;">
+                                <apex:outputLabel value="{!f.filterID+1}." />
+                            </apex:column>
+                            
+                            <apex:column headerValue="Field">                           
+                                <apex:selectList value="{!f.selectedField}" size="1">
+                                    <apex:selectOptions value="{!f.filterFields}"/>
+                                    <apex:actionSupport event="onchange"  action="{!SelectFilterType}" rerender="thefilters, messages">
+                                        <apex:param name="currentFilterID" assignTo="{!currentFilterID}" value="{!f.FilterID}"/>
+                                    </apex:actionSupport>   
+                                </apex:selectList>
+                            </apex:column>
+                             
+                            <apex:column headerValue="Operator" style="min-width:80px;">
+                                <apex:selectList value="{!f.selectedOperator}"  size="1">
+                                    <apex:selectOptions value="{!f.filterOperators}"/>
+                                </apex:selectList>                  
+                            </apex:column>
+
+                            <apex:column id="valid">
+                                <apex:outputLabel rendered="{!!f.valid}" value="*" style="color:red;font-size:1.5em;"/>                                 
+                            </apex:column>
+                                                                                                                
+                            <apex:column headerValue="Value" id="fieldvalue">
+                                <apex:inputText value="{!f.searchString}" rendered="{!ISNULL(f.selectedFieldType)}" disabled="true"/>
+                                <apex:inputText value="{!f.searchString}" rendered="{!f.selectedFieldType == 'DATETIME' || f.selectedFieldType == 'DOUBLE' || f.selectedFieldType == 'DATE' || f.selectedFieldType == 'PHONE' || f.selectedFieldType == 'STRING' || f.selectedFieldType == 'TEXTAREA'}" id="SearchString"/>
+                                
+                                <apex:selectList value="{!f.selectedPickval}"  size="1" rendered="{!f.selectedFieldType == 'PICKLIST' || f.selectedFieldType == 'BOOLEAN'}" id="Select">
+                                    <apex:selectOptions value="{!f.selectedOptions}"/>
+                                </apex:selectList>
+                                                
+                                <apex:selectList value="{!f.selectedPickvals}" multiselect="true" size="3" rendered="{!f.selectedFieldType == 'MULTIPICKLIST'}" id="MultiSelect">
+                                    <apex:selectOptions value="{!f.selectedOptions}"/>
+                                </apex:selectList>                                              
+                        
+                                                                                                
+                            </apex:column>
+                                                        
+                            <apex:column headerValue="Help">
+                                <apex:outputPanel rendered="{!NOT(ISBLANK(f.helpText))}">
+                                    <span class="helpButton" id="help{!f.filterID}-_help">
+                                        <img src="/s.gif" alt="" class="helpOrb" title="" />
+                                        <script type="text/javascript">sfdcPage.setHelp('help{!f.filterID}', '{!f.helpText}');</script>
+                                    </span>
+                                </apex:outputPanel>
+                            </apex:column>
+
+                            <apex:column headerValue="Action">
+                                <apex:commandButton action="{!removeFilter}" status="status" rerender="thefilters" value="- Row" style="height:19px;">
+                                    <apex:param name="currentFilterID" assignTo="{!currentFilterID}" value="{!f.FilterID}"/>
+                                </apex:commandButton>                               
+                            </apex:column>
+                                                        
+                            <apex:facet name="footer">
+                                <apex:outputPanel >
+                                    <apex:commandButton value="+ Row" action="{!addFilter}" rerender="thefilters" status="status"/>
+                                    <apex:commandButton value="Clear Filters" action="{!ClearFilters}" rerender="theblock" status="status" immediate="true"/>                                   
+                                </apex:outputPanel>
+                            </apex:facet>
+                            
+                            
+                        </apex:dataTable>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem id="search">
+                    <apex:outputlabel value="Search"/>
+                    <apex:panelGrid columns="2" id="grid">
+                        <apex:commandButton value="Search" rerender="theform, results" action="{!doSearch}" status="status" id="searchbtn"/>
+                        <apex:actionStatus id="status">
+                            <apex:facet name="start">
+                                <apex:image value="/img/loading.gif"/>
+                            </apex:facet>
+                        </apex:actionStatus>                    
+                    </apex:panelGrid>       
+                </apex:pageBlockSectionItem>
+                    
+            </apex:PageBlockSection>                
+        
+    
+        <apex:pageBlockSection title="Results" id="results" columns="1">
+            <apex:pageMessages id="messages"/>
+            
+            <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------- -->          
+            <!-- CUSTOMER INFO SEARCH RESULTS FORMAT                                                                                                                                       -->
+            <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+            <apex:pageBlockTable value="{!records}" var="r" id="infotable" rendered="{!AND(NOT(ISNULL(results)), results.size >0, searchType == 'info')}" rowClasses="classA, classB">
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <center>
+                            Customer Information Results - Accounts: {!results.size}                        
+                        </center>
+                        <apex:outputPanel style="text-align:right;" rendered="{!totalPages > 1}">
+                            Showing {!pageNumber} page of {!totalPages}  <br/>
+                            <apex:outputPanel rendered="{!hasprevious}"> <apex:commandLink action="{!previous}" value="<< Prev" /> </apex:outputPanel>
+                            <apex:outputPanel rendered="{!!hasprevious}"> <apex:outputText value="<< Prev" /> </apex:outputPanel>
+                            &nbsp;&nbsp;
+                            <apex:outputPanel rendered="{!hasnext}"> <apex:commandLink action="{!next}" value="Next >>" /> </apex:outputPanel>
+                            <apex:outputPanel rendered="{!!hasnext}"> <apex:outputText value="Next >>" /> </apex:outputPanel>
+                        </apex:outputPanel>                        
+                    </apex:outputPanel>
+                </apex:facet>
+
+                <!-- this column is Account name with dynamic sorting on header -->
+                <apex:column >
+                    <apex:facet name="header" >
+                      <apex:commandLink action="{!sortList}" title="Click to sort" >
+                        <!-- show the label of the columns field -->
+                        <apex:outputText value="Account" />
+                        <!-- if we sort by this column in ascending direction show this image -->
+                        <apex:outputText escape="false" rendered="{!sortBy=='Name'&&SortDir=='ASC'}">
+                          <img src="/s.gif" alt="Sorted Ascending" class="sortAsc" title="Sorted Ascending" />
+                        </apex:outputText>
+                        <!-- and of course the other way around -->
+                        <apex:outputText escape="false" rendered="{!sortBy=='Name'&&SortDir=='DESC'}">
+                          <img src="/s.gif" alt="Sorted Descending" class="sortDesc" title="Sorted Descending" />
+                        </apex:outputText>
+                        <!-- define the two parameters with the value for the link -->
+                        <apex:param value="Name" name="column" assignTo="{!sortBy}" />
+                        <apex:param value="{!IF(SortDir=='ASC'&&sortBy=='Name', 'DESC', 'ASC')}" name="direction" assignTo="{!SortDir}" />
+                      </apex:commandLink>
+                    </apex:facet>            
+                    <apex:outputLink target="_blank" value="/{!r.a.id}" style="position:relative;top:3px;">{!r.a.Name}</apex:outputLink> 
+                </apex:column> 
+                <!-- next column is Overall DWP with dynamic sorting on header -->
+                <apex:column >
+                <apex:facet name="header" >
+                      <apex:commandLink action="{!sortList}" title="Click to sort" >
+                        <!-- show the label of the columns field -->
+                       <apex:outputText value="{!$ObjectType.account.fields.OverallDWP__c.label}" />
+                        <!-- if we sort by this column in ascending direction show this image -->
+                        <apex:outputText escape="false" rendered="{!sortBy=='OverallDWP__c'&&SortDir=='ASC'}">
+                          <img src="/s.gif" alt="Sorted Ascending" class="sortAsc" title="Sorted Ascending" />
+                        </apex:outputText>
+                        <!-- and of course the other way around -->
+                        <apex:outputText escape="false" rendered="{!sortBy=='OverallDWP__c'&&SortDir=='DESC'}">
+                          <img src="/s.gif" alt="Sorted Descending" class="sortDesc" title="Sorted Descending" />
+                        </apex:outputText>
+                        <!-- define the two parameters with the value for the link -->
+                        <apex:param value="OverallDWP__c" name="column" assignTo="{!sortBy}" />
+                        <apex:param value="{!IF(SortDir=='ASC'&&sortBy=='OverallDWP__c', 'DESC', 'ASC')}" name="direction" assignTo="{!SortDir}" />
+                      </apex:commandLink>
+                    </apex:facet>           
+                   <apex:outputField value="{!r.a.OverallDWP__c}"  /> 
+                  </apex:column>           
+
+                <!-- next column is Region with dynamic sorting on header -->
+                <apex:column >
+                    <apex:facet name="header" >
+                      <apex:commandLink action="{!sortList}" title="Click to sort" >
+                        <!-- show the label of the columns field -->
+                        <apex:outputText value="{!$ObjectType.account.fields.Region__c.label}" />
+                        <!-- if we sort by this column in ascending direction show this image -->
+                        <apex:outputText escape="false" rendered="{!sortBy=='Region__c'&&SortDir=='ASC'}">
+                          <img src="/s.gif" alt="Sorted Ascending" class="sortAsc" title="Sorted Ascending" />
+                        </apex:outputText>
+                        <!-- and of course the other way around -->
+                        <apex:outputText escape="false" rendered="{!sortBy=='Region__c'&&SortDir=='DESC'}">
+                          <img src="/s.gif" alt="Sorted Descending" class="sortDesc" title="Sorted Descending" />
+                        </apex:outputText>
+                        <!-- define the two parameters with the value for the link -->
+                        <apex:param value="Region__c" name="column" assignTo="{!sortBy}" />
+                        <apex:param value="{!IF(SortDir=='ASC'&&sortBy=='Region__c', 'DESC', 'ASC')}" name="direction" assignTo="{!SortDir}" />
+                      </apex:commandLink>
+                    </apex:facet>            
+                   <apex:outputField value="{!r.a.Region__c}"  /> 
+                </apex:column> 
+                
+                <!-- next column is LOBs with dynamic sorting on header -->
+                <apex:column >
+                    <apex:facet name="header" >
+                      <apex:commandLink action="{!sortList}" title="Click to sort" >
+                        <!-- show the label of the columns field -->
+                        <apex:outputText value="{!$ObjectType.account.fields.LOBNEW__c.label}" />
+                        <!-- if we sort by this column in ascending direction show this image -->
+                        <apex:outputText escape="false" rendered="{!sortBy=='LOBNEW__c'&&SortDir=='ASC'}">
+                          <img src="/s.gif" alt="Sorted Ascending" class="sortAsc" title="Sorted Ascending" />
+                        </apex:outputText>
+                        <!-- and of course the other way around -->
+                        <apex:outputText escape="false" rendered="{!sortBy=='LOBNEW__c'&&SortDir=='DESC'}">
+                          <img src="/s.gif" alt="Sorted Descending" class="sortDesc" title="Sorted Descending" />
+                        </apex:outputText>
+                        <!-- define the two parameters with the value for the link -->
+                        <apex:param value="LOBNEW__c" name="column" assignTo="{!sortBy}" />
+                        <apex:param value="{!IF(SortDir=='ASC'&&sortBy=='LOBNEW__c', 'DESC', 'ASC')}" name="direction" assignTo="{!SortDir}" />
+                      </apex:commandLink>
+                    </apex:facet>            
+                   <apex:outputField value="{!r.a.LOBNEW__c}"  /> 
+                </apex:column> 
+                
+                <!-- no sorting on products inner table of items -->
+                <apex:column headerValue="{!$ObjectType.Product__c.fields.Products__c.label}">
+                    <apex:dataTable value="{!r.prods}" var="p" style="border:0px;" >
+                        <apex:column style="border:0px;">
+                            <apex:outputField value="{!p.Products__c}" />&nbsp;
+                        </apex:column>
+                    </apex:dataTable>   
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.Product__c.fields.Upgraded__c.label}">
+                    <apex:dataTable value="{!r.prods}" var="p" style="border:0px;" >
+                        <apex:column value="{!p.Upgraded__c}" style="border:0px;" />
+                    </apex:dataTable>   
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.Product__c.fields.Add_On_Module_s__c.label}">
+                    <apex:dataTable value="{!r.prods}" var="p" style="border:0px;"  >
+                        <apex:column style="border:0px;">
+                            <apex:outputField value="{!p.Add_On_Module_s__c}" />&nbsp; 
+                        </apex:column>                               
+                    </apex:dataTable>   
+                </apex:column>                    
+            
+            </apex:pageBlockTable>
+        
+            <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------- -->          
+            <!-- STORY SEARCH RESULTS FORMAT                                                                                                                                       -->
+            <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+            <apex:pageBlockTable value="{!records}" var="r" id="storytable" rendered="{!AND(NOT(ISNULL(results)), results.size >0, searchType == 'story')}" rowClasses="classA, classB">
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <center>
+                            Story Search Results - Accounts: {!results.size} | Unique  Stories: {!totalStories} | Story Links: {!totalStoryLinks}                         
+                        </center>
+                        <apex:outputPanel style="text-align:right;" rendered="{!totalPages > 1}">
+                            Showing {!pageNumber} page of {!totalPages}  <br/>
+                            <apex:outputPanel rendered="{!hasprevious}"> <apex:commandLink action="{!previous}" value="<< Prev" /> </apex:outputPanel>
+                            <apex:outputPanel rendered="{!!hasprevious}"> <apex:outputText value="<< Prev" /> </apex:outputPanel>
+                            &nbsp;&nbsp;
+                            <apex:outputPanel rendered="{!hasnext}"> <apex:commandLink action="{!next}" value="Next >>" /> </apex:outputPanel>
+                            <apex:outputPanel rendered="{!!hasnext}"> <apex:outputText value="Next >>" /> </apex:outputPanel>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:facet>
+                <!-- first column to show/hide the inner table of stories -->
+                <apex:column width="30px" style="border:0px;">
+                    <apex:outputLabel value="►" onclick="showhide('dynamic{!r.a.id}',this.id);" id="label" rendered="{!r.displaySub}" style="cursor:pointer;" title="Click to view infos and stories"/>
+                    <apex:facet name="header">
+                        <apex:outputLabel value="►" onclick="expandall();" style="cursor:pointer;" title="Click to view all stories"/>
+                    </apex:facet>                                   
+                </apex:column>                                                  
+                <!-- second column is Account name with dynamic sorting on header -->
+                <apex:column style="border:0px;">
+                    <apex:facet name="header" >
+                      <apex:commandLink action="{!sortList}" title="Click to sort" >
+                        <!-- show the label of the columns field -->
+                        <apex:outputText value="Account" />
+                        <!-- if we sort by this column in ascending direction show this image -->
+                        <apex:outputText escape="false" rendered="{!sortBy=='Name'&&SortDir=='ASC'}">
+                          <img src="/s.gif" alt="Sorted Ascending" class="sortAsc" title="Sorted Ascending" />
+                        </apex:outputText>
+                        <!-- and of course the other way around -->
+                        <apex:outputText escape="false" rendered="{!sortBy=='Name'&&SortDir=='DESC'}">
+                          <img src="/s.gif" alt="Sorted Descending" class="sortDesc" title="Sorted Descending" />
+                        </apex:outputText>
+                        <!-- define the two parameters with the value for the link -->
+                        <apex:param value="Name" name="column" assignTo="{!sortBy}" />
+                        <apex:param value="{!IF(SortDir=='ASC'&&sortBy=='Name', 'DESC', 'ASC')}" name="direction" assignTo="{!SortDir}" />
+                      </apex:commandLink>
+                    </apex:facet>            
+                    <apex:outputLink target="_blank" value="/{!r.a.id}" style="position:relative;top:3px;">{!r.a.Name}</apex:outputLink> 
+                </apex:column>  
+                <!-- next column is Number of Stories with dynamic sorting on header -->
+                <apex:column rendered="{!searchType == 'story'}" style="border:0px;">
+                    <apex:facet name="header" >
+                      <apex:commandLink action="{!sortList}" title="Click to sort">
+                        <!-- show the label of the columns field -->
+                        <apex:outputText value="Customer Story Records" />
+                        <!-- if we sort by this column in ascending direction show this image -->
+                        <apex:outputText escape="false" rendered="{!sortBy=='storiesCount'&&SortDir=='ASC'}">
+                          <img src="/s.gif" alt="Sorted Ascending" class="sortAsc" title="Sorted Ascending" />
+                        </apex:outputText>
+                        <!-- and of course the other way around -->
+                        <apex:outputText escape="false" rendered="{!sortBy=='storiesCount'&&SortDir=='DESC'}">
+                          <img src="/s.gif" alt="Sorted Descending" class="sortDesc" title="Sorted Descending" />
+                        </apex:outputText>
+                        <!-- define the two parameters with the value for the link -->
+                        <apex:param value="storiesCount" name="column" assignTo="{!sortBy}" />
+                        <apex:param value="{!IF(SortDir=='ASC'&&sortBy=='storiesCount', 'DESC', 'ASC')}" name="direction" assignTo="{!SortDir}" />
+                      </apex:commandLink>
+                    </apex:facet>            
+                    <apex:outputText value="{!r.storiesCount}"/>
+                </apex:column>                                               
+
+            
+                <!-- ------------------------------------------------------------------ -->
+                <!-- SUB TABLES                                                         -->
+                <!-- ------------------------------------------------------------------ -->                         
+                <apex:column breakBefore="true" style="border:0;" />
+                <apex:column style="border:0;" colspan="2" >
+                    
+                    <!-- START HIDDEN SECTION -->
+                    <div id="dynamic{!r.a.id}" style="display:none;">                       
+                        <apex:outputPanel rendered="{!r.storiesCount>0}">
+                            <br/>
+                            <apex:pageBlockTable value="{!r.stories}" var="s" width="100%" style="border:1;" rendered="{!r.storiesCount>0}">
+                                <apex:facet name="header"><h3>Customer Story Results</h3></apex:facet>
+                                <apex:column headerValue="Story ID" width="50px"><apex:outputLink value="/{!s.Customer_Story__c}" target="_blank">{!s.customer_story__r.Name}</apex:outputLink></apex:column>
+                                <apex:column value="{!s.customer_story__r.Story_Title__c}" width="400px"/>
+                                <apex:column value="{!s.customer_story__r.Products__c}" width="200px"/>
+                                <apex:column value="{!s.customer_story__r.Story_Type__c}" width="200px"/>
+                            </apex:pageBlockTable>
+                        </apex:outputPanel>
+                        <br/>
+                    </div>
+
+                </apex:column>
+            
+            </apex:pageBlockTable>
+            <apex:outputPanel rendered="{!$CurrentPage.parameters.debug=='true'}">
+                <apex:pageMessage severity="info" title="QUERY/SEARCH" summary="{!searchQuery}"/>
+            </apex:outputPanel>
+        </apex:pageBlockSection>
+</apex:form>
+    </apex:pageBlock>
+
+</apex:page>

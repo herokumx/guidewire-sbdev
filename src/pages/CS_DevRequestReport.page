@@ -1,0 +1,147 @@
+<!--
+    *****************************************************************************************************************************
+    Page Name - CS_DevRequestReport
+    Description - Class to support VF Page CS_DevRequestReport 
+    Class- CS_DevRequestReport
+    Purpose- 
+    
+    *****************************************************************************************************************************
+    
+    Name        Email              Date             Notes 
+    Suchitra                                        Initial Creation
+    
+    *****************************************************************************************************************************
+ */
+ -->
+ <apex:page controller="CS_DevRequestReport" readOnly="true" showHeader="false" docType="HTML-5.0">
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>DataTables example - File export</title>
+    <style type="text/css" class="init">
+    </style>
+
+    
+</head>
+<body>
+<apex:form id="theform">
+    <link rel="stylesheet"  type="text/css" href="/resource/1478169125000/Datatable_02/Datatable_02/css/buttons.dataTables.min.css"/>  
+    <apex:stylesheet value="{!URLFOR($Resource.DataTable, 'DataTable/css/jquery.dataTables.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.DataTable_02, '/Datatable_02/Datatable_02/css/buttons.dataTables.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.DataTable_02, '/Datatable_02/Datatable_02/css/jquery.dataTables.min.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DataTable_02, 'Datatable_02/js/jquery-1.12.3.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DataTable_02, 'Datatable_02/js/jquery.dataTables.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DataTable_02, 'Datatable_02/js/dataTables.buttons.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DataTable_02, 'Datatable_02/js/buttons.flash.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DataTable_02, 'Datatable_02/js/jszip.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DataTable_02, 'Datatable_02/js/pdfmake.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DataTable_02, 'Datatable_02/js/vfs_fonts.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DataTable_02, 'Datatable_02/js/buttons.html5.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DataTable_02, 'Datatable_02/js/buttons.print.min.js')}"/>
+    <style>
+        .dataTables_wrapper .dataTables_length {
+        float: left;
+        }
+        .dataTables_wrapper .dataTables_filter {
+        float: center;
+        text-align: right;
+        }
+    </style>
+    <script type="text/javascript" class="init">
+      $(document).ready(function() {
+        $('#caseInfoTable').DataTable( {
+            dom: 'B<"clear">lfrtip',
+            buttons: [
+                'excel'
+                 
+            ]
+        } );
+    } );
+    
+    </script>
+    <script>
+    jQuery(function() {
+    jQuery("[id='{!$Component.datepicker}']").datepicker();
+    });
+    </script>
+ <p/>   
+
+            <table border="0"  align="left">
+            <tbody>
+            <tr>
+                <td valign="center"><b><apex:outputlabel value="Report Start Date:" /></b></td>
+                <td><apex:input value="{!startDate}" type="date" required="true"/></td>
+                <td>&nbsp;</td>
+                <td valign="center"><b><apex:outputlabel value=" Report End Date:" /></b></td>
+                <td ><apex:input value="{!endDate}" type="date" required="true"/></td>
+                <td><apex:commandButton onclick="fetchData();" title="Filter" Value="Filter" /></td>
+                 <apex:actionFunction action="{!sendDates}" name="fetchData" reRender="theform" immediate="true" status="processing..">
+                 </apex:actionFunction>
+            </tr>  
+            <tr>
+            <td>
+            &nbsp;
+            </td>  
+             </tr> 
+            </tbody></table>
+
+
+      
+<table id="caseInfoTable" class="display nowrap" cellspacing="0" >
+                    <thead>
+                        <tr>
+                        <th>Asset Group</th>
+                        <th>Asset</th>
+                        <th>Product</th>
+                        <th>Platform Case</th>
+                        <th>Case #</th>
+                        <th>Severity</th>
+                        <th>Status</th>
+                        <th>Date Created</th>
+                        <th>Date Closed</th>
+                        <th>Working Days</th>
+                        <th>Subject</th>
+                        <th>Enablement Requested</th>
+                        <th>DEV Requested</th>
+                        <th>Primary Contact</th>
+                        <th>Primary Contact Organization</th>
+                        <th>Partner Case</th>
+                        <th>Case Owner</th>
+                        <th>Owner Team</th>
+                        <th>Disposition</th>
+                        <th>Associated Jira</th>
+                    </tr>
+            </thead>
+            <tbody>
+                <apex:repeat value="{!caseList}" var="case">
+                    <tr>
+                        <td><apex:outputtext >{!case.caseRecord.Asset.Parent.Name}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.caseRecord.Asset.Name}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.caseRecord.Asset.Product2.Name}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.caseRecord.CS_Platform_Issue__c}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.caseRecord.CaseNumber}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.caseRecord.Severity__c}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.caseRecord.Status}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.createdDateFormated}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.caseClosedDateFormated}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!IF(case.caseClosedDateFormated !="",case.caseRecord.Working_Days__c,"")}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!LEFT(case.caseRecord.Subject,38)}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.isEnableReq}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.countDevReq}</apex:outputtext> </td>                        
+                        <td><apex:outputtext >{!case.caseRecord.Contact.Name}</apex:outputtext></td>
+                        <td><apex:outputtext >{!case.caseRecord.Contact.Account.Name}</apex:outputtext></td>
+                        <td><apex:outputtext >{!IF(case.caseRecord.Contact.Account.RecordType.Name == "Partner","true","false") }</apex:outputtext></td>
+                        <td><apex:outputtext >{!case.caseRecord.Owner.Name}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.caseRecord.CS_Owner_Team__c}</apex:outputtext> </td>
+                        <td><apex:outputtext >{!case.caseRecord.CS_Disposition__c}</apex:outputtext> </td>    
+                        <td><apex:outputtext >{!case.caseRecord.CS_Associated_Jira__c}</apex:outputtext> </td>
+                       </tr>
+                </apex:repeat>
+            </tbody>
+        </table>
+  
+        </apex:form>
+    </body>
+    </html>
+</apex:page>

@@ -1,0 +1,268 @@
+<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the Order Detail Page
+    ****************************************************************************-->
+<apex:component id="MP_OrderDetail" controller="MP_OrderDetailCtrl">
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the Order Detail Page
+    ****************************************************************************-->
+    <script id="MP_OrderDetailView" type="text/template">
+        <div class="margin_form">
+            {{#if this.isConfirmation}}
+            	<fieldset class="clear confDetails">
+                	<legend class="grey confDetails">{{pageLabelMap 'OrderConfirmation_Title'}}</legend>
+                	<p class="row placeOrderText">{{pageLabelMap 'OrderConfirmation_PlacedOrder'}}</p>
+                	<p class="row"><label>{{pageLabelMap 'OrderConfirmation_OrderNumber'}}</label><span class="orderNumber">{{this.name}}</span></p>
+                    <p class="row"><label>{{pageLabelMap 'OrderConfirmation_OrderDate'}}</label><span class="orderDate">{{this.orderDateStr}}</span></p>
+                    <p class="row">{{pageLabelMap 'OrderConfirmation_StatusInfo'}} &#160;<a href="#" class="orderHistory">{{pageLabelMap 'OrderConfirmation_OrderHistory'}}</a>.</p>
+                    <p>{{pageLabelMap 'OrderConfirmation_GuidingText'}}&#160;<a href="about:blank" onclick="window.open('{!$Site.CurrentSiteUrl}{{pageLabelMap 'OrderConfirmation_termsCondDownload'}}', 'newwindow', 'width=700, height=950'); return false;">click here.</a></p>
+                    <p>{{pageLabelMap 'OrderConfirmation_GuidingText2'}}</p>
+                	<p>
+                    	{{#each this.payments}}
+                    		{{#ifEquals paymentMethod "PO Number"}}
+                    			{{pageLabelMap 'CheckOut_POGuidingText'}}
+                    		{{/ifEquals}}
+                    	{{/each}}
+                	</p>
+            	</fieldset>
+                    <hr />
+			{{else}}
+            	<fieldset class="clear orderDetails">
+                	<legend class="grey orderDetails">{{pageLabelMap 'OrderInformation'}}</legend>
+                	<p class="larger">
+                    	<span class="orderNum"><strong>{{pageLabelMap 'OrderView_OrderNumber'}}:</strong> {{this.name}}</span><br/>
+                    	{{#ifDisplay 'OD.DsplExtOrderNumber'}} <span class="orderExtNum"><strong>{{pageLabelMap 'ExternalOrderID'}}:</strong> {{this.externalOrderId}}</span><br/> {{/ifDisplay}}
+                    	<span class="orderDate"><strong>{{pageLabelMap 'MyOrdersInc_OrderDate'}}:</strong> {{this.orderDateStr}}</span><br/>
+                        <span class="orderStat"><strong>{{pageLabelMap 'MyOrdersInc_Status'}}:</strong> {{pageLabelMap this.status}}</span><br/>
+                        <span class="rightside"><a href="#" class="orderHistory">{{pageLabelMap 'OrderConfirmation_OrderHistory'}}</a></span>
+                    </p>
+                	<p>
+                        {{#each this.payments}}
+                        	{{#ifEquals paymentMethod "PO Number"}}
+                    			{{pageLabelMap 'CheckOut_POGuidingText'}}
+                    		{{/ifEquals}}
+                    	{{/each}}
+                	</p>
+            	</fieldset>
+            {{/if}}
+            <!--<fieldset class="grey">
+                <legend class="grey">{{pageLabelMap 'CheckOut_GeneralInformation'}}</legend>
+                <ul class="order_review">
+                    <li>
+                        <p>
+                            <strong>{{pageLabelMap 'CheckOut_BuyerInformation'}}</strong><br/>
+                            {{this.buyerFirstName}} {{this.buyerLastName}}<br/>
+                            {{this.buyerPhone}}<br/>
+                            {{this.buyerEmail}}
+                        </p>
+                        <p>
+                            <strong>{{pageLabelMap 'CheckOut_ShippingInformation'}}</strong><br/>
+                            {{#if this.shippingMethod}}
+                                {{pageLabelMap 'CheckOut_ShippingMethod'}}: {{this.shippingMethod}}<br/>
+                            {{/if}}
+                            {{#if this.shippingInst}}
+                                {{pageLabelMap 'CheckOut_ShippingNotes'}}: {{this.shippingInst}}<br/>
+                            {{/if}}
+                            {{#if this.requestedDate}}
+                                {{pageLabelMap 'Checkout_RequestedDeliveryDt'}}: {{this.requestedDateStr}}<br/>
+                            {{/if}}
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>{{pageLabelMap 'CheckOut_BillingAddress'}}</strong><br/>
+                            {{> addressDisplay this.billingAddress}}
+                        </p>
+                        <p><strong>{{pageLabelMap 'CheckOut_PaymentInformationLeg'}}</strong><br/>
+                            {{#each this.payments}}
+                                {{#ifEquals paymentMethod "Credit Card"}}
+                                    <br/>{{cardType}} {{pageLabelMap 'CheckOut_CCCardNumber'}}: ************{{cardNumber}}<br/>{{pageLabelMap 'CheckOut_CCExpDate'}}:{{expMonth}}/{{expYear}}
+                                {{else}}
+                                    {{pageLabelMap paymentMethod}}: {{accountNumber}}
+                                {{/ifEquals}}
+                            {{/each}}
+                                {{#each this.transactionPayments}}
+                                    {{pageLabelMapMultiString 'PaymentDisplay_' this.accountType this.accountType this.accountNumber this.subAccountNumber (pageLabelMapMultiString 'PaymentType_' this.paymentType) (pageLabelMapMultiString 'PaymentExpMonth_' this.expirationMonth) (pageLabelMap this.expirationYear)}}
+                                {{/each}}
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>{{pageLabelMap 'CheckOut_ShippingAddress'}}</strong><br/>
+                            {{> addressDisplay this.shippingAddress}}
+                        </p>
+            			{{#if this.hasCoupon}}
+      						<li>
+       							<p class="coupon_section"><strong>{{pageLabelMap 'CartInc_AppliedCoupon'}}</strong><br/>{{this.couponName}}</p>
+      						</li>
+      					{{/if}}
+                    </li>
+                </ul>
+            </fieldset>-->
+            {{> orderItemsDesktop}}
+            <!--{{> totalsSection}}-->
+            <div class="clear"></div>
+            {{#if this.shipments}}
+            	<br/><br/>
+            	<table border="0" cellpadding="0" cellspacing="0" class="shopping_cart orderShipments">
+                	<thead class="rich-table-thead ordShipmentHdr" >
+                		<tr>
+                    		<th class="smaller ordShipmentTrackingUrlHdr"    width="10%">&#160;</th>
+                    		<th class="smaller ordShipmentDateHdr"           width="14%">{{pageLabelMap 'OrderShipment_ShipmentDate'}}</th>
+                    		<th class="smaller ordShipmentCarrierHdr"        width="14%">{{pageLabelMap 'OrderShipment_Carrier'}}</th>
+                    		<th class="smaller ordShipmentMethodHdr"         width="21%">{{pageLabelMap 'OrderShipment_ShipmentMethod'}}</th>
+                    		<th class="smaller ordShipmentTrackingNumHdr"    width="21%">{{pageLabelMap 'OrderShipment_TrackingNumber'}}</th>
+                    		<th class="smaller ordShipmentDeliverDateHdr"    width="14%">{{pageLabelMap 'OrderShipment_DeliveryDate'}}</th>
+                		</tr>
+                	</thead>
+                	{{#each this.shipments}}
+                		<tr class="header odd orderShipmentRow {{sfid}}">
+                            <td class="ordShipmentTrackingUrl"><a target="shiptracking" href="{{{trackingUrl}}}">{{pageLabelMap 'OrderShipment_Track'}}</a></td>
+                            <td class="ordShipmentDate">{{shipmentDateStr}}</td>
+                            <td class="ordShipmentCarrier">{{carrier}}</td>
+                            <td class="ordShipmentMethod">{{shippingMethod}}</td>
+                            <td class="ordShipmentTrackingNum">{{trackingNo}}</td>
+                            <td class="ordShipmentDeliverDate">{{deliveryDateStr}}</td>
+                		</tr>
+                		{{#each this.items}}
+                			<tr class="child even ordShipmentDetails">
+                    			<td />
+                    			<td colspan="5" class="orderShipmentDetailLine {{sfid}}">
+                        			{{pageLabelMap 'CartInc_SKU'}} {{sku}}, {{pageLabelMap 'CartInc_Qty'}}: {{quantity}}
+                    			</td>
+                			</tr>
+                		{{/each}}
+                	{{/each}}
+            	</table>
+            {{/if}}
+        </div>
+    </script>
+	<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the Order Line Item - Desktop
+    ****************************************************************************-->
+	<script id="MP_OrderItems-Desktop" type="text/template">  
+    	<div id="cart_items_container orderdetailSection" class="">
+        	<div class="cart_item_list">
+				{{#each this.orderItems}}   
+                	{{extendedOrderData this}} 
+                	<div class="cart_item {{this.itemID}}">
+                    	<div class="price">
+                        	<!--
+                        		{{#ifNotEquals ../isConfirmation true}}
+                        			{{pageLabelMap 'MyOrdersInc_Status'}}: {{pageLabelMap orderLineStatus}}<br/>
+                        		{{/ifNotEquals}}
+                        		{{#ifNotEquals this.itemType 'Coupon'}}{{pageLabelMap 'CartInc_Qty'}}: {{this.quantity}}<br/>{{/ifNotEquals}}
+                        	-->
+                        	<p class="price">
+                         		{{#eachInMap orderItemDownloadURLMap}}
+    								{{#ifEquals this.key ../itemID}}
+                         				{{#if this.value}}
+                         					<!--key: {{this.key}} value: {{this.value}} itemID: {{../itemID}}
+    										<button type="button" class="downloadBtn" onClick="window.location.href = {{this.value}};">Download</button>-->
+                                    		<a href="{!$Site.CurrentSiteUrl}{{this.value}}" class="downloadBtn">{{pageLabelMap 'Download'}}</a>
+                                    	{{/if}}
+    								{{/ifEquals}}
+                            	{{/eachInMap}}
+                            	<!--
+                            		{{#ifNotEquals this.itemType 'Coupon'}}
+                            			{{#if this.price}}
+                            				{{pageLabelMap 'CartInc_Price'}}: {{{price this.price ../../../currencyCode}}}<br/>
+                            			{{/if}}
+                            			{{#if this.absoluteDiscount}}
+                            				{{#ifGreater this.absoluteDiscount 0}}
+                            					<span>{{pageLabelMap 'Checkout_YouSave'}}: {{{price this.absoluteDiscount ../../../../currencyCode}}}</span><br/>
+                            				{{/ifGreater}}
+                                            {{#ifLessThan this.absoluteDiscount 0}}
+                                                <span>{{pageLabelMap 'CartInc_Surcharge'}}: {{{priceAbs this.absoluteDiscount ../../../../currencyCode}}}</span><br/>
+                                            {{/ifLessThan}}
+                            			{{/if}}
+                            		{{/ifNotEquals}}
+                            		<strong>{{pageLabelMap 'CartInc_Total'}}: {{{price this.SubAmount ../currencyCode}}}</strong>
+                            	-->
+                        	</p>
+                    	</div>
+                    	{{#ifNotEquals this.itemType 'Coupon'}}
+                            <div class="cart_item_viewport">
+                                <a href="#" class="prodLink" data-id="{{this.mockProduct.sku}}">{{{displayImage this.mediaWrapper 'orderDetail'}}}</a>
+                            </div>
+                            <p class="item_title">
+                                <a href="#" class="prodLink" data-id="{{this.mockProduct.sku}}">{{displayProductName 'Aggregate_Display' this.translatedParentProductName this.translatedProductName }}</a>
+                            </p>
+                    		{{#if this.showSubProdTerm}}
+                    			<p>
+                                    <span>
+                                        {{insertTokens this.orderDisplayName this.displayName (price this.price) (price this.SubAmount) (price this.recurringPrice) (price this.recurringPriceSubAmount) (pageLabelPrefixMap 'Subscriptions_Frequency_' this.orderFrequencyUOM) (pageLabelPrefixMap 'Subscriptions_Frequency_' this.installmentFrequencyUOM) this.orderFrequency this.installmentFrequency this.installmentCount this.orderCount}}
+                                    </span>
+                    			</p>
+                    		{{/if}}
+                    		<!--<p><span><strong>{{pageLabelMap 'Checkout_SKU'}}:</strong> {{this.mockProduct.sku}}</span></p>-->
+                    		{{#if this.isSubscription}}
+                    			<p class="subscriptionSummary">{{subscriptionSummary 'Order_Subscription_' this.subscriptionFrequency mockProduct.sku itemTotal}}</p>
+                    			<p class="subscriptionNextDate">{{pageLabelMap 'Order_Subscription_Next_Payment'}} {{this.nextSubscriptionDateStr}}</p>
+                    			{{#if this.isLimitedSubscription}}
+                    				<p class="subscriptionSummary">{{pageLabelMap 'Order_Subscription_End_Date'}} {{this.subscriptionEndDateStr}}</p>
+                    			{{/if}}
+                    		{{/if}}
+                    		{{#each minorLines}}
+                    			{{#if this.isSubscription}}
+                    				<p class="subscriptionSummary">{{subscriptionSummary 'Order_Subscription_' this.subscriptionFrequency mockProduct.sku itemTotal}}</p>
+                    				<p class="subscriptionNextDate">{{pageLabelMap 'Order_Subscription_Next_Payment'}} {{this.nextSubscriptionDateStr}}</p>
+                    				{{#if this.isLimitedSubscription}}
+                    					<p class="subscriptionEndDate">{{pageLabelMap 'Order_Subscription_End_Date'}} {{this.subscriptionEndDateStr}}</p>
+                    				{{/if}}
+                    			{{/if}}
+                    		{{/each}}
+                    		{{#if this.minorLines }}
+                    			<p><a href="#included_items{{this.itemID}}" id="includedItemsLink" data-toggle="modal" data-id="{{this.itemID}}">{{pageLabelMap 'CheckOut_IncludedItems'}}</a></p>
+                    			{{> includedDisplay}}
+                    		{{/if}}
+                    	{{/ifNotEquals}}
+                    	{{#ifEquals this.itemType 'Coupon'}}
+                    		<p class="item_title coupon_title">
+                        		{{{this.mockProduct.name}}}
+                    		</p>
+                    	{{/ifEquals}}
+                	</div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="clear"></div>
+    </script>
+
+    <script>
+        jQuery(function($){
+            CCRZ.uiProperties.OrderDetailView.desktop.tmpl = 'MP_OrderDetailView';
+            CCRZ.uiProperties.OrderDetailView.partial.orderItemsDesktop = '#MP_OrderItems-Desktop';
+			var extendedModel = {!extendedOrderJSON};
+            Handlebars.registerHelper("extendedOrderData", function(currModel) {
+                _.extend(currModel, extendedModel.extOrderData);
+            });
+            Handlebars.registerHelper( 'eachInMap', function ( map, block ) {
+               var out = '';
+               Object.keys( map ).map(function( prop ) {
+                  out += block.fn( {key: prop, value: map[ prop ]} );
+               });
+               return out;
+            } );
+        });
+    </script>
+
+    <style>
+        .downloadBtn {
+            font-size: 22px;
+            padding: 10px 15px;
+            background: #FFF;
+            border: 2px solid #00739d;
+            color: #00739d;
+            font-weight: bold;
+            text-shadow: none;
+            border-radius: 0;
+            box-shadow: none;
+        }
+    </style>
+</apex:component>

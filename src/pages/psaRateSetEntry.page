@@ -1,0 +1,123 @@
+<apex:page id="pg" controller="psaRateSetController">
+    <script type="text/javascript">
+
+    //Popup centering function
+    function popupProject(account, project) {
+        wLeft = window.screenLeft ? window.screenLeft : window.screenX;
+        wTop = window.screenTop ? window.screenTop : window.screenY;
+
+        var left = wLeft + (window.innerWidth / 2) - (900 / 2);
+        var top = wTop + (window.innerHeight / 2) - (690 / 2);
+        return window.open('{!$Page.psaProjectSearch}?accountId='+account+'&projectId='+project+'&type=rate', 'Search', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + 600 + ', height=' + 490 + ', top=' + top + ', left=' + left);
+
+    }
+
+    function copyAccount() {
+       if({!relatedAccountRateSetExists}){
+           if(confirm('Are you sure you would like to copy?')){
+               loadFromAccount();
+           }
+       }
+       else{
+           alert('No related account rate set exists');
+       }
+    }
+
+    function refreshFromProject(projectId){
+        getFromProject(projectId);
+    }
+    
+    function copyGlobal() {
+        loadFromGlobal();
+    }
+
+
+</script>
+    <apex:form id="frm">
+        <apex:actionFunction action="{!loadFromProject}" name="getFromProject" rerender="pgRates">
+            <apex:param name="firstParam" assignTo="{!projCopy}" value="" />
+        </apex:actionFunction>
+        <apex:actionFunction action="{!loadFromAccount}" name="loadFromAccount">
+        </apex:actionFunction>
+        <apex:actionFunction action="{!loadFromGlobal}" name="loadFromGlobal">
+        </apex:actionFunction>
+        <apex:actionFunction name="refreshRates" action="{!refreshValues}" rerender="pgRates"/>
+        <apex:pageBlock id="pgb" title="Create Rate Set">
+            <apex:pageMessages escape="false"/>
+            <apex:pageBlockSection id="pgRateSet" collapsible="false" columns="2" title="PSA Rate Set">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Name"/>
+                        <apex:inputField value="{!rateSet.Name}" required="false"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!isAccountRendered}" >
+                        <apex:outputLabel value="Account"/>
+                        <apex:inputField value="{!rateSet.PSA_Account__c}"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:inputField rendered="{!isProjectRendered}" value="{!rateSet.PSA_Project__c}"/>
+                    <apex:actionFunction name="rerenderTopPanel" rerender="TopPanel" />
+                    <apex:inputField value="{!rateSet.CurrencyIsoCode}" onchange="refreshRates()"/>
+                    <apex:outputField value="{!rateSet.CreatedById}"/>
+                    <apex:outputField value="{!rateSet.LastModifiedById}"/>
+                    <apex:outputField value="{!rateSet.CreatedDate}"/>
+                    <apex:outputField value="{!rateSet.LastModifiedDate}"/>
+                    <apex:inputField value="{!rateSet.PSA_Is_Global__c}" />
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection id="pgRates" collapsible="false" columns="1" title="PSA Rates">
+                <apex:outputPanel id="outpan">
+               <table class="list" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                    <thead class="rich-table-thead">
+                        <tr class="headerRow">
+                            <th class="headerRow">Select</th>
+                            <th class="headerRow">Billing Level</th>
+                            <th class="headerRow">Bill Rate</th>
+                            <th class="headerRow">Average Cost Rate</th>
+                            <th class="headerRow">Start Date</th>
+                            <th class="headerRow">End Date</th>
+                            <th class="headerRow">Currency</th>
+                            <!--
+                            <th class="headerRow">Last Modified By</th>
+                            <th class="headerRow">Last Modified</th> -->
+                        </tr>
+                    </thead>
+                    <apex:variable var="counter" value="{!0}"/>
+                    <apex:repeat value="{!listRateModel}" var="mod">
+                        <tr class="dataRow">
+                            <td class="dataCell"><apex:inputCheckbox value="{!mod.isCheck}"/> </td>
+                            <td class="dataCell"><apex:inputField value="{!mod.RateRecord.PSA_Billing_Level__c}" /> </td>
+                            <td class="dataCell">
+                            <apex:inputField value="{!mod.RateRecord.PSA_Bill_Rate_Amount__c}" style="width:100px;" required="false" />
+                            </td>
+                            <td class="dataCell"><apex:inputField value="{!mod.RateRecord.PSA_Average_Cost_Rate__c}" style="width:100px;" required="false" /> </td>
+                            <td class="dataCell"><apex:inputField value="{!mod.RateRecord.PSA_Start_Date__c}" required="false" /></td>
+                            <td class="dataCell"><apex:inputField value="{!mod.RateRecord.PSA_End_Date__c}" required="false" /></td>
+                            <!--<td class="dataCell"><apex:outputField value="{!mod.RateRecord.LastModifiedById}" /></td>
+                            <td class="dataCell"><apex:outputField value="{!mod.RateRecord.LastModifiedDate}" /></td> -->
+                            <td class="dataCell"><apex:outputLabel >{!mod.RateRecord.CurrencyIsoCode}</apex:outputLabel></td>
+                        </tr>
+                        <apex:variable var="counter" value="{!counter + 1}"/>
+                    </apex:repeat>
+                </table>
+            <br/>
+            </apex:outputPanel>
+            </apex:pageBlockSection>       
+        </apex:pageBlock>
+        <div style="text-align:center;">
+                    <apex:commandButton value="Copy From Related Project" disabled="false" reRender="frm" onclick="popupProject('{!projectAccountId}','{!projectId}')"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Copy From Account" disabled="{!accountId != null}" reRender="frm" onclick="copyAccount()"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Copy From Global" reRender="frm" onclick="loadFromGlobal()"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Add New Row" action="{!addNewRate}" reRender="frm" status="status"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Remove Rows" action="{!removeRate}" reRender="frm" status="status"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Save" action="{!save}" reRender="frm" status="status"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Save and Close" action="{!saveAndReturn}"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Close" action="{!close}" immediate="true"/>
+                </div>
+    </apex:form>    
+</apex:page>

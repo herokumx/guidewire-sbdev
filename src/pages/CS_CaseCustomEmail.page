@@ -1,0 +1,67 @@
+<!--
+*****************************************************************************************************************************
+VF Page Name - CS_CaseCustomEmail
+
+Purpose-  Custome Email Function to default CC,BCC and To on Case 
+
+
+*****************************************************************************************************************************
+
+Name             Email              Date             Notes 
+Alice jones                                           Initial Creation
+
+*****************************************************************************************************************************
+-->
+<apex:page standardController="Case" extensions="CS_CaseCustomEmailController">
+    <apex:includeScript value="{!URLFOR($Resource.cms__jqueryui, '/js/jquery.min.js')}"/>
+        <body>
+    <div style="height:100%">
+        <apex:emailPublisher entityId="{!case.id}" 
+            fromAddresses="{!supportEmailAddress.Address}"
+            subjectVisibility="editable" 
+            subject="{!case.Subject} [Case-{!case.CaseNumber}]"
+            width="100%"
+            autoCollapseBody="false" 
+            showSendButton="true"
+            toAddresses="{!ToAddress}"
+            emailBody=""
+            emailBodyFormat="textAndHTML"
+            showAttachments="true"
+            verticalResize="true"
+            ccVisibility="editableWithLookup"
+            bccVisibility="editableWithLookup"
+            toVisibility="editableWithLookup"
+            emailBodyHeight="150em"/>
+    </div>
+    
+    <script>
+        function initEmailPublisherCaseExtension(){
+                var pub = caseInteraction.getEmailPublisher('{!$CurrentPage.parameters.id}');
+    
+                // show CC field
+                pub.showCc();
+    
+                $j = jQuery.noConflict();
+    
+                var cc_field_id = 'cc_{!$CurrentPage.parameters.id}_textarea';
+                var bcc_field_id = 'bcc_{!$CurrentPage.parameters.id}_textarea';
+                
+                var existingValue = $j("textarea[id$="+cc_field_id+"]:not([id="+bcc_field_id+"])").val();
+                $j("textarea[id$="+cc_field_id+"]:not([id="+bcc_field_id+"])").val(existingValue + '{!ToCCAddress}');
+
+                var existingValue2 = $j("textarea[id="+bcc_field_id+"]").val();
+                $j("textarea[id="+bcc_field_id+"]").val(existingValue2 + '{!ToBCCAddress}');
+        }
+    
+        var onload_initPublisherExtensionEmail = window.onload;
+        window.onload = function() { 
+            if (onload_initPublisherExtensionEmail) { 
+                onload_initPublisherExtensionEmail();
+            }
+            console.log("main onload initPublisherExtensionEmail start");
+            initEmailPublisherCaseExtension();
+            console.log("main onload initPublisherExtensionEmail end");
+        }
+    </script>
+    </body>
+</apex:page>

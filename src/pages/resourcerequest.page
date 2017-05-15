@@ -1,0 +1,707 @@
+<apex:page standardController="ResourceRequest__c" extensions="ResourceRequestController" showChat="false"> 
+<!--
+<apex:includeScript value="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"/>
+-->
+
+<chatter:feedWithFollowers id="ChatterFeed" entityId="{!ResourceRequest.Id}" showHeader="true" rendered="true"/>
+
+
+<style>
+.selected {background-color:#800080;background-image: none;text-decoration: line-through;
+}
+
+.headerRow .NotSelectedDate{
+ background-color:#808080;
+ text-decoration: line-through;
+ color: #ff4444 !important;
+}
+
+.headerRow .SelectedDate{
+color: #0000FF !important;
+}
+
+.RRLink{
+color: #0000FF;
+}
+
+.lightgray
+{
+color: gray;
+
+}
+
+.right
+{
+float:right;
+}
+ 
+</style>
+
+<!--
+ <apex:variable var="possibleDates" value="{!PossibleDatesList}" />
+ -->
+ <apex:variable var="requiredRolesFilled" value="{!RequiredRolesFilled}"  /> 
+ <apex:variable var="hasAtLeastOneRole" value="{!HasAtLeastOneRole}"  /> 
+ 
+ <apex:variable var="possibleRoles" value="{!RequestedResourceRolesAsSelect}"  /> 
+ <apex:form >
+ <apex:actionFunction name="rerenderChatter" rerender="ChatterFeed" />
+ <apex:actionFunction name="rerenderAvailabilityBlock" rerender="AvailabilityBlock" />
+ <apex:actionFunction name="updateRoleBlock" rerender="RoleBlock" />
+ <apex:actionFunction name="clearAvailabilityCache" action="{!clearAssignmentsList}" rerender="AvailabilityBlock"  />
+ <apex:actionFunction name="updateDatesBlock" rerender="PossibleDatesBlock,ChatterFeed"  />
+ <apex:actionFunction name="updateHoldsBlock" rerender="ResourceHoldsBlock"  />
+ <apex:actionFunction name="updateMessages" rerender="Messages"  />
+ <apex:actionFunction name="updateDetailBlock" action="{!reloadRequest}" rerender="DetailBlock,ChatterFeed"  />
+<!--
+ <input id="acctSearch" type="text"/>
+ <button onclick="getRequestByID(); return false;">Get Account</button>
+    <div id="responseErrors"></div>
+ --> 
+     <div id="responseErrors" style="color: #FF0000" font-size="35px" align="center"></div>
+   <apex:pageMessages rendered="{!ReloadFailed}" ></apex:pageMessages>    
+          
+   <apex:pageBlock title="Resource Request Details" mode="inlineEdit" id="DetailBlock" rendered="{!!ReloadFailed}">
+
+        <apex:pageBlockButtons id="PBB" location="top">
+            <apex:commandButton id="editButton"       value="Edit"   action="{!edit}"/>
+            <apex:commandButton id="saveButton"   value="Save"   action="{!save}"   style="display:none"/>
+<!--            <apex:commandButton id="cancelButton" value="Cancel" action="{!cancel}" style="display:none"/>  -->
+           <apex:commandButton onclick="resetInlineEdit()" id="cancelButton" value="Cancel"  style="display:none"/>
+<!--           <apex:commandButton onclick="alert('Not implemented'); return false;" id="reviewRequestButton" value="Request Review" />  -->
+           <apex:commandButton title="Broadcasts this pending request to the team to start the staffing process.  The request must have at least one role for this button to be active." onclick="var conf = confirmation('Are you sure you wish to open this request for staffing?'); if(conf) {openRequest()}; return false" id="openRequestButton" value="Post Request to Team" rendered="{!IsSalesOrPresalesManager}" disabled="{!ResourceRequest.Status__c != 'Pending' || !hasAtLeastOneRole }" />
+           <apex:commandButton title="Converts this pending request directly to a sales event." onclick="var conf = confirmation('Are you sure you wish to convert this pending request to an event using the resource holds below?'); if(conf) {convertPendingRequestToEvent()}; return false" id="convertPendingRequestButton" value="Convert Pending Request to Event" rendered="{!IsPresalesManager }" disabled="{!ResourceRequest.Status__c != 'Pending' }" />
+           <apex:commandButton title="Once the team is selected and dates are chosen, this will close this request AND convert it to an event. No more people may sign up for any roles." onclick="var conf = confirmation('Are you sure you wish to complete this request AND convert it to an event on the opportunity?\n\nIt will copy only the confirmed team members to the new event.'); if(conf) {completeRequest(true);}; return false" id="convertRequestButton" value="Complete and Convert to Event"  rendered="{!IsSalesOrPresalesManager}"  disabled="{! (ResourceRequest.Status__c == 'Pending' || ResourceRequest.Status__c == 'Complete' || ResourceRequest.Status__c == 'Completed' || ResourceRequest.Status__c == 'Revoked'  || !requiredRolesFilled ) ||  !(IsSalesOrPresalesManager) }" />
+           <apex:commandButton title="Once the team is selected and dates are chosen, this will close this request WITHOUT converting it to an event. No more people may sign up for any roles." onclick="var conf = confirmation('Are you sure you wish to complete this request WITHOUT converting it to an event on the opportunity?'); if(conf) {completeRequest(false);}; return false" id="completeRequestButton" value="Complete Only"   rendered="{!IsSalesOrPresalesManager}"  disabled="{! (ResourceRequest.Status__c == 'Pending' || ResourceRequest.Status__c == 'Complete' || ResourceRequest.Status__c == 'Completed' || ResourceRequest.Status__c == 'Revoked'  || !requiredRolesFilled ) ||  !(IsSalesOrPresalesManager) }" />
+           <apex:commandButton title="Revokes/cancels this request.    WARNING:  This cannot be undone!" onclick="var conf = confirmation('Are you sure you wish to cancel this request for staffing?'); if(conf) {revokeRequest()}; return false" id="revokeRequestButton" value="Revoke Request"  rendered="{!IsSalesOrPresalesManager}"  disabled="{!!(ResourceRequest.Status__c == 'Pending' || ResourceRequest.Status__c = 'Open' )}" />
+
+<!--            <apex:commandButton id="deleteButton"     value="Delete" action="{!delete}" onclick="if ((Modal.confirm && Modal.confirm('Are you sure?')) || (!Modal.confirm && window.confirm('Are you sure?'))) {return true;} else {return false;}"/>
+-->
+        </apex:pageBlockButtons>
+
+       <apex:pageBlockSection title="Details"  columns="2"  rendered="{!!ReloadFailed}"> 
+        <apex:outputText value="NOTICE: This request has not been opened and is not visible to the team yet." style="color:red" rendered="{!ResourceRequest.Status__c == 'Pending' }"> </apex:outputText>
+        <apex:outputText value="WARNING: This request has RFP dates set but has a non-RFP event type." style="color:red" rendered="{!RFxDatesSetOnNonRFx}"> </apex:outputText>
+       <apex:outputText value="NOTICE: This request is no longer active (completed or revoked).  Please update the event, not this request!" style="color:red;background-color: #FFFF00" rendered="{!ResourceRequest.Status__c == 'Complete' || ResourceRequest.Status__c == 'Completed' }"> </apex:outputText>
+       <apex:outputText value=" " rendered="{!ResourceRequest.Status__c == 'Complete' || (ResourceRequest.Status__c == 'Pending') || RFxDatesSetOnNonRFx  }"/>
+        <apex:outputField id="oppField" value="{!ResourceRequest.Opportunity__c}"/>
+<!--        <apex:outputField id="oppNameField" value="{!ResourceRequest.Opportunity__r.Name}"/> -->
+       <apex:outputfield id="eventType" value="{!ResourceRequest.Event_Type__c}">
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       <apex:outputfield id="nameField" value="{!ResourceRequest.Name}">
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       <apex:outputfield id="presType" value="{!ResourceRequest.Presentation_Type__c}"  rendered="{!ResourceRequest.Event_Type__c != 'RFI / RFP'}" >
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       <apex:outputfield id="rfxExpected" value="{!ResourceRequest.RFx_Received__c}" rendered="{!ResourceRequest.Event_Type__c == 'RFI / RFP'}" >
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"  />
+       </apex:outputField>
+       <apex:outputfield id="statusField" value="{!ResourceRequest.Status__c}">
+               <apex:inlineEditSupport disabled="true" showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>        
+       <apex:outputfield id="eventLoc" value="{!ResourceRequest.Location__c}" rendered="{!ResourceRequest.Event_Type__c != 'RFI / RFP'}" >
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       <apex:outputfield id="rfxInternal" value="{!ResourceRequest.RFx_Internal_Due__c}" rendered="{!ResourceRequest.Event_Type__c == 'RFI / RFP'}" >
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"  />
+       </apex:outputField>
+       <apex:outputText id="spacer2" rendered="{!ResourceRequest.Event_Type__c == 'RFI / RFP'}" ></apex:outputText>
+       <apex:outputfield id="rfxExternal" value="{!ResourceRequest.RFx_External_Due__c}" rendered="{!ResourceRequest.Event_Type__c == 'RFI / RFP'}" >
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"  />
+       </apex:outputField>
+
+
+
+       </apex:pageBlockSection>
+       
+       <apex:pageBlockSection title="Description"  columns="1"> 
+       <apex:outputfield label="" id="descField"  value="{!ResourceRequest.Description__c}" >
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       </apex:pageBlockSection>
+       
+       
+       
+       <apex:pageBlockSection title="Event Goals"  columns="1"> 
+       <apex:outputfield label="" id="eventgoalField"  value="{!ResourceRequest.Event_Goals__c}" >
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       </apex:pageBlockSection>
+
+       
+   </apex:pageBlock>
+
+    <apex:pageBlock title="Team Availability" id="AvailabilityBlock"  rendered="{!!ReloadFailed}">
+    <apex:commandButton action="{!saveResources}" value="Save Availability Changes" id="saveResourceButton"  rendered="{!(!RoleBeingEdited)}" reRender="AvailabilityBlock" />
+    <!--
+        <apex:commandButton action="{!URLFOR($Action.Resource_Assignment__c.New)}" value="Add New Person" id="newResourceButton"  rendered="{!(!RoleBeingEdited)}" reRender="AvailabilityBlock" />
+    <apex:commandButton action="{!addMeToResources}" value="Add Me" id="addMeButton"  rendered="{!(!RoleBeingEdited  &&  !(ResourceRequest.Status__c != 'Complete' && ResourceRequest.Status__c != 'Revoked' && ResourceRequest.Status__c != 'Pending'))}" reRender="AvailabilityBlock"  /> <!-- onclick="return confirm('Are you sure you want to add yourself to the availability?')" -->
+
+    
+        <apex:pageBlockTable value="{!AssignmentsList}" var="assignment">
+            <apex:column style="background-color:lightgrey">
+                    <apex:commandLink onclick="var conf = confirmation('Are you sure you wish to select {!assignment.ResourceName} for the {!assignment.RAssignment.Resource_Role__r.Role__c} role?'); if(conf) { this.disabled=true; confirmAssignment('{!assignment.RAssignment.Id}');} return false"  value="Select" id="FillRoleLink" style="color: #3366CC; text-decoration: none;"  rendered="{!assignment.RAssignment.Status__c == 'Pending' && IsSalesOrPresalesManager}" reRender="AvailabilityBlock,RoleBlock" /> <!-- rendered="{!assignment.RAssignment.Resource_Role__c != 'Filled'}" -->
+                    <apex:commandLink onclick="var conf = confirmation('Are you sure you wish to unselect {!assignment.ResourceName} from the {!assignment.RAssignment.Resource_Role__r.Role__c} role?'); if(conf) { this.disabled=true; releaseAssignment('{!assignment.RAssignment.Id}');} return false"  value="Unselect" id="ReleaseRoleLink" style="color: #3366CC; text-decoration: none;" rendered="{!assignment.RAssignment.Status__c == 'Selected' && IsSalesOrPresalesManager}" reRender="AvailabilityBlock,RoleBlock" /> <!--  -->
+                    &nbsp;&nbsp;<apex:commandLink onclick="var conf = confirmation('Are you sure you wish to delete {!assignment.ResourceName} from the {!assignment.RAssignment.Resource_Role__r.Role__c} role?'); if(conf) { this.disabled=true; deleteAssignment('{!assignment.RAssignment.Id}');} return false"  value="Delete" id="DeleteRoleLink" style="color: #3366CC; text-decoration: none;" rendered="{!assignment.RAssignment.Status__c == 'Pending' && IsSalesOrPresalesManager}" reRender="AvailabilityBlock,RoleBlock" /> <!--  -->
+                    <apex:image id="theImage" styleClass="right" value="{!URLFOR($Resource.GreenCheckCircle)}" width="18" height="18" rendered="{!assignment.RAssignment.Status__c == 'Selected'}"/>
+            </apex:column>
+
+            <apex:column style="background-color:lightgrey">
+             
+            <apex:selectList value="{!assignment.RAssignment.Resource_Role__c}" size="1" rendered="{!(assignment.EditRole)}" disabled="{!assignment.RAssignment.Status__c == 'Selected'}">
+              <apex:selectOptions value="{!possibleRoles}"/>
+              <apex:actionSupport action="{!assignment.changeRole}"  event="onchange"/>
+           </apex:selectList>
+           <i><apex:commandLink action="{!assignment.enableEditRole}" value="Cancel" id="theCancelRoleCommandLink"  rendered="{!(assignment.EditRole)}" reRender="AvailabilityBlock" /></i>
+           <apex:commandLink action="{!assignment.enableEditRole}" value="{!assignment.RAssignment.Resource_Role__r.Role__c}" id="theChangeRoleCommandLink"  rendered="{!(!assignment.EditRole && assignment.RAssignment.Status__c != 'Selected' && assignment.RAssignment.Status__c != 'Not Selected')}"   reRender="AvailabilityBlock" />
+           <apex:outputField value="{!assignment.RAssignment.Resource_Role__r.Role__c}" id="theChangeRoleOutputText"  rendered="{!(!assignment.EditRole && (assignment.RAssignment.Status__c == 'Selected' || assignment.RAssignment.Status__c == 'Not Selected') )}"  />
+           <apex:facet name="header">Role</apex:facet>
+            </apex:column>
+            <apex:column style="background-color:lightgrey" > 
+                  <apex:commandLink action="{!URLFOR($Action.Resource_Assignment__c.Edit,assignment.RAssignment.Id )}" value="{!assignment.ResourceName}"  /> <!-- rendered="{!(assignment.RAssignment.Status__c != 'Selected' && assignment.RAssignment.Status__c != 'Not Selected') }" -->
+<!--                  <apex:outputText value="{!assignment.ResourceName}"  rendered="{!(assignment.RAssignment.Status__c == 'Selected' || assignment.RAssignment.Status__c == 'Not Selected') }" /> -->
+                  &nbsp;&nbsp;
+                  <apex:image id="theNoteImage" styleClass="left" title="{!assignment.rAssignment.Note__c}" value="{!URLFOR($Resource.YellowStickyNote)}" width="18" height="18" rendered="{!(assignment.rAssignment.Note__c != null && assignment.rAssignment.Note__c != '' )}"/>
+                  <apex:facet name="header">Who</apex:facet>
+            </apex:column>
+            <apex:variable var="cnt" value="{!0}" />
+            <apex:repeat var="pd" value="{!PossibleDatesList}" >
+                <apex:column headerclass="{!IF((pd.Status__c == 'Selected'), 'SelectedDate', if((pd.Status__c == 'Not Selected') , 'NotSelectedDate' , '')) }" style="{!IF((assignment.AvailabilityMap[pd.Id] == 'Unavailable'), 'background-color:red', IF((assignment.AvailabilityMap[pd.Id] == 'Preferred'), 'background-color:lightblue', IF((assignment.AvailabilityMap[pd.Id] == 'Available'), 'background-color:lightgreen','background-color:lightyellow;font-style:italic' )   ))}" > 
+
+                    <apex:outputField value="{!assignment.AvailabilityObjectMap[pd.Id].Availability__c}" >
+                       <apex:inlineEditSupport showOnEdit="saveResourceButton, cancelResourceButton"
+                        hideOnEdit="" event="ondblclick"      
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+<!--                      <apex:actionSupport action="{!assignment.saveAvailabilities}"  event="onselect" reRender="AvailabilityBlock"/> -->
+                    </apex:outputField>
+                    <apex:facet name="header">
+                        <apex:outputText value="{!PossibleDateLabelsMap[pd.ID] }" escape="false" />      
+                    </apex:facet>
+                </apex:column>
+                <apex:variable var="cnt" value="{!cnt+1}"/>
+            </apex:repeat>
+            
+        </apex:pageBlockTable> 
+
+
+    </apex:pageBlock> 
+    
+        <apex:pageBlock title="Requested Roles" id="RoleBlock"  rendered="{!!ReloadFailed}">
+         <apex:commandButton action="{!URLFOR($Action.Resource_Role__c.New,null ,[ResReqID=ResourceRequest.Id] )}" value="Add New Requested Role" id="newRoleResourceButton"  reRender="RoleBlock"  rendered="{!IsSalesOrPresalesManager}" />
+
+    
+            <apex:pageBlockTable value="{!RequestedResourceRoles}" var="reqRole">
+                <apex:column width="65" style="" > 
+                    <apex:commandLink action="{!URLFOR($Action.Resource_Role__c.Edit,reqRole.Id )}" value="Edit" id="EditRoleLink" style="color: #3366CC; text-decoration: none;"  rendered="{!IsSalesOrPresalesManager}"/>
+                    &nbsp;&nbsp;<apex:commandLink onclick="var conf = confirmation('Are you sure you wish to delete this role?'); if(conf) {deleteRole('{!reqRole.Id}')}; return false" value="Del" id="DeleteRoleLink" style="color: #3366CC; text-decoration: none;" reRender="RoleBlock" rendered="true" />
+                       <apex:facet name="header">Actions</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!reqRole.Role__c}"> 
+                       <apex:facet name="header">Role</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!reqRole.Status__c}"> 
+                       <apex:facet name="header">Status</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!reqRole.Note__c}"> 
+                       <apex:facet name="header">Notes</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!reqRole.LastModifiedDate}"> 
+                       <apex:facet name="header">Last Updated</apex:facet>
+                </apex:column>
+                <apex:column style="" rendered="{!reqRole.Status__c != 'No Longer Needed' && reqRole.Status__c != 'Filled' }" > 
+                    <i><apex:commandButton onclick="var conf = confirmation('Are you sure you wish to sign up for this role?'); if(conf) {this.disabled=true; addCurrentUserForSpecifiedRole('{!reqRole.Role__c}');} return false" value="Add me for this role" id="AddMeForRoleButton" rendered="{!(ResourceRequest.Status__c != 'Complete' && ResourceRequest.Status__c != 'Revoked' && ResourceRequest.Status__c != 'Pending') }" disabled="{!isSales}"  /></i> 
+                       <apex:facet name="header"></apex:facet>
+                </apex:column>
+        
+            </apex:pageBlockTable> 
+        
+        </apex:pageBlock> 
+        
+        <apex:pageBlock title="Possible Dates" id="PossibleDatesBlock" rendered="{!(!ReloadFailed && ResourceRequest.Event_Type__c != 'RFI / RFP')}" >
+         <apex:commandButton action="{!URLFOR($Action.Possible_Date__c.New,null ,[ResReqID=ResourceRequest.Id] )}" value="Add New Date" id="newPossibleDateButton"  reRender="PossibleDatesBlock" rendered="{!IsSalesOrPresalesManager}" />
+    
+            <apex:pageBlockTable value="{!AllPossibleDatesList}" var="pDate">
+                <apex:column width="75" style=""> 
+                    <apex:commandLink action="{!URLFOR($Action.Possible_Date__c.Edit,pDate.Id )}" value="Edit" id="EditDateLink" style="color: #3366CC; text-decoration: none;"  rendered="{!IsSalesOrPresalesManager}"/>
+                    <apex:outputText rendered="{!pDate.Status__c == 'Possible' && IsSalesOrPresalesManager}">&nbsp;|&nbsp;</apex:outputText>
+                    <apex:commandLink onclick="var conf = confirmation('Are you sure you wish to select this date?  All other possible dates will be marked as Not Selected.'); if(conf) {selectDate('{!pDate.Id}')}; return false" value="Select" id="SelectDateLink" style="color: #3366CC; text-decoration: none;"  rendered="{!pDate.Status__c == 'Possible' && IsSalesOrPresalesManager}" reRender="PossibleDatesBlock"  />
+                       <apex:facet name="header">Actions</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Status__c}"> 
+                       <apex:facet name="header">Status</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Start_Date__c}"> 
+                       <apex:facet name="header">Start</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.End_Date__c}"> 
+                       <apex:facet name="header">End</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Event_Hours__c}"> 
+                       <apex:facet name="header">Hours</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Date_is_Flexible__c}"> 
+                       <apex:facet name="header">Date is Flexible</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Note__c}"> 
+                       <apex:facet name="header">Note</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.LastModifiedDate}"> 
+                       <apex:facet name="header">Last Updated</apex:facet>
+                </apex:column>
+                <!--
+                <apex:column style="" rendered="{!reqRole.Status__c != 'No Longer Needed' && reqRole.Status__c != 'Filled' }" > 
+                    <i><apex:commandButton onclick="var conf = confirmation('Are you sure you wish to sign up for this role?'); if(conf) {this.disabled=true; addCurrentUserForSpecifiedRole('{!reqRole.Role__c}');} return false" value="Add me for this role" id="AddMeForRoleButton" /></i>
+                       <apex:facet name="header"></apex:facet>
+                </apex:column>
+                -->
+            </apex:pageBlockTable> 
+        
+        </apex:pageBlock> 
+        
+        
+        <apex:pageBlock title="Resource Holds" id="ResourceHoldsBlock" rendered="{!IsPresalesManager}" >
+         <apex:commandButton action="{!URLFOR($Action.Resource_Hold__c.New,null ,[ResReqID=ResourceRequest.Id] )}" value="Add New Resource Hold" id="newResourceHoldButton" rendered="{!IsPresalesManager}" />
+    
+            <apex:pageBlockTable value="{!AllResourceHoldsList}" var="thisHold">
+                <apex:column width="75" style=""> 
+                    <apex:commandLink action="{!URLFOR($Action.Resource_Hold__c.Edit,thisHold.Id )}" value="Edit" id="EditHoldLink" style="color: #3366CC; text-decoration: none;" />
+                
+                    <apex:outputText >&nbsp;|&nbsp;</apex:outputText>
+                    <apex:commandLink onclick="var conf = confirmation('Are you sure you wish to delete this hold?'); if(conf) {deleteHold('{!thisHold.Id}')}; return false" value="Del" id="DeleteHoldLink" style="color: #3366CC; text-decoration: none;"  reRender="ResourceHoldsBlock"  />
+                
+                       <apex:facet name="header">Actions</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!thisHold.Who__c}"> 
+                       <apex:facet name="header">Who</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!thisHold.Coverage_Area__c}"> 
+                       <apex:facet name="header">Coverage Area</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!thisHold.Description__c}"> 
+                       <apex:facet name="header">Description</apex:facet>
+                </apex:column>
+            </apex:pageBlockTable> 
+        
+        </apex:pageBlock> 
+          <apex:outputLabel value="Modified By:" for="ModifiedBy"/>&nbsp;&nbsp;&nbsp;
+          <apex:outputField id="ModifiedBy" title="" value="{!ResourceRequest.LastModifiedById}" /><br/>
+          <apex:outputLabel value="Modified On:" for="ModifiedDate"/>&nbsp;&nbsp;
+          <apex:outputField id="ModifiedDate" title="" value="{!ResourceRequest.LastModifiedDate}" /><br/><br/>
+          <apex:outputLabel value="Created By:" for="CreatedBy"/>&nbsp;&nbsp;&nbsp;
+          <apex:outputField id="CreatedBy" title="" value="{!ResourceRequest.CreatedById}" /><br/>
+          <apex:outputLabel value="Created On:" for="CreatedDate"/>&nbsp;&nbsp;
+          <apex:outputField id="CreatedDate" title="" value="{!ResourceRequest.CreatedDate}" />
+          
+        
+   </apex:form>  
+<!--
+    <apex:relatedList subject="{!ResourceRequest}" 
+                           list="Resource_Roles__r" />
+    <apex:relatedList subject="{!ResourceRequest}" 
+                           list="Possible_Dates__r" />
+-->   
+
+
+
+<script>
+
+    function deleteRole(roleID)
+    {
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ResourceRequestController.deleteRole}',
+            roleID.toString(),
+            '{!ResourceRequest.Id}',
+            function(result, event){
+                if(result == null) alert('You cannot delete a role that has assigned individuals.  Remove the assignments and then try again.');
+                else{
+                if (event.status) {
+                     clearAvailabilityCache();
+                     //rerenderAvailabilityBlock();
+                     updateRoleBlock();
+                     updateMessages();   
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                        
+                    alert('1');
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                    alert('2');
+                }
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+
+
+
+    function confirmAssignment(assignID)
+    {
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ResourceRequestController.confirmAssignment}',
+            assignID.toString(),
+            '{!ResourceRequest.Id}',
+            function(result, event){
+                if (event.status) {
+                     clearAvailabilityCache();
+                     //rerenderAvailabilityBlock();
+                     rerenderChatter();
+                     updateRoleBlock();
+                     updateDetailBlock();
+                        
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+    
+    function releaseAssignment(assignID)
+    {
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ResourceRequestController.releaseAssignment}',
+            assignID.toString(),
+            '{!ResourceRequest.Id}',
+            function(result, event){
+                if (event.status) {
+                     clearAvailabilityCache();
+                     rerenderChatter();
+                     updateRoleBlock();
+                     updateDetailBlock();
+                        
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+
+    function deleteAssignment(assignID)
+    {
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ResourceRequestController.deleteAssignment}',
+            assignID.toString(),
+            '{!ResourceRequest.Id}',
+            function(result, event){
+                if (event.status) {
+                     clearAvailabilityCache();
+                     rerenderChatter();
+                     updateRoleBlock();
+                     updateDetailBlock();
+                        
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+
+
+    function selectDate(dateID)
+    {
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ResourceRequestController.selectDate}',
+            dateID.toString(),
+            '{!ResourceRequest.Id}',
+            function(result, event){
+                if (event.status) {
+                     clearAvailabilityCache();
+                     updateDatesBlock();
+                     rerenderChatter();
+                        
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+
+    function deleteHold(holdId)
+    {
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ResourceRequestController.deleteHold}',
+            holdId.toString(),
+            '{!ResourceRequest.Id}',
+            function(result, event){
+                if (event.status) {
+                     updateHoldsBlock();
+                        
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+
+
+    function addCurrentUserForSpecifiedRole(newRole) {
+        var accountName = newRole;
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ResourceRequestController.addCurrentUserForSpecifiedRole}',
+            accountName.toString(),
+            '{!ResourceRequest.Id}',
+            function(result, event){
+                if (event.status) {
+                    // Get DOM IDs for HTML and Visualforce elements like this
+                    //document.getElementById('remoteAcctId').innerHTML = result.Id
+                    //document.getElementById(
+                    //    "{!$Component.block.blockSection.secondItem.acctNumEmployees}"
+                    //    ).innerHTML = result.NumberOfEmployees;
+                     //document.getElementById('acctSearch').value = result;
+                     //if we are here, we need to refresh the availability table
+                     //disable the button now that they just pressed it
+                     //document.getElementById('AddMeForRoleButton').disabled = true;
+                     clearAvailabilityCache();
+                     //rerenderAvailabilityBlock();
+                        
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+    
+    function convertPendingRequestToEvent()
+    {
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ResourceRequestController.convertPendingRequestToEvent}',
+            '{!ResourceRequest.Id}',
+            function(result, event){
+                if (event.status) {
+                    // Get DOM IDs for HTML and Visualforce elements like this
+                    //document.getElementById('remoteAcctId').innerHTML = result.Id
+                    //document.getElementById(
+                    //    "{!$Component.block.blockSection.secondItem.acctNumEmployees}"
+                    //    ).innerHTML = result.NumberOfEmployees;
+                     //document.getElementById('acctSearch').value = result;
+                     //if we are here, we need to refresh the availability table
+                     //disable the button now that they just pressed it
+                     //document.getElementById('AddMeForRoleButton').disabled = true;
+                     //clearAvailabilityCache();
+                     //rerenderAvailabilityBlock();
+                     if(result == 'Success')
+                     {
+                         updateDetailBlock();
+                         rerenderChatter();
+                     }
+                     else
+                     {
+                         window.location = result;
+                     }
+   
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+
+    
+    function openRequest()
+    {
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ResourceRequestController.openRequest}',
+            '{!ResourceRequest.Id}',
+            function(result, event){
+                if(event.status) 
+                {
+                                       
+                    // Get DOM IDs for HTML and Visualforce elements like this
+                    //document.getElementById('remoteAcctId').innerHTML = result.Id
+                    //document.getElementById(
+                    //    "{!$Component.block.blockSection.secondItem.acctNumEmployees}"
+                    //    ).innerHTML = result.NumberOfEmployees;
+                     //document.getElementById('acctSearch').value = result;
+                     //if we are here, we need to refresh the availability table
+                     //disable the button now that they just pressed it
+                     //document.getElementById('AddMeForRoleButton').disabled = true;
+                     //clearAvailabilityCache();
+                     //rerenderAvailabilityBlock();
+                     updateDetailBlock();
+                     updateRoleBlock();
+                     rerenderChatter();
+                    
+                     if(result != 'Success')
+                     {
+                       document.getElementById("responseErrors").innerHTML = result +'. Please contact Salesforce Adminstartor';
+                     }                   
+   
+                } 
+                else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+    
+    
+    function revokeRequest()
+    {
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ResourceRequestController.revokeRequest}',
+            '{!ResourceRequest.Id}',
+            function(result, event){
+                if (event.status) {
+                    // Get DOM IDs for HTML and Visualforce elements like this
+                    //document.getElementById('remoteAcctId').innerHTML = result.Id
+                    //document.getElementById(
+                    //    "{!$Component.block.blockSection.secondItem.acctNumEmployees}"
+                    //    ).innerHTML = result.NumberOfEmployees;
+                     //document.getElementById('acctSearch').value = result;
+                     //if we are here, we need to refresh the availability table
+                     //disable the button now that they just pressed it
+                     //document.getElementById('AddMeForRoleButton').disabled = true;
+                     //clearAvailabilityCache();
+                     //rerenderAvailabilityBlock();
+                     updateDetailBlock();
+                     rerenderChatter();
+   
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+    
+    function completeRequest(shouldConvert)
+    {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ResourceRequestController.completeRequest}',
+            '{!ResourceRequest.Id}',
+            shouldConvert,
+            function(result, event){
+                if (event.status) {
+                    // Get DOM IDs for HTML and Visualforce elements like this
+                    //document.getElementById('remoteAcctId').innerHTML = result.Id
+                    //document.getElementById(
+                    //    "{!$Component.block.blockSection.secondItem.acctNumEmployees}"
+                    //    ).innerHTML = result.NumberOfEmployees;
+                     //document.getElementById('acctSearch').value = result;
+                     //if we are here, we need to refresh the availability table
+                     //disable the button now that they just pressed it
+                     //document.getElementById('AddMeForRoleButton').disabled = true;
+                     //clearAvailabilityCache();
+                     //rerenderAvailabilityBlock();
+                     if(result == 'Success')
+                     {
+                         updateDetailBlock();
+                         rerenderChatter();
+                     }
+                     else
+                     {
+                         window.location = result;
+                     }
+   
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+    
+    
+    function confirmation(prompt) {
+        var answer = confirm(prompt)
+        if (answer){
+            return true
+        }
+        else{
+            return false
+        }
+    }    
+</script>
+
+
+<!--
+<script>
+    // Using jQuery, hide all of the actionLinks on the Workshops
+    // This forces the user to click the Workshop name and
+    // then click the [Edit] button 
+    $(".actionLink").css("display","none");
+</script>
+-->
+ 
+</apex:page>

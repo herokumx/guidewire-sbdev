@@ -1,0 +1,242 @@
+<apex:page standardController="Sales_Event_Feedback__c" extensions="SalesEventFeedBackOverrideExtension" title="Sales Event FeedBack Page" >
+    
+   
+    <apex:sectionHeader title="{!$ObjectType.Sales_Event_Feedback__c.Label}" />
+    
+    <apex:form id="TheFeedbackForm">
+                
+        <apex:pageBlock title="Sales Event Feedback" Mode="edit" id="TheFeedbackBlock">
+                
+           <p style="color:green"><apex:actionStatus startText="In Progress..." id="statusId"/></p>
+            <apex:pageBlockButtons >
+<!-- Commented by RB on 14th July
+                <apex:commandButton value="Save" action="{!feedbacksave}" />
+--><!-- Added on 14th July by RB-->
+                <apex:commandButton value="Save" action="{!feedbacksave}" reRender="msgId" status="statusId"/>
+<!--End here-->
+                <apex:commandButton value="Cancel" action="{!cancelMe}" immediate="true"/>
+            </apex:pageBlockButtons>
+
+          <apex:pagemessages id="msgId"/>
+                
+            <apex:pageBlockSection id="feedbackSection" columns="1"><apex:outputField id="salesevent" value="{!Sales_Event_Feedback__c.Sales_Event__c}"/></apex:pageBlockSection>
+            <apex:pageBlockSection id="OppSection" columns="1"><apex:outputField id="Opportunity" value="{!Sales_Event_Feedback__c.Sales_Event__r.Opportunity__c}"/></apex:pageBlockSection>
+            <div class="pbSubheader brandTertiaryBgr"><h3>Event Goals</h3></div>
+            <apex:pageBlockSection id="EventGoals" columns="1"><apex:outputField id="EventGoals" label="" value="{!Sales_Event_Feedback__c.Sales_Event__r.Event_Goals__c}"/></apex:pageBlockSection> 
+ 
+            <apex:repeat value="{!Questions}" var="que">
+            <apex:panelGrid columns="2" > 
+                <p style="padding-left:20px;width:auto;"><b>{!que.question.Question_Description__c}</b></p>
+                <apex:selectRadio id="goalEvent" value="{!que.answer.Answer__c}" >
+                     <apex:selectOptions value="{!Eventaccom}" />
+                </apex:selectRadio>
+            </apex:panelGrid> 
+            </apex:repeat>
+            <apex:repeat value="{!EventFeedback}" var="evt">
+            <p id="goalEventComm1" style="padding-left:23px;margin:0 0 10px 0;">{!evt.question.Question_Description__c}
+            <spam id="goalEventComm2" style="font-weight:bold;color:red;display:none;"><br/>(Please provide comments.)</spam><br/>
+            <!-- By Rakshik 19th July <apex:inputTextarea cols="100" rows="2" value="{!evt.answer.Answer__c}"/>
+            --><apex:inputTextarea cols="160" rows="10" value="{!evt.answer.Comment__c}"/></p>
+            </apex:repeat>    
+            <apex:pageblockSection id="Presentation" title="Preparation" columns="1">
+                <apex:repeat value="{!PreparationSection}" var="sec">
+                <apex:panelGrid columns="2">
+                    <p style="padding-left:20px;width:auto;"><b>{!sec.question.Question_Description__c}</b></p>
+                       <apex:image url="{!$Resource.HelpImage}" Title="{!sec.question.Question_Help_Title__c}" />
+                    <apex:selectRadio id="Prep" value="{!sec.answer.Answer__c}">
+                        <apex:selectOption itemValue="Yes" itemLabel="Yes"/>
+                        <apex:selectOption itemValue="No" itemLabel="No"/>
+                    </apex:selectRadio>
+                </apex:panelGrid>
+                </apex:repeat>
+                <apex:variable var="radioCount" value="{!0}"  />
+                
+                <apex:dataTable value="{!Presentation}" var="pr" id="table1" border="1" cellspacing="0" cellpadding="5">
+                    
+                    <apex:column headerValue="Please rate the impact of following:">
+                       <apex:outputLabel value="{!pr.question.Question_Description__c}" 
+                       Title="{!pr.question.Question_Help_Title__c}" />&nbsp;
+                       <apex:image url="{!$Resource.HelpImage}" Title="{!pr.question.Question_Help_Title__c}" />
+                       <apex:variable var="radioCount" value="{!radioCount+1}"  />
+                    </apex:column>
+                   
+                    
+                    <apex:column headerValue="Not Applicable" style="width:50px;border-right:1px solid red;padding:0;text-align:center;">
+                        <apex:outputPanel rendered="{!pr.isNotApplicable}">
+                        <input name="row{!radioCount+1}" id="row1{!radioCount+1}" checked="true" type="radio" value="Not Applicable" onclick="updateSelectedAnswer('{!pr.question.id}','Not Applicable');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!NOT(pr.isNotApplicable)}">
+                        <input name="row{!radioCount+1}" id="row1{!radioCount+1}" type="radio" value="Not Applicable" onclick="updateSelectedAnswer('{!pr.question.id}','Not Applicable');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                    </apex:column>
+                    
+                   <apex:column headerValue="Negative" style="padding:0;width:80px;background:red;text-align:center;">
+                        <apex:outputPanel rendered="{!pr.isNegative}">
+                        <input name="row{!radioCount+1}" id="row2{!radioCount+1}" checked="true" type="radio" value="Negative" onclick="updateSelectedAnswer('{!pr.question.id}','Negative');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!NOT(pr.isNegative)}">
+                        <input name="row{!radioCount+1}" id="row2{!radioCount+1}"  type="radio" value="Negative" onclick="updateSelectedAnswer('{!pr.question.id}','Negative');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Neutral" style="padding:0;width:80px;text-align:center;">
+                        <apex:outputPanel rendered="{!pr.isNeutral}">
+                        <input name="row{!radioCount+1}" id="row3{!radioCount+1}" checked="false" type="radio" value="Neutral"  onclick="updateSelectedAnswer('{!pr.question.id}','Neutral');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!NOT(pr.isNeutral)}">
+                        <input name="row{!radioCount+1}" id="row3{!radioCount+1}"  type="radio" value="Neutral"  onclick="updateSelectedAnswer('{!pr.question.id}','Neutral');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Positive" style="padding:0;width:80px;background:green;text-align:center;">
+                        <apex:outputPanel rendered="{!pr.isPositive}">
+                        <input name="row{!radioCount+1}" id="row4{!radioCount+1}" checked="false" type="radio" value="Positive" onclick="updateSelectedAnswer('{!pr.question.id}','Positive');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!NOT(pr.isPositive)}">
+                        <input name="row{!radioCount+1}" id="row4{!radioCount+1}" type="radio" value="Positive" onclick="updateSelectedAnswer('{!pr.question.id}','Positive');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                    </apex:column> 
+                    
+                </apex:dataTable>
+            </apex:pageblockSection> 
+            
+            <apex:pageblockSection id="domainExpertise" title="Domain Expertise" columns="1">
+                <apex:repeat value="{!DomainExpSection}" var="domainsec">
+                <apex:panelGrid columns="2">
+                    <p style="padding-left:20px;width:auto;"><b>{!domainsec.question.Question_Description__c}</b></p>
+                    <apex:image url="{!$Resource.HelpImage}" Title="{!domainsec.question.Question_Help_Title__c}" />
+                    <apex:selectRadio id="Domain" value="{!domainsec.answer.Answer__c}" >
+                        <apex:selectOption itemLabel="Yes" itemValue="Yes" />
+                        <apex:selectOption itemLabel="No" itemValue="No" />
+                    </apex:selectRadio>
+                </apex:panelGrid>
+                </apex:repeat>
+                <apex:variable var="radioCount" value="{!10}"  />
+                <apex:dataTable value="{!Domain}" var="Dom" border="1" cellspacing="0" cellpadding="5">
+                    <apex:column style="width:100px;word-wrap:break-word;" headerValue="Please rate the impact of demonstrated expertise in each of the following areas:">
+                       <apex:outputLabel value="{!Dom.question.Question_Description__c}"
+                       Title="{!Dom.question.Question_Help_Title__c}" />&nbsp;
+                       <apex:image url="{!$Resource.HelpImage}" Title="{!Dom.question.Question_Help_Title__c}" />
+                       <apex:variable var="radioCount" value="{!radioCount+1}"  />
+                    </apex:column>
+                    
+                    <apex:column headerValue="Not Applicable" style="width:50px;border-right:1px solid red;padding:0;text-align:center;">
+                        
+                        <apex:outputPanel rendered="{!Dom.isNotApplicable}">
+                        <input name="row{!radioCount+1}" id="row1{!radioCount+1}" checked="true" type="radio" value="Not Applicable" onclick="updateSelectedAnswer('{!Dom.question.id}','Not Applicable');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!NOT(Dom.isNotApplicable)}">
+                        <input name="row{!radioCount+1}" id="row1{!radioCount+1}" type="radio" value="Not Applicable" onclick="updateSelectedAnswer('{!Dom.question.id}','Not Applicable');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                    </apex:column>
+                    
+                   <apex:column headerValue="Negative" style="padding:0;width:80px;background:red;text-align:center;">
+                        
+                        <apex:outputPanel rendered="{!Dom.isNegative}">
+                        <input name="row{!radioCount+1}" id="row2{!radioCount+1}" checked="true" type="radio" value="Negative" onclick="updateSelectedAnswer('{!Dom.question.id}','Negative');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!NOT(Dom.isNegative)}">
+                        <input name="row{!radioCount+1}" id="row2{!radioCount+1}"  type="radio" value="Negative" onclick="updateSelectedAnswer('{!Dom.question.id}','Negative');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Neutral" style="padding:0;width:80px;text-align:center;">
+                       
+                        <apex:outputPanel rendered="{!Dom.isNeutral}">
+                        <input name="row{!radioCount+1}" id="row3{!radioCount+1}" checked="false" type="radio" value="Neutral"  onclick="updateSelectedAnswer('{!Dom.question.id}','Neutral');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!NOT(Dom.isNeutral)}">
+                        <input name="row{!radioCount+1}" id="row3{!radioCount+1}"  type="radio" value="Neutral"  onclick="updateSelectedAnswer('{!Dom.question.id}','Neutral');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Positive" style="padding:0;width:80px;background:green;text-align:center;">
+                        
+                         <apex:outputPanel rendered="{!Dom.isPositive}">
+                        <input name="row{!radioCount+1}" id="row4{!radioCount+1}" checked="false" type="radio" value="Positive" onclick="updateSelectedAnswer('{!Dom.question.id}','Positive');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!NOT(Dom.isPositive)}">
+                        <input name="row{!radioCount+1}" id="row4{!radioCount+1}" type="radio" value="Positive" onclick="updateSelectedAnswer('{!Dom.question.id}','Positive');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                    </apex:column> 
+                </apex:dataTable>
+            </apex:pageblockSection> 
+            
+            <apex:pageblockSection id="sellingSkill" title="Selling Skill" columns="1">
+                <apex:repeat value="{!SkillSec}" var="skill"> 
+                <apex:panelGrid columns="2">
+                    <p style="padding-left:20px;"><b>{!skill.question.Question_Description__c}</b></p>
+                    <apex:image url="{!$Resource.HelpImage}" Title="{!skill.question.Question_Help_Title__c}" />
+                    <apex:selectRadio id="sskill" value="{!skill.answer.Answer__c}" >
+                        <apex:selectOption itemLabel="Yes" itemValue="Yes" />
+                        <apex:selectOption itemLabel="No" itemValue="No" />
+                    </apex:selectRadio>
+                </apex:panelGrid>
+                </apex:repeat>
+                <apex:variable var="radioCount" value="{!20}"  />
+                <apex:dataTable value="{!Selling}" var="sell" border="1" cellspacing="0" cellpadding="5">
+                    <apex:column headerValue="Please rate the impact of following:">
+                       <apex:outputLabel value="{!sell.question.Question_Description__c}"
+                       Title="{!sell.question.Question_Help_Title__c}" />&nbsp;
+                       <apex:image url="{!$Resource.HelpImage}" Title="{!sell.question.Question_Help_Title__c}" />
+                       <apex:variable var="radioCount" value="{!radioCount+1}"  />
+                    </apex:column>
+                    
+                    <apex:column headerValue="Not Applicable" style="width:50px;border-right:1px solid red;padding:0;text-align:center;">
+                        
+                       
+                       <apex:outputPanel rendered="{!sell.isNotApplicable}">
+                        <input name="row{!radioCount+1}" id="row1{!radioCount+1}" checked="true" type="radio" value="Not Applicable" onclick="updateSelectedAnswer('{!sell.question.id}','Not Applicable');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!NOT(sell.isNotApplicable)}">
+                        <input name="row{!radioCount+1}" id="row1{!radioCount+1}" type="radio" value="Not Applicable" onclick="updateSelectedAnswer('{!sell.question.id}','Not Applicable');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                        
+                    </apex:column>
+                    
+                   <apex:column headerValue="Negative" style="padding:0;width:80px;background:red;text-align:center;">
+                        <apex:outputPanel rendered="{!sell.isNegative}">
+                        <input name="row{!radioCount+1}" id="row2{!radioCount+1}" checked="true" type="radio" value="Negative" onclick="updateSelectedAnswer('{!sell.question.id}','Negative');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!NOT(sell.isNegative)}">
+                        <input name="row{!radioCount+1}" id="row2{!radioCount+1}"  type="radio" value="Negative" onclick="updateSelectedAnswer('{!sell.question.id}','Negative');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Neutral" style="padding:0;width:80px;text-align:center;">
+                       
+                       <apex:outputPanel rendered="{!sell.isNeutral}">
+                        <input name="row{!radioCount+1}" id="row3{!radioCount+1}" checked="false" type="radio" value="Neutral"  onclick="updateSelectedAnswer('{!sell.question.id}','Neutral');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!NOT(sell.isNeutral)}">
+                        <input name="row{!radioCount+1}" id="row3{!radioCount+1}"  type="radio" value="Neutral"  onclick="updateSelectedAnswer('{!sell.question.id}','Neutral');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Positive" style="padding:0;width:80px;background:green;text-align:center;">
+                        
+                         <apex:outputPanel rendered="{!sell.isPositive}">
+                        <input name="row{!radioCount+1}" id="row4{!radioCount+1}" checked="false" type="radio" value="Positive" onclick="updateSelectedAnswer('{!sell.question.id}','Positive');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!NOT(sell.isPositive)}">
+                        <input name="row{!radioCount+1}" id="row4{!radioCount+1}" type="radio" value="Positive" onclick="updateSelectedAnswer('{!sell.question.id}','Positive');" style="margin:10px 0 10px 0;"/>
+                        </apex:outputPanel>
+                          </apex:column> 
+                </apex:dataTable>
+            </apex:pageblockSection>        
+            
+            <br/><br/>
+            <apex:repeat value="{!Comments}" var="comm">    
+            <p id="additionalComm1" style="padding-left:23px;margin:0 0 10px 0;">{!comm.question.Question_Description__c}
+            <spam id="additionalComm2" style="font-weight:bold;color:red;display:none;"><br/>(Please provide your comments.)</spam><br/>
+           <!-- By Rakshik 19th July <apex:inputTextarea value="{!comm.answer.Answer__c}" cols="100" rows="2"/> -->
+           <apex:inputTextarea value="{!comm.answer.Comment__c}" cols="160" rows="10"/></p>
+            </apex:repeat>
+
+        </apex:pageBlock>
+        <apex:actionFunction action="{!updateAnswer}" name="updateSelectedAnswer" rerender="">
+        <apex:param name="firstParam" assignTo="{!questionid}" value="" />
+        <apex:param name="secondParam" assignTo="{!selectedAnswer}" value="" />
+    </apex:actionFunction>
+    </apex:form>
+</apex:page>

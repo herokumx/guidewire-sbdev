@@ -1,0 +1,6 @@
+<!--
+ - Created by Neil.Morris on 7/11/16.
+ -->
+
+<apex:component id="MP_SocialFacebookBox">
+</apex:component>

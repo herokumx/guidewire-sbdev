@@ -1,0 +1,169 @@
+<apex:page standardController="Sales_Support_Request__c" extensions="SalesSupportRequestController" showchat="false">
+  <chatter:feedWithFollowers id="ChatterFeed" entityId="{!thisRequest.Id}" showHeader="true" rendered="true"/>
+ <apex:form >
+ <apex:actionFunction name="updateChatterBlock" action="{!reloadRequest}" rerender="ChatterFeed"  />
+ <apex:actionFunction name="updateDetailBlock" action="{!reloadRequest}" rerender="DetailBlock,ChatterFeed"  />
+ <apex:actionFunction name="updatePreparationBlock" rerender="PreparationsBlock"  />
+
+  <apex:pageMessages rendered="{!ReloadFailed}" ></apex:pageMessages>
+  <apex:pageBlock title="Request Details" id="DetailBlock"  rendered="{!!ReloadFailed}">
+        <apex:pageBlockButtons id="PBB" location="top">
+            <apex:commandButton id="editButton"       value="Edit"   action="{!edit}"/>
+            <apex:commandButton id="saveButton"   value="Save"   action="{!save}"   style="display:none" reRender="DetailBlock"/>
+           <apex:commandButton onclick="resetInlineEdit()" id="cancelButton" value="Cancel"  style="display:none"/>
+           <apex:commandButton title="Marks the request as closed and sets the Actual Completion Date to today." onclick="var conf = confirmation('Are you sure you wish to complete this request?'); if(conf) {completeRequest(false);}; return false" id="completeRequestButton" value="Complete Request"  disabled="{! thisRequest.Status__c == 'Canceled' || thisRequest.Status__c == 'Complete' }" />
+           <apex:commandButton title="Requests that individuals on this request review it for accuracy." onclick="var conf = prompt('The following message will be posted for each team member on this request.  You can edit the message before posting if desired.','Please review this request to make sure the details including hours are correct.'); if(conf) {requestReview(conf)}; return false" id="requestReviewButton" value="Request Team Review"  rendered="{!IsPresalesManager}"/>
+
+        </apex:pageBlockButtons>
+     <apex:pageBlockSection title="Details"  columns="2"> 
+       <apex:outputfield id="reqType" value="{!thisRequest.Type__c}"/>
+       <apex:outputfield id="acc" value="{!thisRequest.Account__c}"/>
+       <apex:outputfield id="reqStatus" value="{!thisRequest.Status__c}"/>
+       <apex:outputfield id="opp" value="{!thisRequest.Opportunity__c}"/>
+       <apex:outputfield id="assignedTo" value="{!thisRequest.Assigned_To__c}"/>
+       <apex:outputfield id="camp" value="{!thisRequest.Campaign__c}"/>
+       <apex:outputText id="reqHours" value="{!thisRequest.Hours__c}"/>
+   </apex:pageBlockSection>
+   <apex:pageBlockSection title="Description"  columns="1"> 
+       <apex:outputfield label="" id="descField"  value="{!thisRequest.Description__c}"   >
+       </apex:outputField>
+   </apex:pageBlockSection>
+     <apex:pageBlockSection title="Timeline"  columns="2"> 
+       <apex:outputfield id="CreateDate"   value="{!thisRequest.Create_Date__c}" />
+       <apex:outputfield id="TargetDate" value="{!thisRequest.Target_Completion_Date__c}"/>
+       <apex:outputfield id="reqDate" value="{!thisRequest.Requested_Completion_Date__c}"/>
+       <apex:outputfield id="ActualDate" value="{!thisRequest.Actual_Completion_Date__c}"/>
+   </apex:pageBlockSection>
+  </apex:pageBlock>
+  <apex:pageBlock title="Preparations" id="PreparationsBlock"  rendered="{!!ReloadFailed}">
+        <apex:pageBlockButtons id="PBB" location="top">
+             <apex:commandButton action="{!URLFOR($Action.Support_Request_Preparation__c.New,null ,[RequestID=thisRequest.Id] )}" value="Add New Preparation" id="newPreparationButton"  reRender="PreparationsBlock" />
+        </apex:pageBlockButtons>
+       <apex:pageBlockTable value="{!PreparationsList}" var="prep">
+                <apex:column width="75" style=""> 
+                    <apex:commandLink action="{!URLFOR($Action.Support_Request_Preparation__c.Edit,prep.Id )}" value="Edit" id="EditPrepLink" style="color: #3366CC; text-decoration: none;"/>
+                    &nbsp;&nbsp;<apex:commandLink onclick="var conf = confirmation('Are you sure you wish to delete this entry?'); if(conf) {deletePrep('{!prep.Id}')}; return false" value="Del" id="DeletePrepLink" style="color: #3366CC; text-decoration: none;" reRender="DetailBlock,PreparationsBlock" />
+                       <apex:facet name="header">Actions</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.Who__c}"> 
+                       <apex:facet name="header">Who</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.Hours__c}"> 
+                       <apex:facet name="header">Hours</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.Start__c}"> 
+                       <apex:facet name="header">Start</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.End__c}"> 
+                       <apex:facet name="header">End</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.Note__c}"> 
+                       <apex:facet name="header">Note</apex:facet>
+                </apex:column>
+       </apex:pageBlockTable>
+  </apex:pageBlock>
+
+ </apex:form>
+ 
+<script>
+    function deletePrep(objID)
+    {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.SalesSupportRequestController.deletePreparation}',
+            objID.toString(),
+            '{!thisRequest.Id}',
+            function(result, event){
+                if (event.status) {
+                     updateDetailBlock();
+                     updatePreparationBlock();
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+
+
+    function requestReview(messageText)
+    {
+       //  alert('Not implemented.');
+       // return false;
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.SalesSupportRequestController.requestReview}',
+            '{!thisRequest.Id}',
+            messageText.toString(),
+            function(result, event){
+                if (event.status) {
+                    updateChatterBlock();
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        ); 
+    }
+    
+    function completeRequest(shouldConvert)
+    {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.SalesSupportRequestController.completeRequest}',
+            '{!thisRequest.Id}',
+            function(result, event){
+                if (event.status) {
+                    // Get DOM IDs for HTML and Visualforce elements like this
+                    //document.getElementById('remoteAcctId').innerHTML = result.Id
+                    //document.getElementById(
+                    //    "{!$Component.block.blockSection.secondItem.acctNumEmployees}"
+                    //    ).innerHTML = result.NumberOfEmployees;
+                     //document.getElementById('acctSearch').value = result;
+                     //if we are here, we need to refresh the availability table
+                     //disable the button now that they just pressed it
+                     //document.getElementById('AddMeForRoleButton').disabled = true;
+                     //clearAvailabilityCache();
+                     //rerenderAvailabilityBlock();
+                     if(result == 'Success')
+                     {
+                         updateDetailBlock();
+                         rerenderChatter();
+                     }
+                     else
+                     {
+                         window.location = result;
+                     }
+   
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+    
+    
+    
+    function confirmation(prompt) {
+        var answer = confirm(prompt)
+        if (answer){
+            return true
+        }
+        else{
+            return false
+        }
+    }    
+
+</script>
+ 
+</apex:page>

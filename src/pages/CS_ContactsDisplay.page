@@ -1,0 +1,30 @@
+<apex:page standardController="Community_Access_Request__c" extensions="CS_displayContacts" action="{!ContactsList}">
+  <style>
+    .fewerMore { display: none;}
+  </style>
+    <apex:form >
+      <apex:pageMessages />
+    
+      <apex:pageBlock id="one" title="Contacts List" rendered="{!ContactsExist}" >
+        <apex:pageblockTable value="{!conList}" var="con" rendered="{!NOT(ISNULL(conList))}">
+           <apex:column >
+             <apex:facet name="header">Action</apex:facet>                        
+             <apex:commandLink action="{!viewCon}" value="View" target="_new">
+               <apex:param name="conid" value="{!con.id}"/>
+             </apex:commandLink> 
+           </apex:column>
+           <apex:column value="{!con.id}"/>
+           <apex:column value="{!con.Name}"/>
+           <apex:column value="{!con.Email}"/>
+           <apex:column value="{!con.Account.name}"/> 
+        </apex:pageblockTable>         
+     </apex:pageBlock> 
+   </apex:form>    
+</apex:page>
+        
+    <!-- <apex:detail relatedList="true" inlineEdit="true"></apex:detail>
+          <apex:outputLabel value="No records to display" rendered="{!(ISNULL(conList))}" styleClass="noRowsHeader"></apex:outputLabel>       
+         <apex:pageBlockButtons >
+          <apex:commandButton value="Cancel" action="{!returnPage}"/>
+        </apex:pageBlockButtons>
+    -->

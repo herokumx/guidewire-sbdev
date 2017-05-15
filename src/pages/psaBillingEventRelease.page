@@ -1,0 +1,8 @@
+<apex:page id="pg" showHeader="true" sidebar="true" standardController="pse__Billing_Event__c" extensions="psaBillingEventReleaseController" title="PSA Billing Event Release" action="{!autoRun}">
+<apex:pageMessages id="messages"/><br/>
+    <apex:pageBlock title="" id="pbStatus">
+        <apex:pageBlockSection title="Billing Event" columns="2" collapsible="false">
+			<apex:outputText id="beLinkLabel" value="Back to Billing Event: "/><apex:outputLink id="beLink" value="{!beURL}">{!beName}</apex:outputLink>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>

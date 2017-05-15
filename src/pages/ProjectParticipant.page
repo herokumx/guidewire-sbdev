@@ -1,0 +1,93 @@
+<apex:page standardController="Project_Participant__c" extensions="ProjectParticipantController">
+
+ <apex:form >
+
+    <apex:actionFunction name="updateDatesBlock" rerender="DateRangesBlock"  />
+
+   <apex:pageBlock title="Project Participant Details" >
+        <apex:pageBlockButtons id="PBB" location="both">
+            <apex:commandButton id="saveButton"   value="Save"   action="{!save}"  />
+            <apex:commandButton id="cancelButton" value="Cancel" action="{!cancel}"/> 
+
+        </apex:pageBlockButtons>
+
+       <apex:pageBlockSection title="Details"  columns="1"> 
+        <apex:inputField id="whoField" value="{!participant.Who__c}" required="true" />
+        <apex:inputField id="descField" value="{!participant.Description__c}" />
+        <apex:inputField id="hoursField" value="{!participant.Event_Hours__c}" />
+       </apex:pageBlockSection>
+    </apex:pageBlock>
+      &nbsp;&nbsp;<b>Only use the table below (that is visible after the initial save of this participant) if you will not be attending the entire event.</b>
+      <apex:pageBlock title="Commitment Date Range(s)" id="DateRangesBlock" rendered="{!!isNew}" >  
+      <apex:pageBlockButtons location="top" >
+           <apex:commandButton action="{!URLFOR($Action.Project_Date_Range__c.New,null ,[ProjectParticipantID=participant.Id] )}" value="Add New Date Range" id="newPossibleDateRangeButton"  reRender="DatesBlock" />
+      </apex:pageBlockButtons> 
+       <apex:pageBlockTable value="{!AllDateRanges}" var="dateRange">
+                <apex:column width="75" style=""> 
+                    <apex:commandLink action="{!URLFOR($Action.Project_Date_Range__c.Edit,dateRange.Id )}" value="Edit" id="EditDateLink" style="color: #3366CC; text-decoration: none;"/>
+                    &nbsp;&nbsp;<apex:commandLink onclick="var conf = confirmation('Are you sure you wish to delete this date range?'); if(conf) {deleteDateRange('{!dateRange.Id}')}; return false" value="Del" id="DeleteDateLink" style="color: #3366CC; text-decoration: none;" reRender="DatesBlock" />
+                       <apex:facet name="header">Actions</apex:facet>
+                       
+                </apex:column>
+                <apex:column style="" value="{!dateRange.Start__c}"> 
+                       <apex:facet name="header">Start</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!dateRange.End__c}"> 
+                       <apex:facet name="header">End</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!dateRange.Note__c}"> 
+                       <apex:facet name="header">Note</apex:facet>
+                </apex:column>
+                <!--
+                <apex:column style="" value="{!pDate.Status__c}"> 
+                       <apex:facet name="header">Status</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Event_Hours__c}"> 
+                       <apex:facet name="header">Hours</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.LastModifiedDate}"> 
+                       <apex:facet name="header">Last Updated</apex:facet>
+                </apex:column>
+                -->
+       </apex:pageBlockTable> 
+
+          </apex:pageBlock>
+    </apex:form>
+  
+  
+<script>
+
+    function deleteDateRange(objID)
+    {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ProjectParticipantController.deleteDateRange}',
+            objID.toString(),
+            '{!participant.Id}',
+            function(result, event){
+                if (event.status) {
+                    //alert('here');
+                     updateDatesBlock();
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        ); 
+    }
+  
+  
+    function confirmation(prompt) {
+        var answer = confirm(prompt)
+        if (answer){
+            return true
+        }
+        else{
+            return false
+        }
+    }    
+
+</script>  
+</apex:page>

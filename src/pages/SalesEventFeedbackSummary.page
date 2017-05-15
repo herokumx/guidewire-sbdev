@@ -1,0 +1,92 @@
+<apex:page controller="SalesEventFeedbackSummaryCon" tabstyle="Sales_Event_Feedback__c">
+<apex:pageBlock Title="Sales Event Feedback Summary">
+    <table id="theGrid" border="1" style="border-collapse:collapse;border-color: gray;" width="100%">
+        <tr><td>
+        <apex:outputText value="Opportunity" style="font-weight:bold"/></td><td style="text-align: center">
+        <apex:outputText value="{!OpportunityName}" style="font-weight:bold"/>
+        </td></tr>
+        <tr><td>
+        <apex:outputText value="Event" style="font-weight:bold"/></td><td style="text-align: center">
+        <apex:outputText value="{!EventName}"/>
+        </td></tr>
+        <tr><td>
+        <apex:outputText value="Event Goal" style="font-weight:bold"/></td><td style="text-align: center">
+        <apex:outputText value="{!EventGoals}"/>
+        </td></tr>
+        <tr><td>
+        <apex:outputText value="Event Success" style="font-weight:bold"/></td><td>
+        <apex:outputText value=""/></td></tr>
+        <tr><td width="160px">
+        <apex:outputText value="Sales and Lead SC" style="margin-left:30px"/></td><td style="text-align: center">
+        <!--<apex:outputText value="{!EventSalesNLeadScore}"/>&nbsp;&nbsp;
+        <apex:outputText value="" style="border-left: solid grey;"/>&nbsp;&nbsp;
+        <apex:outputText value="{!EventSalesNLeadCount}"/>-->
+        <apex:outputText value="{!EventSalesNLeadScore} from {!EventSalesNLeadCount} Leads"/>
+        </td></tr>
+        <tr><td>
+        <apex:outputText value="Supporters" style="margin-left:30px"/></td><td style="text-align: center">
+        <!--<apex:outputText value="{!EventSupporterScore}"/>&nbsp;&nbsp;
+        <apex:outputText value="" style="border-left: solid grey;"/>&nbsp;&nbsp;
+        <apex:outputText value="{!EventSupporterCount}"/>-->
+        <apex:outputText value="{!EventSupporterScore} from {!EventSupporterCount} Supporters"/>
+        </td></tr>
+        <!--<tr><td>
+        <apex:outputText value="Total" style="font-weight:bold"/></td><td style="text-align: center">
+        <apex:outputText value="{!EventTotalScore}"/>
+        </td></tr>-->
+        <tr><td>
+        <apex:outputText value="Comments:" style="font-weight:bold"/></td><td style="text-align: center">
+        <apex:outputText value="{!EventComments}" escape="false"/>
+        </td></tr><tr><td>
+        <apex:outputText value="Preparation" style="font-weight:bold"/></td><td>
+        <apex:outputText value=""/></td></tr><tr><td>
+        <apex:outputText value="Sales and Lead SC" style="margin-left:30px"/></td><td style="text-align: center">
+        <!--<apex:outputText value="{!PrepSalesNLeadScore}"/>&nbsp;&nbsp;
+        <apex:outputText value="" style="border-left: solid grey;"/>&nbsp;&nbsp;
+        <apex:outputText value="{!PrepSalesNLeadCount}"/>-->
+        <apex:outputText value="{!PrepSalesNLeadScore} from {!PrepSalesNLeadCount} Leads"/>
+        </td></tr>
+        <tr><td><apex:outputText value="Supporters" style="margin-left:30px"/></td><td style="text-align: center">
+        <!--<apex:outputText value="{!PrepSupporterScore}"/>&nbsp;&nbsp;
+        <apex:outputText value="" style="border-left: solid grey;"/>&nbsp;&nbsp;
+        <apex:outputText value="{!PrepSupporterCount}"/>-->
+        <apex:outputText value="{!PrepSupporterScore} from {!PrepSupporterCount} Supporters"/>
+        </td></tr>
+        <tr><td>
+        <apex:outputText value="Domain Expertise" style="font-weight:bold"/></td><td>
+        <apex:outputText value=""/></td></tr>
+        <tr><td>
+        <apex:outputText value="Sales and Lead SC" style="margin-left:30px"/></td><td style="text-align: center">
+        <!--<apex:outputText value="{!DomainSalesNLeadScore}"/>&nbsp;&nbsp;
+        <apex:outputText value="" style="border-left: solid grey;"/>&nbsp;&nbsp;
+        <apex:outputText value="{!DomainSalesNLeadCount}"/>-->
+        <apex:outputText value="{!DomainSalesNLeadScore} from {!DomainSalesNLeadCount} Leads"/>
+        </td></tr><tr><td>
+        <apex:outputText value="Supporters" style="margin-left:30px"/></td><td style="text-align: center">
+        <!--<apex:outputText value="{!DomainSupporterScore}"/>&nbsp;&nbsp;
+        <apex:outputText value="" style="border-left: solid grey;"/>&nbsp;&nbsp;
+        <apex:outputText value="{!DomainSupporterCount}"/>-->
+        <apex:outputText value="{!DomainSupporterScore} from {!DomainSupporterCount} Supporters"/>
+        </td></tr><tr><td>
+        <apex:outputText value="Selling Skill" style="font-weight:bold"/></td><td>
+        <apex:outputText value=""/>
+        </td></tr><tr><td>
+        <apex:outputText value="Sales and Lead SC" style="margin-left:30px"/></td><td style="text-align: center">
+        <!--<apex:outputText value="{!SellingSalesNLeadScore}"/>&nbsp;&nbsp;
+        <apex:outputText value="" style="border-left: solid grey;"/>&nbsp;&nbsp;
+        <apex:outputText value="{!SellingSalesNLeadCount}"/>-->
+        <apex:outputText value="{!SellingSalesNLeadScore} from {!SellingSalesNLeadCount} Leads"/>
+        </td></tr><tr><td>
+        <apex:outputText value="Supporters" style="margin-left:30px"/>
+        </td><td style="text-align: center">
+        <!--<apex:outputText value="{!SellingSupporterScore}"/>&nbsp;&nbsp;
+        <apex:outputText value="" style="border-left: solid grey;"/>&nbsp;&nbsp;
+        <apex:outputText value="{!SellingSupporterCount}"/>-->
+        <apex:outputText value="{!SellingSupporterScore} from {!SellingSupporterCount} Supporters"/>
+        </td></tr><tr><td>
+        <apex:outputText value="Other Comments" style="font-weight:bold"/></td><td style="text-align: center">
+        <apex:outputText value="{!OtherComments }" escape="false"/>
+        </td></tr>
+    </table>
+</apex:pageBlock>
+</apex:page>

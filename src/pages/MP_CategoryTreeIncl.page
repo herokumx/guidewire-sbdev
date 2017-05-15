@@ -1,0 +1,8 @@
+<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        This page includes the Category tree component
+    ****************************************************************************-->
+<apex:page id="MP_CategoryTreeIncl">
+    <c:MP_CategoryTreeRD />
+</apex:page>

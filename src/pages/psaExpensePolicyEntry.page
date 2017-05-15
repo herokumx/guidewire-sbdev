@@ -1,0 +1,96 @@
+<apex:page controller="psaExpensePolicyEntryController">
+<script type="text/javascript">
+
+    //Popup centering function
+    function popupProject(account, project) {
+        wLeft = window.screenLeft ? window.screenLeft : window.screenX;
+        wTop = window.screenTop ? window.screenTop : window.screenY;
+
+        var left = wLeft + (window.innerWidth / 2) - (900 / 2);
+        var top = wTop + (window.innerHeight / 2) - (690 / 2);
+        return window.open('{!$Page.psaProjectSearch}?accountId='+account+'&projectId='+project+'&type=policy', 'Search', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + 600 + ', height=' + 490 + ', top=' + top + ', left=' + left);
+
+    }
+
+    function copyAccount() {
+       if({!relatedAccountPolicyExists}){
+           if(confirm('Are you sure you would like to copy?')){
+               loadFromAccount();
+           }
+       }
+       else{
+           alert('No related account rate set exists');
+       }
+    }
+
+    function refreshFromProject(projectId){
+        getFromProject(projectId);
+    }
+
+
+</script>
+<apex:form id="frm">
+<apex:actionFunction action="{!loadFromProject}" name="getFromProject" rerender="pgRates">
+      <apex:param name="firstParam" assignTo="{!projCopy}" value="" />
+</apex:actionFunction>
+<apex:actionFunction action="{!loadFromRelatedAccount}" name="loadFromAccount">
+</apex:actionFunction>
+<apex:pageBlock id="pgb" title="Create Expense Policy">
+<apex:pageMessages escape="false"/>
+<apex:pageBlockSection id="pgPolicy" collapsible="false" columns="1" title="PSA Expense Policy Information">
+    <apex:pageBlockSectionItem rendered="{!isAccountRendered}" >
+          <apex:outputLabel value="Account"/>
+          <apex:outputField value="{!mainAccount.name}"/>
+    </apex:pageBlockSectionItem>
+    <apex:outputField rendered="{!isProjectRendered}" value="{!mainProject.Name}"/> 
+    <apex:outputLabel rendered="{!isGlobal}" value="Global Policy"/>
+</apex:pageBlockSection>
+<apex:pageBlockSection id="policyList" collapsible="false" columns="1" title="PSA Expense Policy List">
+<apex:outputPanel id="outpan">
+<table class="list" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+      <thead class="rich-table-thead">
+      <tr class="headerRow">
+      <th class="headerRow">Select</th>
+      <th class="headerRow">Name</th>
+      <th class="headerRow">Policy Type</th>
+      <th class="headerRow">Expense Type     </th>
+      <th class="headerRow">Billable Limit</th>
+      <th class="headerRow">Receipt Required Threshold</th>
+      <th class="headerRow">Review Required Threshold</th>
+      <th class="headerRow">Currency</th>
+      </tr>
+      </thead>
+      <apex:repeat value="{!listPolicyModel}" var="mod">
+           <tr class="dataRow">
+           <td class="dataCell"><apex:inputCheckbox value="{!mod.isCheck}"/> </td>
+           <td class="dataCell"><apex:inputField value="{!mod.policy.name}"/> </td>
+           <td class="dataCell"><apex:inputField value="{!mod.policy.PSA_Policy_Type__c}" /> </td>
+           <td class="dataCell">
+           <apex:inputField value="{!mod.policy.PSA_Expense_Type__c}" style="width:100px;" />
+           </td>
+           <td class="dataCell"><apex:inputField value="{!mod.policy.PSA_Billable_Limit__c}" style="width:100px;" required="false" /> </td>
+           <td class="dataCell"><apex:inputField value="{!mod.policy.PSA_Receipt_Required_Threshold__c}" required="false" /></td>
+           <td class="dataCell"><apex:inputField value="{!mod.policy.PSA_Amount_Review_Threshold__c}" required="false" /></td>                 
+           <td class="dataCell"><apex:inputField value="{!mod.policy.CurrencyIsoCode}" required="true"/></td>
+           </tr>
+           </apex:repeat>              
+</table>
+            <br/>
+            </apex:outputPanel>
+</apex:pageBlockSection>
+</apex:pageBlock>
+<div style="text-align:center;">
+                    <apex:commandButton value="Copy From Project" disabled="{!isProjectRendered == false}" reRender="policyList" onclick="popupProject('{!relatedAccountId}','{!projectId}')"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Copy From Account" disabled="{!isProjectRendered == false}" reRender="frm" onclick="copyAccount()"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Add New Row" action="{!addNewPolicy}" reRender="frm" status="status"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Remove Rows" action="{!removePolicy}" reRender="frm" status="status"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Save" action="{!save}" reRender="frm" status="status"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Close" action="{!close}" immediate="true"/>
+</div>
+</apex:form>
+</apex:page>

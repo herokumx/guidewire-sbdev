@@ -1,0 +1,4 @@
+<apex:page >
+  <apex:outputLink value="/apex/Presales_Calendar_Events" id="theLink">Calendar Events (Holidays and Blocks)</apex:outputLink><br/>
+  <apex:outputLink value="/apex/Presales_Calendar_Rows" id="theLink2">Calendar Rows (People and Groupings)</apex:outputLink>
+</apex:page>

@@ -1,0 +1,58 @@
+<apex:page standardController="Opportunity" recordSetVar="opportunities">
+    <apex:stylesheet value="{!URLFOR($Resource.Community, 'css/custom.css')}"/>
+        <div class="container">
+            <div class="big-col" id="opps">
+                <h2 class="vf">Opportunity Collaboration</h2>
+                    <apex:form >
+                    <apex:pageBlock >
+                        <apex:pageMessages />
+                        <apex:pageBlock >
+                            <apex:panelGrid columns="2">
+                                <apex:outputLabel value="View:"/>
+                                <apex:selectList value="{!filterId}" size="1">
+                                    <apex:actionSupport event="onchange" rerender="opp_table"/>
+                                    <apex:selectOptions value="{!listviewoptions}"/>
+                                </apex:selectList>
+                            </apex:panelGrid>
+                        </apex:pageBlock>
+                        <apex:pageBlockTable value="{!opportunities}" var="opp" id="opp_table">
+                            <apex:column value="{!opp.name}"/>
+                        </apex:pageBlockTable>
+                    </apex:pageBlock>
+                </apex:form>
+            </div>
+            <div class="small-col" id="partnership-management">
+                <ul>
+                    <li><a href="/partners/00Q/o">Leads</a></li>
+                    <li><a href="/partners/00O/o">Reports</a></li>
+                </ul>                
+            </div>
+        </div>
+        <div class="container">
+            <div class="two-col" id="access-content-1">
+                <h2 class="vf">Enabling Partners</h2>
+                <apex:outputPanel layout="block">
+                    <!-- Generic Partner Content, accessible to all partners, Open Link (no box login required) -->
+                    <!-- <apex:iframe src="https://app.box.com/embed_widget/obeluhzmxxgs/s/c1s2s44g8efzq89kmk7k?view=list&sort=name&direction=ASC&theme=blue" width="485" height="400" frameborder="0"/> -->
+                    <apex:iframe src="https://app.box.com/embed_widget/s/cjkfeshcjz?view=list&sort=name&direction=ASC&theme=blue" width="485" height="400" frameborder="0"/>
+                </apex:outputPanel>
+            </div>
+            <div class="two-col" id="access-content-2">
+                <h2 class="vf">Mitchell</h2>
+                <apex:outputPanel layout="block">
+                <!-- Mitchell Specific Partner Content, Collaborators Only (box login required) -->
+                   <!--  <apex:iframe src="https://app.box.com/embed_widget/v4lbqc7mz2tc/s/l5o5j016x0rqqa59uq92?view=list&sort=name&direction=ASC&theme=blue" width="485" height="400" frameborder="0"/> -->
+                   <apex:iframe src="https://app.box.com/embed_widget/s/d57pk7rudr42m7mhkvmk?view=list&sort=name&direction=ASC&theme=blue" width="485" height="400" frameborder="0"/> 
+                </apex:outputPanel>
+            </div>
+        </div>
+    <apex:includeScript value="{!URLFOR($Resource.Community, 'js/jquery.min.js')}"/>
+    <script type="text/javascript">
+        $(document).ready(function(){
+           $("#Opportunity_Tab").removeClass("brandPrimaryBgr zen-active primaryPalette");
+           $("#Opportunity_Tab a").removeClass("brandPrimaryFgr");
+             $("#01r80000000YhMK_Tab").addClass("brandPrimaryBgr zen-active primaryPalette");
+           $("#01r80000000YhMK_Tab a").addClass("brandPrimaryFgr");
+        }); 
+    </script>
+</apex:page>

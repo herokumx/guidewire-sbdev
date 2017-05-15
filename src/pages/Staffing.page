@@ -1,0 +1,2 @@
+<apex:page action="{!redirectToRegion}" controller="StaffingController" >
+</apex:page>

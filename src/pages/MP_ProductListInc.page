@@ -1,0 +1,8 @@
+<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        This includes the templates for the Product List page 
+    ****************************************************************************-->
+<apex:page id="MP_ProductListInc" docType="html-5.0" sidebar="false" showHeader="false" standardStylesheets="false" cache="false" applyHtmlTag="false">
+    <c:MP_ProductListIncl />
+</apex:page>

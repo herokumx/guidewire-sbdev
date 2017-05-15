@@ -1,0 +1,87 @@
+<!--Page Created for Story S-269111  --> 
+<!--Description This page generates CSV while   -->
+<apex:page tabStyle="Account" controller="ForecastSnapshotTrendController" cache="true" 
+        contentType="application/vnd.ms-excel#forecast.xls"
+        showHeader="false" sidebar="false" standardStylesheets="false" action="{!processCSV}">
+<apex:form >
+  <apex:outputPanel id="Changes" >
+  <apex:pageBlock >      
+            <apex:pageBlockSection collapsible="false" columns="2" title="What Changed From Last Call?" id="PageMessage">
+            	<apex:pageBlockSectionItem >
+            		From Date<apex:outputText value="{0, date, E MMM d',' yyyy}">
+            					 <apex:param value="{!fromDate.Close_Date__c}" />
+            				</apex:outputText>
+            	</apex:pageBlockSectionItem>
+            	<apex:pageBlockSectionItem >
+            		To Date<apex:outputText value="{0, date, E MMM d',' yyyy}">
+            				 <apex:param value="{!toDate.Close_Date__c}" />
+           				 </apex:outputText>
+            	</apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <hr/>
+            <apex:repeat value="{!MapRegions}" var="Regions">
+                <div id="head" style ="height: 30px; width:50%;text-align:left; font-size:20px;">{!Regions}</div>  
+                <apex:repeat value="{!MapCategories}" var="Category"> 
+                <div id="head" style ="height: 20px; width:50%;text-align:left; font-size:15px;color:red;">{!Category}</div>
+                <hr/>  
+                   <div id="Table" style="Width:90%;position:relative;margin-left:8%">
+                    <apex:pageBlockTable value="{!ForeCastTrendMap[Regions][Category].OpportunityList}" var="Opp" columnsWidth="40%,10%,10%,40%">
+                       <apex:column >
+                          <apex:facet name="header">
+                               <apex:outputText value="Prospect" />
+                           </apex:facet>
+                            <apex:outputText value="{!Opp.Prospect}"/>
+                        </apex:column>
+                        <apex:column >
+                          <apex:facet name="header">
+                               <apex:outputText value="Added" />
+                           </apex:facet>
+                            <apex:outputText value="${!Opp.Added}"/>
+                        </apex:column>
+                        <apex:column >
+                          <apex:facet name="header">
+                               <apex:outputText value="Deleted" />
+                           </apex:facet>
+                            <apex:outputText value="${!Opp.Deleted}"/>
+                        </apex:column>                        
+                        <apex:column >
+                          <apex:facet name="header">
+                               <apex:outputText value="Notes" />
+                           </apex:facet>
+                            <apex:outputText value="{!Opp.Notes}"/>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <apex:pageBlockTable value="{!ForeCastTrendMap[Regions][Category].fxChanges}" var="Opp" columnsWidth="40%,10%,10%,40%">
+                       <apex:column >
+                            <apex:outputText value="{!Opp.Prospect}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:outputText value="${!Opp.Added}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:outputText value="${!Opp.Deleted}"/>
+                        </apex:column>                        
+                        <apex:column >
+                            <apex:outputText value="{!Opp.Notes}"/>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <hr/>
+                    <apex:pageBlockTable value="{!ForeCastTrendMap[Regions][Category]}" var="Wrap">
+                        <apex:column >
+                               <apex:outputText value="NetChange" />
+                           <!--  <apex:outputText value="${!Wrap.netChange}"/> -->
+                        </apex:column>
+                        <apex:column >
+                        	<apex:outputText value="${!Wrap.netChange}"/>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <hr/>
+                    <br/>
+                    </div>
+                </apex:repeat>
+            </apex:repeat>
+    </apex:pageblock>
+    </apex:outputPanel> 
+</apex:form>
+
+</apex:page>

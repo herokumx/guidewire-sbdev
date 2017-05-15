@@ -1,0 +1,9 @@
+<apex:page showHeader="true" sidebar="true" standardController="pse__Resource_Request__c">
+
+    <apex:pageBlock >
+
+        <h1 align="center"><br/>Note: You cannot create a Resource Request from here... please create Resource Requests from the Project Detail Page.</h1>
+
+    </apex:pageBlock>
+
+</apex:page>

@@ -1,0 +1,86 @@
+<apex:page controller="ProjectListController" showChat="false" >
+  <apex:form >
+     <apex:actionFunction name="updateProjectListBlock" rerender="ProjectListBlock"  />
+        <apex:actionFunction id="RerenderContent"  name="RerenderContent" reRender="ContentBlock"/>
+
+        <b>Status:</b> <apex:selectList value="{!status}" size="1" >
+            <apex:selectOption itemValue="All" itemLabel="All"/>
+            <apex:selectOption itemValue="Active" itemLabel="Active"/>
+            <apex:selectOption itemValue="Inactive" itemLabel="Inactive"/>
+        </apex:selectList>
+       <apex:commandButton id="SubmitFilter" value="Update" action="{!reloadPage}" reRender="ProjectListBlock"/>
+        <br/>
+
+      <apex:pageBlock title="Project List" id="ProjectListBlock">
+        <apex:pageBlockButtons location="top" >
+          <apex:commandButton action="{!URLFOR($Action.Project__c.New)}" value="New Project" id="newProjectButton" reRender="ProjectListBlock" rendered="{!isPresalesManager}" /> 
+        </apex:pageBlockButtons>
+        <apex:pageBlockTable value="{!TheProjects}" var="thisProject" width="80%">            
+            <apex:column width="75" style=""> 
+                <apex:commandLink action="{!URLFOR($Action.Project__c.Edit,thisProject.Id )}" value="Edit" id="EditProjectLink" style="color: #3366CC; text-decoration: none;"/>
+                &nbsp;&nbsp;<apex:commandLink onclick="var conf = confirmation('Are you sure you wish to delete this project?'); if(conf) {deleteProject('{!thisProject.Id}')}; return false" value="Del" id="DeleteProjectLink" style="color: #3366CC; text-decoration: none;" reRender="ProjectListBlock" />
+                   <apex:facet name="header">Actions</apex:facet>
+            </apex:column>
+           <apex:column style=""> 
+               <apex:commandLink action="{!URLFOR($Action.Project__c.View,thisProject.Id )}" value="{!thisProject.Name}"  />
+               <apex:facet name="header">Name</apex:facet>
+           </apex:column>
+           <apex:column style=""> 
+               <apex:outputField value="{!thisProject.Description__c}" />
+               <apex:facet name="header">Description</apex:facet>
+           </apex:column>
+           <apex:column style=""> 
+               <apex:outputField value="{!thisProject.Status__c}" />
+               <apex:facet name="header">Status</apex:facet>
+           </apex:column>
+           <apex:column style=""> 
+               <apex:outputField value="{!thisProject.Category__c}" />
+               <apex:facet name="header">Category</apex:facet>
+           </apex:column>
+           <apex:column style=""> 
+               <apex:outputField value="{!thisProject.Total_Participant_Hours__c}" />
+               <apex:facet name="header">Total Participant Hours</apex:facet>
+           </apex:column>
+           <apex:column style=""> 
+               <apex:outputField value="{!thisProject.Total_Prep_Hours__c}" />
+               <apex:facet name="header">Total Participant Hours</apex:facet>
+           </apex:column>
+   
+
+        </apex:pageBlockTable>
+     </apex:pageBlock>  
+  </apex:form>
+  
+<script>  
+    function deleteProject(objID)
+    {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ProjectListController.deleteProject}',
+            objID.toString(),
+            function(result, event){
+                if (event.status) {
+                     updateProjectListBlock();
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        ); 
+    }
+
+  
+      function confirmation(prompt) {
+        var answer = confirm(prompt)
+        if (answer){
+            return true
+        }
+        else{
+            return false
+        }
+    }    
+
+</script>
+</apex:page>

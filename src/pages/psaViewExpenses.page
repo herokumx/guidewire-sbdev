@@ -1,0 +1,130 @@
+<apex:page standardController="pse__Expense_Report__c" extensions="psaViewExpensesController" showHeader="false">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <head>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/jquery/jquery-3.1.1.min.js')}"></script>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/jquery.ui/jquery.ui.min.js')}"></script>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/jquery.tablesorter/jquery.tablesorter.min.js')}"></script>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/jquery.datatables/jquery.dataTables.js')}"></script>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/jquery.datatables/jquery.dataTables.fixedHeader.js')}"></script>
+    <apex:stylesheet value="{!URLFOR($Resource.PSAjsComponents, 'vendor/css/jquery.dataTables.css')}"/>
+  </head>
+<apex:form id="form">
+<div style="height:200px">
+<table id="table1" class="table1 display row-border stripe compact">
+<thead>
+<tr>
+<th>Exp Name</th>
+<th>Exp Date</th>
+<th>Type</th>
+<th>Amount</th>
+<th>Reimb Amt</th>
+<th>Card Reimb Amt</th>
+<th>Billable</th>
+<th>Non-Bill Amt</th>
+<th>Inc Tax</th>
+<th>Rec Type</th>
+<th>Vat Rec</th>
+<th>Rec Attch</th>
+<th>Desc</th>
+<th>Rec Link(s)</th>
+<th>Inc Country</th>
+</tr>
+</thead>
+<tbody>
+<apex:repeat value="{!expenses}" var="expense">
+<tr>
+<td><apex:outputLink value="/{!expense.Id}" target="_new">{!expense.name}</apex:outputLink></td>
+<td data-order="{!expense.pse__Expense_Date__c}"><apex:outputField value="{!expense.pse__Expense_Date__c}"/></td>
+<td>{!expense.pse__Type__c}</td>
+<td data-order="{!expense.pse__Amount__c}"><apex:outputtext id="Amount" value="{!expense.currencyISOcode} {0,number,###,###,###,##0.00}">
+            <apex:param value="{!expense.pse__Amount__c}" />
+        </apex:outputtext></td>
+<td>{!expense.pse__Reimbursement_Amount__c}</td>
+<td>{!expense.GW_Card_Reimbursement_Amount__c}</td>
+<td data-order="{!expense.pse__Billable__c}"><apex:outputField value="{!expense.pse__Billable__c}"/></td>
+<td data-order="{!expense.pse__Non_Billable_Amount__c}"><apex:outputtext id="nonRemAmt" value="{!expense.currencyISOcode} {0,number,###,###,###,##0.00}">
+            <apex:param value="{!expense.pse__Non_Billable_Amount__c}" />
+        </apex:outputtext></td>
+<td data-order="{!expense.pse__Incurred_Tax__c}"><apex:outputtext id="incTax" value="{!expense.currencyISOcode} {0,number,###,###,###,##0.00}">
+            <apex:param value="{!expense.pse__Incurred_Tax__c}" />
+        </apex:outputtext></td>
+<td>{!expense.PSA_Receipt_Type__c}</td>
+<td data-order="{!expense.PSA_VAT_Reclaimable__c}"><apex:outputField value="{!expense.PSA_VAT_Reclaimable__c}"/></td>
+<td data-order="{!expense.PSA_Receipt_Attached__c}"><apex:outputField value="{!expense.PSA_Receipt_Attached__c}"/></td>
+<td>{!expense.pse__Description__c}</td>
+<td><apex:repeat value="{!expenseToURLs[expense.id]}" var="pos">
+            <apex:repeat value="{!pos}" var="urlDisplay">
+                <apex:outputlink value="{!URLFOR($Action.Attachment.Download, urlDisplay.attachmentId)}" target="_new">
+                    {!urlDisplay.attachmentFileName}<br />
+                </apex:outputlink>
+            </apex:repeat>
+        </apex:repeat></td>
+<td>{!expense.PSA_Incurred_Country__r.Name}</td>
+</tr>
+</apex:repeat>
+</tbody>
+</table>
+</div>
+<!--<apex:pageBlockTable value="{!expenses}" var="expense" id="table1" styleClass="table1 row-border stripe compact">
+<apex:column headerValue="Exp Name">
+	<apex:outputLink value="/{!expense.Id}" target="_new">{!expense.name}</apex:outputLink>
+</apex:column>
+<apex:column value="{!expense.pse__Expense_Date__c}" headervalue="Exp Date" />
+<apex:column value="{!expense.pse__Type__c}"/>
+<apex:column headervalue="Amount" style="white-space: nowrap;">
+        <apex:outputtext id="Amount" value="{!expense.currencyISOcode} {0,number,###,###,###,##0.00}">
+            <apex:param value="{!expense.pse__Amount__c}" />
+        </apex:outputtext>
+</apex:column>
+<apex:column value="{!expense.pse__Reimbursement_Amount__c}" headervalue="Reimb Amt" />   
+<apex:column value="{!expense.GW_Card_Reimbursement_Amount__c}" headerValue="Card Reimb Amt"/>
+<apex:column value="{!expense.pse__Billable__c}"/>
+<apex:column headervalue="Non-Bill Amt" style="white-space: nowrap;">
+        <apex:outputtext id="nonRemAmt" value="{!expense.currencyISOcode} {0,number,###,###,###,##0.00}">
+            <apex:param value="{!expense.pse__Non_Billable_Amount__c}" />
+        </apex:outputtext>
+</apex:column>
+<apex:column headervalue="Inc Tax" style="white-space: nowrap;">
+        <apex:outputtext id="incTax" value="{!expense.currencyISOcode} {0,number,###,###,###,##0.00}">
+            <apex:param value="{!expense.pse__Incurred_Tax__c}" />
+        </apex:outputtext>
+</apex:column>
+<apex:column value="{!expense.PSA_Receipt_Type__c}" headervalue="Rec Type" />
+    <apex:column value="{!expense.PSA_VAT_Reclaimable__c}" headervalue="Vat Rec" />
+<apex:column value="{!expense.PSA_Receipt_Attached__c}" headervalue="Rec Attch"/>
+<apex:column value="{!expense.pse__Description__c}" headerValue="Desc"/>
+<apex:column headervalue="Rec Link(s)">
+        <apex:repeat value="{!expenseToURLs[expense.id]}" var="pos">
+            <apex:repeat value="{!pos}" var="urlDisplay">
+                <apex:outputlink value="{!URLFOR($Action.Attachment.Download, urlDisplay.attachmentId)}" target="_new">
+                    {!urlDisplay.attachmentFileName}<br />
+                </apex:outputlink>
+            </apex:repeat>
+        </apex:repeat>
+    </apex:column>
+<apex:column value="{!expense.PSA_Incurred_Country__c}" headervalue="Inc Country" />
+</apex:pageBlockTable>-->
+<!--</apex:pageBlock>-->
+</apex:form>
+
+<script>
+  $(document).ready(function()
+  {
+    $('#table1').DataTable( {
+            "autoWidth": true,
+            "bFilter": false,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "sDom": '<"top"flp>rt<"bottom"i><"clear">',
+            "columnDefs": [
+                { "width": "70px", "targets": 0 },
+                { "width": "90px", "targets": 5 }
+              ],
+
+        } );
+        
+  });
+
+
+</script>
+</html>
+</apex:page>

@@ -1,0 +1,2050 @@
+<apex:page standardstylesheets="true"
+           showheader="true"
+           cache="false"
+           sidebar="false"
+           standardController="pse__Expense_Report__c"
+           extensions="psaExpenseMatchCardTransactionController">
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <head>
+    <!--
+        Include lightning design, fa icons...
+    -->
+    <link rel="stylesheet" href="{!URLFOR($Resource.SLDS092,'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+
+    <link rel="stylesheet" href="{!URLFOR($Resource.PSAjsComponents,'vendor/css/font-awesome.min.css')}" />
+
+    <!--
+        Include javascript libs
+    -->
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/jquery/jquery.min.js')}"></script>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/angular/angular.js')}"></script>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/angular-sanitize/angular-sanitize.min.js')}"></script>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/angular-ui-sortable/angular.ui.sortable.js')}"></script>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/angular-ui-slds/ui.slds.js')}"></script>
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/angular-safeApply/safeApply.js')}"></script>
+
+
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/jquery.ui/jquery.ui.min.js')}"></script>
+
+    <script src="{!URLFOR($Resource.PSAjsComponents, 'vendor/components/moment/moment.js')}"></script>
+
+    <!-- disable sfdc auto-focus on page load-->
+    <script>function setFocusOnLoad() {setTimeout(function(){$("select:first").click().focus().blur();},1); return;}</script>
+
+    <style>
+        .dateFormat { display:none;}
+
+        /* grey page out ... */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 9999;
+        }
+
+
+        /* big spinner box*/
+        .overlay-spinner-box {
+            font-size: 10.2em;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -50px;
+        }
+
+
+        .cursor-pointer { cursor:pointer }
+
+        .slds .hidden-class {
+            display : none !important;
+            background-color: inherit;
+        }
+
+        .flash-input-bg {
+          border:1px solid green !important;
+        }
+
+
+/*        .slds .input-error-bg {
+          border:1px solid red !important;
+        }*/
+
+        .slds .coach__item,
+        .slds .coach__value {
+        border-top: #d8dde6 1px solid;
+            padding: 1rem 0;
+            color: #54698d;
+        }
+
+        .slds .expanded-transaction-padding {
+          padding:12px;
+        }
+
+        .slds ul li, ol li {
+          margin-left: 1.5em;
+          margin-right: 1.5em;
+          padding-left: 0;
+          padding-right: 0;
+        }
+
+        .slds .inlinehelp-class {
+          white-space: normal;
+        }
+
+
+
+/*    .slds .faux-button-brand {
+        background-color: #0070d2;
+        border: 1px solid #0070d2;
+        color: white;
+    }
+*/
+
+  .slds .over {
+    border: 2px solid green;
+  }
+
+  .slds .has-transaction.over {
+    border: 1px solid red;
+    max-height: 50px;
+  }
+
+  .slds .available-card-transactions.over {
+    border: 0;
+  }
+
+.slds .nowrapped-expense-text {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow:hidden;
+  width:260px;
+}
+.slds .normal-expense-text {
+  white-space: normal
+}
+
+
+.slds .drop-transactions-here {
+  border:1px solid #16325c;
+  background-color: #fff;
+  width:80%;
+  margin-left:5%
+}
+.slds .exp-transactions {
+  border:1px solid #ddd;
+  width:80%;
+  margin-left:5%
+}
+
+
+
+.slds .droppable-expense .ui-sortable-placeholder {
+  display:none !important;
+}
+
+
+.slds .available-expenses .ui-sortable-placeholder {
+  display:none !important;
+}
+
+/* applied when card transaction is selected */
+.slds .selected-card-trans {
+  margin-bottom:15px;
+  border:3px solid #04844b;
+  border-radius: 15px;
+}
+/* applied when card transaction is NOTEselected */
+.slds .non-selected-card-trans {
+  margin-bottom:15px;
+  border:3px solid #ddd;
+  border-radius: 15px;
+}
+
+        /* when added to the body */
+        .maximized-app-position {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            z-index: 100;
+
+            height: 100%;
+            width: 100%;
+            overflow: auto;
+
+            background-color: #fff;
+            border:3px solid;
+        }
+
+        /* MIN MAX ICON STUFF !!! */
+
+        .maximized-app-position .slds-card {
+          margin:6px;
+        }
+
+        /*
+          fa-rotate-45
+        */
+        .slds .fa.fa-rotate-45 {
+            filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        /*
+          fa-rotate-230
+        */
+        .slds .fa.fa-rotate-230 {
+            filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+            -webkit-transform: rotate(230deg);
+            -ms-transform: rotate(230deg);
+            transform: rotate(230deg);
+        }
+
+
+        .slds .min-max-icon {
+          font-size:24px;
+          color:#54698d
+        }
+
+
+
+        .slds .available-extended-theme {
+          background: #54698d;
+          line-height: 24px;
+        }
+
+
+    .slds .order-by-box {
+      margin-bottom:15px;
+      padding-top:3px;
+      padding-left:5px;
+      border-bottom:1px solid #ddd
+      border-bottom-style: ridge;
+    }
+
+
+    </style>
+
+
+  </head>
+
+
+<!--
+    The ng-app directive defines our angular app
+-->
+<div ng-app="ExpenseCardTransactionMatcher" class="main-body">
+
+    <!--
+        Lightning design system is realized under our slds class
+        the ng-controller directive defines the screen controller
+    -->
+    <div ng-controller="ExpenseCardTransactionMatcherController" class="slds">
+
+      <!-- container for our refresh spinner -->
+      <div id="overlay-spinner" class="overlay" ng-show="pg.showSpinner" ng-cloak="ng-cloak">
+          <div class="overlay-spinner-box slds-spinner--large">
+            <img src="{!URLFOR($Resource.SLDS092,'/assets/images/spinners/slds_spinner_brand.gif')}"
+                 alt="Loading..."
+                 style="max-width: inherit;"/>
+          </div>
+      </div>
+
+
+      <!--
+          Page Header
+      -->
+      <div class="slds-page-header" role="banner">
+
+        <!--
+          Page header title
+        -->
+          <div class="slds-media">
+            <div class="slds-media__figure">
+
+              <svg aria-hidden="true" class="slds-icon slds-icon--large"
+                    style="background: #54698d;">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                     xlink:href="{!URLFOR($Resource.SLDS092,'/assets/icons/utility-sprite/svg/symbols.svg#bucket')}"
+                     >
+                </use>
+              </svg>
+
+<!-- <svg aria-hidden="true" class="slds-icon slds-icon-text-default">
+<use xmlns:xlink="http://www.w3.org/1999/xlink"
+xlink:href="{!URLFOR($Resource.SLDS092,'/assets/icons/standard-sprite/svg/symbols.svg#calibration')}"
+
+/assets/icons/utility-sprite/svg/symbols.svg#trail
+
+xlink:href="{!URLFOR($Resource.SLDS092,'/assets/icons/standard-sprite/svg/symbols.svg#report')}"
+xlink:href="{!URLFOR($Resource.SLDS092,'/assets/icons/standard-sprite/svg/symbols.svg#endorsement')}"
+
+xlink:href="{!URLFOR($Resource.SLDS092,'/assets/icons/custom-sprite/svg/symbols.svg#custom17')}"
+
+
+></use>
+
+</svg> -->
+
+
+            </div>
+
+            <div class="slds-media__body">
+              <!--
+                Render link to expense report displaying name and resourc
+              -->
+              <nav class="slds-m-bottom--xx-small" role="navigation">
+                <p id="bread-crumb-label" class="slds-assistive-text">You are here:</p>
+                <ol class="slds-breadcrumb slds-list--horizontal" aria-labelledby="bread-crumb-label">
+                  <li class="slds-list__item slds-text-heading--label" style="margin-left:0">
+                    <span ng-show="pg.expenseReport != null" ng-cloak="ng-cloak">
+                        <a href="/{{pg.expenseReport.Id}}">
+                          Expense Report : {{pg.expenseReport.Name}} - {{pg.expenseReport.pse__Resource__r.Name}}
+                        </a>
+                    </span>
+                  </li>
+                </ol>
+              </nav>
+
+              <div class="slds-grid">
+                <div class="slds-col slds-size-1-of-4 xslds-has-flexi-truncate">
+                    <h1 class="slds-text-heading--medium slds-truncate">
+                          Match Transactions To Expenses
+
+
+                                <!-- info button
+                                **********
+                                -->
+<span ng-show="false">
+                                <button class="slds-button slds-no-flex slds-m-horizontal--small"
+                                    style="border-radius: 15px;padding-left: 11px;width: 32px;height: 32px;"
+
+                                    ng-click="pg.showInfoSection = !pg.showInfoSection"
+
+                                    ng-class="{'slds-button--neutral': !pg.showInfoSection,
+                                               'slds-button--brand':pg.showInfoSection}">
+
+                                     <span class="helper-details-toggle-detail-btn-container">
+                                        <i class="fa fa-info"/>
+                                     </span>
+                                </button>
+</span>
+
+                    </h1>
+                    <!--
+                      message updated based on number of transactions displayed
+                     -->
+                    <p class="slds-text-body--small slds-m-top--x-small">
+                      <span id="heading-message">
+                      </span>
+                    </p>
+
+              <nav class="slds-m-bottom--xx-small" role="navigation">
+                <ol class="slds-breadcrumb slds-list--horizontal">
+                  <li class="slds-list__item slds-text-heading--label" style="margin-left:0">
+                    <span >
+
+                        <a class="cursor-pointer" style="color:#0070d2"
+                           ng-click="pg.showInfoSection = !pg.showInfoSection">
+                            <i class="fa fa-info-circle"></i>
+                            Display More Information
+                            <i class="fa "
+                              ng-class="{'fa-angle-double-right' : !pg.showInfoSection,
+                                         'fa-angle-double-down': pg.showInfoSection}">
+                            </i>
+                        </a>
+
+                    </span>
+                  </li>
+                </ol>
+              </nav>
+
+
+                </div>
+                <div class="slds-col slds-size--1-of-4 ">
+                    <nav class="">
+                      <div class="slds-button-group pull-right">
+                            <button class="slds-button slds-button--brand"
+                                    ng-click="matchUpExpensesAndTransaction()"
+
+ng-disabled="!pg.hasMadeChanges">
+
+                                Save Matched Card Transaction
+                            </button>
+
+                            <!-- back to expense report -->
+                            <span ng-show="pg.expenseReportId != null" ng-cloak="ng-cloak">
+                                <a href="/{{pg.expenseReportId}}" class="slds-button slds-button--neutral">
+                                    <i class="fa fa-reply"></i>
+                                    Back to Expense Report
+                                </a>
+
+
+                            </span>
+
+              <!--
+                ** <vlds-maximize-page/>
+              -->
+              <span class="slds-align-middle" style="padding-left:15px;">
+                <span class="pull-right cursor-pointer"
+                      onclick="toggleMaxMinApp();"
+                      title="Maxime / Minimize page">
+                  <i class="fa fa-arrow-circle-down fa-rotate-230 min-max-icon"></i>
+                </span>
+                <script>
+
+                  var toggleMaxMinApp = function() {
+                    var maxAppClassName    = "maximized-app-position";
+                    var maxAppSelector     = ".main-body";
+                    var minMaxIconSelector = ".min-max-icon";
+
+                    // classes/icons to display when page is maxed/not-maxed...
+                    var maxIcon = "fa-rotate-230";
+                    var minIcon = "fa-rotate-45";
+
+                    // The page is maximized when the app selector contains the max app class name
+                    var isMaxed = jQuery(maxAppSelector).hasClass(maxAppClassName);
+
+                    // remove any existing min/max icon classes, which will be set
+                    // accordingly below.
+                    jQuery(minMaxIconSelector).removeClass(maxIcon).removeClass(minIcon);
+
+                    if (isMaxed) {
+                      // when the app is maxed, we will reset it:
+                      // * removes the max app class and sets the max icon for display
+                      jQuery(maxAppSelector).first().removeClass(maxAppClassName);  // minimize....
+                      jQuery(minMaxIconSelector).addClass(maxIcon);                 // add maxed icon to display
+// remove alert texture from page header
+//$(".slds-page-header").removeClass("slds-theme--alert-texture");
+                    }
+                    else {
+                      // when the app is NOT maxed, we will maximize it:
+                      // * add the max app class and sets the min icon for display
+                      jQuery(maxAppSelector).first().addClass(maxAppClassName); // minimize....
+                      jQuery(minMaxIconSelector).addClass(minIcon);             // add min icon to display
+
+// inject alert texture into page header when app is max
+//$(".slds-page-header").addClass("slds-theme--alert-texture");
+
+                    }
+                  }
+                </script>
+              </span>
+              <!--
+                ** end <vlds-maximize-page/>
+              -->
+
+
+                      </div>
+                    </nav>
+                </div>
+              </div> <!-- END GRID -->
+
+            </div>
+          </div>
+      </div>
+      <!-- end page header -->
+
+    <!-- info/helper section helper
+    *******
+    -->
+   <div class="trans-detail-row-helper-details slds-grid slds-grid--align-spread"
+    ng-show="pg.showInfoSection" ng-cloak="ng-cloak"
+
+        style="border-top: 1px solid #eee;
+                border-bottom: 3px solid #ccc;
+                border-bottom-style: double;
+                border-bottom-left-radius: 24px;
+                border-bottom-right-radius: 24px;
+                box-shadow: 5px 5px 5px;
+    ">
+
+
+      <div class="slds-coach__keys slds-size--1-of-2" style="white-space: normal;border-top: 1px solid #eee;margin-left:15px;margin-top:15px">
+
+        <div class="slds-grid slds-grid--align-spread">
+          <h2 class="slds-text-heading--label slds-p-bottom--small" style="padding-top:5px;">
+            Match Card Transactions to Expenses
+          </h2>
+
+          <span class="slds-text-body--small">
+            <a href="javascript:void(0);" ng-click="pg.showInfoSection = !pg.showInfoSection" title="Click to hide this message box.">
+              <i class="fa fa-times"></i>
+              Hide this message box
+            </a>
+          </span>
+        </div>
+
+        <dl class="coach__list slds-dl--horizontal">
+          <dt class="coach__item slds-dl--horizontal__label" style="padding-left:1rem">Show Transactions</dt>
+          <dd class="coach__value slds-dl--horizontal__detail">Select from predefined date ranges or specify the from and to date range.  Click the Refresh button to retrieve transactions for the date range.</dd>
+
+<!--           <dt class="coach__item slds-dl--horizontal__label" style="padding-left:1rem">Match To Expense</dt>
+          <dd class="coach__value slds-dl--horizontal__detail">Check a card transaction from the left and click the Match Card Transaction button on the specific expense.</dd> -->
+
+          <dt class="coach__item slds-dl--horizontal__label" style="padding-left:1rem">Save</dt>
+          <dd class="coach__value slds-dl--horizontal__detail">Click to save the matched transactions.  Assigns the card transaction to the existing expense</dd>
+
+        </dl>
+      </div>
+
+      <div class="slds-coach__guidance slds-size--1-of-2" style="white-space: normal;margin: 15px;">
+
+
+        <div class="slds-theme--shade" style="padding-left: 8px; padding-right: 8px; border-bottom-right-radius: 24px;">
+          <div style="padding-top: 10px;text-align: center;border-bottom: 1px solid #888;">
+            <h2 class="slds-text-heading--label" style="padding-bottom:15px;">Match Card Transactions to Expenses</h2>
+          </div>
+          <div class="slds-text-longform slds-p-top--medium" style="padding-bottom:20px;">
+            <p>
+              Drag an avaiable card transaction from the left to an an available expense on the right.
+            </p>
+            <p>
+              <ul>
+                <li>
+                <a href="javascript:void(0);"
+                   onclick="flashInputbackground('.th-billable');return false;">
+                   ORDER  BY
+                </a> : optionally choose the field to order available expenses and card transactions.
+                </li>
+                <li>
+                  <a href="javascript:void(0);"
+                   onclick="flashInputbackground('.th-personal');return false;">
+                  REVERSE ORDERING</a> : check this to toggle the selected ordering by asending or descending.
+                </li>
+              </ul>
+            </p>
+            <p>
+            Optionally check the available card transaction, by checking the box in the right hand corner of the card transaction.  Then click the 'Match Selected Card Transaction' button on the specific expense.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end info help -->
+
+
+      <div style="clear:both ; padding-bottom:15px" />
+
+
+      <!-- define ui-view container -->
+      <div class="ui-view">
+
+        <!--
+          page alert panel!
+        -->
+        <div class="alert-container sticky">
+            <div>
+                <!-- use the ui-toast-alert component -->
+                <ui-toast-alert ng-repeat="alert in uiToastManager.alerts"
+                           ng-cloak="ng-cloak"
+                           type='{{alert.type}}'
+                           msg='{{alert.msg}}'
+                           index='{{$index}}'
+                           is-message-of-day='{{alert.isMessageOfDay || "false"}}'>
+                </ui-toast-alert>
+            </div>
+        </div>
+
+          <!-- ui confirm modal box -->
+          <ui-slds-confirm confirm-title="{{uiConfirmManager.confirmTitle}}"
+                           confirm-text="{{uiConfirmManager.confirmText}}"
+                           show-modal="uiConfirmManager.showModal">
+          </ui-slds-confirm>
+
+<span ng-show="pg.expenseAndTransactionsLoaded" ng-cloak="ng-cloak">
+
+
+  <div class="slds-card"                          style="background-color: initial;">
+
+
+
+      <!-- body -->
+      <div class="slds-card__body" style="padding-top:0">
+
+
+  <div class="slds-grid ">
+    <div class="slds-size--1-of-2">
+
+      <!--
+                  Filter: Show transaction
+                          From date
+                          To Date
+                          Refresh....
+      -->
+      <div id="card-transaction-card">
+        <div class="slds-card"                          style="background-color: initial;">
+            <!-- header -->
+            <div class="slds-card__header"              style="background-color: initial">
+                <!-- filter grid -->
+                <div class="">
+                    <nav class="slds-form">
+                      <div class="slds-grid">
+                        <div class="slds-col slds-size--1-of-4">
+
+                          <!-- show transactions -->
+                          <div class="slds-form-element" style="margin-right:8px">
+                              <label class="slds-form-element__label" for="date" >
+
+                                Show Transactions
+                              </label>
+                              <div class="slds-form-element__control">
+                                  <select id="show-transactions" class="slds-select"
+                                    ng-model="pg.showTransactionsOption"
+                                    ng-change="updateTransactionOption()">
+                                    <option value="unusedAll">Unused (All)</option>
+                                    <option value="unusedCurMonth">Unused (Current Month)</option>
+                                    <option value="unusedCurYear">Unused (Current Year)</option>
+                                    <option value="unusedToday">Unused (Today)</option>
+                                    <option value="unusedCustom">Unused (Custom Date Range)</option>
+                                  </select>
+                              </div>
+                          </div> <!-- end form-element show transactions -->
+
+                        </div>
+
+                        <div class="slds-col slds-size--1-of-4">
+                          <!-- date picker 1 !!!! -->
+                          <div class="slds-form-element" style="margin-right:8px">
+                              <label class="slds-form-element__label" for="date">From</label>
+                              <div class="slds-form-element__control">
+
+                                  <div class="slds-input-has-icon slds-input-has-icon--right">
+                                      <svg aria-hidden="true" class="slds-input__icon slds-icon-text-default">
+                                          <use xlink:href="{!URLFOR($Resource.SLDS092,'/assets/icons/utility-sprite/svg/symbols.svg#event')}"></use>
+                                      </svg>
+
+
+                                  <input id="dtHolderFrom"
+                                         type="text"
+                                         class="slds-input"
+                                         datepicker="datepicker"
+
+                                         ng-model="pg.cardTransFromDate"
+
+                                         ng-change=""/>
+
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+
+                        <div class="slds-col slds-size--1-of-4">
+                            <!-- datepicker 2 -->
+                            <div class="slds-form-element" style="margin-right:8px">
+                                <label class="slds-form-element__label" for="date">To</label>
+                                <div class="slds-form-element__control">
+
+                                    <div class="slds-input-has-icon slds-input-has-icon--right">
+                                        <svg aria-hidden="true" class="slds-input__icon slds-icon-text-default">
+                                            <use xlink:href="{!URLFOR($Resource.SLDS092,'/assets/icons/utility-sprite/svg/symbols.svg#event')}"></use>
+                                        </svg>
+
+                                        <input id="dtHolderTod"
+                                           type="text"
+                                           class="slds-input"
+                                           datepicker="datepicker"
+                                           ng-model="pg.cardTransToDate"
+                                           ng-change=""/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- refresh button -->
+                        <div class="slds-col slds-size--1-of-8">
+                            <div class="slds-form-element" style="margin-right:8px">
+                                <label class="slds-form-element__label">&nbsp;</label>
+                                <div class="slds-form-element__control">
+
+                                  <button class="slds-button slds-button--neutral"
+                                          ng-click="refreshCardTransactions();">
+                                      Refresh
+                                  </button>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+
+                    </nav>
+                </div> <!-- end filter grid -->
+            </div> <!-- end card__header -->
+
+          <!-- body -->
+          <div class="slds-card__body wrappercardbody-container ">
+              <!--
+                Card transaction Panel
+              -->
+              <span ng-show="pg.cardTransactions.length && pg.cardTransactions.length > 0">
+
+                <div class="x">
+                    <div class="slds-theme--alt-inverse available-extended-theme" style="margin-bottom:0px;padding-left:5px;">
+                      <span>
+                        Available Card Transactions
+                      </span>
+                      <span class="pull-right" style="padding-right:25px">
+                        Total: {{ pg.cardTransactions.length }}
+                      </span>
+                    </div>
+                    <div style="clear:both"></div>
+
+                    <!--
+                    order transactions by....
+                    -->
+                    <div class="slds-grid slds-theme--shade order-by-box">
+                      <!--
+                      order by transactions
+                      -->
+                      <div class="slds-col slds-size--1-of-1">
+                          <div class="slds-form--inline pull-right" style="padding-right:15px;">
+                            <!-- transaction ordering -->
+                            <div class="slds-form-element" style="margin-right:8px">
+                                <label class="slds-form-element__label">Order Transactions By</label>
+                                <div class="slds-form-element__control">
+
+                                    <select id="orderProperty" class="slds-select"
+                                      ng-model="cardTrans_propertyName"
+
+                                      ng-disabled="pg.cardTransactions == undefined || pg.cardTransactions.length == undefined|| pg.cardTransactions.length <= 0"
+                                      ng-change="sortByCardTrans()">
+
+                                      <option value="PSA_Merchant_Name__c">Card Transaction</option>
+                                      <option value="PSA_Amount_in_Original_Currency__c">Amount</option>
+                                      <option value="PSA_Posting_Date__c">Posting Date</option>
+                                      <option value="PSA_Transaction_Date__c">Transaction Date</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- reverse -->
+                            <div class="slds-form-element__control">
+                              <label class="slds-checkbox">
+                                <span class="slds-form-element__label">Reverse</span>
+                                <input type="checkbox"
+                                       ng-model="cardTrans_reverse"
+                                       ng-change="sortByCardTrans()"/>
+                                <span class="slds-checkbox--faux"></span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!--
+                      end order transactions by
+                      -->
+
+
+                    <div>
+                        <ul id="card-transaction-list"
+                            class="sortable-transaction-list available-card-transactions"
+                            ui-sortable="expSortableOptions"
+                            ng-model="pg.cardTransactions">
+
+                          <li ng-repeat="item in pg.cardTransactions"
+                              id="{{item.Id}}"
+                              class="draggable-item"
+                              style="cursor:move">
+                                <div class="slds-box slds-theme--default draggable-transaction"
+
+                                   ng-class="{'selected-card-trans': item.selectedCard,
+                                              'non-selected-card-trans': !item.selectedCard}">
+
+                                    <!-- card desc -->
+                                    <div class="slds-list__item slds-text-heading--label slds-text-heading--small">
+                                      <i class="fa fa-bars"></i>
+                                      <a href="/{{item.Id}}" target="_blank">
+
+                                        {{item.PSA_Merchant_Name__c}} {{item.PSA_Merchant_State_Province__c}}, {{item.PSA_Merchant_Country_Code__c}}
+
+                                      </a>
+
+                                      <!-- check...-->
+                                      <span class="pull-right">
+                                        <label class="slds-checkbox">
+                                          <input name="checkbox"
+                                                 type="checkbox"
+                                                 id="select-all"
+                                                 ng-click="handleCardChecked(item.Id);"
+
+                                                 ng-model="item.selectedCard" />
+
+                                          <span class="slds-checkbox--faux"></span>
+                                        </label>
+                                      </span>
+                                    </div>
+
+                                    <!-- card amount  -->
+                                    <div class="slds-list__item slds-text-heading--medium" style="padding-top:5px;">
+                                          {{item.CurrencyIsoCode}} {{item.PSA_Amount_in_Original_Currency__c | number:2}}
+<!--                                           {{item.CurrencyIsoCode}}
+                                          {{item.PSA_Remaining_Transaction_Amount__c | number:2}} -->
+                                    </div>
+
+                                    <div class="slds-grid slds-wrap" style="padding-top:5px;">
+                                      <!-- transaction date -->
+                                      <div class="slds-col slds-size--1-of-2 slds-text-heading--label">
+                                        <div class="slds-text-heading--small slds-text-heading--label">
+                                          Transaction Date
+                                        </div>
+                                        <div>
+                                          {{item.PSA_Transaction_Date__c | date : 'yyyy-MM-dd' }}
+                                        </div>
+                                      </div>
+
+                                      <!-- posted date -->
+                                      <div class="slds-col slds-size--1-of-3 slds-m-left--x-large slds-text-heading--label">
+                                        <div class="slds-text-heading--small slds-text-heading--label">
+                                          Posted Date
+                                          </div>
+                                        <div>
+                                          {{item.PSA_Posting_Date__c | date : 'yyyy-MM-dd' }}
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+
+                          </li>
+
+                        </ul>
+                    </div>
+
+                  </div>
+
+                </span> <!-- end hasCardTransactions==true -->
+
+                <!--
+                  Panel rendered when there are NO card transactions associated for the user
+                -->
+                <span ng-show="pg.cardTransactions.length == undefined || pg.cardTransactions.length <= 0">
+                  <div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert">
+                      <h2>
+                          <i class="fa fa-ban" style="padding-right:15px;"></i>  No Pending Transactions Found.
+                      </h2>
+                  </div>
+                </span>
+
+            </div>
+
+
+          </div> <!-- end card body -->
+
+
+        </div> <!-- end card -->
+    </div>
+
+    <!--
+        expense side
+    -->
+    <div class="slds-size--1-of-2" style="margin-left:12px;">
+        <div class="slds-card"                          style="background-color: initial;">
+            <!-- header -->
+            <div class="slds-card__header"              style="background-color: initial">
+
+                   <div class="slds-form">
+                      <div class="slds-grid">
+
+                        <div class="slds-col slds-size--1-of-3">
+                          <div class="slds-form-element" style="margin-right:8px">
+                              <label class="slds-form-element__label" for="date" >
+                                Expense Report
+                              </label>
+                              <span class="pull-right slds-text-heading--small slds-text-heading--label"
+                                   style="border:1px solid #ddd;
+                                          padding:6px;
+                                          border-radius:15px">
+                                <a href="/apex/psaExpenseAttachmentManagement?id={{pg.expenseReport.Id}}" target="_blank"
+                                 class="cursor-pointer">
+                                  Link To Expense Receipt Attachments
+                                  <i class="fa fa-share"></i>
+                                </a>
+
+                              </span>
+                              <span style="clear:both"></span>
+
+                              <div class="slds-form-element__control" style="line-height: 34px;">
+                                <a href="/{{pg.expenseReport.Id}}" target="_blank">
+                                  {{ pg.expenseReport.Name }} - {{pg.expenseReport.pse__Resource__r.Name}}
+                                </a>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div> <!-- end form -->
+
+            </div>
+
+            <!-- body -->
+            <div class="slds-card__body">
+              <div class="slds-theme--alt-inverse available-extended-theme" style="margin-bottom:0px;padding-left:5px;">
+                  Available Expenses
+                  <span class="pull-right" style="padding-right:25px">
+                    Total: {{ pg.expenseItems.length }}
+                  </span>
+              </div>
+              <div style="clear:both"></div>
+
+              <!--
+              order expenses by....
+
+
+              -->
+              <div class="slds-grid slds-theme--shade order-by-box">
+                <!--
+                order by expenses
+                -->
+                <div class="slds-col slds-size--1-of-1">
+                    <div class="slds-form--inline pull-right" style="padding-right:15px;">
+                      <!-- transaction ordering -->
+                      <div class="slds-form-element" style="margin-right:8px">
+                          <label class="slds-form-element__label">Order Expenses By</label>
+                          <div class="slds-form-element__control" style="min-width:100px;">
+                              <select id="orderProperty" class="slds-select"
+                                ng-model="expense_propertyName"
+                                ng-disabled="pg.expenseItems == undefined || pg.expenseItems.length == undefined|| pg.expenseItems.length <= 0"
+                                ng-change="sortBy()">
+                                <option value="Id">Expense</option>
+                                <option value="pse__Expense_Date__c">Date</option>
+                                <option value="pse__Amount__c">Amount</option>
+                                <option value="pse__Type__c">Type</option>
+                                <option value="pse__Status__c">Status</option>
+                              </select>
+                          </div>
+                      </div>
+                      <!-- reverse -->
+                      <div class="slds-form-element__control">
+                        <label class="slds-checkbox">
+                          <span class="slds-form-element__label">Reverse</span>
+                          <input type="checkbox"
+                                 ng-model="expense_reverse" />
+                          <span class="slds-checkbox--faux"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--
+                end order transactions by
+                -->
+
+                <!--
+                  Panel rendered when there are NO expenses associated for the expense report
+                -->
+                <span ng-show="pg.expenseItems == undefined || pg.expenseItems.length == undefined|| pg.expenseItems.length <= 0">
+                  <div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert">
+                      <h2>
+                          <i class="fa fa-ban" style="padding-right:15px;"></i>  No Pending Expenses Found.
+                      </h2>
+                  </div>
+                </span>
+                    <ul class="available-expenses">
+
+                        <li ng-repeat="exp in pg.expenseItems | orderBy:expense_propertyName:expense_reverse" style="margin-bottom:15px;border:1px solid #16325c;border-radius: 15px" class="slds-theme--shade unsortable ">
+
+                        <ul class=" expense-{{exp.Id}}-list"
+                             ui-sortable="expSortableOptions"
+                        ng-class="{'has-transaction':(pg.expenseItemToCardTrans[exp.Id] || []).length > 0,
+                                   'sortable-transaction-list':(pg.expenseItemToCardTrans[exp.Id] || []).length <= 0}"
+                             data-expense-id="{{exp.Id}}"
+                             ng-model="pg.expenseItemToCardTrans[exp.Id]"
+
+                            style="min-height:100px;">
+
+
+                          <div style="padding:6px">
+
+                            <div class="slds-grid">
+                              <!--
+                                exp name
+                              -->
+                              <div class="slds-col slds-size--1-of-3 slds-text-heading--label">
+                                <div class="slds-text-heading--small slds-text-heading--label">
+                                  Name
+                                </div>
+                                <div>
+                                  <a href="/{{exp.Id}}" target="_blank">
+                                    {{ exp.Name }}
+                                  </a>
+                                </div>
+                              </div>
+
+                              <!--
+                                exp date
+                              -->
+                              <div class="slds-col slds-size--1-of-3 slds-m-left--x-large slds-text-heading--label">
+                                <div class="slds-text-heading--small slds-text-heading--label">
+                                  Expense Date
+                                </div>
+                                <div>
+                                  {{exp.pse__Expense_Date__c | date : 'yyyy-MM-dd' }}
+                                </div>
+                              </div>
+
+                              <!--
+                              exp type
+                              -->
+                              <div class="slds-col slds-size--1-of-3 slds-m-left--x-large slds-text-heading--label">
+                                <div class="slds-text-heading--small slds-text-heading--label">
+                                  Expense Type
+                                </div>
+                                <div>
+                                  {{exp.pse__Type__c }}
+                                </div>
+                              </div>
+
+
+
+                              <!--
+                              exp status
+                              -->
+                              <div class="slds-col slds-size--1-of-5 slds-m-left--x-large slds-text-heading--label">
+                                <div class="slds-text-heading--small slds-text-heading--label">
+                                  Status
+                                  </div>
+                                <div>
+                                  {{exp.pse__Status__c }}
+                                </div>
+                              </div>
+
+                              <!--
+                              exp billable
+                              -->
+                              <div class="slds-col slds-size--1-of-5 slds-m-left--x-large slds-text-heading--label">
+                                <div class="slds-text-heading--small slds-text-heading--label">
+                                  Billable
+                                  </div>
+                                <div>
+                                  <i class="fa "
+                                  ng-class="{'fa-times':!exp.pse__Billable__c, 'fa-check':exp.pse__Billable__c}"
+                                  title="{{exp.pse__Billable__c}}"
+                                  ></i>
+                                  {{exp.pse__Billable__c }}
+                                </div>
+                              </div>
+
+
+                            </div> <!-- end grid -->
+
+                            <div style="padding-bottom:8px;">
+                              <!--
+                                expense amount
+                              -->
+                              <div class="slds-list__item slds-text-heading--medium" style="padding-top:8px;">
+
+                                <div class="slds-grid">
+                                  <div class="slds-size--1-of-2">
+                                      {{exp.CurrencyIsoCode}} {{exp.pse__Amount__c | number:2}}
+                                  </div>
+<!--
+                                  <div class="slds-size--1-of-2">
+
+                                    <div ng-show="exp.PSA_Pre_Match_Amount__c != null" class="pull-right" style="margin-top:8px;margin-bottom:8px;">
+
+                                      <span class="slds-text-heading--small slds-text-heading--label">
+                                        Original Expense Amount
+                                      </span>
+                                      <span class="slds-text-heading--small">
+                                        {{exp.CurrencyIsoCode}} {{exp.PSA_Pre_Match_Amount__c | number:2}}
+                                      </span>
+
+                                    </div>
+
+                                  </div>
+ -->
+                                </div>
+
+
+
+
+
+
+                              </div>
+
+                              <div class="slds-grid" style="padding-top:10px;">
+                                  <!--
+                                  expense description
+                                  -->
+                                  <div class="slds-col slds-size--1-of-3 slds-text-heading--label">
+                                    <div class="slds-text-heading--small slds-text-heading--label">
+                                      Description
+                                    </div>
+
+                                    <div ng-class="{'nowrapped-expense-text':!exp.descriptionClicked, 'normal-expense-text':exp.descriptionClicked}">
+
+                                      <span ng-click="exp.descriptionClicked = !exp.descriptionClicked">
+                                        {{ exp.pse__Description__c }}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <!--
+                                  expense notes
+                                  -->
+                                  <div class="slds-col slds-size--1-of-3 slds-m-left--x-large  slds-text-heading--label">
+                                    <div class="slds-text-heading--small slds-text-heading--label">
+                                      Notes
+                                    </div>
+
+                                    <div ng-class="{'nowrapped-expense-text':!exp.notesClicked, 'normal-expense-text':exp.notesClicked}">
+                                      <span ng-click="exp.notesClicked = !exp.notesClicked">
+                                        {{ exp.pse__Notes__c }}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <!--
+                                  receipt type
+                                  -->
+                                  <div class="slds-col slds-size--1-of-8 slds-m-left--x-large  slds-text-heading--label">
+                                    <div class="slds-text-heading--small slds-text-heading--label">
+                                      Receipt Type
+                                    </div>
+
+                                    <div>
+                                      <span >{{ exp.PSA_Receipt_Type__c || 'None'}} </span>
+
+                                      <span ng-show="exp.HAS_ATTACHMENT">
+<a href="/apex/psaExpenseAttachmentManagement?id={{pg.expenseReport.Id}}" target="_blank" style="color:green">
+
+                                        <i class="fa fa-check" title="Has Attachments"></i>
+</a>
+                                      </span>
+
+                                      <span ng-show="!exp.HAS_ATTACHMENT">
+<a href="/apex/psaExpenseAttachmentManagement?id={{pg.expenseReport.Id}}" target="_blank" style="color:#c23934">
+
+                                        <i class="fa fa-chain-broken" title="No Attachments"></i>
+</a>
+                                      </span>
+                                    </div>
+                                  </div>
+
+
+                              </div> <!-- end grid -->
+                            </div> <!-- end padded div -->
+
+
+
+                            <div class="slds-grid" style="padding-bottom:8px;">
+
+                              <div class="slds-col" style=" max-width: 55px;">
+                                <i class="fa fa-check" ng-show="(pg.expenseItemToCardTrans[exp.Id] || []).length > 0"
+                                    style="
+                                        color: green;
+                                        font-size: 34px;
+                                        padding-top: 20px;
+                                        margin-left: 5px;">
+                                </i>
+                              </div>
+
+
+                              <div class="droppable-expense slds-col"
+                                    ng-class="{'drop-transactions-here':(pg.expenseItemToCardTrans[exp.Id] || []).length <= 0,
+                                         'exp-transactions':(pg.expenseItemToCardTrans[exp.Id] || []).length > 0}"
+                                      style="border-right-style: outset;border-bottom-style: outset;border-radius: 10px;"
+                                         >
+                                  <div ng-show="(pg.expenseItemToCardTrans[exp.Id] || []).length <= 0"
+                                   style="text-align: center;margin-top:2px;">
+                                    Drop Transaction Here!
+                                  </div>
+
+
+                                    <ul class=" expense-{{exp.Id}}-list"
+                                         ui-sortable="expSortableOptions"
+                                    ng-class="{'has-transaction':(pg.expenseItemToCardTrans[exp.Id] || []).length > 0,
+                                               'sortable-transaction-list':(pg.expenseItemToCardTrans[exp.Id] || []).length > 0}"
+                                         data-expense-id="{{exp.Id}}"
+                                         ng-model="pg.expenseItemToCardTrans[exp.Id]"
+
+                                        style="min-height:100px;">
+
+                                        <li ng-repeat="item in pg.expenseItemToCardTrans[exp.Id] || []">
+
+                                          <div class="slds-box slds-theme--shade draggable-transaction" style="border:0">
+
+                                            <!-- card desc -->
+                                            <div class="slds-list__item slds-text-heading--label slds-text-heading--small">
+                                              <a href="/{{item.Id}}" target="_blank">
+
+                                                {{item.PSA_Merchant_Name__c}} {{item.PSA_Merchant_State_Province__c}}, {{item.PSA_Merchant_Country_Code__c}}
+
+                                              </a>
+                                            </div>
+
+                                            <!-- card amount  -->
+                                            <div class="slds-list__item slds-text-heading--medium" style="padding-top:5px;">
+                                                  {{item.CurrencyIsoCode}} {{item.PSA_Amount_in_Original_Currency__c | number:2}}
+        <!--                                           {{item.CurrencyIsoCode}}
+                                                  {{item.PSA_Remaining_Transaction_Amount__c | number:2}} -->
+                                            </div>
+
+                                            <div class="slds-grid slds-wrap" style="padding-top:5px;">
+                                              <!-- transaction date -->
+                                              <div class="slds-col slds-size--1-of-2 slds-text-heading--label">
+                                                <div class="slds-text-heading--small slds-text-heading--label">
+                                                  Transaction Date
+                                                </div>
+                                                <div>
+                                                  {{item.PSA_Transaction_Date__c | date : 'yyyy-MM-dd' }}
+                                                </div>
+                                              </div>
+
+                                              <!-- posted date -->
+                                              <div class="slds-col slds-size--1-of-3 slds-m-left--x-large slds-text-heading--label">
+                                                <div class="slds-text-heading--small slds-text-heading--label">
+                                                  Posted Date
+                                                  </div>
+                                                <div>
+                                                  {{item.PSA_Posting_Date__c | date : 'yyyy-MM-dd' }}
+                                                </div>
+                                              </div>
+                                            </div>
+
+                                          </div> <!-- end draggable transaction -->
+
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </div> <!-- end grid -->
+                            <div class="slds-grid" style="text-align: center">
+                              <div class="slds-col">
+
+                                <button class="slds-button slds-button--small slds-button--neutral"
+                                        ng-disabled="(pg.selectedCard == null || (pg.expenseItemToCardTrans[exp.Id] || []).length > 0)"
+                                        ng-click="matchSelectedCardTransaction(exp.Id, exp)">
+                                  Match Selected Card Transaction
+                                </button>
+
+
+                                <button class="slds-button slds-button--small slds-button--neutral slds-theme--error"
+                                    ng-click="clearExpenseItemCardTrans(exp.Id, exp)"
+                                    ng-disabled="(pg.expenseItemToCardTrans[exp.Id] || []).length <= 0">
+                                  Clear Transaction
+                                </button>
+                              </div>
+                            </div>
+
+
+                          </div>
+                        </ul>
+                        </li>
+                    </ul>
+
+
+            </div>
+
+            <div class="slds-card__footer">
+            <!-- foot! -->
+            </div>
+        </div>
+    </div>
+    <!--
+    end expense side
+    -->
+
+  </div> <!-- end grid inner-->
+
+  </div> <!-- end card body -->
+
+  <div class="slds-card__footer" style="border-top:1px solid #ddd">
+      <div class="slds-grid">
+          <nav class="slds-col slds-size--1-of-2">
+            <div class="slds-button-group pull-right">
+                <div class="slds-button-group pull-right">
+                      <button class="slds-button slds-button--brand"
+                              ng-click="matchUpExpensesAndTransaction()"
+                              ng-disabled="!pg.hasMadeChanges"
+                              xxng-xxdisabled="!hasPendingMatches()">
+                          Save Matched Card Transaction
+                      </button>
+
+                      <!-- back to expense report -->
+                      <span ng-show="pg.expenseReport != null" ng-cloak="ng-cloak">
+                          <a href="/{{pg.expenseReport.Id}}" class="slds-button slds-button--neutral">
+                              <i class="fa fa-reply"></i>
+                              Back to Expense Report
+                          </a>
+
+
+                      </span>
+
+
+
+                </div>
+
+            </div>
+          </nav>
+      </div>
+
+  </div>
+
+</div> <!-- end card -->
+
+</span>
+
+
+<!--
+page scripts
+-->
+<script>
+
+
+
+// --- nice!
+//   flashInputbackground(".a6f340000006CNcAAM-expense-report")
+// var flashInputbackground = function(selector) {
+//   $(selector).addClass("flash-input-bg");
+//   setTimeout(function(){
+//     $(selector).removeClass("flash-input-bg");
+//   },800)
+// }
+
+
+
+  </script>
+
+
+
+
+
+
+
+</div> <!-- ui-view -->
+
+    </div> <!-- end slds -->
+
+
+</div> <!-- end ng-app -->
+
+
+
+<!-- todo...move this to psajscomponents -->
+<script>
+
+// # angular provider object wrapping remote actions in a js promise
+angular.module('vfr.provider', [])
+    // * Vfr provides access to visualforce Remoting methods that are @remoteAction annotated.
+    // * Largely based on ngForce (https://developer.salesforce.com/blogs/developer-relations/2013/05/angularjs-and-ngforce-more-fun-in-the-javascript-playground.html)
+    .provider('vfr', function() {
+
+      /**
+       * Object contains the two standard fields needed by the .send method: escape and timeout.
+       * escape: Should the result be escape. default to false.
+       * timeout: set the timeout for visualforce to respond.
+       * @type {Object}
+       */
+      var standardOpts = {
+        escape: false,
+        timeout: 10000
+      };
+
+      // Force shutdown the VFR provider / factory if VisualForce is not already an object on window.
+      if (typeof Visualforce != 'object') {
+        throw new Error('Visualforce is not available as an object! Did you forget to include the controller or component?');
+      }
+      var vfRemote = {};
+
+      return {
+        setStandardOptions: function(newOptions) {
+          if (newOptions && typeof newOptions !== 'object') {
+            throw new Error('standardOptions must be an object');
+          }
+          standardOpts = newOptions;
+        },
+        $get: function($q, $rootScope) {
+          /*
+           * Kevin o'Hara released premote, a nice lib for wrapping
+           * visualforce remoting calls in a promise interface. this
+           * function .send() is largely a gentle refactoring of his
+           * work, found in "premote" here:
+           *    https://github.com/kevinohara80/premote
+           * such that it locks into the exec loop and utilizes
+           * the angular $q service, itself based on the Q lib
+           * Kevin uses.
+           *
+           * Returns a function that, when called, invokes the js
+           * remoting method specified in this call.
+           * @param  {String}   remoteAction class.methodName string representing the Apex className and Method to invoke
+           * @param  {Object}   options      Ojbect containing at least the timeout and escaping options. Passed to Remoting call
+           * @param  {Boolean}  nullok       Can this method return null and it be OK?
+           * @return {Function}              Function engaged with the NG execution loop, making Visualforce remoting calls.
+           */
+          function send(remoteAction, options, nullok) {
+            var namespace, controller, method;
+            var Manager = Visualforce.remoting.Manager;
+            var parts = remoteAction.split('.');
+            if (options && typeof options !== 'object') {
+              throw new Error('Options must be an object');
+            }
+            if (parts.length < 2) {
+              throw new Error('Invalid Remote Action specified. Use Controller.MethodName or $RemoteAction.Controller.MethodName');
+            } else {
+              if (parts.length === 3) {
+                namespace = parts[0];
+                controller = parts[1];
+                method = parts[2];
+              } else if (parts.length === 2) {
+                controller = parts[0];
+                method = parts[1];
+              }
+            }
+
+            return function() {
+              var deferred = $q.defer();
+              var args;
+              if (arguments.length) {
+                args = Array.prototype.slice.apply(arguments);
+              } else {
+                args = [];
+              }
+              args.splice(0, 0, remoteAction);
+              args.push(function(result, event) {
+                handleResultWithPromise(result, event, nullok, deferred);
+              });
+              if (options) {
+                args.push(options);
+              }
+              Manager.invokeAction.apply(Manager, args);
+              return deferred.promise;
+            };
+          };
+
+          /**
+           * Method returns an Angular promise as the product of a .send() prototyped method call
+           * @param  {String}   result   Raw JSON string returned by js Remoting call
+           * @param  {Object}   event    Status object returned from SF detailing errors, if any.
+           * @param  {Boolean}  nullok   Can the result be null?
+           * @param  {Deferred} deferred Angular Promise object
+           * @return {Deferred}          Angular promise with resolution
+           */
+          function handleResultWithPromise(result, event, nullok, deferred) {
+            if (result) {
+              if (typeof result !== 'object') {
+                result = JSON.parse(result);
+              }
+              if (Array.isArray(result) && result[0].message && result[0].errorCode) {
+                deferred.reject(result);
+                $rootScope.$safeApply();
+              } else if (result.message && result.errorCode) {
+                deferred.reject(result);
+                $rootScope.$safeApply();
+              } else {
+                deferred.resolve(result);
+                $rootScope.$safeApply();
+              }
+            } else if (typeof nullok !== 'undefined' && nullok) {
+              deferred.resolve();
+              $rootScope.$safeApply();
+            } else {
+              deferred.reject({
+                // message: 'Null returned by RemoteAction not called with nullOk flag',
+                message: 'The operation timed out.  Please refresh the page and try again.',
+                errorCode: 'NULL_RETURN'
+              });
+              $rootScope.$safeApply();
+            }
+          };
+
+          /**
+           * This the returned object literal for the $get call.
+           * Note that send and standardOptions essentially punt to their parental
+           * objects.  This is where we define and setup our visual force remote
+           * methods.
+           */
+          return {
+            send: send,
+            standardOptions: standardOpts,
+
+            initializeExpenseReportCardTransactions: send('psaExpenseMatchCardTransactionController.initializeExpenseReportCardTransactions', { escape: false, timeout: 30000 }, false),
+
+            lookupCardTransactions: send('psaExpenseMatchCardTransactionController.lookupCardTransactions', { escape: false, timeout: 30000 }, false),
+
+            matchExpenseCardTransactions: send('psaExpenseMatchCardTransactionController.matchExpenseCardTransactions', { escape: false, timeout: 30000 }, false),
+
+
+          };
+        } // end get
+      }; // end return {..
+    }); // end provider
+
+
+angular.module('ExpenseCardTransactionMatcher',["ngSanitize",
+                                                "ui.sortable",
+                                                "ui.slds",
+                                                "vfr.provider",
+                                                "Scope.safeApply"])
+
+
+  // ------------------------------------------------------
+  // ** angular directive for jquery-datepicker
+  // ------------------------------------------------------
+  .directive("datepicker", function ($window) {
+    return {
+          restrict: 'A',
+          require : 'ngModel',
+          link : function (scope, element, attrs, ngModelCtrl) {
+              jQuery(function(){
+                  jQuery(element).datepicker({
+                      dateFormat:'yy-mm-dd',
+                      onSelect:function (date) {
+                          scope.$apply(function () {
+                              ngModelCtrl.$setViewValue(date);
+                          });
+                      }
+                  });
+              });
+          }
+      }
+  })
+
+
+  .controller('ExpenseCardTransactionMatcherController', ['$scope', '$timeout', '$filter', '$location', 'orderByFilter','uiToastManager', 'uiConfirmManager', 'vfr', function($scope, $timeout, $filter, $location, orderBy,uiToastManager, uiConfirmManager,vfr) {
+
+    // ----------------------------------------- ALERTS...
+    // add the alerts manager to the scope for use in the page...
+    $scope.uiToastManager = uiToastManager;
+
+    // initialize the confirmation manager
+    $scope.uiConfirmManager = uiConfirmManager;
+
+    // initialize the page elements
+    $scope.pg = {};
+
+    $scope.pg.expenseReportId = null;
+    $scope.pg.expenseReport = null;
+
+    $scope.pg.expenseItems = [];
+    $scope.pg.cardTransactions = [];
+
+    $scope.pg.showTransactionsOption = 'unusedAll';
+    $scope.pg.cardTransFromDate = null;
+    $scope.pg.cardTransToDate = null;
+
+    $scope.pg.showInfoSection = false;
+
+    // map of expense item id to card transaction ids to associate
+    $scope.pg.expenseItemToCardTrans = {};
+
+    // map of expense item id to card transaction ids to disassociate!
+    //$scope.pg.expenseItemToCardTrans_remove = {};
+
+    $scope.pg.expenseItemExistingTo_remove = [];
+
+    $scope.pg.expenseAndTransactionsLoaded = false;
+
+    // # Initializes the page
+    // # ...calls upon the initializeExpenseReportCardTransactions remote action
+    // # ... building
+    var _initialize = function() {
+      // maintain the expense report id
+      $scope.pg.expenseReportId = '{!$currentpage.parameters.id}';
+
+      // require expense report id page parameter
+      if ($scope.pg.expenseReportId == null || $scope.pg.expenseReportId.trim().length <= 0) {
+        uiToastManager.addErrorAlert('This page requires an expense report.');
+        return;
+      }
+
+      _showSpinner();
+
+      //
+      //  pull current active estimate resources
+      vfr.initializeExpenseReportCardTransactions($scope.pg.expenseReportId).then(
+          function(result) {
+              _handleInitialCardMatchResult(result);
+
+              $scope.$safeApply();
+              _supportDragDropOptions();
+
+              _hideSpinner();
+
+
+          },
+          function(error) {
+              _hideSpinner();
+              //_hideSpinner();
+              uiToastManager.addErrorAlert((error.length && error.length > 0) ? error[0].message : error.message);
+          }
+      );
+    }
+
+    // # Internal: defines the sortable options, allowing for drag-drop..
+      var _supportDragDropOptions = function () {
+          $scope.expSortableOptions = {
+              connectWith: ".sortable-transaction-list",
+              cancel:".unsortable",
+
+              helper: function(e, ui) {
+                  ui.children().each(function() {
+                      $(this).width($(this).width());
+                  });
+                  return ui;
+              },
+
+              start: function(e, ui) {
+                  // keep track of which expense id we are over
+                  ui.item.parent().addClass("over");
+              },
+
+              over: function(e, ui) {
+                  // keep track of which expense id we are over
+                  //
+                  angular.element( document.querySelector( '.over' ) ).removeClass('over');
+                  angular.element(  this ).addClass("over");
+              },
+
+              update: function( event, ui ) {
+                //console.log("ui.item.sortable.received" + ui.item.sortable.received);
+                // item has been dropped, check to see if its on an expense and match em
+                // var targetOver = jQuery(".over");
+                var targetOver = angular.element( document.querySelector( '.over' ) );
+                targetOver.removeClass('over');
+
+                //console.log(targetOver);
+                var onDropExpId = targetOver.attr("data-expense-id");
+                if (onDropExpId != undefined) {
+                  // only allow one element to be dropped at a time....
+                  if ($scope.pg.expenseItemToCardTrans[onDropExpId].length > 0) {
+                    // console.log(cancel);
+                    ui.item.sortable.cancel();
+                  }
+
+                  $scope.pg.selectedCard = null; // always clear....
+
+                  // trigger change event
+                  $scope.handleOnChange();
+
+                  $scope.$safeApply();
+                }
+
+                // reset item widths
+                //jQuery(".draggable-transaction").css({"width":"inherit"});
+                angular.element( document.querySelector( '.draggable-transaction' ) ).css({"width":"inherit"});
+
+              }
+          }
+    };
+
+    // order by attributes for expense
+    $scope.expense_propertyName = 'pse__Amount__c';
+    $scope.expense_reverse = true;
+
+    // order by attributes for card transactions
+    $scope.cardTrans_propertyName = 'PSA_Amount_in_Original_Currency__c';
+    $scope.cardTrans_reverse = true;
+
+    // ordering for expenses note...handled in the ng-repeat filter...
+    $scope.sortBy = function() {
+      $scope.$safeApply();
+    };
+
+    // handle card transaction ordering
+    // note, for ui-sortable use this needs to be done here, instead of in the ng-repeat!
+    $scope.sortByCardTrans = function() {
+      $scope.pg.cardTransactions = $filter('orderBy')($scope.pg.cardTransactions, $scope.cardTrans_propertyName, $scope.cardTrans_reverse);
+
+      $scope.$safeApply();
+    }
+
+
+
+    // common result handling when initializing and matching...
+    //
+    var _handleInitialCardMatchResult = function(result) {
+        if (result.expenseReport != undefined && result.expenseReport != null) {
+          $scope.pg.expenseReport = result.expenseReport;
+
+          // evaluate expense items
+          if (result.expenseLines != undefined && result.expenseLines.length > 0) {
+
+            // loop over expense items....
+            result.expenseLines.forEach(function(expLine) {
+              expLine.HAS_ATTACHMENT = false;
+
+              if (expLine.Attachments != undefined && expLine.Attachments.length && expLine.Attachments.length > 0)
+              {
+                expLine.HAS_ATTACHMENT = true;
+              }
+
+              $scope.pg.expenseItems.push(expLine);
+
+              // pull out existing matched card transaction for the expense.
+              //
+              // and inject into the card trans holder!
+
+              var cardTransHolder = [];
+
+              if (typeof expLine.PSA_Card_Transaction__c !== 'undefined') {
+                if (typeof expLine.PSA_Card_Transaction__r !== 'undefined') {
+                  var expCardTransItem = expLine.PSA_Card_Transaction__r;
+
+                  // indicate that this is an existing association (so we can remove it if need be)
+                  expCardTransItem.isExistingAssociation = true;
+
+                  cardTransHolder.push(expLine.PSA_Card_Transaction__r);
+                }
+              }
+
+              // setup our mapping of expenses to card transaction items...
+              $scope.pg.expenseItemToCardTrans[expLine.Id] = cardTransHolder;
+
+            });
+          }
+
+// jaExpItems = $scope.pg.expenseItems
+
+
+          $scope.pg.expenseAndTransactionsLoaded = true;
+        }
+        if (result.cardTransactions != undefined &&
+            result.cardTransactions.records != undefined &&
+            result.cardTransactions.records.length > 0) {
+
+          result.cardTransactions.records.forEach(function(r){
+              $scope.pg.cardTransactions.push(r);
+          });
+        }
+
+    }
+
+    $scope.pg.hasMadeChanges = false;
+    $scope.handleOnChange = function() {
+      $scope.pg.hasMadeChanges = true;
+    }
+
+    // ????
+    $scope.hasPendingMatches  = function() {
+      var payload = [];
+
+      Object.keys($scope.pg.expenseItemToCardTrans).forEach(function(expId){
+        if (expId != undefined) {
+          var cardTrans = $scope.pg.expenseItemToCardTrans[expId];
+          if (cardTrans && cardTrans.length && cardTrans.length > 0) {
+
+// is existing?
+            if (typeof cardTrans[0].isExistingAssociation === 'undefined' || cardTrans[0].isExistingAssociation !== true) {
+              payload.push({'expenseId':expId, 'cardTransactionId': cardTrans[0].Id});
+            }
+
+          }
+        }
+      })
+
+      // has pending removals???
+      var pendingRemovals = $scope.pg.expenseItemExistingTo_remove.length > 0;
+
+      return pendingRemovals || payload.length > 0;
+    }
+
+
+    // ------
+    // -- action behind matching card transactions...
+    //
+    $scope.matchUpExpensesAndTransaction = function() {
+
+      // Associations to create
+      var payload = [];
+      Object.keys($scope.pg.expenseItemToCardTrans).forEach(function(expId){
+        if (expId != undefined) {
+          var cardTrans = $scope.pg.expenseItemToCardTrans[expId];
+          if (cardTrans && cardTrans.length && cardTrans.length > 0) {
+
+            // is existing?
+            if (typeof cardTrans[0].isExistingAssociation === 'undefined' || cardTrans[0].isExistingAssociation !== true) {
+              payload.push({'expenseId':expId, 'cardTransactionId': cardTrans[0].Id});
+            }
+
+            //payload.push({'expenseId':expId, 'cardTransactionId': cardTrans[0].Id});
+
+          }
+        }
+      });
+
+      // Associations to remove.....
+      var removePayload = [];
+      if ($scope.pg.expenseItemExistingTo_remove.length > 0) {
+
+
+        $scope.pg.expenseItemExistingTo_remove.forEach(function(r){
+          removePayload.push(r);
+        })
+      }
+
+      if (payload.length <= 0 && removePayload <= 0) {
+          uiToastManager.addErrorAlert('No pending matches to save.  Please match transactions from the right with expenses on the left.');
+
+          return;
+      }
+
+      _showSpinner();
+
+      //$scope.pg.expenseAndTransactionsLoaded = false;
+
+      // clear
+      // match expense items
+      vfr.matchExpenseCardTransactions($scope.pg.expenseReportId,
+                                       JSON.stringify(payload),
+                                       JSON.stringify(removePayload)).then(
+          function(result) {
+              // clear!
+
+
+              $scope.pg.expenseItems.length = 0;
+              $scope.pg.cardTransactions.length = 0;
+
+              // re-initialize after save!
+//window.location.reload(true);
+
+              _handleInitialCardMatchResult(result);
+
+              $scope.$safeApply();
+              _supportDragDropOptions();
+
+              uiToastManager.addSuccessAlert('Success: Matching Saved!');
+
+              //window.location
+
+              _hideSpinner();
+
+              // reset!
+              $scope.pg.hasMadeChanges = false;
+
+
+          },
+          function(error) {
+              _hideSpinner();
+              //_hideSpinner();
+              uiToastManager.addErrorAlert((error.length && error.length > 0) ? error[0].message : error.message);
+          }
+      );
+
+
+      //console.log(' TODO...SAVE THESE ' + outputMsg.join(' \n '));
+
+      //return false;
+    }
+
+    // ------------------------------------------------------------------------
+    // action when refreshing cards
+    // updates associated dates.....
+    $scope.refreshCardTransactions = function() {
+
+      _showSpinner();
+
+      // clear.....
+      $scope.pg.cardTransactions = [];
+
+      var resourceId = $scope.pg.expenseReport.pse__Resource__c;
+      //console.log('resourceId :' + resourceId);
+
+      var payload = {};
+      if ($scope.pg.cardTransFromDate != null && $scope.pg.cardTransToDate != null) {
+        payload.filterStartDate = $scope.pg.cardTransFromDate;
+        payload.filterEndDate   = $scope.pg.cardTransToDate;
+      }
+
+      var filterOutCardTransIds = [];
+
+      // filter out any existing 'pending' expense match card transactions
+      // i.e. any that have been dropped already
+      Object.keys($scope.pg.expenseItemToCardTrans).forEach(function(expId){
+        var cardTransItems = $scope.pg.expenseItemToCardTrans[expId];
+        if (cardTransItems != undefined && cardTransItems != null && cardTransItems.length && cardTransItems.length > 0) {
+          cardTransItems.forEach(function(r){
+            filterOutCardTransIds.push(r)
+          });
+        }
+      });
+
+      // list of pending card transactions...to keep out of the card trasanction listing...
+      filterOutCardTransIds = filterOutCardTransIds.map(function(r){ return r.Id });
+
+
+      //console.log(' payload : ' + JSON.stringify(payload));
+      //
+      // Perform the VFR remote action call to retrieve the card transactions for the resource
+      vfr.lookupCardTransactions(resourceId, JSON.stringify(payload)).then(
+          function(result) {
+
+              if (result.records != undefined && result.records.length > 0) {
+
+                //$scope.pg.expenseReport = result.expenseReport;
+
+                result.records.forEach(function(r){
+
+                  if (filterOutCardTransIds.indexOf(r.Id) == -1) {
+                    $scope.pg.cardTransactions.push(r);
+                  }
+
+                });
+              }
+
+              $scope.$safeApply();
+              //_supportDragDropOptions();
+              _hideSpinner();
+          },
+          function(error) {
+              _hideSpinner();
+              //_hideSpinner();
+              uiToastManager.addErrorAlert((error.length && error.length > 0) ? error[0].message : error.message);
+          }
+      );
+    }
+
+
+    // maintinain the selected card id....
+    $scope.pg.selectedCard = null;
+
+    // when card checkbox is clicked....only allow one (like a rb that can be unchecked)
+    $scope.handleCardChecked = function(selectedCardId) {
+      // loop over card transactions....
+      $scope.pg.cardTransactions.forEach(function(ct){
+        if (typeof selectedCardId !== 'undefined' && selectedCardId != null && ct.Id == selectedCardId) {
+          // set the card trand to match selected....as selected
+          $scope.pg.selectedCard = (ct.selectedCard) ? ct.Id :null;
+        }
+        else {
+          // clear any other selected card transactions
+          ct.selectedCard = false;
+        }
+      });
+    }
+
+    // ---
+    // - add selected card trans to specific expense.....
+    $scope.matchSelectedCardTransaction = function(expId, exp) {
+      if ($scope.pg.selectedCard == null) {
+          return;
+      }
+
+      var existing_ = $scope.pg.expenseItemToCardTrans[expId];
+      if (existing_ != undefined && existing_ != null && existing_.length > 0) {
+        uiToastManager.addErrorAlert('A pending match exists, please clear it before adding a new one.');
+        return; // todo...should this error?
+      }
+
+      // lookup our card transaction....
+      var cardTrans = null;
+      var cardTransIndex = null;
+      for (var i=0; i < $scope.pg.cardTransactions.length; i++) {
+        if ($scope.pg.cardTransactions[i].Id == $scope.pg.selectedCard) {
+            cardTrans = $scope.pg.cardTransactions[i]; // found it
+            cardTrans.selectedCard = false;
+            cardTransIndex = i;
+            break;
+        }
+      }
+
+      if (cardTrans != null) {
+
+        // clear selected
+        $scope.handleCardChecked(null);
+        $scope.pg.selectedCard = null;
+
+        // remove/splice from card transactions
+        if (cardTransIndex != null) {
+          $scope.pg.cardTransactions.splice(cardTransIndex, 1);
+        }
+        // associate to expense...
+        $scope.pg.expenseItemToCardTrans[expId] = [cardTrans];
+
+        // indicate a change wsa made....enables the save button!
+        $scope.handleOnChange();
+
+      }
+    }
+
+
+
+    // clears a selected expense item
+    // removes from the specific expese
+    // adds back to the card transaction list...
+    $scope.clearExpenseItemCardTrans = function(expId, exp) {
+        // add back to card transactions
+        var cardTrans = $scope.pg.expenseItemToCardTrans[expId];
+
+        if (cardTrans != undefined && cardTrans != null && cardTrans.length > 0) {
+          cardTrans[0].selectedCard = false; // deselect...in case it is selected
+
+          // -----
+          //  CHECK to see if we need to remove this previous association
+          if (typeof cardTrans[0].isExistingAssociation !== 'undefined' && cardTrans[0].isExistingAssociation == true) {
+            // collect previous association to remove
+            // note only set when generating expense card transaction items from _initialize
+            if ($scope.pg.expenseItemExistingTo_remove.indexOf(expId) == -1) {
+                $scope.pg.expenseItemExistingTo_remove.push(expId);
+            }
+          }
+
+          // check to see if this is an existing association that needs to be removed......
+          $scope.pg.cardTransactions.unshift(cardTrans[0]);
+        }
+        // clear from expense!
+        $scope.pg.expenseItemToCardTrans[expId].length = 0;
+
+
+        // indicate a change was made
+        $scope.handleOnChange();
+    }
+
+
+    // ------------------------------------------------------------------------
+    // action when show transaction select option is changed
+    // updates associated dates.....
+    $scope.updateTransactionOption = function() {
+
+      $scope.pg.cardTransFromDate = null;
+      $scope.pg.cardTransToDate = null;
+
+      console.log($scope.pg.showTransactionsOption);
+      var selectedOption = $scope.pg.showTransactionsOption || 'unusedAll';
+
+
+      if (selectedOption == 'unusedCurMonth') {
+        $scope.pg.cardTransFromDate = moment().startOf('month').format('YYYY-MM-DD');
+        $scope.pg.cardTransToDate = moment().endOf('month').format('YYYY-MM-DD');
+      }
+      else if (selectedOption == 'unusedCurYear') {
+        $scope.pg.cardTransFromDate = moment().startOf('year').format('YYYY-MM-DD');
+        $scope.pg.cardTransToDate = moment().endOf('year').format('YYYY-MM-DD');
+      }
+      else if (selectedOption == 'unusedToday') {
+        $scope.pg.cardTransFromDate = moment().startOf('day').format('YYYY-MM-DD');
+        $scope.pg.cardTransToDate = moment().endOf('day').format('YYYY-MM-DD');
+      }
+    }
+
+    // --- spinner
+
+    $scope.pg.showSpinner = false;
+
+    var _showSpinner = function() {
+      $scope.pg.showSpinner = true;
+    }
+
+    var _hideSpinner = function() {
+      $scope.pg.showSpinner = false;
+    }
+
+
+    _initialize();
+
+
+}]);
+
+
+</script>
+
+
+
+
+
+
+</html>
+</apex:page>

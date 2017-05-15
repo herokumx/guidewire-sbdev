@@ -1,0 +1,431 @@
+<apex:page standardController="Sales_Event__c" extensions="SalesEventController" showchat="false">
+  <chatter:feedWithFollowers id="ChatterFeed" entityId="{!thisEvent.Id}" showHeader="true" rendered="true" /> <!-- {!thisEvent.Id} -->
+ <apex:form >
+ <apex:actionFunction name="updateChatterBlock" action="{!reloadEvent}" rerender="ChatterFeed"  />
+ <apex:actionFunction name="updateDetailBlock" action="{!reloadEvent}" rerender="DetailBlock,ChatterFeed"  />
+ <apex:actionFunction name="updateDatesBlock" rerender="PossibleDatesBlock,ChatterFeed"  />
+ <apex:actionFunction name="updateDemoTeamBlock" rerender="DemoteamsBlock"  />
+ <apex:actionFunction name="updatePreparationBlock" rerender="PreparationsBlock"  />
+ <apex:actionFunction name="updateCustomerCommitmentsBlock" rerender="CustomerCommitmentsBlock"  />
+ 
+  <apex:pageMessages rendered="{!ReloadFailed}" ></apex:pageMessages>
+  <apex:pageBlock title="Event Details" mode="inlineEdit" id="DetailBlock"  rendered="{!!ReloadFailed}">
+        <apex:pageBlockButtons id="PBB" location="top">
+            <apex:commandButton id="editButton"       value="Edit"   action="{!edit}"/>
+            <apex:commandButton id="saveButton"   value="Save"   action="{!save}"   style="display:none" reRender="DetailBlock"/>
+           <apex:commandButton onclick="resetInlineEdit()" id="cancelButton" value="Cancel"  style="display:none"/>
+           <apex:commandButton title="Posts to the chatter feed above using @Mention for everyone named on this event." onclick="var conf = prompt('The message you enter will be posted as a single message with each team member on this event @mentioned.',''); if(conf) {requestReview(conf)}; return false" id="messageTheTeam" value="Message the Team"/>
+           <apex:commandButton title="Requests that individuals on this event review it for accuracy." onclick="var conf = prompt('The following message will be posted for each team member on this event.  You can edit the message before posting if desired.','Please review this event to make sure your customer commitments and prep time are correct.'); if(conf) {requestReview(conf)}; return false" id="requestReviewButton" value="Request Team Review"  rendered="{!IsPresalesManager}"/>
+          <apex:commandButton id="ProvideFeedback" value="Provide Feedback" action="{!openFeedbackPage}"/>
+        </apex:pageBlockButtons>
+    <apex:pageBlockSection title="Details"  columns="2"> 
+    
+       <apex:outputText value="NOTICE: This sales event has been completed. Please make sure your information below is accurate." style="color:red;background-color: #FFFF00" rendered="{!thisEvent.Status__c == 'Complete' || thisEvent.Status__c == 'Completed' }"> </apex:outputText>
+       
+       <apex:outputfield id="opp" value="{!thisEvent.Opportunity__c}">
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       <apex:outputfield id="eventStatus" value="{!thisEvent.Status__c}">
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       <apex:outputfield id="eventName" value="{!thisEvent.Name}">
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       <apex:outputfield id="eventStart" value="{!thisEvent.Confirmed_Start_Date__c}" rendered="{!thisEvent.Event_Type__c != 'RFI / RFP'}">
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       <apex:outputfield id="rfxExpected" value="{!thisEvent.RFx_Received__c}" rendered="{!thisEvent.Event_Type__c == 'RFI / RFP'}" >
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"  />
+       </apex:outputField>
+       <apex:outputfield id="eventType" value="{!thisEvent.Event_Type__c}" >  
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit" />
+       </apex:outputField> 
+       <apex:outputfield id="eventEnd" value="{!thisEvent.Confirmed_End_Date__c}"  rendered="{!thisEvent.Event_Type__c != 'RFI / RFP'}" >
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       <apex:outputfield id="rfxInternal" value="{!thisEvent.RFx_Internal_Due__c}" rendered="{!thisEvent.Event_Type__c == 'RFI / RFP'}" >
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"  />
+       </apex:outputField>
+       <apex:outputfield id="presType" value="{!thisEvent.Presentation_Type__c}">
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       <apex:outputfield id="rfxExternal" value="{!thisEvent.RFx_External_Due__c}" rendered="{!thisEvent.Event_Type__c == 'RFI / RFP'}" >
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"  />
+       </apex:outputField>
+       <apex:outputText id="spacer1" rendered="{!thisEvent.Event_Type__c == 'RFI / RFP'}" ></apex:outputText>
+       <apex:outputfield id="eventLoc" value="{!thisEvent.Location__c}">
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       <apex:outputfield id="CustHours" value="{!thisEvent.Customer_Hours__c}">
+       </apex:outputField>       
+       <apex:outputfield id="EventHours" value="{!thisEvent.Event_Hours__c}">
+       </apex:outputField>
+       <!--  
+       <apex:outputfield id="EventGoals" value="{!thisEvent.Event_Goals__c}">
+       </apex:outputField> 
+       -->      
+       <apex:outputfield id="prepHours" value="{!thisEvent.Preparation_Hours__c}">
+       </apex:outputField>
+       <apex:outputfield id="DemoteamHours" value="{!thisEvent.Demo_team_Hours__c}">
+       </apex:outputField>
+   </apex:pageBlockSection>
+   <apex:pageBlockSection title="Description"  columns="2"> 
+       
+       <!--
+       <apex:outputfield id="EventGoal" value="{!thisEvent.Event_Goal__c}">
+       <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit" />
+       </apex:outputField>
+       --> 
+       <apex:outputfield label="" id="descField"  value="{!thisEvent.Description__c}"  >
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       <!--
+       <apex:outputfield label="" id="PeopleField"  value="{!thisEvent.List_Of_People__c}"  >
+               <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+       </apex:outputField>
+       -->
+   </apex:pageBlockSection>
+   
+   <apex:pageBlockSection title="Event Goals"  columns="2"> 
+      <apex:outputfield label="" id="EventGoals" value="{!thisEvent.Event_Goals__c}">
+       <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick"     
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit" />
+      </apex:outputField>
+
+    </apex:pageBlockSection>
+
+   
+  </apex:pageBlock>
+  <apex:pageBlock title="Customer Commitments" id="CustomerCommitmentsBlock"  rendered="{!!ReloadFailed}">
+          <apex:pageBlockButtons id="CCPBB" location="top">
+             <apex:commandButton action="{!URLFOR($Action.Customer_Commitment__c.New,null ,[SalesEventID=thisEvent.Id] )}" value="Add New Customer Commitment" id="newCustCommitButton"  reRender="CustomerCommitmentsBlock" />
+           </apex:pageBlockButtons>  
+       <apex:pageBlockTable value="{!CustomerCommitmentsList}" var="commitment">
+                <apex:column width="75" style=""> 
+                    <apex:commandLink action="{!URLFOR($Action.Customer_Commitment__c.Edit,commitment.Id )}" value="Edit" id="EditCommitLink" style="color: #3366CC; text-decoration: none;"/>
+                    &nbsp;&nbsp;<apex:commandLink onclick="var conf = confirmation('Are you sure you wish to delete this entry?'); if(conf) {deleteCommitment('{!commitment.Id}')}; return false" value="Del" id="DeleteCommitLink" style="color: #3366CC; text-decoration: none;" reRender="DetailBlock,CustomerCommitmentsBlock" />
+                       <apex:facet name="header">Actions</apex:facet>
+                </apex:column>
+                <apex:column style="" > 
+                       <apex:commandLink action="{!URLFOR($Action.Customer_Commitment__c.VIEW,commitment.Id )}" value="{!commitment.Who__r.Name}" id="ViewCustCommit"/>
+                       <apex:facet name="header">Who</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!commitment.Coverage_Area__c}"> 
+                       <apex:facet name="header">Coverage Area</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!commitment.Description__c}"> 
+                       <apex:facet name="header">Description</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!commitment.Event_Hours__c}"> 
+                       <apex:facet name="header">Customer Hours<br/>(if partial)</apex:facet>
+                </apex:column>
+       </apex:pageBlockTable>
+  </apex:pageBlock>
+  <apex:pageBlock title="Preparations" id="PreparationsBlock"  rendered="{!!ReloadFailed}">
+       <apex:pageBlockButtons id="PPBB" location="top">
+         <apex:commandButton action="{!URLFOR($Action.Preparation__c.New,null ,[SalesEventID=thisEvent.Id] )}" value="Add New Preparation" id="newPreparationButton"  reRender="PreparationsBlock" />
+       </apex:pageBlockButtons>    
+       <apex:pageBlockTable value="{!PreparationsList}" var="prep">
+                <apex:column width="75" style=""> 
+                    <apex:commandLink action="{!URLFOR($Action.Preparation__c.Edit,prep.Id )}" value="Edit" id="EditPrepLink" style="color: #3366CC; text-decoration: none;"/>
+                    &nbsp;&nbsp;<apex:commandLink onclick="var conf = confirmation('Are you sure you wish to delete this entry?'); if(conf) {deletePrep('{!prep.Id}')}; return false" value="Del" id="DeletePrepLink" style="color: #3366CC; text-decoration: none;" reRender="DetailBlock,PreparationsBlock" />
+                       <apex:facet name="header">Actions</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.Who__c}"> 
+                       <apex:facet name="header">Who</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.Hours__c}"> 
+                       <apex:facet name="header">Hours</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.Start__c}"> 
+                       <apex:facet name="header">Start</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.End__c}"> 
+                       <apex:facet name="header">End</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.Note__c}"> 
+                       <apex:facet name="header">Note</apex:facet>
+                </apex:column>
+       </apex:pageBlockTable>
+  </apex:pageBlock>
+     
+  <apex:pageBlock title="Demo Teams" id="DemoteamsBlock"  rendered="{!!ReloadFailed}">
+       <apex:pageBlockButtons id="DTPBB" location="top">
+         <apex:commandButton action="{!URLFOR($Action.Demo_Team__c.New,null ,[SalesEventID=thisEvent.Id] )}" value="Add New Demo Team" id="newDemoteamButton"  reRender="DemoteamsBlock" />
+       </apex:pageBlockButtons>    
+       <apex:pageBlockTable value="{!DemoteamsList}" var="team">
+                <apex:column width="75" style=""> 
+                    <apex:commandLink action="{!URLFOR($Action.Demo_Team__c.Edit,team.Id )}" value="Edit" id="EditTeamLink" style="color: #3366CC; text-decoration: none;"/>
+                    &nbsp;&nbsp;<apex:commandLink onclick="var conf = confirmation('Are you sure you wish to delete this entry?'); if(conf) {deleteTeam('{!team.Id}')}; return false" value="Del" id="DeleteTeamLink" style="color: #3366CC; text-decoration: none;" reRender="DetailBlock,DemoteamsBlock" />
+                       <apex:facet name="header">Actions</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!team.Name}"> 
+                       <apex:facet name="header">Demo Team Name</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!team.Hours__c}"> 
+                       <apex:facet name="header">Hours</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!team.Start__c}"> 
+                       <apex:facet name="header">Start</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!team.End__c}"> 
+                       <apex:facet name="header">End</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!team.Note__c}"> 
+                       <apex:facet name="header">Note</apex:facet>
+                </apex:column>
+       </apex:pageBlockTable>
+  </apex:pageBlock>
+     
+  <apex:pageBlock title="Possible Dates" id="PossibleDatesBlock" rendered="{!(!ReloadFailed && thisEvent.Event_Type__c != 'RFI / RFP')}"  >
+       <apex:pageBlockButtons id="PDPBB" location="top">
+         <apex:commandButton action="{!URLFOR($Action.Event_Possible_Date__c.New,null ,[SalesEventID=thisEvent.Id] )}" value="Add New Date" id="newPossibleDateButton"  reRender="PossibleDatesBlock" />
+       </apex:pageBlockButtons>
+       <apex:pageBlockTable value="{!AllPossibleDatesList}" var="pDate">
+                <apex:column width="75" style=""> 
+                    <apex:commandLink action="{!URLFOR($Action.Event_Possible_Date__c.Edit,pDate.Id )}" value="Edit" id="EditDateLink" style="color: #3366CC; text-decoration: none;"/>
+                    &nbsp;&nbsp;<apex:commandLink onclick="var conf = confirmation('Are you sure you wish to confirm this date?'); if(conf) {selectDate('{!pDate.Id}')}; return false" value="Confirm" id="SelectDateLink" style="color: #3366CC; text-decoration: none;"  rendered="{!pDate.Status__c == 'Possible'}" reRender="PossibleDatesBlock" />
+                       <apex:facet name="header">Actions</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Status__c}"> 
+                       <apex:facet name="header">Status</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Start_Date__c}"> 
+                       <apex:facet name="header">Start</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.End_Date__c}"> 
+                       <apex:facet name="header">End</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Event_Hours__c}"> 
+                       <apex:facet name="header">Hours</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Date_is_Flexible__c}"> 
+                       <apex:facet name="header">Date is Flexible</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Note__c}"> 
+                       <apex:facet name="header">Note</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.LastModifiedDate}"> 
+                       <apex:facet name="header">Last Updated</apex:facet>
+                </apex:column>
+       </apex:pageBlockTable> 
+
+  </apex:pageBlock>
+     
+<script>
+function ScreenReload(){
+location.reload();
+}
+</script>
+     
+     <apex:pageBlock title="Sales Event Feedbacks" id="SalesEventFeedBack" rendered="{!!ReloadFailed}" >
+      <!-- <apex:outputLabel >Success Indicator - {!thisEvent.Success_Indicator_temp__c} </apex:outputLabel>-->
+       <apex:outputLink value="QuestionsSummaryView?Id={!thisEvent.id}">Success Indicator - {!thisEvent.Success_Indicator_temp__c}</apex:outputLink>
+       <apex:pageBlockTable value="{!lstSalesEventFeedback}" var="seff">
+         <apex:column width="75" style=""> 
+             <apex:commandLink action="{!URLFOR($Action.Sales_Event_Feedback__c.Edit,seff.strRecordId )}" value="Edit" id="EditSalesEventLink" style="color: #3366CC; text-decoration: none;"/>
+             &nbsp;&nbsp;
+             <apex:commandLink Styleclass="actionLink" rendered="{!displayDelete}" action="{!DeleteSaleEventFeedback}" value="Del" id="theCommandLink" oncomplete="ScreenReload();" style="color: #3366CC; text-decoration: none;">
+            <apex:param assignTo="{!strdelsaleseventfeedbackId}" name="q" value="{!seff.strRecordId}"/>
+            </apex:commandLink>
+             
+             <apex:facet name="header">Actions</apex:facet>
+          </apex:column>
+                <apex:column style="" value="{!seff.strCreatedBy}"> 
+                       <apex:facet name="header">Created By</apex:facet>
+                </apex:column>
+                <apex:column style="" value=" {!seff.strCreatedDate}">
+                        <apex:facet name="header">Created Date</apex:facet>    
+                </apex:column>
+                <apex:column style="" value="{!seff.strTotalFeedbackStore}"> 
+                       <apex:facet name="header">Total Feedback Score</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!seff.strTotalNegativeAnswer}"> 
+                       <apex:facet name="header">Total Negative Answers</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!seff.strPresentationSectionScore}"> 
+                       <apex:facet name="header">Presentation Section Score</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!seff.strDomainExpertiseSectionScore}"> 
+                       <apex:facet name="header">Domain Expertise Section Score</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!seff.strSellingSkillSectionScore}"> 
+                       <apex:facet name="header">Selling Skill Section Score</apex:facet>
+                </apex:column>>
+       </apex:pageBlockTable> 
+
+  </apex:pageBlock>
+</apex:form>
+
+<!-- <apex:relatedList list="Sales_Event_Feedbacks__r"/> -->
+
+<!-- <div class="listRelatedObject Custom73Block"><div class="bPageBlock brandSecondaryBrd secondaryPalette"><div class="pbHeader"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="pbTitle"><img src="/s.gif" alt="" width="1" height="1" class="minWidth" title=""><img src="/s.gif" alt="Sales Event Feedback" class="relatedListIcon" title="Sales Event Feedback"></img></img><h3 id="j_id0:j_id93_title">Sales Event Feedbacks</h3></td><td class="pbButton">&nbsp;</td><td class="pbHelp">&nbsp;</td></tr>
+</tbody></table></div><div class="pbBody" id="j_id0:j_id93_body">
+<apex:form >
+
+<table class="list" border="0" cellspacing="0" cellpadding="0"><tbody><tr class="headerRow"><th class="actionColumn" scope="col">Action</th><th scope="col" class=" zen-deemphasize">Created By</th><th scope="col" class="numericalColumn zen-deemphasize">Total Feedback Score</th><th scope="col" class="numericalColumn zen-deemphasize">Total Negative Answers</th><th scope="col" class="numericalColumn zen-deemphasize">Presentation Section Score</th><th scope="col" class="numericalColumn zen-deemphasize">Domain Expertise Section Score</th><th scope="col" class="numericalColumn zen-deemphasize">Selling Skill Section Score</th></tr>
+<apex:repeat value="{!lstSalesEventFeedback}" var="seff">
+<tr class="dataRow even first" onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}" onmouseout="if (window.hiOff){hiOff(this);}" onmouseover="if (window.hiOn){hiOn(this);}"><td class="actionColumn"><a href="https://guidewire--FullSBox.cs3.my.salesforce.com/{!seff.strRecordId}/e?retURL=%2Fapex%2FSalesEvent%3Fid%3D{!SalesEventid}%26sfdc.override%3D1" class="actionLink" title="Edit - Record 1 - -1">Edit</a>&nbsp;|&nbsp;
+          <apex:commandLink Styleclass="actionLink" rendered="{!displayDelete}" action="{!DeleteSaleEventFeedback}" value="Del" id="theCommandLink" oncomplete="ScreenReload();">
+          <apex:param assignTo="{!strdelsaleseventfeedbackId}" name="q" value="{!seff.strRecordId}"/>
+          </apex:commandLink></td><th scope="row" class=" dataCell  "><a href="https://guidewire--FullSBox.cs3.my.salesforce.com/{!seff.strCreatedById}">{!seff.strCreatedBy}  <apex:outputText value=" {!seff.strCreatedDate}" /></a></th><td class=" dataCell  numericalColumn">{!seff.strTotalFeedbackStore}</td><td class=" dataCell  numericalColumn">{!seff.strTotalNegativeAnswer}</td><td class=" dataCell  numericalColumn">{!seff.strPresentationSectionScore}</td><td class=" dataCell  numericalColumn">{!seff.strDomainExpertiseSectionScore}</td><td class=" dataCell  numericalColumn">{!seff.strSellingSkillSectionScore}</td></tr>
+</apex:repeat>
+</tbody></table>
+ </apex:form> -->
+<!--<div class="pShowMore"><a href="javascript:showMoreList(%27/apex/SalesEvent?id=a0g80000002Z1ZU&sfdc.override=1%27, %27id=a0g80000002Z1ZU&sfdc.override=1&relatedListId=00NQ0000001SDLk&hideDL=1&noh=1&keepPref=1&j_id0%3Aj_id93%3Arowsperlist=11%27, %27j_id0:j_id93%27);">Show 1 more »</a>&nbsp;|&nbsp;<a href="https://guidewire--FullSBox.cs3.my.salesforce.com/a1e?rlid=00NQ0000001SDLk&amp;id=a0g80000002Z1ZU">Go to list (11)&nbsp;»</a></div></div><div class="pbFooter secondaryPalette"><div class="bg"></div>-->
+<script>
+    function selectDate(dateID)
+    {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.SalesEventController.selectDate}',
+            dateID.toString(),
+            '{!thisEvent.Id}',
+            function(result, event){
+                if (event.status) {
+                     updatePreparationBlock();
+                     updateDetailBlock();
+                     updateDatesBlock();
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+
+    function deletePrep(objID)
+    {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.SalesEventController.deletePreparation}',
+            objID.toString(),
+            '{!thisEvent.Id}',
+            function(result, event){
+                if (event.status) {
+                     updateDatesBlock();
+                     updateDetailBlock();
+                     updatePreparationBlock();
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+    
+    function deleteTeam(objID)
+    {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.SalesEventController.deleteDemoTeam}',
+            objID.toString(),
+            '{!thisEvent.Id}',
+            function(result, event){
+                if (event.status) {
+                     updateDatesBlock();
+                     updateDetailBlock();
+                     updateDemoTeamBlock();
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+
+    function deleteCommitment(objID)
+    {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.SalesEventController.deleteCommitment}',
+            objID.toString(),
+            '{!thisEvent.Id}',
+            function(result, event){
+                if (event.status) {
+                     updateCustomerCommitmentsBlock();
+                     updateDetailBlock();
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        ); 
+    }
+
+    function requestReview(messageText)
+    {
+       //  alert('Not implemented.');
+       // return false;
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.SalesEventController.requestReview}',
+            '{!thisEvent.Id}',
+            messageText.toString(),
+            function(result, event){
+                if (event.status) {
+                    updateChatterBlock();
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        ); 
+    }
+    
+    function confirmation(prompt) {
+        var answer = confirm(prompt)
+        if (answer){
+            return true
+        }
+        else{
+            return false
+        }
+    }    
+
+</script>
+ 
+</apex:page>

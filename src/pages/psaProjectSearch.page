@@ -1,0 +1,34 @@
+<apex:page standardController="pse__Proj__c" extensions="psaProjectSearchController" title="Search" showHeader="false" sidebar="false">
+<script type="text/javascript">
+    function setParentParams(id){
+       top.window.opener.refreshFromProject(id); 
+       parent.window.close(); 
+    }
+</script> 
+
+<style>
+.teststyle{
+    font-weight: bold;
+    font-size: 110%;
+}    
+
+</style>
+ 
+ <apex:form >  
+  <br/>
+  <div align="center">
+   <apex:pageBlock >  
+   <apex:facet name="header"><br/><div class="teststyle">Related Projects</div></apex:facet>
+   <div align="left">
+   <apex:outputText rendered="{!isRateRendered}">No other related project rate sets were found for this project</apex:outputText>
+   <apex:outputText rendered="{!isPolicyRendered}">No other related expense policies were found for this project</apex:outputText>
+   </div>
+    <apex:pageblockTable value="{!proj}" var="a">  
+     <apex:column >  
+     <apex:outputLink value="javascript:void(0)" onclick="setParentParams('{!a.id}');">{!a.name}</apex:outputLink>
+     </apex:column>  
+    </apex:pageBlockTable>     
+   </apex:pageBlock>   
+   </div>
+  </apex:form>  
+</apex:page>

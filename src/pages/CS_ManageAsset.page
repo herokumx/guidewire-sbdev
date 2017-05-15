@@ -1,0 +1,75 @@
+<!--
+*****************************************************************************************************************************
+VF Page Name - CS_ManageAsset
+
+Purpose-  Asset & Entilement Setup
+*****************************************************************************************************************************
+
+Name             Email              Date             Notes 
+Shan Xu                                             Initial Creation
+
+*****************************************************************************************************************************
+-->
+<apex:page showHeader="false" sidebar="false"  standardController="ServiceContract"  extensions="CS_SetupAssetEntitlementController"   docType="html-5.0"> 
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no"/> 
+<style>.rowalignment{vertical-align:top;}.pbSubheader {margin-top:0;} .headerRow{text-align: left;} .headerRowR{text-align: right};}
+</style>
+<script type="text/javascript">
+    function full_screen(){window.moveTo(0,0)window.resizeTo(screen.width,screen.height-30)}
+</script>
+</head>
+<BODY onLoad="full_screen()"/>
+<!--<apex:outputtext>{!CLICount}</apex:outputtext>-->
+<apex:pageMessages id="errors" />
+<apex:form >
+
+<apex:pageblock title="" mode="edit">
+
+<apex:pageBlockButtons >
+        <!--
+        <apex:commandButton action="{!submit}"  value="Submit as Batch" status="statusId" 
+        oncomplete="window.opener.location.href='/{!ServiceContract.Id}'; window.top.close();" />    
+    -->
+        <apex:commandButton action="{!submitnow}"  value="Submit" status="statusId" 
+        oncomplete="window.opener.location.href='/{!ServiceContract.Id}'; window.top.close();" />                             
+       
+       
+
+        <apex:commandButton value="Cancel" onclick="Javascript:window.close();"/>
+            <br/>
+            
+       <apex:actionStatus id="statusId"  >
+                <apex:facet name="start" >
+                  <img src="{!URLFOR($Resource.processing)}" />   
+                </apex:facet>
+            </apex:actionStatus>
+        
+</apex:pageBlockButtons>
+<apex:pageBlockSection title="Asset & Entitlement Setup for - {!ServiceContract.Account.Name}-{!ServiceContract.Name}" columns="1">
+    <apex:pageblockTable value="{!productLength}" var="idx">
+        <apex:column ><apex:facet name="header">Product SKUs</apex:facet>{!products[idx].Name}</apex:column>
+        <apex:column >
+            <apex:facet name="header">Maintenance SKUs</apex:facet>
+            <apex:selectList value="{!selectedMaintenanceSKUs[idx]}" size="1" disabled="{!assetsExist[idx]}">
+                    <apex:selectOptions value="{!maintenanceSkuMap[idx]}"/>
+            </apex:selectList>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">Business Hours</apex:facet>
+            <apex:selectList value="{!selectedBusinessHour[idx]}" size="1" disabled="{!assetsExist[idx]}">
+                <apex:selectOptions value="{!businessHoursMap[idx]}"/>
+            </apex:selectList>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">Start Date</apex:facet>
+            <!-- <apex:inputText label="Start Date" size="10" value="{!dateStrings[idx]}" onfocus="DatePicker.pickDate(false, this, false);"/> -->
+            <apex:input type="auto" value="{!selectedDates[idx]}" disabled="{!assetsExist[idx]}"/>
+        </apex:column>
+    </apex:pageblockTable>
+</apex:pageBlockSection>
+</apex:pageblock> 
+
+
+</apex:form>
+</apex:page>

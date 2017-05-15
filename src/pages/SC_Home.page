@@ -1,0 +1,441 @@
+<apex:page controller="SCHomeController" sidebar="true" showchat="false" > <!-- showHeader="false" showchat="false" sidebar="false"> -->
+
+<style> 
+fieldset > * {
+    display:inline-block;
+}
+
+</style>
+  <apex:form id="EntireForm" >
+        <apex:actionFunction id="RerenderRegionSpecificBlocks"  name="RerenderRegionSpecificBlocks" reRender="OpportunityEventsBlock,OpportunityRequestsBlock"/>
+        <fieldset>Region:
+        <apex:selectList value="{!RegionCode}" size="1" >
+           <!-- <apex:actionSupport event="onclick"  reRender="OpportunityRequestsBlock ,OpportunityEventsBlock,PersonalEventsBlock, RequestsPanel,StaffingLink,RepCalLink,CalLinkPanel" />  -->
+            <apex:selectOption itemValue="AMER" itemLabel="AMER"/>
+            <apex:selectOption itemValue="APAC" itemLabel="APAC"/>
+            <apex:selectOption itemValue="EMEA" itemLabel="EMEA"/>
+        </apex:selectList>&nbsp;&nbsp;User:
+        <apex:inputField id="viewAsUserField" value="{!ViewAsUser.Who__c}" required="true" />
+        <apex:commandButton id="SubmitButton" value="Update" action="{!reloadPage}" reRender="OpportunityRequestsBlock, SalesSupportRequestsBlock,OpportunityEventsBlock,PersonalEventsBlock, RequestsPanel,StaffingLink,RepCalLink,CalLinkPanel"/>
+        </fieldset>
+        <!--&nbsp;&nbsp;<apex:outputPanel id="CalLinkPanel"><apex:outputLink id="StaffingLink" target="_blank" value="/apex/{!RegionCode}_Staffing">Presales Staffing Calendar</apex:outputLink>
+        &nbsp;&nbsp;<apex:outputLink id="RepCalLink" target="_blank" value="/apex/{!RegionCode}_EventsByRep"  rendered="{!RegionCode == 'AMER'}">Events By Rep Calendar</apex:outputLink></apex:outputPanel>
+-->         
+
+       
+
+    <apex:outputPanel id="RequestsPanel" >
+    <apex:pageBlock title="Resource Requests"  id="OpportunityRequestsBlock"  rendered="{!RegionCode == 'AMER' || IsPresalesManager}" >
+        <apex:pageblockButtons location="top"  >
+         My Requests:
+          <apex:selectList value="{!MyRequestRange}" size="1" >
+            <apex:selectOption itemValue="Open" itemLabel="All Active"/>
+            <apex:selectOption itemValue="Last30" itemLabel="Updated: Last 30 Days"/>
+          </apex:selectList>
+        Team Requests:
+          <apex:selectList value="{!FullRequestRange}" size="1" >
+            <apex:selectOption itemValue="Open" itemLabel="All Open" />          
+            <apex:selectOption itemValue="Past7Days" itemLabel="Updated: Last 7 days" />          
+            <apex:selectOption itemValue="Past30Days" itemLabel="Updated: Last 30 days" />          
+            <apex:selectOption itemValue="CompletedLast30" itemLabel="Completed: Last 30 days"/>
+          </apex:selectList>
+        <apex:commandButton id="SubmitButton" value="Update" action="{!reloadPage}" reRender="OpportunityRequestsBlock"/>
+        </apex:pageblockButtons>                
+            <apex:pageBlockSection id="MyRequestsBlockSection" title="My Requests & Open Requests" columns="1">
+                <apex:outputLabel style="font-weight: bold;"  onclick="window.open('/apex/{!RegionCode}_Staffing', '_blank', '');" rendered="{!RegionCode == 'AMER'}" >My Requests</apex:outputLabel>
+                <apex:pageBlockTable value="{!MySalesRequestsList}" var="thisRequest" width="80%"  rendered="{!RegionCode == 'AMER'}">            
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.ResourceRequest__c.View,thisRequest.Id )}" value="{!thisRequest.Name}"  />
+                           <apex:facet name="header">Event Name</apex:facet>
+                    </apex:column>
+                    <apex:column style="" > 
+                        <apex:commandLink action="{!URLFOR($Action.Opportunity.View,thisRequest.Opportunity__c)}" value="{!thisRequest.Opportunity__r.Name}"  />
+                           <apex:facet name="header">Opportunity</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Opportunity__r.Owner.Name}"> 
+                           <apex:facet name="header">Sales Rep</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Event_Type__c}"> 
+                           <apex:facet name="header">Event Type</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Status__c}"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                    <apex:column style=""  width="70"> 
+                        <apex:outputText value="{!RequestDateMapStarts[thisRequest.Id] }" escape="false" />      
+                           <apex:facet name="header">Start</apex:facet>
+                    </apex:column>
+                    <apex:column style=""  width="70"> 
+                        <apex:outputText value="{!RequestDateMapEnds[thisRequest.Id] }" escape="false" />      
+                           <apex:facet name="header">End</apex:facet>
+                    </apex:column>
+                    <apex:column style=""  width="70"> 
+                        <apex:outputText value="{!RequestDateMapDurations[thisRequest.Id] }" escape="false" />      
+                           <apex:facet name="header">Duration</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.RolesAsString__c}"> 
+                           <apex:facet name="header">Roles</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.LastModifiedDate}"> 
+                           <apex:facet name="header">Last Updated</apex:facet>
+                    </apex:column>
+                </apex:pageBlockTable> 
+                <apex:outputLabel style="font-weight: bold;"  onclick="window.open('/apex/{!RegionCode}_Staffing', '_blank', '');" rendered="{!RegionCode == 'AMER' || IsPresalesManager}" >{!RegionCode} Team Requests</apex:outputLabel>
+                <apex:pageBlockTable value="{!TeamSalesRequestsList}" var="thisRequest" width="80%" rendered="{!RegionCode == 'AMER' || IsPresalesManager}">
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.ResourceRequest__c.View,thisRequest.Id )}" value="{!thisRequest.Name}"  />
+                           <apex:facet name="header">Event Name</apex:facet>
+                    </apex:column>
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Opportunity.View,thisRequest.Opportunity__c)}" value="{!thisRequest.Opportunity__r.Name}"  />
+                           <apex:facet name="header">Opportunity</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Opportunity__r.Owner.Name}"> 
+                           <apex:facet name="header">Sales Rep</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Event_Type__c}"> 
+                           <apex:facet name="header">Event Type</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Status__c}"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                    <apex:column style=""  width="70"> 
+                        <apex:outputText value="{!RequestDateMapStarts[thisRequest.Id] }" escape="false" />      
+                           <apex:facet name="header">Start</apex:facet>
+                    </apex:column>
+                    <apex:column style=""  width="70"> 
+                        <apex:outputText value="{!RequestDateMapEnds[thisRequest.Id] }" escape="false" />      
+                           <apex:facet name="header">End</apex:facet>
+                    </apex:column>
+                    <apex:column style=""  width="70"> 
+                        <apex:outputText value="{!RequestDateMapDurations[thisRequest.Id] }" escape="false" />      
+                           <apex:facet name="header">Duration</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.RolesAsString__c}"> 
+                           <apex:facet name="header">Roles</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.LastModifiedDate}"> 
+                           <apex:facet name="header">Last Updated</apex:facet>
+                    </apex:column>
+                
+                </apex:pageBlockTable> 
+                <apex:outputLabel style="font-weight: bold;"  onclick="window.open('/apex/{!RegionCode}_Staffing', '_blank', '');"  rendered="{!IsPresalesManager}" >Pending Requests</apex:outputLabel>
+                <apex:pageBlockTable value="{!PendingSalesRequestsList}" var="thisRequest" width="80%"   rendered="{!IsPresalesManager}">
+                
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.ResourceRequest__c.View,thisRequest.Id )}" value="{!thisRequest.Name}"  />
+                           <apex:facet name="header">Event Name</apex:facet>
+                    </apex:column>
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Opportunity.View,thisRequest.Opportunity__c)}" value="{!thisRequest.Opportunity__r.Name}"  />
+                           <apex:facet name="header">Opportunity</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Opportunity__r.Owner.Name}"> 
+                           <apex:facet name="header">Sales Rep</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Event_Type__c}"> 
+                           <apex:facet name="header">Event Type</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Status__c}"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                    <apex:column style=""  width="70"> 
+                        <apex:outputText value="{!RequestDateMapStarts[thisRequest.Id] }" escape="false" />      
+                           <apex:facet name="header">Start</apex:facet>
+                    </apex:column>
+                    <apex:column style=""  width="70"> 
+                        <apex:outputText value="{!RequestDateMapEnds[thisRequest.Id] }" escape="false" />      
+                           <apex:facet name="header">End</apex:facet>
+                    </apex:column>
+                    <apex:column style=""  width="70"> 
+                        <apex:outputText value="{!RequestDateMapDurations[thisRequest.Id] }" escape="false" />      
+                           <apex:facet name="header">Duration</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.RolesAsString__c}"> 
+                           <apex:facet name="header">Roles</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.LastModifiedDate}"> 
+                           <apex:facet name="header">Last Updated</apex:facet>
+                    </apex:column>
+                
+                </apex:pageBlockTable> 
+              </apex:pageBlockSection>
+    </apex:pageBlock>
+    </apex:outputPanel>
+    
+    <apex:pageBlock title="Opportunity Events" id="OpportunityEventsBlock">
+        <apex:pageblockButtons location="top"  >
+         My Events:
+          <apex:selectList value="{!MyEventRange}" size="1" >
+            <apex:selectOption itemValue="Open" itemLabel="All Active"/>
+            <apex:selectOption itemValue="Last30" itemLabel="Completed: Last 30 Days"/>
+            <apex:selectOption itemValue="Last90" itemLabel="Completed: Last 90 Days"/>
+            <apex:selectOption itemValue="Last365" itemLabel="Completed: Last 365 Days"/>
+          </apex:selectList>
+        Team Events:
+          <apex:selectList value="{!FullEventRange}" size="1" >
+            <apex:selectOption itemValue="Next90" itemLabel="Next 90 Days" />          
+            <apex:selectOption itemValue="Next60" itemLabel="Next 60 Days" />          
+            <apex:selectOption itemValue="Next30" itemLabel="Next 30 Days"/>
+            <apex:selectOption itemValue="Last30" itemLabel="Last 30 Days"/>
+            <apex:selectOption itemValue="Last60" itemLabel="Last 60 Days"/>
+            <apex:selectOption itemValue="Last90" itemLabel="Last 90 Days"/>
+            <apex:selectOption itemValue="Last365" itemLabel="Last 365 Days"/>
+          </apex:selectList>
+        <apex:commandButton id="SubmitButton" value="Update" action="{!reloadPage}" reRender="OpportunityEventsBlock"/>
+        </apex:pageblockButtons>
+        <apex:pageBlockSection title="My Events & Near-term Events" columns="1" >
+                <apex:outputLabel style="font-weight: bold;" value="My Events" onclick="window.open('/apex/{!RegionCode}_Staffing', '_blank', '');" />
+                <apex:pageBlockTable value="{!MySalesEventsList}" var="thisSEvent" width="80%">            
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Sales_Event__c.View,thisSEvent.event.Id )}" value="{!thisSEvent.event.Name}"  />
+                           <apex:facet name="header">Name</apex:facet>
+                    </apex:column>
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Opportunity.View,thisSEvent.event.Opportunity__c)}" value="{!thisSEvent.event.Opportunity__r.Name}"  />
+                           <apex:facet name="header">Opportunity</apex:facet>
+                    </apex:column>                   
+                    <apex:column style="" value="{!thisSEvent.event.Opportunity__r.Owner.Name}"> 
+                           <apex:facet name="header">Sales Rep</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.event.Event_Type__c}"> 
+                           <apex:facet name="header">Event Type</apex:facet>
+                    </apex:column>
+                    
+                    <apex:column style="" value="{!thisSEvent.role}"> 
+                           <apex:facet name="header">My Role(s)</apex:facet>
+                    </apex:column>
+                   
+                    <apex:column style="" value="{!thisSEvent.event.Status__c}"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.event.Confirmed_Start_Date__c}"> 
+                           <apex:facet name="header">Start</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.event.Confirmed_End_Date__c}"> 
+                           <apex:facet name="header">End</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.event.Event_Hours__c}"> 
+                           <apex:facet name="header">Event Hours</apex:facet>
+                    </apex:column>
+                    <apex:column style="color:{!thisSEvent.PrepFontColor}" value="{!thisSEvent.prep}"> 
+                           <apex:facet name="header">My Prep Hours</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.event.List_Of_People__c}"> 
+                           <apex:facet name="header">Team</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.event.LastModifiedDate}"> 
+                           <apex:facet name="header">Last Updated</apex:facet>
+                    </apex:column>
+                </apex:pageBlockTable> 
+                <apex:outputLabel style="font-weight: bold;" value="{!RegionCode}: Team Events" onclick="window.open('/apex/{!RegionCode}_Staffing', '_blank', '');" />
+                <apex:pageBlockTable value="{!TeamSalesEventsList}" var="thisSEvent" width="80%">            
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Sales_Event__c.View,thisSEvent.Id )}" value="{!thisSEvent.Name}"  />
+                           <apex:facet name="header">Name</apex:facet>
+                    </apex:column>
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Opportunity.View,thisSEvent.Opportunity__c)}" value="{!thisSEvent.Opportunity__r.Name}"  />
+                           <apex:facet name="header">Opportunity</apex:facet>
+                    </apex:column>                   
+                    <apex:column style="" value="{!thisSEvent.Opportunity__r.Owner.Name}"> 
+                           <apex:facet name="header">Sales Rep</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.Event_Type__c}"> 
+                           <apex:facet name="header">Event Type</apex:facet>
+                    </apex:column>                    
+                    <apex:column style="" value="{!thisSEvent.Presentation_Type__c}">
+                           <apex:facet name="header">Presentation Type</apex:facet>
+                    </apex:column>
+                  <!--  <apex:column style="" value="{!thisSEvent.Status__c}"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                  -->
+                    <apex:column style="" value="{!thisSEvent.Confirmed_Start_Date__c}"> 
+                           <apex:facet name="header">Start</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.Confirmed_End_Date__c}"> 
+                           <apex:facet name="header">End</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.List_Of_People__c}"> 
+                           <apex:facet name="header">Team</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.LastModifiedDate}"> 
+                           <apex:facet name="header">Last Updated</apex:facet>
+                    </apex:column>
+                </apex:pageBlockTable> 
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+
+    
+    <apex:pageBlock title="Sales Support Requests" id="SalesSupportRequestsBlock">
+        <apex:pageBlockSection title="My Support Requests & Open Requests" columns="1" >
+                <apex:outputLabel style="font-weight: bold;" value="My Requests" onclick="window.open('/apex/{!RegionCode}_Staffing', '_blank', '');" />
+                <apex:pageBlockTable value="{!MyOpenSupportRequestsList}" var="thisRequest" width="80%">            
+                    <apex:column style="" > 
+                        <apex:commandLink action="{!URLFOR($Action.Sales_Support_Request__c.View, thisRequest.Id )}" value="{! thisRequest.Type__c}"  />
+                           <apex:facet name="header">Type</apex:facet>
+                    </apex:column>
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Account.View,thisRequest.Account__c)}" value="{!thisRequest.Account__r.Name}" />
+                           <apex:facet name="header">Account</apex:facet>
+                    </apex:column>                   
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Opportunity.View,thisRequest.Opportunity__c)}" value="{!thisRequest.Opportunity__r.Name}"  />
+                           <apex:facet name="header">Opportunity</apex:facet>
+                    </apex:column>                   
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Campaign.View,thisRequest.Campaign__c)}" value="{!thisRequest.Campaign__r.Name}"  />
+                           <apex:facet name="header">Campaign</apex:facet>
+                    </apex:column>                   
+                    <apex:column style="" value="{!thisRequest.Assigned_To__c}"> 
+                           <apex:facet name="header">Assigned To</apex:facet>
+                    </apex:column>                   
+                    <apex:column style="" value="{!thisRequest.Status__c}"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Target_Completion_Date__c}"> 
+                           <apex:facet name="header">Target Completion</apex:facet>
+                    </apex:column>
+                </apex:pageBlockTable> 
+                <apex:outputLabel style="font-weight: bold;" value="Global: Active Requests" />
+                <apex:pageBlockTable value="{!OpenSupportRequestsList}" var="thisRequest" width="80%">            
+                    <apex:column style="" > 
+                        <apex:commandLink action="{!URLFOR($Action.Sales_Support_Request__c.View, thisRequest.Id )}" value="{! thisRequest.Type__c}"  />
+                           <apex:facet name="header">Type</apex:facet>
+                    </apex:column>
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Account.View,thisRequest.Account__c)}" value="{!thisRequest.Account__r.Name}" />
+                           <apex:facet name="header">Account</apex:facet>
+                    </apex:column>                   
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Opportunity.View,thisRequest.Opportunity__c)}" value="{!thisRequest.Opportunity__r.Name}"  />
+                           <apex:facet name="header">Opportunity</apex:facet>
+                    </apex:column>                   
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Campaign.View,thisRequest.Campaign__c)}" value="{!thisRequest.Campaign__r.Name}"  />
+                           <apex:facet name="header">Campaign</apex:facet>
+                    </apex:column>                   
+                    <apex:column style="" value="{!thisRequest.Assigned_To__c}"> 
+                           <apex:facet name="header">Assigned To</apex:facet>
+                    </apex:column>                   
+                    <apex:column style="" value="{!thisRequest.Status__c}"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Requested_Completion_Date__c}"> 
+                           <apex:facet name="header">Requested Completion</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisRequest.Target_Completion_Date__c}"> 
+                           <apex:facet name="header">Target Completion</apex:facet>
+                    </apex:column>
+                </apex:pageBlockTable> 
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="Project Events" id="ProjectEventsBlock">
+      <apex:pageBlockButtons location="top" >
+         <apex:commandButton value="View All Projects List" id="viewAllProjectsButton" action="/apex/ProjectList" /> 
+      </apex:pageBlockButtons>
+        <apex:pageBlockSection title="My Events & Near-term Events" columns="1" >
+                <apex:outputLabel style="font-weight: bold;" value="My Active Events" onclick="window.open('/apex/{!RegionCode}_Staffing', '_blank', '');" />
+                <apex:pageBlockTable value="{!MyActiveProjectEventsList}" var="thisSEvent" width="80%">            
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Project_Event__c.View,thisSEvent.event.Id )}" value="{!thisSEvent.event.Name}"  />
+                           <apex:facet name="header">Name</apex:facet>
+                    </apex:column>
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Project__c.View,thisSEvent.event.Project__c)}" value="{!thisSEvent.event.Project__r.Name}"  />
+                           <apex:facet name="header">Project</apex:facet>
+                    </apex:column>                                      
+                    <apex:column style="" value="{!thisSEvent.event.Status__c}"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.event.Confirmed_Start_Date__c}"> 
+                           <apex:facet name="header">Start</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.event.Confirmed_End_Date__c}"> 
+                           <apex:facet name="header">End</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.prep}"> 
+                           <apex:facet name="header">My Prep Hours</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisSEvent.event.LastModifiedDate}"> 
+                           <apex:facet name="header">Last Updated</apex:facet>
+                    </apex:column>
+                </apex:pageBlockTable> 
+                <apex:outputLabel style="font-weight: bold;" value="My Active Projects"  onclick="window.open('/apex/{!RegionCode}_Staffing', '_blank', '');"  />
+                <apex:pageBlockTable value="{!MyActiveProjectsList}" var="thisProject" width="80%">            
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Project__c.View,thisProject.Id )}" value="{!thisProject.Name}"  />
+                           <apex:facet name="header">Name</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisProject.Description__c}"> 
+                           <apex:facet name="header">Description</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisProject.LastModifiedDate}"> 
+                           <apex:facet name="header">Last Updated</apex:facet>
+                    </apex:column>
+                </apex:pageBlockTable> 
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+
+
+    <apex:pageBlock title="Personal Events" id="PersonalEventsBlock"  >
+      <apex:pageBlockButtons location="top" >
+         <apex:commandButton action="{!URLFOR($Action.Personal_Event__c.New)}" value="New Personal Event" id="newPersonalEventButton"  reRender="PersonalEventsBlock" /> 
+      </apex:pageBlockButtons>
+        <apex:pageBlockSection title="Current & Recent"  columns="1" >
+                <apex:outputLabel style="font-weight: bold;" value="Future & Pending"  onclick="window.open('/apex/{!RegionCode}_Staffing', '_blank', '');" />
+                <apex:pageBlockTable value="{!MyOpenPersonalEventsList}" var="thisPEvent" width="80%">            
+                    <apex:column style=""> 
+                        <apex:commandLink action="{!URLFOR($Action.Personal_Event__c.View,thisPEvent.Id )}" value="{!thisPEvent.Name}"  />
+                           <apex:facet name="header">Name</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisPEvent.Event_Type__c}"> 
+                           <apex:facet name="header">Event Type</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisPEvent.Status__c}"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisPEvent.Start__c}"> 
+                           <apex:facet name="header">Start</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisPEvent.End__c}"> 
+                           <apex:facet name="header">End</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisPEvent.Note__c}"> 
+                           <apex:facet name="header">Note</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisPEvent.LastModifiedDate}"> 
+                           <apex:facet name="header">Last Updated</apex:facet>
+                    </apex:column>
+                </apex:pageBlockTable> 
+                <apex:outputLabel style="font-weight: bold;"  onclick="window.open('/apex/{!RegionCode}_Staffing', '_blank', '');" >Recent</apex:outputLabel>
+                <apex:pageBlockTable value="{!MyRecentPersonalEventsList}" var="thisPEvent" width="80%">            
+                    <apex:column style="" > 
+                        <apex:commandLink action="{!URLFOR($Action.Personal_Event__c.View,thisPEvent.Id )}" value="{!thisPEvent.Name}"  />
+                           <apex:facet name="header">Name</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisPEvent.Event_Type__c}"> 
+                           <apex:facet name="header">Event Type</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisPEvent.Status__c}"> 
+                           <apex:facet name="header">Status</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisPEvent.Start__c}"> 
+                           <apex:facet name="header">Start</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisPEvent.End__c}"> 
+                           <apex:facet name="header">End</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisPEvent.Note__c}"> 
+                           <apex:facet name="header">Note</apex:facet>
+                    </apex:column>
+                    <apex:column style="" value="{!thisPEvent.LastModifiedDate}"> 
+                           <apex:facet name="header">Last Updated</apex:facet>
+                    </apex:column>
+                </apex:pageBlockTable> 
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+  </apex:form>   
+</apex:page>

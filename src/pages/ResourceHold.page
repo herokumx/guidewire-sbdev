@@ -1,0 +1,19 @@
+<apex:page standardController="Resource_Hold__c" extensions="ResourceHoldController">
+
+ <apex:form >
+
+   <apex:pageBlock title="Resource Hold Details" >
+        <apex:pageBlockButtons id="PBB" location="both">
+            <apex:commandButton id="saveButton"   value="Save"   action="{!save}"  />
+            <apex:commandButton id="cancelButton" value="Cancel" action="{!cancel}"/> 
+
+        </apex:pageBlockButtons>
+
+       <apex:pageBlockSection title="Details"  columns="1"> 
+        <apex:inputField id="whoField" value="{!resourceHold.Who__c}" required="true" />
+        <apex:inputField id="covField" value="{!resourceHold.Coverage_Area__c}" required="true" />
+        <apex:inputField id="descField" value="{!resourceHold.Description__c}" />
+       </apex:pageBlockSection>
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>

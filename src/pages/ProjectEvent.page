@@ -1,0 +1,222 @@
+<apex:page standardController="Project_Event__c" extensions="ProjectEventController" showchat="false">
+<chatter:feedWithFollowers id="ChatterFeed" entityId="{!thisEvent.Id}" showHeader="true" rendered="true"/>
+<apex:form >
+ <apex:actionFunction name="updateChatterBlock" action="{!reloadEvent}" rerender="ChatterFeed"  />
+ <apex:actionFunction name="updateDetailBlock" action="{!reloadEvent}" rerender="DetailBlock,ChatterFeed"  />
+ <apex:actionFunction name="updateDatesBlock" rerender="PossibleDatesBlock,ChatterFeed"  />
+ <apex:actionFunction name="updatePreparationBlock" rerender="PreparationsBlock"  />
+ <apex:actionFunction name="updateParticipantsBlock" rerender="ParticipantsBlock"  />
+
+  <apex:pageMessages rendered="{!ReloadFailed}" ></apex:pageMessages>
+
+  <apex:pageBlock title="Event Details" id="DetailBlock"  rendered="{!!ReloadFailed}">
+        <apex:pageBlockButtons id="PBB" location="top">
+            <apex:commandButton id="editButton"       value="Edit"   action="{!edit}"/>
+            <apex:commandButton id="saveButton"   value="Save"   action="{!save}"   style="display:none" reRender="DetailBlock"/>
+           <apex:commandButton onclick="resetInlineEdit()" id="cancelButton" value="Cancel"  style="display:none"/>
+           <apex:commandButton title="Requests that individuals on this event review it for accuracy." onclick="var conf = prompt('The following message will be posted for each team member on this event.  You can edit the message before posting if desired.','Please review this event to make sure your customer commitments and prep time are correct.'); if(conf) {requestReview(conf)}; return false" id="requestReviewButton" value="Request Team Review"  rendered="{!IsPresalesManager}"/>
+        </apex:pageBlockButtons>
+    <apex:pageBlockSection title="Details"  columns="2"> 
+       <apex:outputfield id="proj" value="{!thisEvent.Project__c}">
+       </apex:outputField>
+       <apex:outputfield id="eventStatus" value="{!thisEvent.Status__c}">
+       </apex:outputField>
+       <apex:outputfield id="eventName" value="{!thisEvent.Name}">
+       </apex:outputField>
+       <apex:outputfield id="eventStart" value="{!thisEvent.Confirmed_Start_Date__c}">
+       </apex:outputField>
+       <apex:outputfield label="Description" id="descField"  value="{!thisEvent.Description__c}"  >
+       </apex:outputField>
+       <apex:outputfield id="eventEnd" value="{!thisEvent.Confirmed_End_Date__c}">
+       </apex:outputField>
+       <apex:outputfield id="PartHours" value="{!thisEvent.Participant_Hours__c}">
+       </apex:outputField>       
+       <apex:outputfield id="EventHours" value="{!thisEvent.Event_Hours__c}">
+       </apex:outputField>       
+       <apex:outputfield id="prepHours" value="{!thisEvent.Preparation_Hours__c}">
+       </apex:outputField>       
+    </apex:pageBlockSection>
+  </apex:pageBlock>
+  <apex:pageBlock title="Participants" id="ProjectParticipantsBlock"  rendered="{!!ReloadFailed}">
+     <apex:commandButton action="{!URLFOR($Action.Project_Participant__c.New,null ,[ProjectEventID=thisEvent.Id] )}" value="Add New Project Participant" id="newCustCommitButton"  reRender="ParticipantsBlock" />
+       <apex:pageBlockTable value="{!ProjectParticipantsList}" var="participant">
+                <apex:column width="75" style=""> 
+                    <apex:commandLink action="{!URLFOR($Action.Project_Participant__c.Edit,participant.Id )}" value="Edit" id="EditCommitLink" style="color: #3366CC; text-decoration: none;"/>
+                    &nbsp;&nbsp;<apex:commandLink onclick="var conf = confirmation('Are you sure you wish to delete this entry?'); if(conf) {deleteParticipant('{!participant.Id}')}; return false" value="Del" id="DeleteCommitLink" style="color: #3366CC; text-decoration: none;" reRender="DetailBlock,ParticipantsBlock" />
+                       <apex:facet name="header">Actions</apex:facet>
+                </apex:column>
+                <apex:column style="" > 
+                       <apex:commandLink action="{!URLFOR($Action.Project_Participant__c.View,participant.Id )}" value="{!participant.Who__r.Name}" id="ViewProjPart"/>
+                       <apex:facet name="header">Who</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!participant.Description__c}"> 
+                       <apex:facet name="header">Description</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!participant.Event_Hours__c}"> 
+                       <apex:facet name="header">Project Event Hours<br/>(if partial)</apex:facet>
+                </apex:column>
+       </apex:pageBlockTable>
+  </apex:pageBlock>
+  <apex:pageBlock title="Preparations" id="PreparationsBlock"  rendered="{!!ReloadFailed}">
+     <apex:commandButton action="{!URLFOR($Action.Project_Preparation__c.New,null ,[ProjectEventID=thisEvent.Id] )}" value="Add New Preparation" id="newPreparationButton"  reRender="PreparationsBlock" />
+       <apex:pageBlockTable value="{!ProjectPreparationsList}" var="prep">
+                <apex:column width="75" style=""> 
+                    <apex:commandLink action="{!URLFOR($Action.Project_Preparation__c.Edit,prep.Id )}" value="Edit" id="EditPrepLink" style="color: #3366CC; text-decoration: none;"/>
+                    &nbsp;&nbsp;<apex:commandLink onclick="var conf = confirmation('Are you sure you wish to delete this entry?'); if(conf) {deletePrep('{!prep.Id}')}; return false" value="Del" id="DeletePrepLink" style="color: #3366CC; text-decoration: none;" reRender="DetailBlock,PreparationsBlock" />
+                       <apex:facet name="header">Actions</apex:facet>
+                </apex:column>
+                <apex:column style="" > 
+                       <apex:commandLink action="{!URLFOR($Action.Project_Preparation__c.Edit,prep.Id )}" value="{!prep.Who__r.Name}" id="EditPrepPerson"/>
+                       <apex:facet name="header">Who</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.Hours__c}"> 
+                       <apex:facet name="header">Hours</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.Start__c}"> 
+                       <apex:facet name="header">Start</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.End__c}"> 
+                       <apex:facet name="header">End</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!prep.Note__c}"> 
+                       <apex:facet name="header">Note</apex:facet>
+                </apex:column>
+       </apex:pageBlockTable>
+  </apex:pageBlock>
+  <apex:pageBlock title="Possible Dates" id="PossibleDatesBlock" rendered="{!(!ReloadFailed)}"  >
+     <apex:commandButton action="{!URLFOR($Action.Project_Event_Possible_Date__c.New,null ,[ProjectEventID=thisEvent.Id] )}" value="Add New Date" id="newPossibleDateButton"  reRender="PossibleDatesBlock" />
+       <apex:pageBlockTable value="{!AllPossibleDatesList}" var="pDate">
+                <apex:column width="75" style=""> 
+                    <apex:commandLink action="{!URLFOR($Action.Project_Event_Possible_Date__c.Edit,pDate.Id )}" value="Edit" id="EditDateLink" style="color: #3366CC; text-decoration: none;"/>
+                    &nbsp;&nbsp;<apex:commandLink onclick="var conf = confirmation('Are you sure you wish to confirm this date?'); if(conf) {selectDate('{!pDate.Id}')}; return false" value="Confirm" id="SelectDateLink" style="color: #3366CC; text-decoration: none;"  rendered="{!pDate.Status__c == 'Possible'}" reRender="PossibleDatesBlock" />
+                       <apex:facet name="header">Actions</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Status__c}"> 
+                       <apex:facet name="header">Status</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Start_Date__c}"> 
+                       <apex:facet name="header">Start</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.End_Date__c}"> 
+                       <apex:facet name="header">End</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Event_Hours__c}"> 
+                       <apex:facet name="header">Hours</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.Note__c}"> 
+                       <apex:facet name="header">Note</apex:facet>
+                </apex:column>
+                <apex:column style="" value="{!pDate.LastModifiedDate}"> 
+                       <apex:facet name="header">Last Updated</apex:facet>
+                </apex:column>
+       </apex:pageBlockTable> 
+
+  </apex:pageBlock>
+
+
+</apex:form>
+
+<script>
+    function selectDate(dateID)
+    {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ProjectEventController.selectDate}',
+            dateID.toString(),
+            '{!thisEvent.Id}',
+            function(result, event){
+                if (event.status) {
+                     updatePreparationBlock();
+                     updateDetailBlock();
+                     updateDatesBlock()
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+
+    function deletePrep(objID)
+    {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ProjectEventController.deletePreparation}',
+            objID.toString(),
+            '{!thisEvent.Id}',
+            function(result, event){
+                if (event.status) {
+                     updateDatesBlock();
+                     updateDetailBlock();
+                     updatePreparationBlock();
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+ 
+    }
+
+    function deleteParticipant(objID)
+    {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ProjectEventController.deleteParticipant}',
+            objID.toString(),
+            '{!thisEvent.Id}',
+            function(result, event){
+                if (event.status) {
+                     updateParticipantsBlock();
+                     updateDetailBlock();
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        ); 
+    }
+
+    function requestReview(messageText)
+    {
+       //  alert('Not implemented.');
+       // return false;
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ProjectEventController.requestReview}',
+            '{!thisEvent.Id}',
+            messageText.toString(),
+            function(result, event){
+                if (event.status) {
+                    updateChatterBlock();
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        ); 
+    }
+    
+    function confirmation(prompt) {
+        var answer = confirm(prompt)
+        if (answer){
+            return true
+        }
+        else{
+            return false
+        }
+    }    
+
+</script>
+
+</apex:page>

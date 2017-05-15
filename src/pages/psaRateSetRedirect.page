@@ -1,0 +1,9 @@
+<apex:page showHeader="true" sidebar="true" standardController="PSA_Rate_Set__c">
+
+    <apex:pageBlock >
+
+        <h1 align="center">Note: You cannot create a PSA Rate Set from here... please create Rate Sets from the Rate Set Detail Page, or a Project or Account.</h1>
+
+    </apex:pageBlock>
+
+</apex:page>

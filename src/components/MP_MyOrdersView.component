@@ -1,0 +1,296 @@
+<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Template for the My Orders page
+    ****************************************************************************-->
+<apex:component id="MP_MyOrdersView">
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the My Orders Page
+    ****************************************************************************-->
+	<script id="MP_MyOrders" type="text/template">
+    	<div class="orderPaginationSec" id="top"/>
+        	<div class="alert alert-error messagingSection-orderhistory-Error" style="display: none"></div>
+          	<div class="alert alert-info messagingSection-orderhistory-Info" style="display: none"></div>
+          	<div class="main_content_large_solo_container">
+           		{{#ifDisplay 'srch.ord'}}
+           			<form id="searchOrderForm">
+            			<div class="searchOrderForm">
+            				<span class="searchOrderFormHeader"><h2>Search My Orders</h2><input type="button" class="resetOrder" value="{{pageLabelMap 'MyOrdersButton_ResetOrders'}}"/></span>
+            				<span class="searchOrderFormInput">
+            					<input type="text"  name="searchOrderInput" value="{{searchOrder}}" class="searchOrderInput input-text" placeholder="{{pageLabelMap 'MyOrdersInc_SearchOrders'}}"/>
+            					<select name="searchOrderStatus" value="{{searchOrderStatus}}" class="orderStyleSelect">
+             						<option value="">{{pageLabelMap 'MyOrdersInc_AllOrderStatus'}}</option>     
+             						{{#each this.orderStatusOpts}}
+              							<option value="{{this.value}}" {{#ifEquals ../searchOrderStatus this.value}} selected {{/ifEquals}}>{{this.label}}</option>
+             						{{/each}}
+            					</select>
+            					<!--<input id="fromDateStr" name="fromDateStr" value="{{this.fromDateStr}}" class="requestedDate fromDate">-->
+                				<input id="fromDateStr" name="fromDateStr" value="{{pageLabelMap 'MyOrdersInc_SearchFrom'}}" class="requestedDate fromDate">
+           						<!--<input id="toDateStr" name="toDateStr" value="{{this.toDateStr}}" class="requestedDate toDate">--> 
+               					<input id="toDateStr" name="toDateStr" value="{{pageLabelMap 'MyOrdersInc_SearchTo'}}" class="requestedDate toDate">
+            					<input type="button" class="searchOrder" value="{{pageLabelMap 'MyOrdersButton_SearchOrders'}}"/>
+                			</span>
+            			</div>
+           			</form>
+           		{{/ifDisplay}}
+           		<table id="orderTable" class="table">
+              		<thead>
+            			<tr class="even">
+             				<td class="right_align">{{pageLabelMap 'MyOrdersInc_OrderNumber'}}</td>
+             				{{#ifDisplay 'MO.DsplExtOrderNumber'}} <td class="right_align">{{pageLabelMap 'ExternalOrderID'}}</td> {{/ifDisplay}}
+             				{{#ifDisplay 'MO.DsplPONumber'}} <td class="right_align">{{pageLabelMap 'PO Number'}}</td> {{/ifDisplay}}
+             				<td class="right_align">{{pageLabelMap 'MyOrdersInc_OrderDate'}}</td>
+             				<!--<td class="right_align">{{pageLabelMap 'MyOrdersInc_OrderAmount'}}</td>-->
+             				<td class="right_align">{{pageLabelMap 'MyOrdersInc_Status'}}</td>
+             				{{#ifStoreSetting 'Filter_Orders_Based_on_Owner__c'}}&#160;{{else}}<td class="right_align ord_owner_hdr">{{pageLabelMap 'MyOrdersInc_Owner'}}</td>{{/ifStoreSetting}}
+             				{{#ifDisplay 'MO.ShActOnOrd'}}
+             					<!--<td class="right_align">{{pageLabelMap 'MyCartsInc_Actions'}}</td>-->
+             				{{/ifDisplay}}
+            			</tr>
+             		</thead>
+              		<tbody>
+            			{{#each this.orderList}}
+             				<tr class="odd myAccOrderRows">
+              					<td class="right_align"><a href="#" data-id="{{encryptedId}}" class="gotoOrderDetails">{{name}}</a></td>
+              					{{#ifDisplay 'MO.DsplExtOrderNumber'}} <td class="right_align">{{externalOrderId}}</td> {{/ifDisplay}}
+              					{{#ifDisplay 'MO.DsplPONumber'}} <td class="right_align">{{poNumber}}</td> {{/ifDisplay}}
+              					<td class="right_align">{{orderDateStr}}</td>
+              					<!--<td class="right_align">{{price totalAmount currencyIsoCode}}</td>-->
+              					<td class="right_align">{{pageLabelMap status}}</td>
+              					{{#ifStoreSetting 'Filter_Orders_Based_on_Owner__c'}}&#160;{{else}}<td class="right_align ord_owner">{{ownerName}}</td>{{/ifStoreSetting}}
+              					<!--{{#ifDisplay 'MO.ShActOnOrd'}}
+                                    <td class="right_align">
+                                        {{#ifDisplay 'MO.ShReOrdBt'}}
+                                            {{#if this.canReOrder}}
+                                                <input type="button" class="reorder" data-id="{{sfid}}" value="{{pageLabelMap 'MyOrdersInc_Reorder'}}"/>&#160;
+                                            {{/if}}
+                                        {{/ifDisplay}}
+                                        {{#if this.canCancel}}
+                                            {{#ifDisplay 'MO.ShAmdBt'}}
+                                                {{#if this.canAmend}}
+                                                    <input type="button" class="promptCancel promptAmend" data-id="{{sfid}}" data-mode="Edit" value="{{pageLabelMap 'Amend'}}"/>&#160;
+                                                {{/if}}
+                                            {{/ifDisplay}}
+                                            {{#ifDisplay 'MO.ShCanBt'}}
+                                                <input type="button" class="promptCancel" data-id="{{sfid}}" data-mode="Cancel" value="{{pageLabelMap 'Cancel'}}"/>
+                                            {{/ifDisplay}}
+                                        {{/if}}
+              						</td>
+              					{{/ifDisplay}}-->
+             				</tr>
+            			{{/each}}
+					</tbody>
+				</table>
+			<div class="orderPaginationSec" id="bottom"/>
+			<div id="modalSec"></div>
+		</div>
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the My Orders Pagination
+    ****************************************************************************-->
+    <script id="MP_OrderNav" type="text/template">
+		<div class="pagination_row_1">
+        	<div class="pagination_container">
+                <!--<p class="paginatorItems">
+                	{{pageLabelMap 'PaginatorItems'}} {{startItem}} - {{endItem}} {{pageLabelMap 'PaginatorOf'}} {{totalRecords}} {{pageLabelMap 'PaginatorTotal'}}
+                </p>-->
+            	<h2 class="title">{{pageLabelMap 'MyAccount_MyOrders'}}</h2>
+            	<span class="right_align itemsPerPage">
+             		<span class="paginatorShow">
+             			{{pageLabelMap 'PaginatorShow'}}
+             		</span>
+             		<select class="sizeAction">
+              			{{#each this.itemsPerPagePLValues}}
+               				<option value="{{safeQuote this}}" {{#ifEquals ../pageSize this}} selected {{/ifEquals}}>{{safeQuote this}}</option>
+              			{{/each}}
+             		</select>
+             		<span class="paginatorPerPage">
+             			{{pageLabelMap 'PaginatorPerPage'}}
+             		</span>
+            	</span>
+            	<span class="page_links">
+             		<span class="paginatorPageLabel">
+             			{{pageLabelMap 'PaginatorPage'}}
+             			{{#for startPage endPage 1}}
+              				{{#ifEquals this ../currentPage}}
+               					{{safeQuote this}} {{pageLabelMap 'ProductsInc_of'}} {{../../totalPages}}
+              				{{/ifEquals}}
+             			{{/for}}
+             		</span>
+             		{{#if hasPrevious}}
+              			<!--<a href="#" class="firstAction">{{pageLabelMap 'PaginatorFirst'}}</a>-->
+              			<a href="#" class="previousAction pageAction">{{pageLabelMap 'PaginatorPrevious'}}</a> |
+             			<!--{{else}}
+              			<span class="firstAction">{{pageLabelMap 'PaginatorFirst'}}</span>
+              			<span class="previousAction pageAction">{{pageLabelMap 'PaginatorPrevious'}}</span> |-->
+             		{{/if}}
+             		{{#if hasNext}}
+              			<a href="#" class="nextAction pageAction">{{pageLabelMap 'PaginatorNext'}}</a>
+              			<!--<a href="#" class="lastAction">{{pageLabelMap 'PaginatorLast'}}</a>-->
+             			<!--{{else}}
+              			<span class="nextAction pageAction">{{pageLabelMap 'PaginatorNext'}}</span>
+              			<span class="lastAction">{{pageLabelMap 'PaginatorLast'}}</span>-->
+             		{{/if}}
+            	</span>
+			</div>
+		</div>
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the Order Detail page
+    ****************************************************************************-->
+    <script id="MP_OrderDetailView" type="text/template">
+		<div class="margin_form">
+			{{#if this.isConfirmation}}
+                <fieldset class="clear confDetails">
+                    <legend class="grey confDetails">{{pageLabelMap 'OrderConfirmation_Title'}}</legend>
+                    <p class="larger"><strong>{{pageLabelMap 'OrderConfirmation_PlacedOrder' this.name this.orderDateStr}}</strong></p>
+                    <p class="larger">{{pageLabelMap 'OrderConfirmation_StatusInfo'}} &#160;<a href="#" class="orderHistory">{{pageLabelMap 'OrderConfirmation_OrderHistory'}}</a>.</p>
+                    <p>{{pageLabelMap 'OrderConfirmation_GuidingText'}}</p>
+                    <p>{{pageLabelMap 'OrderConfirmation_GuidingText2'}}</p>
+                    <p>
+                        {{#each this.payments}}
+                            {{#ifEquals paymentMethod "PO Number"}}
+                                {{pageLabelMap 'CheckOut_POGuidingText'}}
+                            {{/ifEquals}}
+                        {{/each}}
+                    </p>
+                </fieldset>
+            {{else}}
+                <fieldset class="clear orderDetails">
+                    <legend class="grey orderDetails">{{pageLabelMap 'OrderInformation'}}</legend>
+                    <p class="larger">
+                        <span class="orderNum"><strong>{{pageLabelMap 'OrderView_OrderNumber'}}:</strong> {{this.name}}</span><br/>
+                        {{#ifDisplay 'OD.DsplExtOrderNumber'}} <span class="orderExtNum"><strong>{{pageLabelMap 'ExternalOrderID'}}:</strong> {{this.externalOrderId}}</span><br/> {{/ifDisplay}}
+                        <span class="orderDate"><strong>{{pageLabelMap 'MyOrdersInc_OrderDate'}}:</strong> {{this.orderDateStr}}</span><br/>
+                        <span class="orderStat"><strong>{{pageLabelMap 'MyOrdersInc_Status'}}:</strong> {{pageLabelMap this.status}}</span><br/>
+                        <span class="rightside"><a href="#" class="orderHistory">{{pageLabelMap 'OrderConfirmation_OrderHistory'}}</a></span>
+                    </p>
+                    <p>
+                        {{#each this.payments}}
+                            {{#ifEquals paymentMethod "PO Number"}}
+                                {{pageLabelMap 'CheckOut_POGuidingText'}}
+                            {{/ifEquals}}
+                        {{/each}}
+                    </p>
+                </fieldset>
+            {{/if}}
+            <!--<fieldset class="grey">
+                <legend class="grey">{{pageLabelMap 'CheckOut_GeneralInformation'}}</legend>
+                <ul class="order_review">
+                    <li>
+                        <p>
+                            <strong>{{pageLabelMap 'CheckOut_BuyerInformation'}}</strong><br/>
+                            {{this.buyerFirstName}} {{this.buyerLastName}}<br/>
+                            {{this.buyerPhone}}<br/>
+                            {{this.buyerEmail}}
+                        </p>
+                        <p>
+                            <strong>{{pageLabelMap 'CheckOut_ShippingInformation'}}</strong><br/>
+                            {{#if this.shippingMethod}}
+                                {{pageLabelMap 'CheckOut_ShippingMethod'}}: {{this.shippingMethod}}<br/>
+                            {{/if}}
+                            {{#if this.shippingInst}}
+                                {{pageLabelMap 'CheckOut_ShippingNotes'}}: {{this.shippingInst}}<br/>
+                            {{/if}}
+                            {{#if this.requestedDate}}
+                                {{pageLabelMap 'Checkout_RequestedDeliveryDt'}}: {{this.requestedDateStr}}<br/>
+                            {{/if}}
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>{{pageLabelMap 'CheckOut_BillingAddress'}}</strong><br/>
+                            {{> addressDisplay this.billingAddress}}
+                        </p>
+                        <p><strong>{{pageLabelMap 'CheckOut_PaymentInformationLeg'}}</strong><br/>
+                            {{#each this.payments}}
+                                {{#ifEquals paymentMethod "Credit Card"}}
+                                    <br/>{{cardType}} {{pageLabelMap 'CheckOut_CCCardNumber'}}: ************{{cardNumber}}<br/>{{pageLabelMap 'CheckOut_CCExpDate'}}:{{expMonth}}/{{expYear}}
+                                {{else}}
+                                    {{pageLabelMap paymentMethod}}: {{accountNumber}}
+                                {{/ifEquals}}
+                            {{/each}}
+                            {{#each this.transactionPayments}}
+                            	{{pageLabelMapMultiString 'PaymentDisplay_' this.accountType this.accountType this.accountNumber this.subAccountNumber (pageLabelMapMultiString 'PaymentType_' this.paymentType) (pageLabelMapMultiString 'PaymentExpMonth_' this.expirationMonth) (pageLabelMap this.expirationYear)}}
+                            {{/each}}
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>{{pageLabelMap 'CheckOut_ShippingAddress'}}</strong><br/>
+                            {{> addressDisplay this.shippingAddress}}
+                        </p>
+            			{{#if this.hasCoupon}}
+                            <li>
+                                <p class="coupon_section"><strong>{{pageLabelMap 'CartInc_AppliedCoupon'}}</strong><br/>{{this.couponName}}</p>
+                            </li>
+      					{{/if}}
+                    </li>
+                </ul>
+            </fieldset>-->
+            {{> orderItemsDesktop}}
+            <!--{{> totalsSection}}-->
+            <div class="clear"></div>
+            {{#if this.shipments}}
+                <br/><br/>
+                <table border="0" cellpadding="0" cellspacing="0" class="shopping_cart orderShipments">
+                    <thead class="rich-table-thead ordShipmentHdr" >
+                        <tr>
+                            <th class="smaller ordShipmentTrackingUrlHdr"    width="10%">&#160;</th>
+                            <th class="smaller ordShipmentDateHdr"           width="14%">{{pageLabelMap 'OrderShipment_ShipmentDate'}}</th>
+                            <th class="smaller ordShipmentCarrierHdr"        width="14%">{{pageLabelMap 'OrderShipment_Carrier'}}</th>
+                            <th class="smaller ordShipmentMethodHdr"         width="21%">{{pageLabelMap 'OrderShipment_ShipmentMethod'}}</th>
+                            <th class="smaller ordShipmentTrackingNumHdr"    width="21%">{{pageLabelMap 'OrderShipment_TrackingNumber'}}</th>
+                            <th class="smaller ordShipmentDeliverDateHdr"    width="14%">{{pageLabelMap 'OrderShipment_DeliveryDate'}}</th>
+                        </tr>
+                    </thead>
+                    {{#each this.shipments}}
+                        <tr class="header odd orderShipmentRow {{sfid}}">
+                            <td class="ordShipmentTrackingUrl"><a target="shiptracking" href="{{{trackingUrl}}}">{{pageLabelMap 'OrderShipment_Track'}}</a></td>
+                            <td class="ordShipmentDate">{{shipmentDateStr}}</td>
+                            <td class="ordShipmentCarrier">{{carrier}}</td>
+                            <td class="ordShipmentMethod">{{shippingMethod}}</td>
+                            <td class="ordShipmentTrackingNum">{{trackingNo}}</td>
+                            <td class="ordShipmentDeliverDate">{{deliveryDateStr}}</td>
+                        </tr>
+                        {{#each this.items}}
+                            <tr class="child even ordShipmentDetails">
+                                <td />
+                                <td colspan="5" class="orderShipmentDetailLine {{sfid}}">
+                                    {{pageLabelMap 'CartInc_SKU'}} {{sku}}, {{pageLabelMap 'CartInc_Qty'}}: {{quantity}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                    {{/each}}
+                </table>
+            {{/if}}
+        </div>  
+    </script>
+    <script>
+        jQuery(function($){
+            CCRZ.uiProperties.myOrdersView.desktop.tmpl = 'MP_MyOrders';
+            CCRZ.uiProperties.navigatePaginationView.desktop.tmpl = 'MP_OrderNav';
+            CCRZ.uiProperties.OrderDetailView.desktop.tmpl = 'MP_OrderDetailView';
+
+            CCRZ.pubSub.on('view:myOrdersView:refresh', function(){
+                $(".itemsPerPage").each(function(){
+                    var parentId = $(this).parent().parent().parent().attr('id');
+                    console.log(parentId);
+                    if(parentId == 'bottom'){
+                        $(this).hide();
+                    }   
+                });
+            });
+        });
+    	$('#toDateStr').Zebra_DatePicker({ 
+						show_icon: false,
+			});
+    
+    </script>
+</apex:component>

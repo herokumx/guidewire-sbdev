@@ -1,0 +1,6 @@
+<!--
+ - Created by Neil.Morris on 7/7/16.
+ -->
+
+<apex:component id="MP_CheckoutShippingRD">
+</apex:component>

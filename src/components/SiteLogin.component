@@ -1,0 +1,18 @@
+<apex:component controller="SiteLoginController" id="loginComponent">
+  <apex:form id="loginForm" forceSSL="true">
+    <apex:outputPanel layout="block">
+      <apex:pageMessages id="error"/>
+      <apex:panelGrid columns="1" style="margin-top:.3em;">
+        <apex:inputText id="username" styleClass="loginUser" value="{!username}"  html-placeholder="{!$Label.site.username}"/>
+        <apex:inputSecret id="password" styleClass="loginPass" value="{!password}" html-placeholder="{!$Label.site.password}"/>
+        <apex:commandButton action="{!login}" value="{!$Label.site.login_button}" styleClass="loginButton" id="loginButton"/>
+          <p/>
+         <apex:panelGroup id="theLinks">
+          <!--<apex:outputLink value="{!$Page.ccrz__CCForgotPassword}"> {!$Label.site.forgot_your_password_q}</apex:outputLink> -->
+          <apex:outputText value=" | " rendered="{!$Site.RegistrationEnabled}" />
+          <apex:outputLink value="{!$Page.SiteRegister}" rendered="{!$Site.RegistrationEnabled}">{!$Label.site.new_user_q}</apex:outputLink>
+        </apex:panelGroup>
+      </apex:panelGrid> 
+    </apex:outputPanel>
+  </apex:form>
+</apex:component>

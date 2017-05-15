@@ -1,0 +1,134 @@
+<!--Page Created for S-306453 to show forecast trend for EMEA region -->
+<apex:page tabStyle="Account" controller="ForecastSnapshotTrendController">
+
+<apex:form >
+    <apex:pageblock id="DateSelection">
+    
+        <apex:pageblockSection title="Select Date Ranges" columns="4" collapsible="false">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="From Date" for="fromDate"/>
+                <apex:inputfield showDatePicker="true" id="fromDate" value="{!fromDate.Close_Date__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="To Date" for="toDate"/>
+                <apex:inputfield id="toDate" value="{!toDate.Close_Date__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:commandButton action="{!Submit}" value="Go" status="status" reRender="PageMessages,Changes,CSV,status"/>
+                <apex:actionStatus id="status">  
+                    <apex:facet name="start">
+                        <apex:image url="{!$Resource.Loading}"/>                       
+                    </apex:facet>
+                </apex:actionStatus>
+           </apex:pageBlockSectionItem>
+           <apex:outputPanel id="CSV" >
+           <apex:pageBlockSectionItem >
+               <apex:commandLink rendered="{!displayMap}" onclick="window.open('/apex/ForeCastSnapshotTrendCSV?fromDate={!fromDate.Close_Date__c}&todate={!toDate.Close_Date__c}&region={!currentRegion}');"
+                status="status2" reRender="PageMessages,Changes,status2">
+                Generate CSV
+                </apex:commandLink>
+                <apex:actionStatus id="status2">  
+                    <apex:facet name="start">
+                        <apex:image url="{!$Resource.Loading}"/>                       
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:pageBlockSectionItem>
+            </apex:outputPanel>
+            </apex:pageblockSection> 
+           
+        <apex:outputPanel id="PageMessages" >
+       
+            <apex:messages layout="list" style="color:red;height:30px;font-size:15px" />
+        </apex:outputPanel>
+  </apex:pageBlock>
+   
+  <apex:outputPanel id="Changes" >
+  <apex:pageBlock rendered="{!displayMap}">      
+        
+             
+            <apex:pageBlockSection collapsible="false" columns="1" title="What Changed From Last Call?" id="PageMessage">
+            </apex:pageBlockSection>
+            <apex:repeat value="{!MapRegions}" var="Regions" >
+            <apex:outputPanel >
+                <div id="head" style ="height: 30px; width:50%;text-align:left; font-size:20px;">{!Regions}</div>  
+                <apex:repeat value="{!MapCategories}" var="Category"> 
+                   <div id="Table" style="Width:90%;position:relative;margin-left:8%">
+                   <div id="head" style ="height: 20px; width:50%;text-align:left; font-size:15px;color:red;">{!Category}</div>  
+                    <apex:pageBlockTable value="{!ForeCastTrendMap[Regions][Category].OpportunityList}" var="Opp" columnsWidth="40%,10%,10%,40%">
+                       <apex:column >
+                          <apex:facet name="header">
+                               <apex:outputText value="Opportunity Name" />
+                           </apex:facet>
+                            <apex:outputText value="{!Opp.Prospect}"/>
+                        </apex:column>
+                        <apex:column >
+                          <apex:facet name="header">
+                               <apex:outputText value="Added" />
+                           </apex:facet>
+                            <apex:outputText rendered="{!IF(Opp.Added>0,true,false)}" value="{0, number, ###,###}">
+                                  <apex:param value="{!Opp.Added}" />
+                            </apex:outputText>
+                        </apex:column>
+                        <apex:column >
+                          <apex:facet name="header">
+                               <apex:outputText value="Deleted" />
+                           </apex:facet>
+                           <apex:outputText rendered="{!IF(Opp.Deleted>0,true,false)}" value="-{0, number, ###,###}">
+                                  <apex:param value="{!Opp.Deleted}" />
+                           </apex:outputText>
+                        </apex:column>                        
+                        <apex:column >
+                          <apex:facet name="header">
+                               <apex:outputText value="Notes" />
+                           </apex:facet>
+                            <apex:outputText value="{!Opp.Notes}"/>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <apex:pageBlockTable value="{!ForeCastTrendMap[Regions][Category].fxChanges}" var="Opp" columnsWidth="40%,10%,10%,40%">
+                       <apex:column >
+                            <apex:outputText value="{!Opp.Prospect}"/>
+                        </apex:column>
+                        <apex:column >
+                          <apex:outputText rendered="{!IF(Opp.Added>0,true,false)}"  value="{0, number, ###,###}">
+                                  <apex:param value="{!Opp.Added}" />
+                            </apex:outputText>
+                        </apex:column>
+                        <apex:column >
+                          <apex:outputText rendered="{!IF(Opp.Deleted>0,true,false)}"  value="-{0, number, ###,###}">
+                                  <apex:param value="{!Opp.Deleted}" />
+                            </apex:outputText>
+                        </apex:column>                        
+                        <apex:column >
+                            <apex:outputText rendered="{!IF(Opp.Added=0,true,false)}" > - </apex:outputText>
+                            <apex:outputText value="{!Opp.Notes}"/>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <apex:pageBlockTable value="{!ForeCastTrendMap[Regions][Category]}" var="Wrap"  columnsWidth="40%,10%,10%,40%">
+                        <apex:column >
+                               <apex:outputText value="NetChange" />
+                          </apex:column>
+                          <apex:column >
+                          <apex:outputText rendered="{!IF(Wrap.NetChange>0,true,false)}"  value="{0, number, ###,###}">
+                                  <apex:param value="{!Wrap.NetChange}" />
+                            </apex:outputText>
+                        </apex:column>
+                        <apex:column >
+                          <apex:outputText rendered="{!IF(Wrap.NetChange<0,true,false)}"  value="{0, number, ###,###}">
+                                  <apex:param value="{!Wrap.NetChange}" />
+                            </apex:outputText>
+                        </apex:column>   
+                          <apex:column >
+                            <!-- Blank Placeholder to maintain column alignment -->
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <br/>
+                    </div>
+                </apex:repeat>
+            </apex:outputPanel>
+            </apex:repeat>
+          
+    </apex:pageblock>
+    </apex:outputPanel> 
+    
+</apex:form>
+</apex:page>

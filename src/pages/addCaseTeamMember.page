@@ -1,0 +1,101 @@
+<!--
+*****************************************************************************************************************************
+VF Page Name - addCaseTeamMember
+
+Purpose-  VF page to add Case Team Member
+*****************************************************************************************************************************
+
+Name             Email              Date             Notes 
+Alice jones                                           Initial Creation
+
+*****************************************************************************************************************************
+-->
+<apex:page standardController="Case" extensions="addCaseTeamMember" tabStyle="Case">
+    <!-- custom code - included script tags in main page to avoid loading multiple copies of libraries -->
+    <script src="{!URLFOR($Resource.Typeahead, '/jquery-1.10.2.min.js')}" />
+    <script src="{!URLFOR($Resource.Typeahead, '/typeahead.bundle.min.js')}" />
+    <style>
+        .centerText {text-align:center}
+        .ctl_disabled {disabled:true} 
+        .ctl_enabled {disabled:false} 
+
+        .tt-hint {
+            visibility:hidden;
+        }
+        
+        #searchBox.defaultTextBox {
+            -moz-appearance: none;
+            -webkit-appearance: none; 
+            border-radius: 0;
+            padding: 0;
+            position: relative;
+            left: 0;
+            outline: none;
+            border: 1px solid #aaaaaa;
+            background-color: white;
+        }
+
+    </style>
+    <apex:form >
+        <apex:pageBlock title="Case Team Members" id="pb">
+            <!--<apex:pageMessages />-->
+            <apex:variable var="rowNumber" value="{!0}" />
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Save" action="{!save}" />
+                <apex:commandButton value="Cancel" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageblockSection columns="1">
+                <apex:pageBlockTable id="theTable" title="CaseTeamMembers" var="member" value="{!memberList}" width="100%" columnsWidth="3%,23%,22%,15%,15%,14%,10%">
+                    <apex:column style="width:20px; text-align:center;" headerClass="centerText">
+                        <apex:outputText value="{0}" style="text-align:center;">
+                            <apex:param value="{!rowNumber+1}" />
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Member Role">
+                        <apex:selectList value="{!member.roleId}" size="1">
+                             <apex:actionSupport event="onchange" action="{!changeUserRole}" reRender="pb">
+                                 <apex:param value="{!rowNumber}" name="rowNo"/>
+                             </apex:actionSupport>
+                             <apex:selectOptions value="{!roleOptions}"/>
+                        </apex:selectList>
+                    </apex:column>
+                    <apex:column headerValue="Team Member">
+                        <apex:outputPanel rendered="{!IF(member.roleName=='Customer Case Contact',true,false)}">
+                            <c:Typeahead object="User" searchBoxId="extSearchBox{!rowNumber}" primaryField="Name" filterClause="{!JSENCODE(customerContactQueryStr)}" destinationForSelectedId="{!$Component.txtExtMemberId}" destinationForSelectedValue="{!$Component.txtExtMemberName}" styleClass="defaultTextBox" stealFocus="false"/>
+                            <apex:inputHidden id="txtExtMemberId" value="{!member.memberId}"/>
+                            <apex:inputHidden id="txtExtMemberName" value="{!member.memberName}"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(member.roleName!='Customer Case Contact',true,false)}">
+                            <!-- custom code - setting searchbox id with row number to have unique id for each typeahead -->
+                            <c:Typeahead object="User" searchBoxId="searchBox{!rowNumber}" primaryField="Name" filterClause="IsActive=true and UserType = \'Standard\'" destinationForSelectedId="{!$Component.txtMemberId}" destinationForSelectedValue="{!$Component.txtMemberName}" styleClass="defaultTextBox" stealFocus="false"/>
+                            <apex:inputHidden id="txtMemberId" value="{!member.memberId}"/>
+                            <apex:inputHidden id="txtMemberName" value="{!member.memberName}"/>
+                        </apex:outputPanel>
+                        <apex:outputText rendered="false" value="{!member.memberName}"/>
+                        <apex:outputPanel rendered="{!LEN(member.displayMemberError)!=0}">
+                            <div class="errorMsg"><strong>Error:</strong>&nbsp;{!member.displayMemberError}</div>
+                        </apex:outputPanel>
+                    </apex:column>
+                    <apex:column headerValue="Access Level">
+                        <apex:outputText value="{!member.ctm.TeamRole.AccessLevel}"/>
+                    </apex:column>
+                    <apex:column headerValue="Last Modified By">
+                        <apex:outputText value="{!member.ctm.LastModifiedBy.Name}"/>
+                    </apex:column>
+                    <apex:column headerValue="Last Modified Date" headerClass="centerText" styleClass="centerText">
+                        <apex:outputText value="{0, date, MM'/'dd'/'yyyy}">
+                            <apex:param value="{!member.ctm.LastModifiedDate}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Action" headerClass="centerText" styleClass="centerText">
+                        <apex:commandButton value="Delete" action="{!deleteRow}" reRender="pb">
+                            <apex:param name="rowIndex" value="{!rowNumber}" />
+                        </apex:commandButton>
+                        <apex:variable var="rowNumber" value="{!rowNumber+1}" />
+                    </apex:column>
+                </apex:pageBlockTable>
+                <apex:commandButton action="{!addRow}" value="Add Member"/>
+            </apex:pageblockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

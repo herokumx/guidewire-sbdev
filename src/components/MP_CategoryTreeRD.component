@@ -1,0 +1,181 @@
+<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Template for the Category Tree widget
+    ****************************************************************************-->
+<apex:component id="MP_CategoryTreeRD">
+    <script>
+        CCRZ.remoteAction.getCategoryTreeJson = CCRZ.pagevars.namespace + 'cc_RemoteActionController.getCategoryTreeJson';
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Template for the Category Tree Widget
+    ****************************************************************************-->
+    <script id="category-container-template" type="text/template">
+        <div class="categories_side_container">
+            <div class="categories_header">
+                <h2 class="title">{{pageLabelMap 'CategoryTree_Categories'}}</h2>
+            </div>
+            <div class="categories_body">
+                <ul class="side_navigation_dropdown" id="side_nav">
+                    {{#each .}}
+                        {{#if children}}
+                            <li><a href="#{{sfid}}"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;{{name}}</a>
+                        {{else}}
+                            <li><a href="#{{sfid}}">{{name}}</a>
+                        {{/if}}
+                        {{#if children}}
+                            <ul>
+                                {{#each children}}
+                                    <li><a href="#{{sfid}}"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;{{name}}</a>
+                                        {{#if children}}
+                                            <ul>
+                                                {{#each children}}
+                                                    <li><a href="#{{sfid}}">{{name}}</a></li>
+                                                {{/each}}
+                                            </ul>
+                                        {{/if}}
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        {{/if}}
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </script>
+    <!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        Templates for the feature filter
+    ****************************************************************************-->
+    <script id="feature-filter-template" type="text/template">
+        <div class="title_header">
+            <h2 class="title">{{pageLabelMap 'Filter_Title'}}</h2>
+        </div>
+        <div class="filters">
+            <div class="filter_breadcrumb_container"></div>
+            <div class="filter_search">
+                <div class="alert alert-error messagingSectionFilter-Error" style="display: none"></div>
+                <div class="alert alert-warn messagingSectionFilter-Warn" style="display: none"></div>
+                <div class="alert alert-info messagingSectionFilter-Info" style="display: none"></div>
+                <input class="filterSearch"/>
+                <button type="button" class="searchFilter btn slim">{{pageLabelMap 'Search'}}</button>
+            </div>
+      		{{#eachInMap this 'CCRZ.featureFilter.sortSpecs'}}
+            	<div class="spec">
+                    {{key}}
+                    {{#ifEquals value.displayType 'Checkbox'}}
+                        {{#eachInMap value.specValues }}
+                            <div class="value">
+                                <input type="checkbox" class="checkfilter" data-spec="{{../key}}" data-id="{{key}}" /> <span class="checkfilter" data-spec="{{../key}}" data-id="{{key}}">{{key}}</span> <div class="filtercount">{{pageLabelMap 'filter_count' value.length}}</div>
+                            </div>
+                        {{/eachInMap}}
+                    {{/ifEquals}}
+                    {{#ifEquals value.displayType 'Slider'}}
+                        <div class="value">
+                            <div class="alert alert-error messagingSectionFilter-Error{{../value.specId}}" style="display: none"></div>
+                            <div class="alert alert-warn messagingSectionFilter-Warn{{../value.specId}}" style="display: none"></div>
+                            <div class="alert alert-info messagingSectionFilter-Info{{../value.specId}}" style="display: none"></div>
+                        </div>
+                        <div class="slider_{{../value.specId}}"></div>
+                        <div class="lowerDisp lower_{{../value.specId}}"></div><div class="upperDisp higher_{{../value.specId}}"></div>
+                        <button type="button" data-id="{{../value.specId}}" data-spec="{{../key}}" class="slideFilter btn slim">{{pageLabelMap 'Go'}}</button>
+                    {{/ifEquals}}
+                </div>
+            {{/eachInMap}}
+        </div>
+    </script>
+
+	<script>
+        jQuery(function($) {
+    
+            // cache template
+            var template = CCRZ.util.template(CCRZ.uiProperties.CategoryTree.tmpl);
+    
+            CCRZ.views.CategoryTree = CCRZ.CloudCrazeView.extend({
+                className : "cc_RemoteActionController",
+                viewName : "CategoryTree",
+                init : function(){
+                    var v = this;
+                    this.invokeCtx(
+                        "getCategoryTreeJson",
+                        function(result, event){
+                            if (event.status) {
+                                CCRZ.data.categories = result.data;
+                                v.render();
+                            } else {
+                                CCRZ.data.categories = '[]';
+                            }
+                        },
+                        {escape:false});
+                },
+                
+                render: function() {
+                    
+                        // clear existing category trees
+                        $(CCRZ.uiProperties.CategoryTree.desktop.right.selector).html('');
+                        $(CCRZ.uiProperties.CategoryTree.desktop.left.selector).html('');
+                        $(CCRZ.uiProperties.CategoryTree.tablet.selector).html('');
+    
+                                
+                        // add category tree in correct location for device
+                        if(CCRZ.display.isTablet()) {
+                            $(CCRZ.uiProperties.CategoryTree.tablet.selector).html(template(CCRZ.data.categories));
+                        } else if(CCRZ.display.isPhone()) {
+                            if((typeof showCategories != 'undefined') && showCategories){
+                                $(CCRZ.uiProperties.CategoryTree.phone.selector).html(template(CCRZ.data.categories));
+                            }
+                        }else{
+                            if ($(CCRZ.uiProperties.CategoryTree.desktop.left.selector).length)
+                                $(CCRZ.uiProperties.CategoryTree.desktop.left.selector).html(template(CCRZ.data.categories));
+                            else
+                                $(CCRZ.uiProperties.CategoryTree.desktop.right.selector).html(template(CCRZ.data.categories));
+                        }
+    
+                        $('#side_nav').dcAccordion({
+                            eventType: 'click',
+                            autoClose: true,
+                            saveState: true,
+                            disableLink: false,
+                            showCount: false,
+                            speed: 'slow'
+                        });
+                    
+                        $('.categories_side_container a').click(function(e) {
+                            if($(this).hasClass('active') && !$(this).hasClass('dcjq-parent')){
+                                console.log('!');
+                                e.preventDefault();
+                                var categoryid = $(this).attr('href');
+                                if(categoryid) {
+                                    categoryid = categoryid.substring(1);
+                                }
+                                productList(categoryid);
+                            }    
+                        });
+                    CCRZ.pubSub.trigger("view:"+this.viewName+":refresh", this);
+                }
+            });
+            
+    
+            CCRZ.CategoryTree = new CCRZ.views.CategoryTree();
+    
+            
+        });
+    </script>
+    <script>
+        jQuery(function($){
+            CCRZ.pubSub.on('view:myAccountHeaderView:refresh', function(theView) {
+             $('.doLogout').click(function(){
+                 //$(".active").click();
+                 $(".active").each(function() {
+                    $(this).click();
+                 });
+             });
+            CCRZ.uiProperties.FeatureFilterView.desktop.tmpl = 'feature-filter-template';
+            });
+        });
+    </script>
+</apex:component>

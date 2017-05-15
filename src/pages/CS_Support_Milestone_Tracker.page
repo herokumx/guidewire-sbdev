@@ -1,0 +1,10 @@
+<apex:page standardController="Case" showHeader="true">
+    <script></script>
+    <style>
+    .eWidgetMenuButton{
+        display:none;
+        }
+    </style>
+    <apex:milestoneTracker entityId="{!case.id}"/> 
+    
+</apex:page>

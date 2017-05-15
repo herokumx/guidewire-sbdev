@@ -1,0 +1,9 @@
+<apex:page showHeader="true" sidebar="true" standardController="pse__Proj__c">
+
+    <apex:pageBlock >
+
+        <h1 align="center"><br/>Note: You cannot create a Project from here... please create Projects from the Accounts Page.</h1>
+
+    </apex:pageBlock>
+
+</apex:page>

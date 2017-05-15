@@ -1,0 +1,29 @@
+<apex:page standardController="Sales_Event__c" extensions="EditSalesEventCon">
+    <apex:form >
+        <apex:pageBlock Title="Sales Event Edit">
+            <apex:pageBlockSection title="Information">
+                <apex:inputField value="{!SalesEvent.Opportunity__c}"/>
+                <apex:inputField value="{!SalesEvent.Status__c}"/>
+                <apex:inputField value="{!SalesEvent.Name}"/>
+                <apex:inputField value="{!SalesEvent.Confirmed_Start_Date__c}"/>
+                <apex:inputField value="{!SalesEvent.Event_Type__c}"/>
+                <apex:inputField value="{!SalesEvent.Confirmed_End_Date__c}"/>
+                <apex:inputField value="{!SalesEvent.Presentation_Type__c}"/>
+                <apex:inputField value="{!SalesEvent.Event_Hours__c}"/>
+                <apex:inputField value="{!SalesEvent.Location__c}"/>
+                <apex:inputField value="{!SalesEvent.RFx_Received__c}"/>
+                <!-- <apex:inputField value="{!SalesEvent.Value_Consulting__c}"/> -->
+                <apex:inputField value="{!SalesEvent.RFx_Internal_Due__c}"/>
+                <apex:inputField value="{!SalesEvent.RFx_External_Due__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Description" columns="1">
+                <apex:inputField value="{!SalesEvent.Description__c}" />
+                <apex:inputField value="{!SalesEvent.Event_Goals__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!saveMe}"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

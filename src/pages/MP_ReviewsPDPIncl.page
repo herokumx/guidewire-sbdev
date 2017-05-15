@@ -1,0 +1,169 @@
+<!--*************************************************************************
+     Developer: Janella Espiritu <janellae@slalom.com>
+     Description:
+        This page includes the templates and JavaScript overrides for 
+		the Product Detail Page
+    ****************************************************************************-->
+<apex:page id="MP_ReviewsPDPIncl" sidebar="false" showHeader="false" standardStylesheets="false" controller="MP_ReviewsCtrl" title="Guidewire Marketplace">
+    {!emptyStr}
+    <script type="text/javascript">
+        jQuery(function($) {
+            //CCRZ.uiProperties.productDetailView.desktop.tmpl = 'MP_PDPIncl';
+            var extendedModel = {!extendedProdJSON};
+            Handlebars.registerHelper("extendedData", function(currModel) {
+                _.extend(currModel, extendedModel.extProdData);
+            });
+            
+            CCRZ.pubSub.on('view:productDetailView:refresh', function(){
+                var HeaderContent = '<div class="reviews"></div>';
+                var ReviewContent = '';
+                //var sku = $('.pd_sku').html();
+                if ($('.reviews').length == 0) {
+                    $('div.prodDetailContainer').after(HeaderContent);
+                }
+                //CCRZ.subsc.Reviews.init(this,sku,function(){});
+
+                CCRZ.reviews = new CCRZ.subsc.ReviewsView();
+
+            });
+
+            CCRZ.subsc = CCRZ.subsc||{};
+            CCRZ.subsc.Reviews = _.extend(CCRZ.RemoteInvocation,{
+                className : 'MP_ReviewsCtrl',
+                saveReview : function(theView, sku,subject,reviewText,rating,callback){
+                    var me = theView;
+                    this.invokeContainerLoadingCtx(
+                            $('body'),
+                            'saveReview',
+                            sku,
+                            subject,
+                            reviewText,
+                            rating,
+                            function(resp){
+                                if(resp && resp.success){//response was successful
+                                    $('.inReviewText').hide();
+                                    $('.starRating').hide();
+                                    $('.modal-footer').hide();
+                                    $('.submitMessage').show();
+                                    setTimeout(function() {
+                                        $('#writeReviewMod').modal('hide');
+                                        $('#submitMessage').hide();
+                                        $('body').removeClass('modal-open');
+                                        $('.modal-backdrop').remove();
+                                    }, 1500);
+                                    
+                                    //CCRZ.reviews.render();
+                                }
+                                else{
+
+                                }
+                            },
+                            {
+                                buffer:false, //this call will be executed by itself
+                                nmsp : false //defines that this is a call to a subscriber class
+                            }
+                    );//end invokeCtx call
+                }
+            });
+
+            CCRZ.subsc.WriteReviewView = CCRZ.CloudCrazeView.extend({
+                className: 'MP_ReviewsCtrl',
+                viewName : "WriteReviewView",
+                templateBoth : CCRZ.util.template('MP-Reviews-Create'),
+                events : {
+                    "click .closeModal" : "closeModal",
+                    "click .submit" : "submit"
+                },
+                closeModal : function(){
+                    
+                    $('#writeReviewMod').modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
+                },
+                submit : function(){
+                    var subject = $('#inReviewSubject').val();
+                    var userReview = $('#inReviewText').val();
+                    var rating = $('#reviewRating input[type="radio"]:checked').val();
+                    var sku = '{!SKU}';
+                    console.log('subject: ' + subject + ' userReview: ' + userReview + ' rating: ' + rating + ' sku: ' + sku);
+                    CCRZ.subsc.Reviews.saveReview(this.parentView,sku,subject,userReview,rating);
+                    
+                    
+                },
+                render : function(parentView,modelData, callback) {
+                    this.parentView = parentView;
+                    $('#modalSec').html('');
+                    this.dataSet = modelData;
+                    this.setElement($('#modalSec'));
+                    this.$el.html(this.templateBoth(this.dataSet));
+                    callback();
+                }
+            });
+
+            CCRZ.subsc.ReviewsView = CCRZ.CloudCrazeView.extend({
+                className : 'MP_ReviewsCtrl',
+                viewName : "ReviewsView",
+                templateBoth : CCRZ.util.template('MP-Reviews-Display'),
+                events : {
+                    "click .popReview" : "popReview"
+                },
+                newReviewModal : new CCRZ.subsc.WriteReviewView(),
+                init: function() {
+                    this.render();
+                },
+                fetchReviews : function(callback){
+                    var me = this;
+                    this.invokeContainerLoadingCtx(
+                            $('body'),
+                            'fetchReviews',
+                            '{!SKU}',
+                            function(resp){
+                                if(resp && resp.success){//response was successful
+                                    me.dataSet = resp.data;
+                                    callback();
+                                }
+                            },
+                            {
+                                buffer:false, //this call will be executed by itself
+                                nmsp : false //defines that this is a call to a subscriber class
+                            }
+                    );//end invokeCtx call
+                },
+                popReview : function(){
+                    //var newReviewModal = new CCRZ.subsc.WriteReviewView();
+                    this.newReviewModal.render(this,new Object(), function() {
+                        $('#writeReviewMod').modal(
+                                { keyboard: false, backdrop: 'static', show: true }
+                        );
+
+                    });
+                },
+                renderDesktop : function() {
+                    var me = this;
+                    this.fetchReviews(function() {
+                        $('.reviews').html('');
+                        me.setElement($('.reviews'));
+                        me.dataSet.avgRating = CCRZ.productDetailModel.attributes.product.avgRating;
+                        me.dataSet.numberOfReviews = CCRZ.productDetailModel.attributes.numberOfReviews;
+                        if (me.dataSet.avgRating === undefined) {
+                            me.dataSet.avgRating = 0;
+                        }
+                        if (me.dataSet.numberOfReviews === undefined) {
+                            me.dataSet.numberOfReviews = 0;
+                        }
+                        me.$el.html(me.templateBoth(me.dataSet));
+                    });
+
+                }
+            });
+
+
+
+        });
+    </script>
+
+    <c:MP_Reviews_Display rendered="{!reviewAccess}"></c:MP_Reviews_Display>
+    <c:MP_Reviews_Create ></c:MP_Reviews_Create>
+    <c:MP_PDPIncl > </c:MP_PDPIncl>
+
+</apex:page>
