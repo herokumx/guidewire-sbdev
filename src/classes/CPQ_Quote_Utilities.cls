@@ -1,9 +1,13 @@
 public without sharing class CPQ_Quote_Utilities {
 
+  private static Boolean alreadyrun = false;
   /*
      bulkified method for original/last quotes population
    */
   public static void populateOriginalAndLastQuotes(List<SBQQ__Quote__c> quoteList){
+
+    if(CPQ_Quote_Utilities.alreadyrun) return;
+    CPQ_Quote_Utilities.alreadyrun = true;
 
     // filter out quotes based on type (Renewal)
     Set<Id> renewalQuoteIdSet = new Set<Id>();
