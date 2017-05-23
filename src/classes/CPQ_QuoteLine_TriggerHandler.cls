@@ -28,18 +28,18 @@ public without sharing class CPQ_QuoteLine_TriggerHandler implements CS_ITrigger
     }
 
     if(Trigger.isUpdate) {
-      // CPQ_QuoteLine_Utilities.populateBaseLineInfo(Trigger.new);
+
     }
   }
 
   public void bulkAfter(){
     if (Trigger.isInsert) {
-      // CPQ_QuoteLine_Utilities.populateBaseLineInfo(Trigger.new);
+
     }
 
 
     if(Trigger.isUpdate) {
-      // CPQ_QuoteLine_Utilities.populateBaseLineInfo(Trigger.new);
+
     }
   }
 
