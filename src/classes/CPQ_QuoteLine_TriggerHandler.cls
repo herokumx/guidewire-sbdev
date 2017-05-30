@@ -20,7 +20,7 @@ public without sharing class CPQ_QuoteLine_TriggerHandler implements CS_ITrigger
    */
   public void bulkBefore(){
     if (Trigger.isInsert) {
-      CPQ_QuoteLine_Utilities.populateBaseLineInfo(Trigger.new);
+      // CPQ_QuoteLine_Utilities.populateBaseLineInfo(Trigger.new);
     }
 
     if(Trigger.isUpdate) {
@@ -30,12 +30,12 @@ public without sharing class CPQ_QuoteLine_TriggerHandler implements CS_ITrigger
 
   public void bulkAfter(){
     if (Trigger.isInsert) {
-      CPQ_QuoteLine_Utilities.syncSupportPercent(Trigger.new, null);
+      // CPQ_QuoteLine_Utilities.syncSupportPercent(Trigger.new, null);
     }
 
 
     if(Trigger.isUpdate) {
-      CPQ_QuoteLine_Utilities.syncSupportPercent(Trigger.new, Trigger.oldMap);
+      // CPQ_QuoteLine_Utilities.syncSupportPercent(Trigger.new, Trigger.oldMap);
     }
   }
 
