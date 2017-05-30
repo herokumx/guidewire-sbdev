@@ -1,14 +1,15 @@
 public without sharing class CPQ_QuoteLine_Utilities {
 
-  private static Boolean alreadyrun = false;
+  private static Boolean alreadyRunPopulateBaselineInfo = false;
+  private static Boolean alreadySyncSupportPercent = false;
 
   /*
      bulkified method for populate baseline information
    */
   public static void populateBaseLineInfo(List<SBQQ__QuoteLine__c> quoteLineList){
 
-    if(CPQ_QuoteLine_Utilities.alreadyrun) return;
-    CPQ_QuoteLine_Utilities.alreadyrun = true;
+    if(CPQ_QuoteLine_Utilities.alreadyRunPopulateBaselineInfo) return;
+    CPQ_QuoteLine_Utilities.alreadyRunPopulateBaselineInfo = true;
 
     /*
        Quote:
@@ -79,7 +80,7 @@ public without sharing class CPQ_QuoteLine_Utilities {
 
     // create a map with key as last quote's Id + corresponding quoteline's productId, value as the corresponding quoteline
     Map<String,SBQQ__QuoteLine__c> lastQuotesRampUpInfoMap = new Map<String,SBQQ__QuoteLine__c>();
-    for(SBQQ__QuoteLine__c quoteline : quoteLineListForQriginalQuotes) {
+    for(SBQQ__QuoteLine__c quoteline : quoteLineListForLastQuotes) {
       lastQuotesRampUpInfoMap.put(String.valueOf(quoteline.SBQQ__Quote__c)+String.valueOf(quoteline.SBQQ__Product__c), quoteline);
     }
 
@@ -235,10 +236,85 @@ public without sharing class CPQ_QuoteLine_Utilities {
    */
   private static Decimal getAnnualNet(Id lastQuoteId, Id productId, Map<String,SBQQ__QuoteLine__c> lastQuotesRampUpInfoMap){
     System.debug('***getAnnualNet');
+    System.debug('***lastQuoteId '+lastQuoteId);
+    System.debug('***productId '+productId);
+    System.debug('***key '+String.valueOf(lastQuoteId)+String.valueOf(productId));
+    System.debug('***lastQuotesRampUpInfoMap '+lastQuotesRampUpInfoMap);
 
     SBQQ__QuoteLine__c quoteLine = lastQuotesRampUpInfoMap.get(String.valueOf(lastQuoteId)+String.valueOf(productId));
     System.debug('***quoteLine '+quoteLine);
 
     return quoteLine.CPQ_Annual_Net_Amount__c;
+  }
+
+  /*
+     bulkified method for sync support percent
+   */
+  public static void syncSupportPercent(List<SBQQ__QuoteLine__c> newQuoteLineList, Map<Id, sObject> oldOuoteLineMap){
+
+    for(SBQQ__QuoteLine__c quoteline : newQuoteLineList) {
+      System.debug('***id '+quoteline.Id);
+      System.debug('***support percent '+quoteline.SBQQ__SubscriptionPercent__c);
+    }
+
+    if(CPQ_QuoteLine_Utilities.alreadySyncSupportPercent) return;
+    CPQ_QuoteLine_Utilities.alreadySyncSupportPercent = true;
+
+    System.debug('***enter syncSupportPercent');
+
+    Set<Id> quotelineIdSet = new Set<Id>();
+
+    if(oldOuoteLineMap == null) {
+      System.debug('***handle insert');
+      // for insert trigger, collect all quoteline Ids where SBQQ__SubscriptionPercent__c is not null
+      for(SBQQ__QuoteLine__c quoteline : newQuoteLineList) {
+        if(quoteline.SBQQ__SubscriptionPercent__c != null) {
+          quotelineIdSet.add(quoteline.Id);
+        }
+      }
+    }else{
+      System.debug('***handle update');
+      // for update trigger, collect all quoteline Ids where SBQQ__SubscriptionPercent__c is not null and been changed
+      for(SBQQ__QuoteLine__c quoteline : newQuoteLineList) {
+        if(quoteline.SBQQ__SubscriptionPercent__c != null && oldOuoteLineMap.get(quoteline.Id).get('SBQQ__SubscriptionPercent__c') != quoteline.SBQQ__SubscriptionPercent__c) {
+          quotelineIdSet.add(quoteline.Id);
+        }
+      }
+    }
+
+    System.debug('***quotelineIdSet '+quotelineIdSet);
+
+    if(quotelineIdSet.size() != 0 && !Test.isRunningTest()) {
+      CPQ_QuoteLine_Utilities.processSupportPercentSync(quotelineIdSet);
+    }
+  }
+
+  private static void processSupportPercentSync(Set<Id> quotelineIdSet){
+    System.debug('***processSupportPercentSync '+quotelineIdSet);
+
+    // get detailed info for all passed in QLI Ids
+    List<SBQQ__QuoteLine__c> quoteLineList = [SELECT Id, SBQQ__Quote__c, SBQQ__SubscriptionPercent__c, SBQQ__Product__c, SBQQ__Product__r.Name, SBQQ__Product__r.Sku_Type__c FROM SBQQ__QuoteLine__c WHERE Id IN : quotelineIdSet];
+    System.debug('***quoteLineList '+quoteLineList);
+
+    // iterate list, select those whose product's sku type is 'Maintenance', and create a map (quoteId, supportPercent)
+    Map<Id, Decimal> quoteIdSupportPercentMap = new Map<Id, Decimal>();
+    for(SBQQ__QuoteLine__c quoteline : quoteLineList) {
+      if(quoteline.getsObject('SBQQ__Product__r').get('Sku_Type__c') == 'Maintenance') {
+        quoteIdSupportPercentMap.put(quoteline.SBQQ__Quote__c, quoteline.SBQQ__SubscriptionPercent__c);
+      }
+    }
+    System.debug('***quoteIdSupportPercentMap '+quoteIdSupportPercentMap);
+
+    // retrieve all QLIs based on quoteId set, and update support percent fields
+    List<SBQQ__QuoteLine__c> updateQuoteLineList = [SELECT Id, SBQQ__Quote__c, SBQQ__SubscriptionPercent__c, SBQQ__Product__r.Sku_Type__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c IN : quoteIdSupportPercentMap.keySet() AND SBQQ__Product__r.Sku_Type__c != 'Maintenance'];
+    for(SBQQ__QuoteLine__c quoteline : updateQuoteLineList) {
+      quoteline.SBQQ__SubscriptionPercent__c = quoteIdSupportPercentMap.get(quoteline.SBQQ__Quote__c);
+    }
+    System.debug('***updateQuoteLineList '+updateQuoteLineList);
+
+    if(updateQuoteLineList.size() != 0 && !Test.isRunningTest()) {
+      System.debug('***do the update!');
+      upsert updateQuoteLineList;
+    }
   }
 }

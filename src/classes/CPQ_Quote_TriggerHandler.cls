@@ -34,7 +34,7 @@ public without sharing class CPQ_Quote_TriggerHandler implements CS_ITrigger {
 
   public void bulkAfter(){
     if (Trigger.isInsert) {
-      CPQ_Quote_Utilities.populateOriginalAndLastQuotes(Trigger.new);
+      // CPQ_Quote_Utilities.populateOriginalAndLastQuotes(Trigger.new);
     }
 
 
