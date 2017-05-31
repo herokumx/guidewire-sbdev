@@ -153,7 +153,7 @@ public without sharing class CPQ_QuoteLine_Utilities {
 
 
   /*
-     get baseline license for a specific quoteline from one of this specific quoteline's associated quote's last quote's many quotelines (based on specific quoteline's product id)
+     populate support percent for all quotelineitems based on support percent retrieved from Maintenance product
    */
   public static void populateSupportPercent(Id quoteId){
     System.debug('***populateSupportPercent');
@@ -177,10 +177,9 @@ public without sharing class CPQ_QuoteLine_Utilities {
       for(SBQQ__QuoteLine__c quoteline : quoteLineList) {
         quoteline.SBQQ__SubscriptionPercent__c = supportPercent;
       }
-    }
-
-    if(!Test.isRunningTest()) {
-      update quoteLineList;
+      if(!Test.isRunningTest()) {
+        update quoteLineList;
+      }
     }
   }
 }
