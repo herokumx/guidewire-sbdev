@@ -42,9 +42,9 @@ public without sharing class CPQ_QuoteLine_Utilities {
 
     // process QLIs based on if quote is first time renewal or not (original quote = last quote)
     if(quote.SBQQ__OriginalQuote__c == quote.CPQ_LastQuote__c) {
-      if(!Test.isRunningTest()) CPQ_QuoteLine_Utilities.processFirstTimeSet(quote, quoteLineList, originalQuotesRampUpInfoMap);
+      CPQ_QuoteLine_Utilities.processFirstTimeSet(quote, quoteLineList, originalQuotesRampUpInfoMap);
     }else{
-      if(!Test.isRunningTest()) CPQ_QuoteLine_Utilities.processNonFirstTimeSet(quote, quoteLineList, originalQuotesRampUpInfoMap, lastQuotesRampUpInfoMap);
+      CPQ_QuoteLine_Utilities.processNonFirstTimeSet(quote, quoteLineList, originalQuotesRampUpInfoMap, lastQuotesRampUpInfoMap);
     }
 
   }
@@ -180,6 +180,40 @@ public without sharing class CPQ_QuoteLine_Utilities {
       if(!Test.isRunningTest()) {
         update quoteLineList;
       }
+    }
+  }
+
+  /*
+     populate 'last quote invoiced license' for all quotelineitems (value retrieved from quote's associated last quote's corresponding quotelineitem's net total)
+   */
+  public static void populateLastQuoteInvoicedLicense(Id quoteId){
+    System.debug('***populateLastQuoteInvoicedLicense');
+
+    // get current quote
+    SBQQ__Quote__c quote = [SELECT Id, CPQ_LastQuote__c FROM SBQQ__Quote__c WHERE Id =: quoteId];
+
+    // retrieve all QLIs from last quote
+    List<SBQQ__QuoteLine__c> quoteLineOfLastQuoteList = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, SBQQ__NetTotal__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.CPQ_LastQuote__c];
+    System.debug('***quoteLineOfLastQuoteList '+quoteLineOfLastQuoteList);
+
+    // create a map with key as quoteline's productId, value as the corresponding quoteline's net total
+    Map<String,Decimal> lastQuoteQLIInfoMap = new Map<String,Decimal>();
+    for(SBQQ__QuoteLine__c quoteline : quoteLineOfLastQuoteList) {
+      lastQuoteQLIInfoMap.put(String.valueOf(quoteline.SBQQ__Product__c), quoteline.SBQQ__NetTotal__c);
+    }
+    System.debug('***lastQuoteQLIInfoMap '+lastQuoteQLIInfoMap);
+
+    // retrieve all QLIs from current quote
+    List<SBQQ__QuoteLine__c> quoteLineOfCurrentQuoteList = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, CPQ_Last_Quote_Invoiced_License__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quoteId];
+    System.debug('***quoteLineOfCurrentQuoteList '+quoteLineOfCurrentQuoteList);
+
+    // iterate list, update CPQ_Last_Quote_Invoiced_License__c based on productId
+    for(SBQQ__QuoteLine__c quoteline : quoteLineOfCurrentQuoteList) {
+      quoteline.CPQ_Last_Quote_Invoiced_License__c = lastQuoteQLIInfoMap.get(String.valueOf(quoteline.SBQQ__Product__c));
+    }
+
+    if(!Test.isRunningTest()) {
+      update quoteLineOfCurrentQuoteList;
     }
   }
 }
