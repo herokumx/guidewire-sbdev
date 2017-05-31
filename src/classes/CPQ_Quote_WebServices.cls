@@ -3,6 +3,7 @@ global class CPQ_Quote_WebServices {
     System.debug('***quoteId '+quoteId);
     CPQ_Quote_Utilities.populateOriginalAndLastQuotes(quoteId);
     CPQ_QuoteLine_Utilities.populateBaseLineInfo(quoteId);
+    CPQ_QuoteLine_Utilities.populateSupportPercent(quoteId);
     return;
   }
 }

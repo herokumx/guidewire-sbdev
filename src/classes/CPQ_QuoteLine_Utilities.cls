@@ -150,4 +150,37 @@ public without sharing class CPQ_QuoteLine_Utilities {
 
     return quoteLine.CPQ_Annual_Net_Amount__c;
   }
+
+
+  /*
+     get baseline license for a specific quoteline from one of this specific quoteline's associated quote's last quote's many quotelines (based on specific quoteline's product id)
+   */
+  public static void populateSupportPercent(Id quoteId){
+    System.debug('***populateSupportPercent');
+
+    // retrieve quoteline list
+    List<SBQQ__QuoteLine__c> quoteLineList = [SELECT Id, SBQQ__Quote__c, SBQQ__SubscriptionPercent__c, SBQQ__Product__c, SBQQ__Product__r.Name, SBQQ__Product__r.Sku_Type__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quoteId];
+    System.debug('***quoteLineList '+quoteLineList);
+
+    // iterate list, get support percentage from product whose sku type is 'Maintenance'
+    Decimal supportPercent;
+    for(SBQQ__QuoteLine__c quoteline : quoteLineList) {
+      if(quoteline.getsObject('SBQQ__Product__r').get('Sku_Type__c') == 'Maintenance') {
+        supportPercent = quoteline.SBQQ__SubscriptionPercent__c;
+        break;
+      }
+    }
+    System.debug('***supportPercent '+supportPercent);
+
+    // iterate list again, and update support percent for other products
+    if(supportPercent != null) {
+      for(SBQQ__QuoteLine__c quoteline : quoteLineList) {
+        quoteline.SBQQ__SubscriptionPercent__c = supportPercent;
+      }
+    }
+
+    if(!Test.isRunningTest()) {
+      update quoteLineList;
+    }
+  }
 }
