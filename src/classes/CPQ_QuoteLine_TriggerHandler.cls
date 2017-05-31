@@ -20,7 +20,7 @@ public without sharing class CPQ_QuoteLine_TriggerHandler implements CS_ITrigger
    */
   public void bulkBefore(){
     if (Trigger.isInsert) {
-      // CPQ_QuoteLine_Utilities.populateBaseLineInfo(Trigger.new);
+
     }
 
     if(Trigger.isUpdate) {
@@ -30,12 +30,12 @@ public without sharing class CPQ_QuoteLine_TriggerHandler implements CS_ITrigger
 
   public void bulkAfter(){
     if (Trigger.isInsert) {
-      // CPQ_QuoteLine_Utilities.syncSupportPercent(Trigger.new, null);
+
     }
 
 
     if(Trigger.isUpdate) {
-      // CPQ_QuoteLine_Utilities.syncSupportPercent(Trigger.new, Trigger.oldMap);
+
     }
   }
 
@@ -77,8 +77,6 @@ public without sharing class CPQ_QuoteLine_TriggerHandler implements CS_ITrigger
    * method to accomplish any final operations such as creation or updates of other records.
    */
   public void andFinally(){
-    // List<SBQQ__QuoteLine__c> verifylist2 = [SELECT Id, SBQQ__Quote__c, SBQQ__SubscriptionPercent__c, SBQQ__Product__r.Sku_Type__c FROM SBQQ__QuoteLine__c WHERE (SBQQ__Quote__c IN ('aBA4C0000004CT8') AND SBQQ__Product__r.Sku_Type__c != 'Maintenances')];
-    // System.debug('***verifylist2 '+verifylist2);
 
   }
 }
