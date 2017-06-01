@@ -16,7 +16,7 @@ public without sharing class CPQ_QuoteLine_Utilities {
     System.debug('***quote '+quote);
 
     // retrieve quoteline list
-    List<SBQQ__QuoteLine__c> quoteLineList = [SELECT SBQQ__Quote__c, SBQQ__Product__c, CPQ_Baseline_Current_Year_License__c, CPQ_Baseline_Last_Year_License__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quoteId];
+    List<SBQQ__QuoteLine__c> quoteLineList = [SELECT SBQQ__Quote__c, SBQQ__Product__c, CPQ_Baseline_Current_Year_License__c, CPQ_Baseline_Last_Year_License__c, SBQQ__SubscriptionPercent__c, CPQ_Last_Quote_Invoiced_License__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quoteId];
     System.debug('***quoteLineList '+quoteLineList);
 
     // retrieve quotelines with CPQ_Year_1_Net_Amount__c - CPQ_Year_5_Net_Amount__c (to calculate baseline license) for original quote
@@ -47,6 +47,19 @@ public without sharing class CPQ_QuoteLine_Utilities {
       CPQ_QuoteLine_Utilities.processNonFirstTimeSet(quote, quoteLineList, originalQuotesRampUpInfoMap, lastQuotesRampUpInfoMap);
     }
 
+    // iterate quoteLineList and populate support percent & last quote invoiced license
+    Decimal supportPercent = getSupportPercent(quoteId);
+    Map<String,Decimal> lastQuoteInvoicedLicenseMap = getLastQuoteInvoicedLicenseMap(quoteId);
+
+    for(SBQQ__QuoteLine__c quoteline : quoteLineList) {
+      quoteline.SBQQ__SubscriptionPercent__c = supportPercent;
+      quoteline.CPQ_Last_Quote_Invoiced_License__c = lastQuoteInvoicedLicenseMap.get(String.valueOf(quoteline.SBQQ__Product__c));
+    }
+
+    if(!Test.isRunningTest()) {
+      update quote;
+      update quoteLineList;
+    }
   }
 
   /*
@@ -77,11 +90,6 @@ public without sharing class CPQ_QuoteLine_Utilities {
         quoteline.CPQ_Baseline_Last_Year_License__c = CPQ_QuoteLine_Utilities.getLicenseRampUp(var, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
       }
     }
-
-    if(!Test.isRunningTest()) {
-      update quote;
-      update quoteLineList;
-    }
   }
 
   /*
@@ -92,11 +100,16 @@ public without sharing class CPQ_QuoteLine_Utilities {
     System.debug('***quote '+quote);
     System.debug('***quoteLineList '+quoteLineList);
 
-    Integer var = Integer.valueOf(quote.getsObject('CPQ_LastQuote__r').get('CPQ_Baseline_Current_Year_Reference__c')) + 1;
+    Integer var;
+    try {
+      var = Integer.valueOf(quote.getsObject('CPQ_LastQuote__r').get('CPQ_Baseline_Current_Year_Reference__c')) + 1;
+    } catch(Exception ex){
+      System.debug('***Exception: '+ex.getMessage());
+      return;
+    }
     System.debug('***var '+var);
 
     if(var > Integer.valueOf(quote.getsObject('SBQQ__OriginalQuote__r').get('Term_Length__c'))) {
-
       for(SBQQ__QuoteLine__c quoteline : quotelineList) {
         quoteline.CPQ_Baseline_Current_Year_License__c = CPQ_QuoteLine_Utilities.getAnnualNet(quoteline.SBQQ__Product__c, lastQuotesRampUpInfoMap);
         quoteline.CPQ_Baseline_Last_Year_License__c = CPQ_QuoteLine_Utilities.getAnnualNet(quoteline.SBQQ__Product__c, lastQuotesRampUpInfoMap);
@@ -109,11 +122,6 @@ public without sharing class CPQ_QuoteLine_Utilities {
         quoteline.CPQ_Baseline_Current_Year_License__c = CPQ_QuoteLine_Utilities.getLicenseRampUp(var, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
         quoteline.CPQ_Baseline_Last_Year_License__c = CPQ_QuoteLine_Utilities.getLicenseRampUp(var - 1, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
       }
-    }
-
-    if(!Test.isRunningTest()) {
-      update quote;
-      update quoteLineList;
     }
   }
 
@@ -153,40 +161,25 @@ public without sharing class CPQ_QuoteLine_Utilities {
 
 
   /*
-     populate support percent for all quotelineitems based on support percent retrieved from Maintenance product
+     get support percent from Maintenance product
    */
-  public static void populateSupportPercent(Id quoteId){
+  private static Decimal getSupportPercent(Id quoteId){
     System.debug('***populateSupportPercent');
 
-    // retrieve quoteline list
-    List<SBQQ__QuoteLine__c> quoteLineList = [SELECT Id, SBQQ__Quote__c, SBQQ__SubscriptionPercent__c, SBQQ__Product__c, SBQQ__Product__r.Name, SBQQ__Product__r.Sku_Type__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quoteId];
-    System.debug('***quoteLineList '+quoteLineList);
+    // retrieve maintenance quoteline and get support percent
+    SBQQ__QuoteLine__c maintenanceQLI = [SELECT Id, SBQQ__Quote__c, SBQQ__SubscriptionPercent__c, SBQQ__Product__r.Sku_Type__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quoteId AND SBQQ__Product__r.Sku_Type__c = 'Maintenance' LIMIT 1];
+    System.debug('***maintenanceQLI '+maintenanceQLI);
 
-    // iterate list, get support percentage from product whose sku type is 'Maintenance'
-    Decimal supportPercent;
-    for(SBQQ__QuoteLine__c quoteline : quoteLineList) {
-      if(quoteline.getsObject('SBQQ__Product__r').get('Sku_Type__c') == 'Maintenance') {
-        supportPercent = quoteline.SBQQ__SubscriptionPercent__c;
-        break;
-      }
-    }
+    Decimal supportPercent = (maintenanceQLI == null) ? null : maintenanceQLI.SBQQ__SubscriptionPercent__c;
     System.debug('***supportPercent '+supportPercent);
 
-    // iterate list again, and update support percent for other products
-    if(supportPercent != null) {
-      for(SBQQ__QuoteLine__c quoteline : quoteLineList) {
-        quoteline.SBQQ__SubscriptionPercent__c = supportPercent;
-      }
-      if(!Test.isRunningTest()) {
-        update quoteLineList;
-      }
-    }
+    return supportPercent;
   }
 
   /*
-     populate 'last quote invoiced license' for all quotelineitems (value retrieved from quote's associated last quote's corresponding quotelineitem's net total)
+     get map for 'last quote invoiced license' for all quotelineitems
    */
-  public static void populateLastQuoteInvoicedLicense(Id quoteId){
+  private static Map<String,Decimal> getLastQuoteInvoicedLicenseMap(Id quoteId){
     System.debug('***populateLastQuoteInvoicedLicense');
 
     // get current quote
@@ -197,23 +190,12 @@ public without sharing class CPQ_QuoteLine_Utilities {
     System.debug('***quoteLineOfLastQuoteList '+quoteLineOfLastQuoteList);
 
     // create a map with key as quoteline's productId, value as the corresponding quoteline's net total
-    Map<String,Decimal> lastQuoteQLIInfoMap = new Map<String,Decimal>();
+    Map<String,Decimal> lastQuoteInvoicedLicenseMap = new Map<String,Decimal>();
     for(SBQQ__QuoteLine__c quoteline : quoteLineOfLastQuoteList) {
-      lastQuoteQLIInfoMap.put(String.valueOf(quoteline.SBQQ__Product__c), quoteline.SBQQ__NetTotal__c);
+      lastQuoteInvoicedLicenseMap.put(String.valueOf(quoteline.SBQQ__Product__c), quoteline.SBQQ__NetTotal__c);
     }
-    System.debug('***lastQuoteQLIInfoMap '+lastQuoteQLIInfoMap);
+    System.debug('***lastQuoteInvoicedLicenseMap '+lastQuoteInvoicedLicenseMap);
 
-    // retrieve all QLIs from current quote
-    List<SBQQ__QuoteLine__c> quoteLineOfCurrentQuoteList = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, CPQ_Last_Quote_Invoiced_License__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quoteId];
-    System.debug('***quoteLineOfCurrentQuoteList '+quoteLineOfCurrentQuoteList);
-
-    // iterate list, update CPQ_Last_Quote_Invoiced_License__c based on productId
-    for(SBQQ__QuoteLine__c quoteline : quoteLineOfCurrentQuoteList) {
-      quoteline.CPQ_Last_Quote_Invoiced_License__c = lastQuoteQLIInfoMap.get(String.valueOf(quoteline.SBQQ__Product__c));
-    }
-
-    if(!Test.isRunningTest()) {
-      update quoteLineOfCurrentQuoteList;
-    }
+    return lastQuoteInvoicedLicenseMap;
   }
 }
