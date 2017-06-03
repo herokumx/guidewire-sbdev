@@ -29,7 +29,7 @@ public without sharing class CPQ_QuoteLine_Utilities {
     }
 
     // retrieve quotelines with CPQ_Annual_Net_Amount__c (to calculate baseline license) for last quote
-    List<SBQQ__QuoteLine__c> quoteLineListForLastQuotes = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, CPQ_Annual_Net_Amount__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.CPQ_LastQuote__c];
+    List<SBQQ__QuoteLine__c> quoteLineListForLastQuotes = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, CPQ_Renewal_Net_Total__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.CPQ_LastQuote__c];
 
     // create a map with key as quoteline's productId, value as the corresponding quoteline
     Map<String,SBQQ__QuoteLine__c> lastQuotesRampUpInfoMap = new Map<String,SBQQ__QuoteLine__c>();
@@ -109,11 +109,14 @@ public without sharing class CPQ_QuoteLine_Utilities {
       var = Integer.valueOf(quote.getsObject('CPQ_LastQuote__r').get('CPQ_Baseline_Current_Year_Reference__c')) + 1;
     } catch(Exception ex){
       System.debug('***Exception: '+ex.getMessage());
-      return;
+      var = null;
     }
     System.debug('***var '+var);
 
-    if(var > Integer.valueOf(quote.getsObject('SBQQ__OriginalQuote__r').get('Term_Length__c'))) {
+    if(var == null || var > Integer.valueOf(quote.getsObject('SBQQ__OriginalQuote__r').get('Term_Length__c'))) {
+      if(var != null) {
+        quote.CPQ_Baseline_Last_Year_Reference__c = var - 1;
+      }
       for(SBQQ__QuoteLine__c quoteline : quotelineList) {
         quoteline.CPQ_Baseline_Current_Year_License__c = CPQ_QuoteLine_Utilities.getAnnualNet(quoteline.SBQQ__Product__c, lastQuotesRampUpInfoMap);
         quoteline.CPQ_Baseline_Last_Year_License__c = CPQ_QuoteLine_Utilities.getAnnualNet(quoteline.SBQQ__Product__c, lastQuotesRampUpInfoMap);
@@ -160,7 +163,7 @@ public without sharing class CPQ_QuoteLine_Utilities {
     SBQQ__QuoteLine__c quoteLine = lastQuotesRampUpInfoMap.get(String.valueOf(productId));
     System.debug('***quoteLine '+quoteLine);
 
-    return quoteLine.CPQ_Annual_Net_Amount__c;
+    return quoteLine.CPQ_Renewal_Net_Total__c;
   }
 
 
@@ -205,10 +208,10 @@ public without sharing class CPQ_QuoteLine_Utilities {
       }
     }else{
       // retrieve all QLIs from last quote
-      List<SBQQ__QuoteLine__c> quoteLineOfLastQuoteList = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, CPQ_Renewal_Net_Total__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.CPQ_LastQuote__c];
+      List<SBQQ__QuoteLine__c> quoteLineOfLastQuoteList = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, CPQ_Renewal_License_Total__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.CPQ_LastQuote__c];
 
       for(SBQQ__QuoteLine__c quoteline : quoteLineOfLastQuoteList) {
-        lastQuoteInvoicedLicenseMap.put(String.valueOf(quoteline.SBQQ__Product__c), quoteline.CPQ_Renewal_Net_Total__c);
+        lastQuoteInvoicedLicenseMap.put(String.valueOf(quoteline.SBQQ__Product__c), quoteline.CPQ_Renewal_License_Total__c);
       }
     }
 
