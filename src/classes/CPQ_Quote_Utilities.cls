@@ -53,9 +53,7 @@ public without sharing class CPQ_Quote_Utilities {
     // set the last quote
     renewalQuote.CPQ_LastQuote__c = primaryQuoteForRenewalOpp.Id;
 
-    if(!Test.isRunningTest()) {
-      update renewalQuote;
-    }
+    update renewalQuote;
 
     return;
   }
