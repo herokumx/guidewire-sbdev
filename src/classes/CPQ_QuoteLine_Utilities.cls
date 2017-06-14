@@ -16,25 +16,33 @@ public without sharing class CPQ_QuoteLine_Utilities {
     System.debug('***quote '+quote);
 
     // retrieve quoteline list
-    List<SBQQ__QuoteLine__c> quoteLineList = [SELECT SBQQ__Quote__c, SBQQ__Product__c, CPQ_Baseline_Current_Year_License__c, CPQ_Baseline_Last_Year_License__c, SBQQ__SubscriptionPercent__c, CPQ_Last_Quote_Invoiced_License__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quoteId];
+    List<SBQQ__QuoteLine__c> quoteLineList = [SELECT SBQQ__Quote__c, SBQQ__Product__c, SBQQ__Product__r.Name, CPQ_Baseline_Current_Year_License__c, CPQ_Baseline_Last_Year_License__c, SBQQ__SubscriptionPercent__c, CPQ_Last_Quote_Invoiced_License__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quoteId];
     System.debug('***quoteLineList '+quoteLineList);
 
     // retrieve quotelines with CPQ_Year_1_Net_Amount__c - CPQ_Year_5_Net_Amount__c (to calculate baseline license) for original quote
-    List<SBQQ__QuoteLine__c> quoteLineListForQriginalQuotes = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, CPQ_Year_1_Net_Amount__c, CPQ_Year_2_Net_Amount__c, CPQ_Year_3_Net_Amount__c, CPQ_Year_4_Net_Amount__c, CPQ_Year_5_Net_Amount__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.SBQQ__OriginalQuote__c];
+    List<SBQQ__QuoteLine__c> quoteLineListForQriginalQuotes = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, SBQQ__Product__r.Name, CPQ_Year_1_Net_Amount__c, CPQ_Year_2_Net_Amount__c, CPQ_Year_3_Net_Amount__c, CPQ_Year_4_Net_Amount__c, CPQ_Year_5_Net_Amount__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.SBQQ__OriginalQuote__c];
 
     // create a map with key as quoteline's productId, value as the corresponding quoteline
     Map<String,SBQQ__QuoteLine__c> originalQuotesRampUpInfoMap = new Map<String,SBQQ__QuoteLine__c>();
     for(SBQQ__QuoteLine__c quoteline : quoteLineListForQriginalQuotes) {
-      originalQuotesRampUpInfoMap.put(String.valueOf(quoteline.SBQQ__Product__c), quoteline);
+      if(String.valueOf(quoteline.getsObject('SBQQ__Product__r').get('Name')).contains('Maintenance')) {
+        originalQuotesRampUpInfoMap.put('Maintenance', quoteline);
+      }else{
+        originalQuotesRampUpInfoMap.put(String.valueOf(quoteline.SBQQ__Product__c), quoteline);
+      }
     }
 
     // retrieve quotelines with CPQ_Annual_Net_Amount__c (to calculate baseline license) for last quote
-    List<SBQQ__QuoteLine__c> quoteLineListForLastQuotes = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, CPQ_Renewal_Net_Total__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.CPQ_LastQuote__c];
+    List<SBQQ__QuoteLine__c> quoteLineListForLastQuotes = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, SBQQ__Product__r.Name, CPQ_Renewal_Net_Total__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.CPQ_LastQuote__c];
 
     // create a map with key as quoteline's productId, value as the corresponding quoteline
     Map<String,SBQQ__QuoteLine__c> lastQuotesRampUpInfoMap = new Map<String,SBQQ__QuoteLine__c>();
     for(SBQQ__QuoteLine__c quoteline : quoteLineListForLastQuotes) {
-      lastQuotesRampUpInfoMap.put(String.valueOf(quoteline.SBQQ__Product__c), quoteline);
+      if(String.valueOf(quoteline.getsObject('SBQQ__Product__r').get('Name')).contains('Maintenance')) {
+        lastQuotesRampUpInfoMap.put('Maintenance', quoteline);
+      }else{
+        lastQuotesRampUpInfoMap.put(String.valueOf(quoteline.SBQQ__Product__c), quoteline);
+      }
     }
 
     System.debug('***originalQuotesRampUpInfoMap '+originalQuotesRampUpInfoMap);
@@ -139,6 +147,9 @@ public without sharing class CPQ_QuoteLine_Utilities {
     System.debug('***getLicenseRampUp');
 
     SBQQ__QuoteLine__c quoteLine = originalQuotesRampUpInfoMap.get(String.valueOf(productId));
+    if(quoteLine == null) {
+      quoteLine = originalQuotesRampUpInfoMap.get('Maintenance');
+    }
     System.debug('***quoteLine '+quoteLine);
 
     if(year == 1) {
@@ -161,6 +172,9 @@ public without sharing class CPQ_QuoteLine_Utilities {
     System.debug('***getAnnualNet');
 
     SBQQ__QuoteLine__c quoteLine = lastQuotesRampUpInfoMap.get(String.valueOf(productId));
+    if(quoteLine == null) {
+      quoteLine = lastQuotesRampUpInfoMap.get('Maintenance');
+    }
     System.debug('***quoteLine '+quoteLine);
 
     return quoteLine.CPQ_Renewal_Net_Total__c;
