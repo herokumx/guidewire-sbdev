@@ -32,7 +32,7 @@ public without sharing class CPQ_QuoteLine_Utilities {
       }
     }
 
-    // retrieve quotelines with CPQ_Annual_Net_Amount__c (to calculate baseline license) for last quote
+    // retrieve quotelines with CPQ_Renewal_Net_Total__c (to calculate baseline license) for last quote
     List<SBQQ__QuoteLine__c> quoteLineListForLastQuotes = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, SBQQ__Product__r.Name, CPQ_Renewal_Net_Total__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.CPQ_LastQuote__c];
 
     // create a map with key as quoteline's productId, value as the corresponding quoteline
@@ -68,10 +68,8 @@ public without sharing class CPQ_QuoteLine_Utilities {
       }
     }
 
-    if(!Test.isRunningTest()) {
-      update quote;
-      update quoteLineList;
-    }
+    update quote;
+    update quoteLineList;
   }
 
   /*
