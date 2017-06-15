@@ -1,26 +1,38 @@
 @isTest
-private class CPQ_Quote_Utilities_Test {
+public class CPQ_Quote_Utilities_Test {
 
   @isTest static void TestPopulateOriginalAndLastQuotes() {
+
     Account account = CS_TestDataUtility.createProspectAccount();
+
     Opportunity originalOppty = createOpportunity(account.Id, null, null, 1, false);
     SBQQ__Quote__c originalQuote = createQuote(originalOppty.Id, false);
+    originalQuote.SBQQ__Primary__c = true;
+    update originalQuote;
+
     Contract originalContract = createContract(account.Id, originalOppty.Id);
-
     Opportunity renewalOppty1 = createOpportunity(account.Id, originalOppty.Id, originalContract.Id, 2, true);
-    System.debug('***renewalOppty1 '+renewalOppty1);
-
     SBQQ__Quote__c renewalQuote1 = createQuote(renewalOppty1.Id, true);
-    System.debug('***renewalOppty1 '+renewalOppty1);
-
-    // System.debug('***renewalQuote.SBQQ__OriginalQuote__c '+renewalQuote.SBQQ__OriginalQuote__c);
-    // System.debug('***renewalQuote.CPQ_LastQuote__c '+renewalQuote.CPQ_LastQuote__c);
+    renewalQuote1.SBQQ__Primary__c = true;
+    update renewalQuote1;
 
     Test.startTest();
-    // CPQ_Quote_Utilities.populateOriginalAndLastQuotes(renewalQuote.Id);
-    // System.debug('***AFTER CALLING');
-    // System.debug('***renewalQuote.SBQQ__OriginalQuote__c '+renewalQuote.SBQQ__OriginalQuote__c);
-    // System.debug('***renewalQuote.CPQ_LastQuote__c '+renewalQuote.CPQ_LastQuote__c);
+    CPQ_Quote_Utilities.populateOriginalAndLastQuotes(renewalQuote1.Id);
+    SBQQ__Quote__c renewalQuote1_verify = [SELECT Id, SBQQ__OriginalQuote__c, CPQ_LastQuote__c FROM SBQQ__Quote__c WHERE Id =: renewalQuote1.Id];
+    System.assertEquals(renewalQuote1_verify.SBQQ__OriginalQuote__c, originalQuote.Id);
+    System.assertEquals(renewalQuote1_verify.CPQ_LastQuote__c, originalQuote.Id);
+
+    Contract renewalContract1 = createContract(account.Id, renewalOppty1.Id);
+    Opportunity renewalOppty2 = createOpportunity(account.Id, originalOppty.Id, renewalContract1.Id, 3, true);
+    SBQQ__Quote__c renewalQuote2 = createQuote(renewalOppty2.Id, true);
+    renewalQuote2.SBQQ__Primary__c = true;
+    update renewalQuote2;
+
+    CPQ_Quote_Utilities.populateOriginalAndLastQuotes(renewalQuote2.Id);
+    SBQQ__Quote__c renewalQuote2_verify = [SELECT Id, SBQQ__OriginalQuote__c, CPQ_LastQuote__c FROM SBQQ__Quote__c WHERE Id =: renewalQuote2.Id];
+    System.assertEquals(renewalQuote2_verify.SBQQ__OriginalQuote__c, originalQuote.Id);
+    System.assertEquals(renewalQuote2_verify.CPQ_LastQuote__c, renewalQuote1.Id);
+
     Test.stopTest();
   }
 
@@ -59,10 +71,10 @@ private class CPQ_Quote_Utilities_Test {
     quote.CPQ_In_Scope_DWP_Input__c = 500000000;
     quote.CPQ_In_Scope_DWP_Input_Type__c = 'Direct DWP';
     quote.SBQQ__StartDate__c = Date.Today();
+    quote.SBQQ__BillingFrequency__c = 'Quarterly';
     quote.SBQQ__SubscriptionTerm__c = 12;
     quote.Term_Length__c = isRenewal ? 1 : 5;
-    quote.SBQQ__BillingFrequency__c = 'Quarterly';
-    quote.SBQQ__Primary__c = true;
+    quote.SBQQ__Primary__c = false;
     insert quote;
     return quote;
   }
