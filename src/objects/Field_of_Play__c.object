@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>SAM Integration for Multiple Gold Sheets</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>Account__c</fullName>
+        <description>SAM Field of Play Gold Sheet Integration</description>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Field of Play</relationshipLabel>
+        <relationshipName>Field_of_Play</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>mh_Additional_Notes_Exist__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>Additional Notes Exist</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>mh_Associated_Gold_Sheet__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>SAM Integration FOP</description>
+        <externalId>false</externalId>
+        <label>Associated Gold Sheet</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>mh_Charter_Statement__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>Charter Statement</label>
+        <length>32000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>mh_Critical_Vulnerability__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>Critical Vulnerability</label>
+        <length>32000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>mh_FOP_Opportunites__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>FOP Opportunites</label>
+        <length>32000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>mh_FOP_Trends__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>FOP Trends</label>
+        <length>32000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>mh_FOP_View_1_Yr__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>FOP View 1 Yr</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>mh_FOP_View_3_Yr__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>FOP View 3 Yr</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>mh_FOP_View_Last_Yr__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>FOP View Last Yr</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>mh_FOP_View_Now__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>FOP View Now</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>mh_Goals__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>Goals</label>
+        <length>32000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>mh_Gold_Sheet_Created_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Gold Sheet Created Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>mh_Last_Updated_Gold_Sheet__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>Last Updated Gold Sheet</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>mh_Managers_Notes_Exist__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>Managers Notes Exist</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>mh_Managers_Review_Date__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>Managers Review Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>mh_Our_View_1_Yr__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>Our View 1 Yr</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>mh_Our_View_3_Yr__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>Our View 3 Yr</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>mh_Our_View_Last_Yr__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>Our View Last Yr</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>mh_Our_View_Now__c</fullName>
+        <description>SAM Integration FOP Gold Sheet</description>
+        <externalId>false</externalId>
+        <label>Our View Now</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Field of Play</label>
+    <nameField>
+        <label>Field of Play Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Field of Play</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <webLinks>
+        <fullName>Large_Account_Management_for_Field_of_Play</fullName>
+        <availability>online</availability>
+        <description>SAM Integration FOP Gold Sheet for Professional Edition.</description>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>false</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>674</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Large Account Management for Field of Play</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://www.saleswebserver.net/sfdc/MillerHeiman/showgoldsheet.asp?ID={!Field_of_Play__c.Id}&amp;SessionID={!API.Session_ID}&amp;EndPoint={!API.Partner_Server_URL_90}&amp;ReturnURL={!Field_of_Play__c.Link}&amp;AccountID={!Field_of_Play__c.AccountId__c}&amp;AccountName={!Field_of_Play__c.Name}</url>
+        <width>1074</width>
+    </webLinks>
+</CustomObject>

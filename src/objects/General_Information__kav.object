@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <articleTypeChannelDisplay>
+        <articleTypeTemplates>
+            <channel>App</channel>
+            <template>Toc</template>
+        </articleTypeTemplates>
+        <articleTypeTemplates>
+            <channel>Prm</channel>
+            <template>Toc</template>
+        </articleTypeTemplates>
+        <articleTypeTemplates>
+            <channel>Csp</channel>
+            <template>Toc</template>
+        </articleTypeTemplates>
+        <articleTypeTemplates>
+            <channel>Pkb</channel>
+            <template>Toc</template>
+        </articleTypeTemplates>
+    </articleTypeChannelDisplay>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>General Information provided on community home page. It consist of polices, procedures, tools, and introductory technical content.</description>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <fields>
+        <fullName>CS_Article__c</fullName>
+        <description>Body of the article</description>
+        <externalId>false</externalId>
+        <label>Article</label>
+        <length>131072</length>
+        <trackHistory>false</trackHistory>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>CS_Associated_Articles__c</fullName>
+        <description>Associated articles</description>
+        <externalId>false</externalId>
+        <label>Associated Articles</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>CS_Attachment_1__c</fullName>
+        <description>Publicly visible attachment</description>
+        <externalId>false</externalId>
+        <label>Attachment 1</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>File</type>
+    </fields>
+    <fields>
+        <fullName>CS_Attachment_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Attachment 2</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>File</type>
+    </fields>
+    <fields>
+        <fullName>CS_Attachment_3__c</fullName>
+        <externalId>false</externalId>
+        <label>Attachment 3</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>File</type>
+    </fields>
+    <fields>
+        <fullName>CS_Attachment_4__c</fullName>
+        <description>Public attachment 4</description>
+        <externalId>false</externalId>
+        <label>Attachment 4</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>File</type>
+    </fields>
+    <fields>
+        <fullName>CS_Attachment_5__c</fullName>
+        <description>Attachment 5</description>
+        <externalId>false</externalId>
+        <label>Attachment 5</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>File</type>
+    </fields>
+    <fields>
+        <fullName>CS_Content_Owner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>A field to store the person to contact w/ questions about the article.</description>
+        <externalId>false</externalId>
+        <label>Content Owner</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>General_Information</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CS_Content_URL_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Content URL 4</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>CS_General_Information_Template__c</fullName>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(&apos;/servlet/servlet.FileDownload?file=015340000021tw4&apos;, &apos;Click here for General Information Template&apos;, &apos;_blank&apos;)</formula>
+        <label>General Information Template</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Publish_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Publish Status</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Publishing_Notes__c</fullName>
+        <description>Publishing notes</description>
+        <externalId>false</externalId>
+        <label>Publishing Notes</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>CS_Related_Document_1__c</fullName>
+        <externalId>false</externalId>
+        <label>Content URL 1</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>CS_Related_Document_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Content URL 2</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>CS_Related_Document_3__c</fullName>
+        <externalId>false</externalId>
+        <label>Content URL 3</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>CS_RightNow_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>RightNow ID</label>
+        <length>20</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Content_URL_5__c</fullName>
+        <externalId>false</externalId>
+        <label>Content URL 5</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <label>General Information</label>
+    <pluralLabel>General Information</pluralLabel>
+</CustomObject>

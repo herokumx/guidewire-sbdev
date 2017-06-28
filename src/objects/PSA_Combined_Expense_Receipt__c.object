@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>PSA_Attachment_Ids__c</fullName>
+        <description>List of attachments to include in a combined expense receipt document</description>
+        <externalId>false</externalId>
+        <inlineHelpText>List of attachments to include in a combined expense receipt document</inlineHelpText>
+        <label>Attachment Ids</label>
+        <length>131072</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>PSA_Billing_Event__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Related Billing Event (if applicable)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Related Billing Event (if applicable)</inlineHelpText>
+        <label>Billing Event</label>
+        <referenceTo>pse__Billing_Event__c</referenceTo>
+        <relationshipLabel>PSA Combined Expense Receipts</relationshipLabel>
+        <relationshipName>PSA_Combined_Expense_Receipts</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Combined_Receipt_URL__c</fullName>
+        <description>The URL to the combined receipt document</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The URL to the combined receipt document</inlineHelpText>
+        <label>Combined Receipt URL</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Expense_Report__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Related Expense Report (if applicable)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Related Expense Report (if applicable)</inlineHelpText>
+        <label>Expense Report</label>
+        <referenceTo>pse__Expense_Report__c</referenceTo>
+        <relationshipLabel>PSA Combined Expense Receipts</relationshipLabel>
+        <relationshipName>PSA_Combined_Expense_Receipts</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Long_Name__c</fullName>
+        <description>Contains a longer version of the url link name (max of 255 characters)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Contains a longer version of the url link name (max of 255 characters)</inlineHelpText>
+        <label>Long Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Source_Object_Id__c</fullName>
+        <description>The source object id that the combined expense receipt document will eventually be attached to</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The source object id that the combined expense receipt document will eventually be attached to</inlineHelpText>
+        <label>Source Object Id</label>
+        <length>40</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>PSA Combined Expense Receipt</label>
+    <listViews>
+        <fullName>All1</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Combined Expense Receipts Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>PSA Combined Expense Receipts</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

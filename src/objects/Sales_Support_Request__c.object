@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>SalesSupportRequest</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Represents requests for support for things such as documents, strategy discussions, and other internal or non-staffing requests.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Sales Support Requests</relationshipLabel>
+        <relationshipName>Sales_Support_Requests</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Completion_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Completion Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Assigned_To__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>The user who is assigned to complete this request.  This will be set when the request is triaged.</inlineHelpText>
+        <label>Assigned To</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Sales_Support_Requests</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Campaign__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Campaign</label>
+        <referenceTo>Campaign</referenceTo>
+        <relationshipLabel>Sales Support Requests</relationshipLabel>
+        <relationshipName>Sales_Support_Requests</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Create_Date__c</fullName>
+        <defaultValue>TODAY()</defaultValue>
+        <externalId>false</externalId>
+        <label>Create Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>10000</length>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Hours__c</fullName>
+        <externalId>false</externalId>
+        <label>Hours</label>
+        <summarizedField>Support_Request_Preparation__c.Hours__c</summarizedField>
+        <summaryForeignKey>Support_Request_Preparation__c.Sales_Support_Request__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Sales Support Requests</relationshipLabel>
+        <relationshipName>Sales_Support_Requests</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Report_Actual_Date_Fiscal_Month__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE(MONTH( Actual_Completion_Date__c ),
+1, &quot;06-Jan&quot; ,
+2, &quot;07-Feb&quot;,
+3, &quot;08-Mar&quot;,
+4, &quot;09-Apr&quot;,
+5, &quot;10-May&quot;,
+6, &quot;11-Jun&quot;,
+7, &quot;12-Jul&quot;,
+8, &quot;01-Aug&quot;,
+9, &quot;02-Sep&quot;,
+10, &quot;03-Oct&quot;,
+11, &quot;04-Nov&quot;,
+12, &quot;05-Dec&quot;,
+&quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Report Actual Date Fiscal Month</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Report_Billing_Country__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( !ISNULL( Opportunity__r.Account.BillingCountry ),Opportunity__r.Account.BillingCountry, 
+
+IF( !ISNULL( Account__r.BillingCountry  ),Account__r.BillingCountry, 
+
+NULL))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Report_Billing Country</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Report_Campaign_Region__c</fullName>
+        <description>Lists down the campaign region</description>
+        <externalId>false</externalId>
+        <formula>IF(INCLUDES(Campaign__r.Region__c, &quot;Australia/New Zealand&quot;), 
+&quot;Australia/New Zealand&quot;,&quot;&quot;) 
+&amp; &quot; &quot; &amp; 
+IF(INCLUDES(Campaign__r.Region__c, &quot;China&quot;), 
+&quot;China&quot;,&quot;&quot;) 
+&amp; &quot; &quot; &amp; 
+IF(INCLUDES(Campaign__r.Region__c, &quot;DACH&quot;), 
+&quot;DACH&quot;,&quot;&quot;)
+&amp; &quot; &quot; &amp; 
+IF(INCLUDES(Campaign__r.Region__c, &quot;Eastern Europe&quot;), 
+&quot;Eastern Europe&quot;,&quot;&quot;) 
+&amp; &quot; &quot; &amp; 
+IF(INCLUDES(Campaign__r.Region__c, &quot;France&quot;), 
+&quot;France&quot;,&quot;&quot;) 
+&amp; &quot; &quot; &amp; 
+IF(INCLUDES(Campaign__r.Region__c, &quot;Global&quot;), 
+&quot;Global&quot;,&quot;&quot;) 
+&amp; &quot; &quot; &amp; 
+IF(INCLUDES(Campaign__r.Region__c, &quot;Japan&quot;), 
+&quot;Japan&quot;,&quot;&quot;) 
+&amp; &quot; &quot; &amp; 
+IF(INCLUDES(Campaign__r.Region__c, &quot;Latin America&quot;), 
+&quot;Latin America&quot;,&quot;&quot;) 
+&amp; &quot; &quot; &amp; 
+IF(INCLUDES(Campaign__r.Region__c, &quot;Nordics&quot;), 
+&quot;Nordics&quot;,&quot;&quot;) 
+&amp; &quot; &quot; &amp; 
+IF(INCLUDES(Campaign__r.Region__c, &quot;North America&quot;), 
+&quot;North America&quot;,&quot;&quot;) 
+&amp; &quot; &quot; &amp; 
+IF(INCLUDES(Campaign__r.Region__c, &quot;United Kingdom&quot;), 
+&quot;United Kingdom&quot;,&quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Report_Campaign Region</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Report_Completion_Date_Fiscal_Period__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE(MONTH(Requested_Completion_Date__c),
+1, &quot;Q2&quot; ,
+2, &quot;Q3&quot;,
+3, &quot;Q3&quot;,
+4, &quot;Q3&quot;,
+5, &quot;Q4&quot;,
+6, &quot;Q4&quot;,
+7, &quot;Q4&quot;,
+8, &quot;Q1&quot;,
+9, &quot;Q1&quot;,
+10, &quot;Q1&quot;,
+11, &quot;Q2&quot;,
+12, &quot;Q2&quot;,
+&quot;None&quot;)
+
+&amp; &quot;-&quot;
+
+&amp; IF((MONTH(Requested_Completion_Date__c) &gt;= 8 &amp;&amp; MONTH(Requested_Completion_Date__c) &lt;= 12),
+TEXT (YEAR(Requested_Completion_Date__c)+1) ,
+TEXT (YEAR(Requested_Completion_Date__c))
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Report_Completion Date_Fiscal Period</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Report_Opportunity_Region__c</fullName>
+        <description>Lists down the opportunity region</description>
+        <externalId>false</externalId>
+        <formula>TEXT( Opportunity__r.Region__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Report_Opportunity Region</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Report_Opportunity_Stage__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Opportunity__r.StageName )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Report_Opportunity Stage</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Report_Owner__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( !ISNULL( Opportunity__r.Owner.Username  ), Opportunity__r.Owner.FirstName &amp; &quot; &quot; &amp;  Opportunity__r.Owner.LastName , 
+
+IF( !ISNULL(  Account__r.Owner.Username ), Account__r.Owner.FirstName &amp; &quot; &quot; &amp;  Account__r.Owner.LastName ,
+
+IF( !ISNULL(   Campaign__r.Owner.Username ),  Campaign__r.Owner.FirstName  &amp; &quot; &quot; &amp;   Account__r.Campaign__r.Owner.LastName  , 
+
+NULL)))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Report_Owner</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Report_Product_Type__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(INCLUDES( Opportunity__r.Product_Type__c , &quot;Add on- select below&quot;),
+    &quot;Add on- select below&quot;,&quot;&quot;)
+&amp; &quot; &quot; &amp;
+IF(INCLUDES(Opportunity__r.Product_Type__c, &quot;BillingCenter&quot;),
+    &quot;BillingCenter&quot;,&quot;&quot;)
+&amp; &quot; &quot; &amp;
+IF(INCLUDES(Opportunity__r.Product_Type__c, &quot;ClaimCenter&quot;),
+    &quot;ClaimCenter&quot;,&quot;&quot;)
+&amp; &quot; &quot; &amp;
+IF(INCLUDES(Opportunity__r.Product_Type__c, &quot;DataHub&quot;),
+    &quot;DataHub&quot;,&quot;&quot;)
+&amp; &quot; &quot; &amp;
+IF(INCLUDES(Opportunity__r.Product_Type__c, &quot;InfoCenter&quot;),
+    &quot;InfoCenter&quot;,&quot;&quot;)
+&amp; &quot; &quot; &amp;
+IF(INCLUDES(Opportunity__r.Product_Type__c, &quot;PolicyCenter&quot;),
+    &quot;PolicyCenter&quot;,&quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Report_Product Type</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Report_Result_Date_Fiscal_Period__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE(MONTH(Opportunity__r.Report_Result_Date__c),
+1, &quot;Q2&quot; ,
+2, &quot;Q3&quot;,
+3, &quot;Q3&quot;,
+4, &quot;Q3&quot;,
+5, &quot;Q4&quot;,
+6, &quot;Q4&quot;,
+7, &quot;Q4&quot;,
+8, &quot;Q1&quot;,
+9, &quot;Q1&quot;,
+10, &quot;Q1&quot;,
+11, &quot;Q2&quot;,
+12, &quot;Q2&quot;,
+&quot;None&quot;)
+
+&amp; &quot;-&quot;
+
+&amp; IF((MONTH(Opportunity__r.Report_Result_Date__c) &gt;= 8 &amp;&amp; MONTH(Opportunity__r.Report_Result_Date__c) &lt;= 12),
+TEXT (YEAR(Opportunity__r.Report_Result_Date__c)+1) ,
+TEXT (YEAR(Opportunity__r.Report_Result_Date__c))
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Report_Result Date_Fiscal Period</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Report_Result_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Report_Result_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Report_Result Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Requested_Completion_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Requested Completion Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Requested_For__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>This specifies who is notified when the request is completed.  If left blank initially, this will be set to the creator of this request.</inlineHelpText>
+        <label>Requested For</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>My_Sales_Support_Requests</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Stage__c</fullName>
+        <description>Stage when the request is created.</description>
+        <externalId>false</externalId>
+        <label>Stage</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Not Started</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Canceled</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Target_Completion_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Target Completion Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Dossier</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Representative Case</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Value Hypothesis</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Value Map</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>VITO Letter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>true</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <label>Sales Support Request</label>
+    <nameField>
+        <displayFormat>SSR-{00000000}</displayFormat>
+        <label>Request ID</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Sales Support Requests</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Only_one_reference_type</fullName>
+        <active>true</active>
+        <description>Only allow it to be linked to one account, opportunity, or campaign</description>
+        <errorConditionFormula>!(( Campaign__c == null &amp;&amp; Account__c == null &amp;&amp; Opportunity__c != null) || ( Campaign__c != null &amp;&amp; Account__c == null &amp;&amp; Opportunity__c == null) || ( Campaign__c == null &amp;&amp; Account__c != null &amp;&amp; Opportunity__c == null))</errorConditionFormula>
+        <errorMessage>A requested must be linked to one and only one Account, Opportunity, or Campaign.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Value_Set_For_Type</fullName>
+        <active>true</active>
+        <errorConditionFormula>TEXT(Type__c) == null || TEXT(Type__c) == &apos;&apos;</errorConditionFormula>
+        <errorDisplayField>Type__c</errorDisplayField>
+        <errorMessage>Please specify the type of request being made.</errorMessage>
+    </validationRules>
+</CustomObject>

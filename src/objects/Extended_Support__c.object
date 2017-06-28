@@ -1,0 +1,710 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Created for Shannon McColloch.  Used to track Extended Support records.  Related to Contracts and Accounts.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>Account_Owner__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.Owner.FirstName &amp;&quot; &quot; &amp; Account__r.Owner.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account Owner</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Extended Supports</relationshipLabel>
+        <relationshipName>Extended_Supports</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Begin_Charging_Extended_Support__c</fullName>
+        <description>Date field use to denote when Extended Support should begin.</description>
+        <externalId>false</externalId>
+        <label>Begin Charging Extended Support</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>CRM_Email_Formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.Customer_Relationship_Mgr__r.Email</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>CRM Email Formula</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CRM_Email__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Populated by WF.  Used for WF Email Alert.</inlineHelpText>
+        <label>CRM Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Comments_and_Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>Comments and Notes</label>
+        <length>32768</length>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Contract__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <description>Look up to related Contract record.</description>
+        <externalId>false</externalId>
+        <label>Contract</label>
+        <referenceTo>Contract</referenceTo>
+        <relationshipLabel>Extended Supports</relationshipLabel>
+        <relationshipName>Extended_Supports</relationshipName>
+        <required>true</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Currency_Support_Fees__c</fullName>
+        <description>Currency type for the Support Fees and the License Fees in the Extended Support object.</description>
+        <externalId>false</externalId>
+        <label>Currency</label>
+        <picklist>
+            <picklistValues>
+                <fullName>AUD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>BRL</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CAD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CHF</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CNY</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>DKK</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EUR</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GBP</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>HUF</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>JPY</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NOK</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NZD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PLN</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>RUB</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SEK</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>TRY</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>USD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ZAR</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Current_Product_Version__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Product__r.Current_Product_Version__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Pulled from related Product record.</inlineHelpText>
+        <label>Current Product Version</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Customer_Relationship_Manager__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.Customer_Relationship_Mgr__r.FirstName  &amp; &apos; &apos; &amp;  Account__r.Customer_Relationship_Mgr__r.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Customer Relationship Manager from related Account Record.</inlineHelpText>
+        <label>CRM</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Date_Extended_Support_Increases_to_60__c</fullName>
+        <externalId>false</externalId>
+        <formula>Begin_Charging_Extended_Support__c  + 730</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Date Extended Support Increases to 60%</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Sustaining_Support_Begins__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Ver__c == &apos;PC7&apos; || Ver__c == &apos;PC8&apos; || Ver__c == &apos;BC7&apos; || Ver__c == &apos;BC8&apos; || Ver__c == &apos;CC7&apos; || Ver__c == &apos;CC8&apos;, Extended_Support_Begins__c + 1095, Extended_Support_Begins__c + 1825)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Date Sustaining Support Begins</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Extended_Support_Begins__c</fullName>
+        <description>Defaults date based on related product record.  Uses custom field Ver to keep the compile length under 5000.  Ver is populated by Field update Extended_Support_Set_Ver_Field.</description>
+        <externalId>false</externalId>
+        <formula>CASE(Ver__c,&apos;PC7&apos;,DATEVALUE(&quot;2018-09-01&quot;),&apos;PC8&apos;,DATEVALUE(&quot;2020-10-01&quot;),&apos;PC4&apos;,DATEVALUE(&quot;2014-12-01&quot;),&apos;PC3&apos;,DATEVALUE(&quot;2013-10-01&quot;),&apos;CC4&apos;,DATEVALUE(&quot;2011-12-01&quot;),&apos;CC5&apos;,DATEVALUE(&quot;2013-05-01&quot;),&apos;CC6&apos;,DATEVALUE(&quot;2015-01-01&quot;),&apos;CC7&apos;,DATEVALUE(&quot;2018-09-01&quot;),&apos;CC8&apos;,DATEVALUE(&quot;2020-10-01&quot;),&apos;BC2&apos;,DATEVALUE(&quot;2013-02-01&quot;),&apos;BC3&apos;,DATEVALUE(&quot;2015-01-01&quot;),&apos;BC7&apos;,DATEVALUE(&quot;2018-09-01&quot;),&apos;BC8&apos;,DATEVALUE(&quot;2020-10-01&quot;),
+
+null)</formula>
+        <label>Extended Support Begins</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>License_Fees__c</fullName>
+        <description>Used to capture License Fees</description>
+        <externalId>false</externalId>
+        <label>License Fees</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>License__c</fullName>
+        <externalId>false</externalId>
+        <label>License</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Term</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Perpetual</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Non_Standard_Language_Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Non-Standard Language Description</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <description>Master of Extended Support custom object.</description>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Extended Supports</relationshipLabel>
+        <relationshipName>Extended_Supports</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Primary_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Primary Contact from Contract record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Primary Contact must be related to Account listed in Account field.</inlineHelpText>
+        <label>Primary Contact</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Primary Contact does not belong to related Account.</errorMessage>
+            <filterItems>
+                <field>Contact.AccountId</field>
+                <operation>equals</operation>
+                <valueField>$Source.Account__c</valueField>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Extended Supports</relationshipLabel>
+        <relationshipName>Extended_Supports</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Product_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Product__r.Products__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Pulled from related Product record.</inlineHelpText>
+        <label>Product Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Product_Version__c</fullName>
+        <externalId>false</externalId>
+        <formula>Product_Name__c &amp;&apos; &apos; &amp; Current_Product_Version__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Version</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Product__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Look up to product custom object.</description>
+        <externalId>false</externalId>
+        <label>Product</label>
+        <referenceTo>Product__c</referenceTo>
+        <relationshipLabel>Extended Supports</relationshipLabel>
+        <relationshipName>Extended_Supports</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Support_Exhibit_Language__c</fullName>
+        <externalId>false</externalId>
+        <label>Support Exhibit Language</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Standard</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Non Standard</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Support_Fees__c</fullName>
+        <description>Used to capture Support Fees.</description>
+        <externalId>false</externalId>
+        <label>Support Fees</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ver__c</fullName>
+        <description>Place holder field used to shorten Product Version value.  Necessary to shorten compile length of Extended Support Begins	formula field.</description>
+        <externalId>false</externalId>
+        <label>Ver</label>
+        <length>25</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Version_RUH__c</fullName>
+        <description>Used by Roll Up Helper.  Used to capture Version from the Product record.</description>
+        <externalId>false</externalId>
+        <label>Version RUH</label>
+        <length>1</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Version__c</fullName>
+        <externalId>false</externalId>
+        <formula>Product_Name__c &amp;&apos; &apos;&amp;  Version_RUH__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Version Formula</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Waive_Fees__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Checkbox used to denote if fees should be waived.</description>
+        <externalId>false</externalId>
+        <label>Waive Fees</label>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>X10_Payment_12_months__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISPICKVAL(License__c,&apos;Perpetual&apos;),  (Support_Fees__c*0.10)/12, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>(Support_Fees__c*0.10)/12</inlineHelpText>
+        <label>10% Payment (12 months)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>X180_Day_Email__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to trigger automatice email notification.
+Old Value:  180 Day Email</inlineHelpText>
+        <label>180 Day Notice of Ext Supp Payment Due</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Not Approved</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Approved</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>X180_Day_Initial_Notification_Due__c</fullName>
+        <description>Used to send email notification.
+Old value : 180-Day Payment Notification Due</description>
+        <externalId>false</externalId>
+        <label>180-Day Payment Notification for Ext Sup</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>X18_Month_Initial_Notification__c</fullName>
+        <description>Used to send email notification.
+18 Month Notice of Extended Support Begins.</description>
+        <externalId>false</externalId>
+        <label>18 Month Notice Extended Support Begins</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>X18_Month_N__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to trigger automatic email notification.
+Old value : 18 Month Email</inlineHelpText>
+        <label>18 Month Extended Support Email</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Not Approved</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Approved</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>X18_Month_Prior_Notification_of_Support__c</fullName>
+        <externalId>false</externalId>
+        <formula>Date_Sustaining_Support_Begins__c - 548</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>18-Month Prior Notification of Support</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>X18_Month_Sustaining_Support_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>18 Month Sustaining Support Email</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Not Approved</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Approved</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>X30_Payment_first_24_months__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISPICKVAL( License__c,&apos;Term&apos; ), (Support_Fees__c * 0.30)/12 , 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>(Support Fees * 0.30)/12</inlineHelpText>
+        <label>Extended Support Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>X60_Payment_25_months__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISPICKVAL( License__c , &apos;Term&apos;), ( Support_Fees__c * 0.60)/12, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>(Support Fees * 0.60) / 12</inlineHelpText>
+        <label>60% Payment (25+ months)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>X90_Day_Email__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to trigger automatic email notification.</inlineHelpText>
+        <label>90 Day Email</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Not Approved</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Approved</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>X90_Day_Notification_of_Increased_fees__c</fullName>
+        <description>Used to send email notification.</description>
+        <externalId>false</externalId>
+        <label>90-Day Notification of Increased fees</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <label>Extended Support</label>
+    <nameField>
+        <displayFormat>ES{000000}</displayFormat>
+        <label>Extended Support Name</label>
+        <trackHistory>true</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Extended Supports</pluralLabel>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Account__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Contract__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Opportunity__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Product__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Current_Product_Version__c</lookupDialogsAdditionalFields>
+        <searchFilterFields>Account__c</searchFilterFields>
+        <searchFilterFields>Opportunity__c</searchFilterFields>
+        <searchFilterFields>Product__c</searchFilterFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>Contract__c</searchFilterFields>
+        <searchFilterFields>Current_Product_Version__c</searchFilterFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <webLinks>
+        <fullName>Associate_to_Product</fullName>
+        <availability>online</availability>
+        <description>Ties ES to Product.  Needed for Roll Up Helper.</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Associate to Product</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/{!Extended_Support__c.ProductId__c}/e?retURL={!Extended_Support__c.ProductId__c}&amp;CF00N80000005TWKc={!Extended_Support__c.Name}&amp;CF00N80000005TWKc_lkid={!Extended_Support__c.Id}&amp;save=1</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Extended_Support</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Extended Support</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/a0i/e?CF00N800000053rAn={!Contract.ContractNumber}&amp;CF00N800000053rAn_lkid={!Contract.Id}&amp;CF00N800000053siB={!Contract.Account}&amp;CF00N800000053siB_lkid={!Contract.AccountId}&amp;CF00N800000053tNK={!Contract.Primary_Contact__c}&amp;CF00N800000053tNK_lkid={!Contract.Primary_ContactId__c}&amp;retURL=%2F{!Contract.Id}</url>
+    </webLinks>
+</CustomObject>

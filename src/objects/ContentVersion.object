@@ -1,0 +1,2392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Asset_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Asset Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Analyst Report</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Annual Report</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Article</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Audio</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Award</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Award Submission</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Battle Card</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Bio</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Brochure</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Case Study</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Competitor Report</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Customer Approval</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Customer Interview Transcript</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Customer Profile</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Customer Survey Results</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Data Sheet</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Event Presentation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>FAQ</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Glossary</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Guidelines</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Index</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Internal Email/Source</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Logo</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Manual</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Messaging</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Newsletter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>One Slide Story</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Positioning</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Presentation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Press Article</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Press Release</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Price List</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Product Demo</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sales Briefing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sales Presentation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Slide Library</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Solution Case</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Template</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Training Demo</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Video</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Video Vignette</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Webinar</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>White Paper</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Win/Loss Report</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>true</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Business_Function__c</fullName>
+        <externalId>false</externalId>
+        <label>Business Function</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Alliances</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Analyst Relations</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Customer Relations</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Customer Support</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Demand Generation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Demo Team</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Events</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Field Consulting</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Marketing Communications</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Market Insights &amp; Delivery</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Product Development</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Product Marketing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Public Relations</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sales Consulting</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sales Enablement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Services Enablement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Value Consulting</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>6</visibleLines>
+    </fields>
+    <fields>
+        <fullName>CS_Right_Now_Id__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>RightNow Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Competitor__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Competitor</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Account.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Competitor</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Content Versions (Competitor)</relationshipLabel>
+        <relationshipName>Competitor_Content_Versions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Conference_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Conference Name</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ContentSize</fullName>
+    </fields>
+    <fields>
+        <fullName>Content_Owner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Content Owner</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Content_Versions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CurrencyIsoCode</fullName>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Customer__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Customer</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Account.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Prospect, Customer</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Content Versions (Customer/Prospect)</relationshipLabel>
+        <relationshipName>Customer_Content_Versions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Data_Classification__c</fullName>
+        <externalId>false</externalId>
+        <label>Data Classification</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Customer Restricted</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Guidewire Internal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Public</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Date_Published__c</fullName>
+        <externalId>false</externalId>
+        <label>Date Published</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Description</fullName>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>External_Approved__c</fullName>
+        <description>If marked as Yes, this document/asset can be shared outside Guidewire.</description>
+        <externalId>false</externalId>
+        <label>External Approved</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>FileExtension</fullName>
+    </fields>
+    <fields>
+        <fullName>FileType</fullName>
+    </fields>
+    <fields>
+        <fullName>IsAssetEnabled</fullName>
+    </fields>
+    <fields>
+        <fullName>Language</fullName>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>MP_Marketplace_SKU__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>Marketplace SKU</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Marketing_Approved_Content__c</fullName>
+        <externalId>false</externalId>
+        <label>Marketing Approved Content</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Original_File_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Original File Name</label>
+        <length>150</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>OwnerId</fullName>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PO_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>PO Number</label>
+        <length>10</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Partner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Partner</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Account.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Partner</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Content Versions (Partner)</relationshipLabel>
+        <relationshipName>Partner_Content_Versions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Product_Group__c</fullName>
+        <externalId>false</externalId>
+        <label>Product Group</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Not Applicable</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Data</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Digital</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Core</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>6</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Product_Version__c</fullName>
+        <externalId>false</externalId>
+        <label>Product Version</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Not Applicable</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>9.0</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>8.4</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>8.3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>8.2.1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>8.2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>8.0</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>7.0</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>4.0</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3.0</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2.2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2.1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2.0</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>1.2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>6</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Product__c</fullName>
+        <externalId>false</externalId>
+        <label>Product</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Not Applicable</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Guidewire Live</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Before &amp; After</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>BI for InsuranceSuite</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>BillingCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Canvas</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Capgemini Insurance Connect</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Catastrophe</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ClaimCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Client Data Management</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Compare</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contrast</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>DataHub</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Digital Portals</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Guidewire Portals</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>InfoCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>InsuranceSuite</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Platform</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PolicyCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Product Content Management</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Rating Management</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reinsurance Management</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Spotlight</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ViewPoint</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>SharingOption</fullName>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>TagCsv</fullName>
+    </fields>
+    <fields>
+        <fullName>Target_Market__c</fullName>
+        <externalId>false</externalId>
+        <label>Target Market</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Global</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>APAC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EMEA</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>LATAM</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NAM</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>AMER</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Title</fullName>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Usage_Terms__c</fullName>
+        <externalId>false</externalId>
+        <label>Usage Terms</label>
+        <length>2000</length>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <recordTypes>
+        <fullName>Customer_Support_Content</fullName>
+        <active>true</active>
+        <description>Used for all Customer Support content.</description>
+        <label>Customer Support Content</label>
+        <picklistValues>
+            <picklist>Asset_Type__c</picklist>
+            <values>
+                <fullName>Analyst Report</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Annual Report</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Article</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Audio</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Award</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Award Submission</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Battle Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bio</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brochure</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Case Study</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Competitor Report</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Approval</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Interview Transcript</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Profile</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Survey Results</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data Sheet</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event Presentation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FAQ</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Glossary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidelines</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Index</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Internal Email%2FSource</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Logo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Manual</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Messaging</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Newsletter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One Slide Story</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Positioning</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Presentation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Press Article</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Press Release</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Demo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Briefing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Presentation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Slide Library</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solution Case</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Template</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Training Demo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Video</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Video Vignette</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Webinar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>White Paper</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Win%2FLoss Report</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Business_Function__c</picklist>
+            <values>
+                <fullName>Alliances</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Analyst Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Demand Generation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Demo Team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Events</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Field Consulting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Market Insights %26 Delivery</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Marketing Communications</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Marketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Consulting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Enablement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Services Enablement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Value Consulting</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Data_Classification__c</picklist>
+            <values>
+                <fullName>Customer Restricted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidewire Internal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>External_Approved__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Marketing_Approved_Content__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Group__c</picklist>
+            <values>
+                <fullName>Core</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Digital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Applicable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Version__c</picklist>
+            <values>
+                <fullName>1%2E2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2%2E1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2%2E2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E2%2E1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Applicable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product__c</picklist>
+            <values>
+                <fullName>BI for InsuranceSuite</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Before %26 After</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Billing Center</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BillingCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Canvas</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Capgemini Insurance Connect</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Catastrophe</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ClaimCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client Data Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Compare</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contrast</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DataHub</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Digital Portals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidewire Live</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidewire Portals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>InfoCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>InsuranceSuite</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Applicable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Platform</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PolicyCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Content Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rating Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reinsurance Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Spotlight</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ViewPoint</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Target_Market__c</picklist>
+            <values>
+                <fullName>AMER</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>APAC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>EMEA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Global</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LATAM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NAM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>MP_Marketplace</fullName>
+        <active>true</active>
+        <description>Record type for Marketplace library</description>
+        <label>Marketplace</label>
+        <picklistValues>
+            <picklist>Asset_Type__c</picklist>
+            <values>
+                <fullName>Analyst Report</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Annual Report</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Article</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Audio</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Award</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Award Submission</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Battle Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bio</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brochure</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Case Study</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Competitor Report</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Approval</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Interview Transcript</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Profile</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Survey Results</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data Sheet</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event Presentation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FAQ</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Glossary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidelines</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Index</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Internal Email%2FSource</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Logo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Manual</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Messaging</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Newsletter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One Slide Story</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Positioning</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Presentation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Press Article</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Press Release</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Price List</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Demo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Briefing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Presentation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Slide Library</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solution Case</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Template</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Training Demo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Video</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Video Vignette</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Webinar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>White Paper</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Win%2FLoss Report</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Business_Function__c</picklist>
+            <values>
+                <fullName>Alliances</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Analyst Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Demand Generation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Demo Team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Events</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Field Consulting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Market Insights %26 Delivery</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Marketing Communications</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Marketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Consulting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Enablement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Services Enablement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Value Consulting</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Data_Classification__c</picklist>
+            <values>
+                <fullName>Customer Restricted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidewire Internal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>External_Approved__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Marketing_Approved_Content__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Group__c</picklist>
+            <values>
+                <fullName>Core</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Digital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Applicable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Version__c</picklist>
+            <values>
+                <fullName>1%2E2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2%2E1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2%2E2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E2%2E1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Applicable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product__c</picklist>
+            <values>
+                <fullName>BI for InsuranceSuite</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Before %26 After</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BillingCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Canvas</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Capgemini Insurance Connect</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Catastrophe</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ClaimCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client Data Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Compare</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contrast</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DataHub</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Digital Portals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidewire Live</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidewire Portals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>InfoCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>InsuranceSuite</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Applicable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Platform</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PolicyCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Content Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rating Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reinsurance Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Spotlight</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ViewPoint</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Target_Market__c</picklist>
+            <values>
+                <fullName>AMER</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>APAC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>EMEA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Global</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LATAM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NAM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Sales_Portal</fullName>
+        <active>true</active>
+        <label>Sales Portal</label>
+        <picklistValues>
+            <picklist>Asset_Type__c</picklist>
+            <values>
+                <fullName>Analyst Report</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Annual Report</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Article</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Audio</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Award</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Award Submission</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Battle Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bio</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brochure</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Case Study</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Competitor Report</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Approval</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Interview Transcript</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Profile</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Survey Results</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data Sheet</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event Presentation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FAQ</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Glossary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidelines</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Index</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Internal Email%2FSource</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Logo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Manual</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Messaging</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Newsletter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One Slide Story</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Positioning</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Presentation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Press Article</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Press Release</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Demo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Briefing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Presentation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Slide Library</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solution Case</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Template</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Training Demo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Video</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Video Vignette</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Webinar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>White Paper</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Win%2FLoss Report</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Business_Function__c</picklist>
+            <values>
+                <fullName>Alliances</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Analyst Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Demand Generation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Demo Team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Events</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Field Consulting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Market Insights %26 Delivery</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Marketing Communications</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Marketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Consulting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Enablement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Services Enablement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Value Consulting</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Data_Classification__c</picklist>
+            <values>
+                <fullName>Customer Restricted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidewire Internal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>External_Approved__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Marketing_Approved_Content__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Group__c</picklist>
+            <values>
+                <fullName>Core</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Digital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Applicable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Version__c</picklist>
+            <values>
+                <fullName>1%2E2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2%2E1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2%2E2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E2%2E1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%2E4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9%2E0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Applicable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product__c</picklist>
+            <values>
+                <fullName>BI for InsuranceSuite</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Before %26 After</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Billing Center</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BillingCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Canvas</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Capgemini Insurance Connect</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Catastrophe</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ClaimCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client Data Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Compare</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contrast</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DataHub</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Digital Portals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidewire Live</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidewire Portals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>InfoCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>InsuranceSuite</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Applicable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Platform</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PolicyCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Content Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rating Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reinsurance Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Spotlight</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ViewPoint</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Target_Market__c</picklist>
+            <values>
+                <fullName>AMER</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>APAC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>EMEA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Global</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LATAM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NAM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <validationRules>
+        <fullName>External_Approved_Required</fullName>
+        <active>false</active>
+        <errorConditionFormula>ISNEW() &amp;&amp;
+ISPICKVAL( External_Approved__c , &quot;&quot;)</errorConditionFormula>
+        <errorDisplayField>External_Approved__c</errorDisplayField>
+        <errorMessage>This field is required before an asset can be published</errorMessage>
+    </validationRules>
+</CustomObject>

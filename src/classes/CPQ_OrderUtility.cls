@@ -22,10 +22,14 @@ global class CPQ_OrderUtility {
     WebService static String createOrder(Id oppId, Id primaryQuoteId, Id accId, String basecurr) {
 
         Opportunity objOpportunity;
+        if(oppId == null && primaryQuoteId == null && accId == null && basecurr == ''){
+            return null;
+        }
 
         List<Opportunity> lstFetchedOpportunities = [SELECT Id
                                                           , SBQQ__PrimaryQuote__r.SBQQ__BillingFrequency__c
                                                           , SBQQ__PrimaryQuote__r.SBQQ__StartDate__c
+                                                          , SBQQ__PrimaryQuote__r.CPQ_Prorated_Start_Date__c
                                                           , SBQQ__PrimaryQuote__r.CPQ_Royalties__c
                                                           , Account.Participant_id__c
                                                           , Account.Payment_Term__c
@@ -43,6 +47,17 @@ global class CPQ_OrderUtility {
             objOpportunity = lstFetchedOpportunities[0];
         }
 
+        if(objOpportunity == NULL) {
+            return 'Unable to create the order right now. Please try again later.';
+        }
+
+        List<Contract> lstContracts = [SELECT Id
+                                         FROM Contract
+                                        WHERE AccountId = : accId
+                                          AND Status = 'Activated'
+                                     ORDER BY CreatedDate DESC
+                                        LIMIT 1];
+
         String strResult = 'Following fields are missing: [{0}]';
         List<String> lstMissingFields = new List<String>();
 
@@ -54,16 +69,20 @@ global class CPQ_OrderUtility {
             lstMissingFields.add('Primary Quote > Start Date');
         }
 
+        if(NULL == objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__StartDate__c) {
+            lstMissingFields.add('Primary Quote > Start Date');
+        }
+
+        if( NULL == objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__SubscriptionTerm__c ) {
+            lstMissingFields.add('Primary Quote > Subscription Term');
+        }
+
         if(String.isBlank(objOpportunity.Account.Participant_id__c)) {
             lstMissingFields.add('Account > Participant Id');
         }
 
         if(String.isBlank(objOpportunity.Account.Payment_Term__c)) {
             lstMissingFields.add('Account > Payment Term');
-        }
-
-        if( NULL == objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__SubscriptionTerm__c ) {
-            lstMissingFields.add('Primary Quote > Subscription Term');
         }
 
         if(String.isBlank(objOpportunity.bill_to__r.Participant_Account__r.pw_cc__BillingCountryLookup__r.pw_cc__IsoCode_2__c)) {
@@ -89,7 +108,10 @@ global class CPQ_OrderUtility {
         objOrder.EffectiveDate = System.Date.Today();
         objOrder.OpportunityId = oppId;
         objOrder.Pricebook2Id = stdPricebookId;
-        objOrder.Contract_Sign_Date__c = Date.today();
+        //objOrder.Contract_Sign_Date__c = Date.today();  //Don't default to today's date, they will fill this in when the contract is actually signed.
+        objOrder.ContractId = !lstContracts.isEmpty()
+                            ? lstContracts[0].Id
+                            : NULL;
 
         if( objOpportunity != NULL ) {
             objOrder.SBQQ__BillingFrequency__c = objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__BillingFrequency__c;
@@ -103,13 +125,11 @@ global class CPQ_OrderUtility {
                                 ? System.Label.CPQ_MandatorySupport
                                 : System.Label.CPQ_OptionalSupport;
 
-            System.debug('objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__SubscriptionTerm__c-----'+objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__SubscriptionTerm__c);
             if( NULL != objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__StartDate__c
             &&  NULL != objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__SubscriptionTerm__c ) {
                 objOrder.Sales_Order_End_Date__c =
                     objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__StartDate__c.addMonths(Integer.valueOf(objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__SubscriptionTerm__c));
             }
-
         }
 
         //populate Lookup(Wire Message)

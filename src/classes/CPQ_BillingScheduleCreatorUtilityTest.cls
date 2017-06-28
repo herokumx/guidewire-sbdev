@@ -9,19 +9,28 @@ public with sharing class CPQ_BillingScheduleCreatorUtilityTest {
     public static final String NET15 = 'Net 15';
     public static final String MONTHLY = 'Monthly';
     public static final String SEMIANNUAL = 'Semiannual';
-    
+
     /**
-	 * Test method to check OrderItem and SBQQ__QuoteLine__c created accordingly
-	 **/
+     * Test method to check OrderItem and SBQQ__QuoteLine__c created accordingly
+     **/
     @isTest static void testMethodCreateOrderItemBillingSchedule() {
 
+        System.Test.startTest();
         Account accObj = CPQ_TestDataUtility.accountTestData(true);
 
         ServiceContract serviceContrObj = CPQ_TestDataUtility.serviceContractTestData(accObj.Id, true);
 
-        Opportunity oppObj = CPQ_TestDataUtility.opportunityForContTestData(accObj.Id, true);
+        Opportunity oppObj2 = CPQ_TestDataUtility.opportunityForContTestData(accObj.Id, true);
 
-		Contract contractObj = CPQ_TestDataUtility.contractTesData(accObj.Id, oppObj.Id, true);
+        Opportunity oppObj = CPQ_TestDataUtility.opportunityForContTestData(accObj.Id, false);
+
+        oppObj.Original_Opportunity_New__c = oppObj2.Id;
+
+        //insert oppObj2;
+
+        insert oppObj;
+
+        Contract contractObj = CPQ_TestDataUtility.contractTesData(accObj.Id, oppObj.Id, true);
 
         Opportunity oppWithContract = CPQ_TestDataUtility.opportunityTestData(accObj.Id, contractObj.Id, false);
         oppWithContract.Service_Contract__c = serviceContrObj.Id;
@@ -36,20 +45,30 @@ public with sharing class CPQ_BillingScheduleCreatorUtilityTest {
         quoteObj.SBQQ__EndDate__c = Date.today();
         quoteObj.SBQQ__PaymentTerms__c = NET15;
         quoteObj.SBQQ__SubscriptionTerm__c = 24;
-        quoteObj.SBQQ__BillingFrequency__c	= MONTHLY;
+        quoteObj.SBQQ__BillingFrequency__c  = MONTHLY;
+        quoteObj.CPQ_Prorated_Start_Date__c = System.Today();
         insert quoteObj;
 
-        oppWithContract.SBQQ__PrimaryQuote__c = quoteObj.Id;
-		update oppWithContract;
+        Opportunity oppWithContract1 = CPQ_TestDataUtility.opportunityTestData(accObj.Id, contractObj.Id, false);
+        oppWithContract1.SBQQ__PrimaryQuote__c =quoteObj.Id;
+        insert oppWithContract1;
 
         SBQQ__QuoteLine__c  quoteLineItemObj= CPQ_TestDataUtility.quoteLineItemTestData(prod2Obj.Id, quoteObj.Id, true);
-        Order orderObj = CPQ_TestDataUtility.singleOrderUpdate(accObj.Id, oppWithContract.Id, false);
+        Order orderObj = CPQ_TestDataUtility.singleOrderUpdate(accObj.Id, oppWithContract1.Id, false);
         orderObj.Is_Primary__c = true;
         orderObj.SBQQ__Quote__c = quoteObj.Id;
         insert orderObj;
 
-        System.Test.startTest();
-            update orderObj;
+
+        List<Order> orderList = [SELECT Id
+                                     , Name
+                                     , OpportunityId
+                                     , Is_Primary__c
+                                     , SBQQ__Quote__c
+                                     FROM Order
+                                     Where Is_Primary__c = true];
+
+        update orderList;
         System.Test.stopTest();
 
         List<Order> lstOrder = [SELECT Id
@@ -84,17 +103,18 @@ public with sharing class CPQ_BillingScheduleCreatorUtilityTest {
     }
 
     /**
-	 * Test method to check with multiple Quote Line Item
-	 **/
+     * Test method to check with multiple Quote Line Item
+     **/
     @isTest static void testMethodCreateOrderMultipleQuoteLineItem() {
 
+        System.Test.startTest();
         Account accObj = CPQ_TestDataUtility.accountTestData(true);
 
         ServiceContract serviceContrObj = CPQ_TestDataUtility.serviceContractTestData(accObj.Id, true);
 
         Opportunity oppObj = CPQ_TestDataUtility.opportunityForContTestData(accObj.Id, true);
 
-		Contract contractObj = CPQ_TestDataUtility.contractTesData(accObj.Id, oppObj.Id, true);
+        Contract contractObj = CPQ_TestDataUtility.contractTesData(accObj.Id, oppObj.Id, true);
 
         Opportunity oppWithContract = CPQ_TestDataUtility.opportunityTestData(accObj.Id, contractObj.Id, false);
         oppWithContract.Service_Contract__c = serviceContrObj.Id;
@@ -109,9 +129,10 @@ public with sharing class CPQ_BillingScheduleCreatorUtilityTest {
         quoteObj.SBQQ__EndDate__c = Date.today();
         quoteObj.SBQQ__PaymentTerms__c = NET15;
         quoteObj.SBQQ__SubscriptionTerm__c = 6;
-        quoteObj.SBQQ__BillingFrequency__c	= SEMIANNUAL;
-        quoteObj.SBQQ__Opportunity2__c	= oppWithContract.Id;
+        quoteObj.SBQQ__BillingFrequency__c  = SEMIANNUAL;
+        quoteObj.SBQQ__Opportunity2__c  = oppWithContract.Id;
         quoteObj.SBQQ__Primary__c = true;
+        quoteObj.CPQ_Prorated_Start_Date__c = System.Today();
         insert quoteObj;
 
         SBQQ__QuoteLine__c  quoteLineItemObj = CPQ_TestDataUtility.quoteLineItemTestData(prod2Obj.Id, quoteObj.Id, false);
@@ -127,8 +148,15 @@ public with sharing class CPQ_BillingScheduleCreatorUtilityTest {
         orderObj.SBQQ__Quote__c = quoteObj.Id;
         insert orderObj;
 
-        System.Test.startTest();
-            update orderObj;
+        List<Order> orderList = [SELECT Id
+                                     , Name
+                                     , OpportunityId
+                                     , Is_Primary__c
+                                     , SBQQ__Quote__c
+                                     FROM Order
+                                     Where Is_Primary__c = true];
+
+        update orderList;
         System.Test.stopTest();
 
         List<Order> lstOrder = [SELECT Id

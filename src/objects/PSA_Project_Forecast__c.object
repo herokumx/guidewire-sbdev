@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>The central repository for calculated billing forecast information. Each record contains a summary of scheduled and forecast billings for a project and month, without regard to forecast category.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>PSA_Actual_Cost__c</fullName>
+        <description>Roll-Up Summary of Actual Cost from related detail records</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Actual Cost from related detail records</inlineHelpText>
+        <label>Actual Cost</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Actual_Cost__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Actual_Expense_Billings__c</fullName>
+        <description>Roll-Up Summary of Actual Billings from related detail items where Forecast Type = Expense</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Actual Billings from related detail items where Forecast Type = Expense</inlineHelpText>
+        <label>Actual Expense Billings</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Actual_Billings__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Forecast_Type__c</field>
+            <operation>equals</operation>
+            <value>Expenses</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Actual_Hours__c</fullName>
+        <description>Roll-Up Summary of Actual Hours from related detail records</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Actual Hours from related detail records, providing all hours from related assignments approved for the period</inlineHelpText>
+        <label>Actual Hours</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Actual_Hours__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Actual_Milestone_Billings__c</fullName>
+        <description>Roll-Up Summary of Actual Billings from related detail items where Forecast Type = Fixed Fee Services</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Actual Billings from related detail records where Forecast Type = Fixed Fee Services</inlineHelpText>
+        <label>Actual Milestone Billings</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Actual_Billings__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Forecast_Type__c</field>
+            <operation>equals</operation>
+            <value>Fixed Fee Services</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Actual_Time_Billings__c</fullName>
+        <description>Sum of Actual Billings from related detail records where Forecast Type = Assignment or Resource Request</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Actual Billings from related detail records where Forecast Type = Assignment or Resource Request</inlineHelpText>
+        <label>Actual Time Billings</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Actual_Billings__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Forecast_Type__c</field>
+            <operation>equals</operation>
+            <value>Assignment, Resource Request</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Days_in_Period__c</fullName>
+        <description>Number of days in the month represented. To facilitate ratable revenue forecast calculation.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of days in the month represented. To facilitate ratable revenue forecast calculation.</inlineHelpText>
+        <label>Days in Period</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_For_Month_Ending__c</fullName>
+        <description>Date representing the last day of the month to which the record relates</description>
+        <externalId>false</externalId>
+        <formula>PSA_Time_Period__r.pse__End_Date__c</formula>
+        <label>For Month Ending</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PSA_For_Month_Starting__c</fullName>
+        <description>Start date of the related month time period</description>
+        <externalId>false</externalId>
+        <formula>PSA_Time_Period__r.pse__Start_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>For Month Starting</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Billings__c</fullName>
+        <description>Roll-Up Summary of Forecast Billings from related detail items</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Forecast Billings from related Project Forecast Detail records</inlineHelpText>
+        <label>Forecast Billings</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Forecast_Billings__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Deferred_Expense_Revenue__c</fullName>
+        <description>For revenue forecasting: The amount of expense billings that are calculated as deferred for the project and period represented in the PSA Project Forecast.  Used by the forecast calculation.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The amount of expense billings that are calculated as deferred for the project and period</inlineHelpText>
+        <label>Forecast Deferred Expense Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Deferred_Revenue__c</fullName>
+        <description>For revenue forecasting: Sum of forecast deferred services revenue and forecast deferred expense revenue</description>
+        <externalId>false</externalId>
+        <formula>PSA_Forecast_Deferred_Services_Revenue__c +  PSA_Forecast_Deferred_Expense_Revenue__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Sum of Forecast Deferred Services Revenue and Forecast Deferred Expense Revenue</inlineHelpText>
+        <label>Forecast Deferred Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Deferred_Services_Revenue__c</fullName>
+        <description>For revenue forecasting: The amount of services billings that are calculated as deferred for the project and period represented in the PSA Project Forecast.  This is used by the revenue calculation process.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The amount of services-related billings that are calculated as deferred for the project and period</inlineHelpText>
+        <label>Forecast Deferred Services Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Expense_Billings__c</fullName>
+        <description>Roll-Up Summary of Forecast Billings from related detail records where Forecast Type = Expenses</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Forecast Billings from related Project Forecast Detail records where Forecast Type = Expenses</inlineHelpText>
+        <label>Forecast Expense Billings</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Forecast_Billings__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Forecast_Type__c</field>
+            <operation>equals</operation>
+            <value>Expenses</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Expense_Revenue__c</fullName>
+        <description>For revenue forecasting: Forecast expense revenue number generated by the revenue forecast calculation</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The calculated amount of expense-related billings that can be forecasted as recognizable revenue for the project and period</inlineHelpText>
+        <label>Forecast Expense Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Milestone_Billings__c</fullName>
+        <description>Roll-Up Summary of Forecast Billings from related detail records where Forecast Type = Fixed Fee Services</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Forecast Billings from related Project Forecast Detail records where Forecast Type = Fixed Fee Services</inlineHelpText>
+        <label>Forecast Milestone Billings</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Forecast_Billings__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Forecast_Type__c</field>
+            <operation>equals</operation>
+            <value>Fixed Fee Services</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Percent_Complete__c</fullName>
+        <description>For revenue forecasting: Manually edited for current and future months in order to establish forecasted percent complete for percent complete revenue calculation</description>
+        <externalId>false</externalId>
+        <inlineHelpText>For use with “Percent Complete” revenue models, should be updated manually to provide a percent complete value for the project and period.  The supplied value will be used in the revenue forecast calculation.</inlineHelpText>
+        <label>Forecast Percent Complete</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Revenue__c</fullName>
+        <description>Sum of Forecast Services Revenue and Forecast Expense Revenue</description>
+        <externalId>false</externalId>
+        <formula>PSA_Forecast_Services_Revenue__c +  PSA_Forecast_Expense_Revenue__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Sum of Forecast Services Revenue and Forecast Expense Revenue</inlineHelpText>
+        <label>Forecast Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Services_Adjustments__c</fullName>
+        <description>Roll-Up Summary of Forecast Billings from related detail records where Forecast Type = Services Adjustment</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Forecast Billings from related Project Forecast Detail records where Forecast Type = Services Adjustment</inlineHelpText>
+        <label>Forecast Services Adjustments</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Forecast_Billings__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Forecast_Type__c</field>
+            <operation>equals</operation>
+            <value>Services Adjustment</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Services_Billings__c</fullName>
+        <description>Sum of Forecast Time Billings, Forecast Milestone Billings, and Forecast Services Adjustments</description>
+        <externalId>false</externalId>
+        <formula>PSA_Forecast_Milestone_Billings__c +  PSA_Forecast_Time_Billings__c +  PSA_Forecast_Services_Adjustments__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Sum of Forecast Time Billings, Forecast Milestone Billings, and Forecast Services Adjustments</inlineHelpText>
+        <label>Forecast Services Billings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Services_Revenue__c</fullName>
+        <description>For revenue forecasting: Sum of calculated forecast revenue from services</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The calculated amount of services-related billings that can be forecasted as recognizable revenue for the project and period</inlineHelpText>
+        <label>Forecast Services Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Time_Billings__c</fullName>
+        <description>Roll-Up Summary of all Services-related billings for the month, which includes Forecast Billings from related detail records where Forecast Type = Assignment or Resource Request</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Forecast Billings from related Project Forecast Detail records where Forecast Type is Assignment or Resource Request</inlineHelpText>
+        <label>Forecast Time Billings</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Forecast_Billings__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Forecast_Type__c</field>
+            <operation>equals</operation>
+            <value>Assignment, Resource Request</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Include_in_Forecast__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Specifies whether the record should be included in forecast reporting</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Automatically maintained by the calculation, specifies whether the record should be included in forecast reporting.  Turned off for past periods on active projects.</inlineHelpText>
+        <label>Include in Forecast</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Item_Key__c</fullName>
+        <description>Unique key generated by the forecast calculation identifying the source of the calculated and/or summarized info, allowing the calculation process to find and update previously created records</description>
+        <externalId>false</externalId>
+        <label>Item Key</label>
+        <length>40</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Number_of_Assignments__c</fullName>
+        <description>Count of related detail items originating from assignments</description>
+        <externalId>false</externalId>
+        <label>Number of Assignments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Number_of_Resource_Requests__c</fullName>
+        <description>Count of related detail items originating from resource requests</description>
+        <externalId>false</externalId>
+        <label>Number of Resource Requests</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Project__c</fullName>
+        <description>Project for the forecast record</description>
+        <externalId>false</externalId>
+        <label>Project</label>
+        <referenceTo>pse__Proj__c</referenceTo>
+        <relationshipLabel>PSA Project Forecasts</relationshipLabel>
+        <relationshipName>PSA_Project_Forecasts</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Billings__c</fullName>
+        <description>Roll-Up Summary of Scheduled Billings from related detail records</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Scheduled Billings from related Project Forecast Detail records</inlineHelpText>
+        <label>Scheduled Billings</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Scheduled_Billings__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Cost_Seasonal__c</fullName>
+        <description>Summary of seasonally-adjusted scheduled cost from related detail items</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Summary of seasonally-adjusted scheduled cost from related detail items</inlineHelpText>
+        <label>Scheduled Cost Seasonal</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Scheduled_Cost_Seasonal__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Cost__c</fullName>
+        <description>Sum of Scheduled Cost from Project Forecast Detail records with source of assignment or resource request</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Scheduled Cost from related Project Forecast Detail records with source of Assignment or Resource Request</inlineHelpText>
+        <label>Scheduled Cost</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Scheduled_Cost__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Days__c</fullName>
+        <description>Roll-Up Summary of Scheduled Days from related detail records</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Scheduled Days from related Project Forecast Detail records, providing total days worked that are scheduled for the period</inlineHelpText>
+        <label>Scheduled Days</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Scheduled_Days__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Hours_Seasonal__c</fullName>
+        <description>Summary of seasonally-adjusted scheduled hours from related resource requests and assignments</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Summary of seasonally-adjusted scheduled hours from related resource requests and assignments</inlineHelpText>
+        <label>Scheduled Hours Seasonal</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Scheduled_Hours_Seasonal__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Hours__c</fullName>
+        <description>Sum of Scheduled Hours from any related Project Forecast Detail records with source of Assignment or Resource Request</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Scheduled Hours from any related Project Forecast Detail records with source of Assignment or Resource Request</inlineHelpText>
+        <label>Scheduled Hours</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Scheduled_Hours__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Time_Billings_Seasonal__c</fullName>
+        <description>Summary of seasonally-adjusted scheduled time billings from related detail items</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Summary of seasonally-adjusted scheduled time billings from related detail items</inlineHelpText>
+        <label>Scheduled Time Billings Seasonal</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Scheduled_Time_Billings_Seasonal__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Time_Billings__c</fullName>
+        <description>Roll-Up Summary of Scheduled Time Billings from related detail items with source of Assignment or Resource Request</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Scheduled Time Billings from related detail items with source of Assignment or Resource Request</inlineHelpText>
+        <label>Scheduled Time Billings</label>
+        <summarizedField>PSA_Project_Forecast_Detail__c.PSA_Scheduled_Time_Billings__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Project_Forecast_Detail__c.PSA_Include_in_Forecast__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Project_Forecast_Detail__c.PSA_Project_Forecast__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Time_Period__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Reference to the month-type time period to which the project forecast relates</description>
+        <externalId>false</externalId>
+        <label>Time Period</label>
+        <referenceTo>pse__Time_Period__c</referenceTo>
+        <relationshipLabel>PSA Project Forecasts</relationshipLabel>
+        <relationshipName>PSA_Project_Forecasts</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>PSA Project Forecast</label>
+    <nameField>
+        <displayFormat>PF-{0000000}</displayFormat>
+        <label>Project Forecast Id</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>PSA Project Forecasts</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>

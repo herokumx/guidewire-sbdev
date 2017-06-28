@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>psaRateSetRedirect</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Custom - A PSA Rate Set, composed of multiple separate PSA Rates, determines which bill rates are applied to a project or an opportunity.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>PSA_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>PSA Account</description>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>PSA_Bill_Rate_Sets</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Is_Global__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Checked if this is the global PSA Rate Set</description>
+        <externalId>false</externalId>
+        <label>Is Global</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>PSA Project</description>
+        <externalId>false</externalId>
+        <label>Project</label>
+        <referenceTo>pse__Proj__c</referenceTo>
+        <relationshipName>PSA_Bill_Rate_Sets</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>PSA Rate Set</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Project__c</columns>
+        <columns>PSA_Account__c</columns>
+        <columns>CURRENCY_ISO_CODE</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Global_Rate_Sets</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Account__c</columns>
+        <columns>PSA_Is_Global__c</columns>
+        <columns>PSA_Project__c</columns>
+        <columns>CURRENCY_ISO_CODE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PSA_Is_Global__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>PSA_Account__c</field>
+            <operation>equals</operation>
+        </filters>
+        <filters>
+            <field>PSA_Project__c</field>
+            <operation>equals</operation>
+        </filters>
+        <label>Global Rate Sets</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <label>Rate Set Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>PSA Rate Sets</pluralLabel>
+    <searchLayouts>
+        <excludedStandardButtons>New</excludedStandardButtons>
+        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
+        <listViewButtons>PSA_New_Rate_Set</listViewButtons>
+        <listViewButtons>Propagate_Selected_Rate_Set_s</listViewButtons>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>PSA_New_Rate_Set</fullName>
+        <availability>online</availability>
+        <description>Button that links to the VF New Rate Set page</description>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>New Rate Set</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/psaRateSetEntry</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Propagate_Selected_Rate_Set_s</fullName>
+        <availability>online</availability>
+        <description>Clicking button propagates the rates associated with those sets selected to matching resource requests.</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Propagate Selected Rate Set(s)</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/15.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/15.0/apex.js&quot;)} 
+
+this.style.color = &apos;#FF4500&apos;; 
+this.value = &apos;Processing...&apos;; 
+var okToGo = false; 
+
+// Restrict to certain profile(s)... 
+if(&apos;{!$Profile.Name}&apos; == &apos;System Administrator&apos;){ 
+okToGo = true; 
+} 
+
+if(!okToGo){ 
+alert(&quot;Sorry, you do NOT have sufficient permissions to perform this action&quot;); 
+} 
+else{ 
+okToGo = confirm(&quot;You are about to propagate the selected rate set(s) to resource request(s), click ok to continue.&quot;); 
+} 
+
+if (okToGo){ 
+var records = {!GETRECORDIDS($ObjectType.PSA_Cost_Rate__c)}; 
+
+if(records.length == 0){ 
+alert(&quot;Please select at least one psa rate set&quot;); 
+} 
+else{ 
+var result = sforce.apex.execute(&quot;psaBillRates&quot;,&quot;propagateSpecificRateSets&quot;,{bill_Rate_set_ids:records}); 
+
+alert(result); 
+window.location.reload(); 
+} 
+} 
+
+this.style.color = &apos;#000000&apos;; 
+this.value = &apos;Propagate Selected Rate Set(s)&apos;;</url>
+    </webLinks>
+</CustomObject>

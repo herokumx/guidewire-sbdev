@@ -51,10 +51,10 @@ public with sharing class CPQ_In_Scope_DWP_Calc_Helper {
 		Map<Id, Id> previousToCurrentOpp = new Map<Id, Id>();
 		for (Opportunity opp :newOpportunities) {
 			if (opp.CPQ_Term_Sequence__c != null && opp.CPQ_Term_Sequence__c > renewalYearCutoff) {
-				if (opp.pse__Parent_Opportunity__c != null) {
-					previousToCurrentOpp.put(opp.id, opp.pse__Parent_Opportunity__r.Id);
+				if (opp.Original_Opportunity_New__c != null) {
+					previousToCurrentOpp.put(opp.id, opp.Original_Opportunity_New__r.Id);
 				} else {
-					opp.pse__Parent_Opportunity__c = opp.Id;
+					opp.Original_Opportunity_New__c = opp.Id;
 					previousToCurrentOpp.put(opp.id, opp.Id);
 				}
 
@@ -76,10 +76,10 @@ public with sharing class CPQ_In_Scope_DWP_Calc_Helper {
 		Map<Id, Id> previousToCurrentOpp = new Map<Id, Id>();
 		for (Opportunity opp :updatedOpportunities) {
 			if (opp.CPQ_Term_Sequence__c != null && opp.CPQ_Term_Sequence__c > renewalYearCutoff) {
-				if (opp.pse__Parent_Opportunity__c != null) {
-					previousToCurrentOpp.put(opp.id, opp.pse__Parent_Opportunity__r.Id);
+				if (opp.Original_Opportunity_New__c != null) {
+					previousToCurrentOpp.put(opp.id, opp.Original_Opportunity_New__r.Id);
 				} else {
-					opp.pse__Parent_Opportunity__c = opp.Id;
+					opp.Original_Opportunity_New__c = opp.Id;
 					previousToCurrentOpp.put(opp.id, opp.Id);
 				}
 			}
@@ -148,6 +148,7 @@ public with sharing class CPQ_In_Scope_DWP_Calc_Helper {
 	        sc.CPQ_Contract_Identifier__c = s1+int1;
 	        sc.pricebook2Id = activepbs.Id;
 	        sc.currencyisocode = Opp.currencyisocode;
+	        sc.StartDate = Date.today();
 
 	        SCLst.add(sc);
 
@@ -160,6 +161,7 @@ public with sharing class CPQ_In_Scope_DWP_Calc_Helper {
 		     cli.PriceBookEntryId=lin.PricebookEntryId;
 		     cli.UnitPrice=lin.UnitPrice;
 		     cli.Quantity =lin.Quantity;
+		     cli.StartDate = Date.today();
 
 		     SClineLst.add(cli);
 	       }
@@ -174,7 +176,7 @@ public with sharing class CPQ_In_Scope_DWP_Calc_Helper {
 		Map<Id, Decimal> opptoOriginal = new Map<Id, Decimal>();
 		Set<Id> originalOpps = new Set<Id>();
 		for (Opportunity iterateOpp : opportunityMap.values()) {
-			originalOpps.add(iterateOpp.pse__Parent_Opportunity__c);
+			originalOpps.add(iterateOpp.Original_Opportunity_New__c);
 		}
 
 		List<Opportunity> oldOppList = [SELECT Id, Premium_In_Scope__c FROM Opportunity where Id IN :originalOpps];
@@ -192,7 +194,7 @@ public with sharing class CPQ_In_Scope_DWP_Calc_Helper {
 			}
 			//If it's a renewal then use our parent's Premium In Scope value
 			else {
-				amountForDWP = opptoOriginal.get(opp.pse__Parent_Opportunity__c);
+				amountForDWP = opptoOriginal.get(opp.Original_Opportunity_New__c);
 			}
 			if (amountForDWP == null) continue;
 

@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>CS_Create_Asset__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Create Asset</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CS_No_Customer_Contact__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>*** Service Cloud  This Field is used to  Check No Customer Contact Flag on Parent Asset*****</description>
+        <externalId>false</externalId>
+        <label>No Customer Contact</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CS_No_Software_Downloads__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>*** New Field to  Skip Software Download Record Creation *****</description>
+        <externalId>false</externalId>
+        <label>No Software Downloads</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CS_Product_Relation_Type__c</fullName>
+        <description>*** Service Cloud-  Product Relation Type***</description>
+        <externalId>false</externalId>
+        <formula>CS_Source_Product_Type__c +&apos;-&apos;+ CS_Target_Product_Type__c</formula>
+        <label>Product Relation Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Source_Product_Id__c</fullName>
+        <description>*** Service Cloud  - Displays SKU  Id  or Product Code based on Product Record Type ****</description>
+        <externalId>false</externalId>
+        <formula>CASE(CS_Source_Product_Type__c, 
+&apos;SKU&apos;,CS_Source_Product__r.SKU_ID__c,
+&apos;Sku&apos;,CS_Source_Product__r.SKU_ID__c,
+&apos;Standard Products&apos;,BLANKVALUE(CS_Source_Product__r.ProductCode, CS_Target_Product__r.Product__r.ProductCode), 
+&apos;Entitled Product&apos;,BLANKVALUE(CS_Source_Product__r.ProductCode, CS_Target_Product__r.Product__r.ProductCode), &apos;NA&apos;)</formula>
+        <label>Source  Product Id</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Source_Product_Type__c</fullName>
+        <description>***Service Cloud Source Product Type*****</description>
+        <externalId>false</externalId>
+        <formula>CS_Source_Product__r.RecordType.Name</formula>
+        <label>Source Product Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Source_Product__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Source Product</label>
+        <referenceTo>Product2</referenceTo>
+        <relationshipLabel>Product Relations-Source Product</relationshipLabel>
+        <relationshipName>Source_Product</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CS_Support_Group_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Support Group Name</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Billing System</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Claim System</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Cognos</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Data Management</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Digital Portals</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GW Live</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Policy System</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Predictive Analytics</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>CS_Target_Product_Id__c</fullName>
+        <description>*** Service Cloud - Displays SKU Id or Product Code based on Product Record Type ****</description>
+        <externalId>false</externalId>
+        <formula>CASE( CS_Target_Product_Type__c, 
+&apos;SKU&apos;, CS_Target_Product__r.SKU_ID__c, 
+&apos;Standard Products&apos;,BLANKVALUE(CS_Target_Product__r.ProductCode, CS_Target_Product__r.Product__r.ProductCode),
+&apos;Entitled Product&apos;,BLANKVALUE(CS_Target_Product__r.ProductCode, CS_Target_Product__r.Product__r.ProductCode), &apos;NA&apos;)</formula>
+        <label>Target Product Id</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Target_Product_Type__c</fullName>
+        <description>***Service Cloud Target Product Type*****</description>
+        <externalId>false</externalId>
+        <formula>CS_Target_Product__r.RecordType.Name</formula>
+        <label>Target Product Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Target_Product__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Target Product</label>
+        <referenceTo>Product2</referenceTo>
+        <relationshipLabel>Product Relations (Target product)</relationshipLabel>
+        <relationshipName>Target_Product</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Prod_Relation_Ref__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>Prod Relation - Ref</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <label>Product Relation</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>CS_Product_Relation_Type__c</columns>
+        <columns>CS_Source_Product__c</columns>
+        <columns>CS_Target_Product__c</columns>
+        <columns>CS_Source_Product_Id__c</columns>
+        <columns>CS_Target_Product_Id__c</columns>
+        <columns>CS_Support_Group_Name__c</columns>
+        <columns>CS_Create_Asset__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All1</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>BC</fullName>
+        <columns>NAME</columns>
+        <columns>CS_Source_Product__c</columns>
+        <columns>CS_Target_Product__c</columns>
+        <columns>CS_Product_Relation_Type__c</columns>
+        <columns>CS_Support_Group_Name__c</columns>
+        <columns>CS_Source_Product_Id__c</columns>
+        <columns>CS_Target_Product_Id__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CS_Support_Group_Name__c</field>
+            <operation>equals</operation>
+            <value>Billing System</value>
+        </filters>
+        <label>BC</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>ClaimCenter</fullName>
+        <columns>NAME</columns>
+        <columns>CS_Source_Product__c</columns>
+        <columns>CS_Target_Product__c</columns>
+        <columns>CS_Product_Relation_Type__c</columns>
+        <columns>CS_Support_Group_Name__c</columns>
+        <columns>CS_Source_Product_Id__c</columns>
+        <columns>CS_Target_Product_Id__c</columns>
+        <columns>CS_Create_Asset__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CS_Support_Group_Name__c</field>
+            <operation>equals</operation>
+            <value>Claim System</value>
+        </filters>
+        <label>ClaimCenter</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Cognos</fullName>
+        <columns>NAME</columns>
+        <columns>CS_Product_Relation_Type__c</columns>
+        <columns>CS_Support_Group_Name__c</columns>
+        <columns>CS_Source_Product__c</columns>
+        <columns>CS_Target_Product__c</columns>
+        <columns>CS_Create_Asset__c</columns>
+        <columns>CS_No_Customer_Contact__c</columns>
+        <columns>CS_No_Software_Downloads__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CS_Target_Product__c</field>
+            <operation>contains</operation>
+            <value>Cognos</value>
+        </filters>
+        <label>Cognos</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>PolicyCenter</fullName>
+        <columns>NAME</columns>
+        <columns>CS_Source_Product__c</columns>
+        <columns>CS_Target_Product__c</columns>
+        <columns>CS_Product_Relation_Type__c</columns>
+        <columns>CS_Support_Group_Name__c</columns>
+        <columns>CS_Source_Product_Id__c</columns>
+        <columns>CS_Target_Product_Id__c</columns>
+        <columns>CS_Create_Asset__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CS_Support_Group_Name__c</field>
+            <operation>equals</operation>
+            <value>Policy System</value>
+        </filters>
+        <label>PolicyCenter</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <displayFormat>PR-{000000}</displayFormat>
+        <label>Entitled Products Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Product Relations</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

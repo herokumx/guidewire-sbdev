@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>This custom object will provide information based on incurred expense location as to whether VAT applies and at what rate</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>PSA_Expense_Type__c</fullName>
+        <description>The standard list of expense types, to help determine whether tax applies</description>
+        <externalId>false</externalId>
+        <label>Expense Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Airfare - Domestic</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Airfare - International</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Visas/Passport</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Hotel</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Corp Apartment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Taxi/Train/Public Transit</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Parking/Tolls</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Car Rental</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Gas for Rental Car</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Personal Mileage</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meals - Self - Breakfast</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meals - Self - Lunch</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meals - Self - Dinner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meals - GW Emp Only</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meals - With 3rd Parties</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meals - Per Diem</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Entertain - GW Emp only</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Entertain - With 3rd Parties</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Telecom - Mobile (Cell)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Telecom - Non Mobile</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Currency exch/bank fees</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Excess Baggage</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Misc Expense - T &amp; E</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Laundry/Dry Cleaning</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Office Supplies</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Postage/Courier Cost</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Relocation Exp</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Tax Prep Cost for Addtl State(s)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Tips/Gratuities</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dept/Co Meetings &amp; Events</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Mtng Rooms/Facility Rental</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Seminars/Training/Tuition</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dues/Subs/Books</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Airfare Domestic</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Airfare International</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Visas/Passport</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Hotel</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Corporate Apart</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Taxi/Train/Public Transit</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Parking/Tolls</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Car Rental</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Gas for Rental Car</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Personal Mileage</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Meals Self</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Relocation Expenses</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Incurred_Country__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Country Code for incurred location</description>
+        <externalId>false</externalId>
+        <label>Incurred Country</label>
+        <referenceTo>pw_cc__CountryObject__c</referenceTo>
+        <relationshipLabel>PSA Expense VATs</relationshipLabel>
+        <relationshipName>PSA_Expense_VATs</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Incurred_State_Province__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>State / Province Code for incurred location</description>
+        <externalId>false</externalId>
+        <label>Incurred State / Province</label>
+        <referenceTo>pw_cc__State__c</referenceTo>
+        <relationshipLabel>PSA Expense VATs</relationshipLabel>
+        <relationshipName>PSA_Expense_VATs</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Is_Reclaimable__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>For helping determine whether VAT represented in the line can be reclaimable. Note that other factors would apply in making this determination.</description>
+        <externalId>false</externalId>
+        <label>Is Reclaimable</label>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Tax_Rate__c</fullName>
+        <externalId>false</externalId>
+        <label>Tax Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Tax_Type__c</fullName>
+        <description>Tax Type</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Tax Type</inlineHelpText>
+        <label>Tax Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>GST</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>HSTBC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GQST</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>HSTON</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>VAT</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CONSUMPTION TAX</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <label>PSA Expense VAT</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Expense_Type__c</columns>
+        <columns>PSA_Is_Reclaimable__c</columns>
+        <columns>PSA_Tax_Type__c</columns>
+        <columns>PSA_Incurred_Country__c</columns>
+        <columns>PSA_Incurred_State_Province__c</columns>
+        <columns>PSA_Tax_Rate__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>GST_Tax_Rate</fullName>
+        <columns>NAME</columns>
+        <columns>OBJECT_ID</columns>
+        <columns>PSA_Expense_Type__c</columns>
+        <columns>PSA_Incurred_Country__c</columns>
+        <columns>PSA_Incurred_State_Province__c</columns>
+        <columns>PSA_Is_Reclaimable__c</columns>
+        <columns>PSA_Tax_Rate__c</columns>
+        <columns>PSA_Tax_Type__c</columns>
+        <columns>CURRENCY_ISO_CODE</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <columns>UPDATEDBY_USER.ALIAS</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PSA_Tax_Type__c</field>
+            <operation>equals</operation>
+            <value>GST</value>
+        </filters>
+        <label>GST Tax Rate</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>PSA_Canada_Rates</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Expense_Type__c</columns>
+        <columns>PSA_Incurred_Country__c</columns>
+        <columns>PSA_Incurred_State_Province__c</columns>
+        <columns>PSA_Is_Reclaimable__c</columns>
+        <columns>PSA_Tax_Rate__c</columns>
+        <columns>PSA_Tax_Type__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PSA_Incurred_Country__c</field>
+            <operation>equals</operation>
+            <value>Canada</value>
+        </filters>
+        <label>PSA Canada Rates</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Specifc_Expense_Type</fullName>
+        <booleanFilter>1 OR (2 AND 3)</booleanFilter>
+        <columns>NAME</columns>
+        <columns>OBJECT_ID</columns>
+        <columns>PSA_Expense_Type__c</columns>
+        <columns>PSA_Incurred_Country__c</columns>
+        <columns>PSA_Incurred_State_Province__c</columns>
+        <columns>PSA_Is_Reclaimable__c</columns>
+        <columns>PSA_Tax_Rate__c</columns>
+        <columns>PSA_Tax_Type__c</columns>
+        <columns>CURRENCY_ISO_CODE</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <columns>UPDATEDBY_USER.ALIAS</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PSA_Expense_Type__c</field>
+            <operation>equals</operation>
+            <value>Hotel</value>
+        </filters>
+        <filters>
+            <field>PSA_Tax_Rate__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>0.166</value>
+        </filters>
+        <filters>
+            <field>PSA_Tax_Rate__c</field>
+            <operation>lessOrEqual</operation>
+            <value>0.167</value>
+        </filters>
+        <label>Specifc Expense Type</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <displayFormat>EV-{0000}</displayFormat>
+        <label>PSA Expense VAT Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>PSA Expense VATs</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

@@ -1,0 +1,3537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>AddCampaign</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>AdvancedSetup</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <fields>
+        <fullName>ActualCost</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>Actual_Cost__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Total cost for entire campaign- not broken down by line item. Rolls into &quot;Total Cost&quot; field.</inlineHelpText>
+        <label>Actual Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Ad_Link__c</fullName>
+        <description>Link where advertisement is displayed.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If this is for advertising, what is the URL where the ad is displayed?</inlineHelpText>
+        <label>Ad Link</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Ad_Type__c</fullName>
+        <description>What type of advertisement is this?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What type of advertisement is this?</inlineHelpText>
+        <label>Ad Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Banner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Print</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Additional_Speakers__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>List the name of any additional people (Guidewire customer, analyst, etc) who will speak at this event. List name, title and company.</inlineHelpText>
+        <label>Additional Speakers</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AmountAllOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>AmountWonOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>Analyst_Firm__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>What is the name of the Analyst firm we are meeting with?</inlineHelpText>
+        <label>Analyst Firm</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Campaigns</relationshipLabel>
+        <relationshipName>Campaigns</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Analyst_Meeting_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Analyst Meeting Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Corporate Update</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Inquiry Call</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Inquiry Email</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Product Briefing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Analyst_Name__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>What is the name of the primary analyst who attended the meeting?</inlineHelpText>
+        <label>Analyst Name</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Campaigns (Analyst Name)</relationshipLabel>
+        <relationshipName>Campaigns2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Booth_Number__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter if applicable.</inlineHelpText>
+        <label>Booth Number</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Budget_Details__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Provide any additional information to explain budget numbers.</inlineHelpText>
+        <label>Budget Details</label>
+        <length>500</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>LongTextArea</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>BudgetedCost</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>CampaignMemberRecordTypeId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Consulting_Fees__c</fullName>
+        <description>Any cost associated with consulting or advice received from another company about the event.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Any cost associated with consulting or advice received from another company about the event.</inlineHelpText>
+        <label>Consulting Fees</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Content_Approval_Date__c</fullName>
+        <description>If the content of this Campaign requires IP Committee Approval, what date was that approval granted?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If the content of this Campaign requires IP Committee Approval, what date was that approval granted?</inlineHelpText>
+        <label>Content Approval Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Content_Subject_to_IP_Review__c</fullName>
+        <description>Is the content of this Campaign subject to Guidewire&apos;s IP Committee Review?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Is the content of this Campaign subject to Guidewire&apos;s IP Committee Review?</inlineHelpText>
+        <label>Content Subject to IP Review</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Cancellation_Policy__c</fullName>
+        <externalId>false</externalId>
+        <label>Contract Cancellation Policy</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Signed__c</fullName>
+        <externalId>false</externalId>
+        <label>Contract Signed</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>In Negotiations</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>CurrencyIsoCode</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>DB_Campaign_Tactic__c</fullName>
+        <description>This is a field that is installed by and used with the Adoption Dashboard AppExchange package. If your org already has a similar field, you can change the reports that are part of the Adoption Dashboard package to use your custom field and then delete this field.</description>
+        <externalId>false</externalId>
+        <label>DB Campaign Tactic</label>
+        <picklist>
+            <controllingField>Type</controllingField>
+            <picklistValues>
+                <fullName>Print Advertisement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Employment Seminars</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Webinars</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Public Relations</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Partners</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Referral Program</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Lunches</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Direct Mail</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sales Call Down</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Online Banners/Ads</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Internal Website</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Description</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>Direct_Link__c</fullName>
+        <description>What is the published link for this landing page?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What is the published link for this landing page?</inlineHelpText>
+        <label>Direct Link</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Distribution__c</fullName>
+        <description>Who can this web seminar be destributed to?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Who can this web seminar be destributed to?</inlineHelpText>
+        <label>Distribution</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Everyone - Open Access</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NDA Only - Customers, Partners, Etc.</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Internal Only</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Drayage_Costs__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Cost of internet, electrical, lead retrieval, Union set-up/tear-down, other professional fees, etc.</inlineHelpText>
+        <label>Drayage Costs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>EndDate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>Event_Location__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Address of event.</inlineHelpText>
+        <label>Event Location</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Event_URL__c</fullName>
+        <description>URL for Event or Tradeshow</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter URL for event or tradeshow</inlineHelpText>
+        <label>Event URL</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Exhibit_Hall_Hours__c</fullName>
+        <externalId>false</externalId>
+        <label>Exhibit Hall Hours</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Exhibit_Supplier_Costs_GGE__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Costs for exhibit/booth supplier (GGE in North America).  Costs to ship booth and rent any additional pieces needed for the show.</inlineHelpText>
+        <label>Exhibit Supplier Costs (GGE)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ExpectedResponse</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>ExpectedRevenue</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>Fiscal_Year__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF((StartDate) &gt;= DATE(2012, 8, 31), &quot;2013-Q1&quot;,
+IF((StartDate) &lt;= DATE(2012, 11, 1), &quot;2013-Q2&quot;, null))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Fiscal Year</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Form_Action__c</fullName>
+        <externalId>false</externalId>
+        <label>Form Action</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Generate Email to Campaign Owner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Import information into SFDC Only</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Import information into SFDC/Eloqua</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Future_Recommendation_From_PR_AR__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is where someone from PR/AR would put their comments as to why we should or should not attend this event in the future.</inlineHelpText>
+        <label>Future Recommendation From PR/AR</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Future_Recommendation__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Should we do this event in the future? If necessary, explain in the details section.</inlineHelpText>
+        <label>Future Recommendation</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Continue</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Re-evaluate for next year</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Attend Only</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Do not continue</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Future_Recommendation_from_Demand_Gen__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is where someone from Demand Gen would put their comments as to why we should or should not attend this event in the future.</inlineHelpText>
+        <label>Future Recommendation from Demand Gen</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Giveaway_Cost__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>How much for giveaways? (Example: notepads, bags, pens, candy, anything with or without our logo on it that we hand out at an event.)</inlineHelpText>
+        <label>Giveaway Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Giveaways_Used__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What giveaways did we have/use at this event?</inlineHelpText>
+        <label>Giveaways Used</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>HierarchyActualCost</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyAmountAllOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyAmountWonOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyBudgetedCost</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyExpectedRevenue</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberOfContacts</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberOfConvertedLeads</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberOfLeads</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberOfOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberOfResponses</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberOfWonOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberSent</fullName>
+    </fields>
+    <fields>
+        <fullName>Hosted_File_Expiration_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What date will the hosted recording expire - if any.  (This is the date upon which the public will no longer be able to view the recording using an external URL.)  If the webinar will not expire, leave this field blank.</inlineHelpText>
+        <label>Hosted File Expiration Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Hosted_File_Location__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>For webinars only.  Where is the hosted file located?  This is the URL that you would send to someone outside of Guidewire to view the recording.  Either a GoToWebinar/Meeting, On24, WebEx or LiveMeeting URL.</inlineHelpText>
+        <label>Hosted File Location</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Hosted_on_Corporate_Website__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Is the webinar available for viewing from any of our corporate websites? (www.guidewire.com, www.guidewire.fr, www.guidewire.de, www.guidewire.jp)</inlineHelpText>
+        <label>Hosted on Corporate Website</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>IsActive</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>Landing_Page_URL__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What is the actual URL for the landing page? (Where the HTML can be edited.)</inlineHelpText>
+        <label>Landing Page URL</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Link_to_Campaign_Members_View__c</fullName>
+        <externalId>false</externalId>
+        <label>Link to Campaign Members View</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Link_to_Campaign_Performance_Report__c</fullName>
+        <externalId>false</externalId>
+        <label>Link to Campaign Performance Report</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Link_to_Campaign_Program_in_Marketo__c</fullName>
+        <externalId>false</externalId>
+        <label>Link to Campaign Program in Marketo</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Link_to_Contacts_List_View__c</fullName>
+        <externalId>false</externalId>
+        <label>Link to Contacts List View</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Link_to_Lead_List_View__c</fullName>
+        <externalId>false</externalId>
+        <label>Link to Lead List View</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Marketing_Attendees__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Who will attend this event from the marketing department</inlineHelpText>
+        <label>Marketing Attendees</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Amalia Gonzalez-Revilla</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Brian Desmond</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Brian Retson</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Brian Vannoni</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Danielle Williams</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Diana Stott</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Ellie Javadi</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Eugene Lee</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>James McCully</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Judith Neumann</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Lissette Melo</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Maryann Ibrahim</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Neil Betteridge</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Neil Weiss</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Virginie Capri</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>true</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Marketing_Producer_s__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Who is running/producing this event.  (Can be more than one person.)</inlineHelpText>
+        <label>Marketing Producer(s)</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Amalia Gonzalez-Revilla</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Brian Desmond</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Danielle Williams</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Darlene Smith</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Darrell Smith</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Diana Stott</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Eugene Lee</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Judith Neumann</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Karen Derossett</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Keith Pfeiffer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Narihisa Hattori</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Virginie Capri</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>true</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Media_Magazine__c</fullName>
+        <description>Where is the advertisement running or promoted?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Where is the advertisement running or promoted?</inlineHelpText>
+        <label>Media/Magazine</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Mgmt_Team_Attending__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>List those attending from Guidewire&apos;s Management Team</inlineHelpText>
+        <label>Mgmt Team Attending</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Name</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>Next_Steps__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What are the next steps required post Analyst Meeting?</inlineHelpText>
+        <label>Next Steps</label>
+        <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>LongTextArea</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>NumberOfContacts</fullName>
+    </fields>
+    <fields>
+        <fullName>NumberOfConvertedLeads</fullName>
+    </fields>
+    <fields>
+        <fullName>NumberOfLeads</fullName>
+    </fields>
+    <fields>
+        <fullName>NumberOfOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>NumberOfResponses</fullName>
+    </fields>
+    <fields>
+        <fullName>NumberOfWonOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>NumberSent</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>Organizer_Email__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Email address of vendor or event/venue organizer</inlineHelpText>
+        <label>Organizer/Vendor Email</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Organizer_Name__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of the vendor or event/venue organizer.</inlineHelpText>
+        <label>Organizer/Vendor Name</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Organizer_Phone_Number__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What is the phone number of the vendor or event/venue organizer?</inlineHelpText>
+        <label>Organizer/Vendor Phone Number</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Original_File_Location__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>For Webinars.  Where is the original file saved?  Should be somewhere on the Guidewire network.</inlineHelpText>
+        <label>Original File Location</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Other_Attendees__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>List other attendees (PR reps, Product Management, Consultants, Partners, Analysts).</inlineHelpText>
+        <label>Other Attendees</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Other_Costs__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Provide explanation of other costs in Budget Detail field.</inlineHelpText>
+        <label>Other Costs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Outreach_Plan__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What marketing activities will be conducted to support this event? (Email/Direct mail, phoning? Who, what and when.)</inlineHelpText>
+        <label>Outreach Plan</label>
+        <length>5000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>OwnerId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PO_Number__c</fullName>
+        <description>What is the Guidewire PO Number, if necessary?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What is the Guidewire PO number?  If more than one, list all separating with semi-colons.</inlineHelpText>
+        <label>PO Number</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ParentId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Product_Demo_Information__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>List any information about product demos giving during the tradeshow or seminar. (Example for ACORD: PolicyCenter Demo, 11am on May 25th, Neil giving demo.)</inlineHelpText>
+        <label>Product Demo Information</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Product_Interest__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What Guidewire product is being promoted by this campaign?</inlineHelpText>
+        <label>Product Interest</label>
+        <picklist>
+            <picklistValues>
+                <fullName>ClaimCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>BillingCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PolicyCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Technology</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Not GW Product Specific</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Guidewire Live</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Value Consulting</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>6</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Public_Landing_Page_URL__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the URL that we create to send out to the public.  Often this is a URL the re-directs the viewer to the real page.</inlineHelpText>
+        <label>Public Landing Page URL</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Recommended_Next_Steps__c</fullName>
+        <description>Briefly describe what should happen when a response is received from this Campaign.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Briefly describe what should happen when a response is received from this Campaign.</inlineHelpText>
+        <label>Recommended Next Steps</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Redirect_Link__c</fullName>
+        <description>What is the re-direct link for this landing page?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What is the re-direct link for this landing page? (Get from MarCom.)</inlineHelpText>
+        <label>Redirect Link</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Region__c</fullName>
+        <description>What region is this campaign taking place in?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What region is this campaign taking place in?</inlineHelpText>
+        <label>Region</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Australia/New Zealand</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Belgium</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>China</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>DACH</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Eastern Europe</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>France</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Global</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Iberia</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Italy</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Japan</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Latin America</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Netherlands</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Nordics</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>North America</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>RoA</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Russia</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Turkey</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>United Kingdom</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>true</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>7</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Sales_Consultant_Attendees__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>List all Sales consultants attending and the products they&apos;ll demo (if applicable).</inlineHelpText>
+        <label>Sales Consultant Attendees</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Sales_Rep_Attending__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>List all sales reps attending</inlineHelpText>
+        <label>Sales Rep Attending</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Speaker_Cost__c</fullName>
+        <description>Speaker fees</description>
+        <externalId>false</externalId>
+        <label>Speaker Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Speaker_Name_1__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>List the name of the person (Guidewire customer, Analyst, etc) who will be speaking at this event.</inlineHelpText>
+        <label>Speaker Name 1</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Campaigns</relationshipLabel>
+        <relationshipName>Campaigns</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Speaker_Name_2__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>List the name of the second person (Guidewire customer, analyst, etc) who will speak at this event.</inlineHelpText>
+        <label>Speaker Name 2</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Campaigns (Speaker Name 2)</relationshipLabel>
+        <relationshipName>Campaigns1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Speaking_Date_Time__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>When will the speaking opportunity take place? (Please include date and time)</inlineHelpText>
+        <label>Speaking Date/Time</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Speaking_Description__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Describe speaking opportunity and any other key information.</inlineHelpText>
+        <label>Speaking Description</label>
+        <length>3000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Speaking_Location__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>If at a tradeshow, where will the speaking opportunity take place? During what session, or room location?</inlineHelpText>
+        <label>Speaking Location</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Sponsorship_Details__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter any additional details about the sponsorship (Level, advertising included, etc.)</inlineHelpText>
+        <label>Sponsorship Details</label>
+        <length>1000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Sponsorship_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Sponsorship Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Booth 10x10 or smaller</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Booth 10x20</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Booth Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sponsor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Tabletop</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Speaking Only</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Booth 20x20</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>StartDate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>Status</fullName>
+        <picklist>
+            <picklistValues>
+                <fullName>Planned</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Aborted</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Subject_Line__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What is the subject line for the email invitation.</inlineHelpText>
+        <label>Subject Line</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>T_E_Costs__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Estimated T&amp;E Costs.  (# of people attending x $1,200).  Use $1,200 if flying/hotel is required.)</inlineHelpText>
+        <label>T&amp;E Costs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Topic__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What is the topic for this activity?</inlineHelpText>
+        <label>Topic</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Total_Cost_Including_T_E__c</fullName>
+        <description>Total cost of event including estimated travel expenses less any expected revenue generated.</description>
+        <externalId>false</externalId>
+        <formula>Venue_Exhibit_Main_Item_Costs__c  +  Exhibit_Supplier_Costs_GGE__c  +  Drayage_Costs__c  +  Giveaway_Cost__c  +  Other_Costs__c  +  T_E_Costs__c  -  ExpectedRevenue +  Consulting_Fees__c  +  Speaker_Cost__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Total cost of event including estimated travel expenses less any expected revenue generated.</inlineHelpText>
+        <label>Total Cost Including T&amp;E Less Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Cost_Less_Revenue__c</fullName>
+        <externalId>false</externalId>
+        <formula>Total_Cost__c  -  ExpectedRevenue</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Cost Less Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Cost__c</fullName>
+        <externalId>false</externalId>
+        <formula>Venue_Exhibit_Main_Item_Costs__c  +  Exhibit_Supplier_Costs_GGE__c  +  Drayage_Costs__c  +  Giveaway_Cost__c  +  Other_Costs__c +  Consulting_Fees__c  +  Speaker_Cost__c+ Actual_Cost__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Exhibit+Exhibit Supplier+Drayage+Giveaway+Other</inlineHelpText>
+        <label>Total Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Type</fullName>
+        <picklist>
+            <picklistValues>
+                <fullName>Account Development</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Advertisement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Analyst Meeting</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Analyst Relations</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Assessments</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Banner Ads</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Direct Mail</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GW Event</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>List</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Parent Campaign</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Partners</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Public Relations</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Referral Program</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Seminar/Conference/Tradeshow</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Telemarketing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Value Consulting</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web Seminar</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web Site</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>true</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Venue_Exhibit_Main_Item_Costs__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>If a tradeshow/sponsorship - how much for just the exhibit space or sponsorship costs.  Does not include electrical, lead retrieval, meeting rooms, etc. If an event at hotel or restaurant, how much for F&amp;B/Room Rental? If an Analyst report - how much?</inlineHelpText>
+        <label>Venue/Exhibit/Main Item Costs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Webinar_Host__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Who hosted this webinar?  Usually someone from Marketing.</inlineHelpText>
+        <label>Webinar Host</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Webinar_Managed_By__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What software program was the webinar recoded with.  If &apos;Other&apos;, please contact marketing to have them add your selection to this list.</inlineHelpText>
+        <label>Webinar Managed By</label>
+        <picklist>
+            <picklistValues>
+                <fullName>GoToMeeting/Webinar</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>On24</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>WebEx</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Live Meeting</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Webinar_Presenter__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Who was the main presenter?  If more than one person, add additional name in the description field.</inlineHelpText>
+        <label>Webinar Presenter</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Webinar_Recording_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What day was the webinar recorded.</inlineHelpText>
+        <label>Webinar Recording Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Webinar_Recording_Time__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What time will the recording take place.  Include Time Zone.</inlineHelpText>
+        <label>Webinar Recording Time</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <listViews>
+        <fullName>Advertisement_Active</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>Total_Cost_Less_Revenue__c</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Advertisement</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Advertisement - Active</label>
+    </listViews>
+    <listViews>
+        <fullName>Advertisement_All</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.ACTUAL_COST</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Advertisement</value>
+        </filters>
+        <label>Advertisement - All</label>
+    </listViews>
+    <listViews>
+        <fullName>Advertisement_Inactive</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>Total_Cost_Less_Revenue__c</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Advertisement</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <label>Advertisement - Inactive</label>
+    </listViews>
+    <listViews>
+        <fullName>AllCampaigns</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>Product_Interest__c</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CAMPAIGN.ACTIVE</columns>
+        <columns>Region__c</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CAMPAIGN.NUM_WON_OPPORTUNITIES</columns>
+        <columns>PARENT_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <label>*All Campaigns</label>
+    </listViews>
+    <listViews>
+        <fullName>All_Active_Campaigns_NALA</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.NAME</field>
+            <operation>notContain</operation>
+            <value>DACH,FR,UK</value>
+        </filters>
+        <label>*All Active Campaigns - NALA</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_FY10_Campaigns</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CAMPAIGN.ACTIVE</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>Total_Cost_Less_Revenue__c</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>7/31/2009</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>lessThan</operation>
+            <value>8/1/2010</value>
+        </filters>
+        <label>*All FY10 Campaigns</label>
+    </listViews>
+    <listViews>
+        <fullName>All_FY11_Campaigns</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>CAMPAIGN.ACTUAL_COST</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>7/31/2010</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.END_DATE</field>
+            <operation>lessThan</operation>
+            <value>8/1/2011</value>
+        </filters>
+        <label>*All FY11 Campaigns</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_FY12_Campaigns</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>Marketing_Producer_s__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>7/30/2011</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.END_DATE</field>
+            <operation>lessThan</operation>
+            <value>8/1/2012</value>
+        </filters>
+        <label>*All FY12 Campaigns</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_FY12_Campaigns_North_America</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>PARENT_NAME</columns>
+        <columns>CAMPAIGN.RECORDTYPE</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>Marketing_Producer_s__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>7/30/2011</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.END_DATE</field>
+            <operation>lessThan</operation>
+            <value>8/1/2012</value>
+        </filters>
+        <filters>
+            <field>Region__c</field>
+            <operation>includes</operation>
+            <value>North America,Global</value>
+        </filters>
+        <label>*All FY12 Campaigns North America</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_FY13_Campaigns</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>PARENT_NAME</columns>
+        <columns>CAMPAIGN.RECORDTYPE</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>Marketing_Producer_s__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>7/30/2012</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.END_DATE</field>
+            <operation>lessThan</operation>
+            <value>8/1/2013</value>
+        </filters>
+        <label>*All FY13 Campaigns</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_FY13_Campaigns1</fullName>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CAMPAIGN.ACTIVE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>7/30/2012</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.END_DATE</field>
+            <operation>lessThan</operation>
+            <value>8/1/2013</value>
+        </filters>
+        <filters>
+            <field>Region__c</field>
+            <operation>equals</operation>
+            <value>North America,Global</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.STATUS</field>
+            <operation>notContain</operation>
+            <value>Aborted</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>notEqual</operation>
+            <value>List</value>
+        </filters>
+        <label>*All FY13 Campaigns-NA</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_FY13_Campaigns_North_America</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>PARENT_NAME</columns>
+        <columns>CAMPAIGN.RECORDTYPE</columns>
+        <columns>Region__c</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>Marketing_Producer_s__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>7/30/2012</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.END_DATE</field>
+            <operation>lessThan</operation>
+            <value>8/1/2013</value>
+        </filters>
+        <label>*All FY13 Campaigns</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_Webinars</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>Topic__c</columns>
+        <columns>Webinar_Presenter__c</columns>
+        <columns>Hosted_File_Location__c</columns>
+        <columns>Hosted_File_Expiration_Date__c</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CAMPAIGN.ACTIVE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Web Seminar,Webinar</value>
+        </filters>
+        <label>All Webinars</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Analyst_Meeting</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>Analyst_Firm__c</columns>
+        <columns>Analyst_Name__c</columns>
+        <columns>Product_Interest__c</columns>
+        <columns>Marketing_Attendees__c</columns>
+        <columns>Region__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Analyst Meeting</value>
+        </filters>
+        <label>Analyst Meeting</label>
+    </listViews>
+    <listViews>
+        <fullName>Campaigns_2015</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>CAMPAIGN.ACTUAL_COST</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.ACTIVE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>1/1/2015</value>
+        </filters>
+        <label>Campaigns 2015</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Campaigns_Owned_By_Lissette</fullName>
+        <columns>CORE.USERS.FIRST_NAME</columns>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>CAMPAIGN.ACTUAL_COST</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>Region__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CORE.USERS.FIRST_NAME</field>
+            <operation>equals</operation>
+            <value>Lissette</value>
+        </filters>
+        <label>Campaigns Owned By Lissette</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Direct_Mail_Campaigns_Active</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>Total_Cost_Less_Revenue__c</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Direct Mail</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Direct Mail Campaigns - Active</label>
+    </listViews>
+    <listViews>
+        <fullName>Direct_Mail_Campaigns_Inactive</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>Total_Cost_Less_Revenue__c</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Direct Mail</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <label>Direct Mail Campaigns - Inactive</label>
+    </listViews>
+    <listViews>
+        <fullName>EMEA_Active</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CORE.USERS.FIRST_NAME</field>
+            <operation>equals</operation>
+            <value>virginie,amalia,judith</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>EMEA - Active</label>
+        <language>fr</language>
+    </listViews>
+    <listViews>
+        <fullName>EMEA_Inactive</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>Sponsorship_Type__c</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CORE.USERS.FIRST_NAME</field>
+            <operation>equals</operation>
+            <value>virginie,amalia</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <label>EMEA - Inactive</label>
+    </listViews>
+    <listViews>
+        <fullName>Email_Active</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>Subject_Line__c</columns>
+        <columns>Product_Interest__c</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Email</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Email - Active</label>
+    </listViews>
+    <listViews>
+        <fullName>Email_Inactive</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>Subject_Line__c</columns>
+        <columns>Product_Interest__c</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Email</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <label>Email - Inactive</label>
+    </listViews>
+    <listViews>
+        <fullName>Events_Tradeshows_All</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.ACTIVE</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>Total_Cost__c</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>Future_Recommendation__c</columns>
+        <columns>Region__c</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Seminar/Conference/Tradeshow</value>
+        </filters>
+        <label>Events/Tradeshows - All</label>
+    </listViews>
+    <listViews>
+        <fullName>Events_Tradeshows_FY2011</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>Total_Cost__c</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>Event_URL__c</columns>
+        <columns>Region__c</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>AMOUNT_ALL</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>7/31/2010</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Seminar/Conference/Tradeshow</value>
+        </filters>
+        <label>Events/Tradeshows FY2011</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Events_Tradeshows_FY2012</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>CAMPAIGN.ACTUAL_COST</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>Region__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>7/31/2011</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Seminar/Conference/Tradeshow</value>
+        </filters>
+        <label>Events/Tradeshows FY2012</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Lists_Subscriptions</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>CAMPAIGN.ACTUAL_COST</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.NAME</field>
+            <operation>contains</operation>
+            <value>sub</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.NAME</field>
+            <operation>notContain</operation>
+            <value>web</value>
+        </filters>
+        <label>Lists-Subscriptions</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>MyActiveCampaigns</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>My Active Campaigns</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Parent_Campaigns</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CAMPAIGN.TOT_OPPORTUNITIES</columns>
+        <columns>CAMPAIGN.NUM_WON_OPPORTUNITIES</columns>
+        <columns>CAMPAIGN.TOT_CONTACTS</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CAMPAIGN.ACTIVE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.NAME</field>
+            <operation>contains</operation>
+            <value>Parent</value>
+        </filters>
+        <label>Parent Campaigns</label>
+    </listViews>
+    <listViews>
+        <fullName>PolicyCenter_Webinars</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>CAMPAIGN.ACTUAL_COST</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Product_Interest__c</field>
+            <operation>equals</operation>
+            <value>PolicyCenter</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Web Seminar</value>
+        </filters>
+        <label>PolicyCenter_Webinars</label>
+        <language>de</language>
+    </listViews>
+    <listViews>
+        <fullName>Starter_Kits</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.NAME</field>
+            <operation>contains</operation>
+            <value>Kit</value>
+        </filters>
+        <label>Starter-Kits</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Starter_Kits_FY2013</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.NAME</field>
+            <operation>contains</operation>
+            <value>Kit</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>equals</operation>
+            <value>8/1/2012</value>
+        </filters>
+        <label>Starter-Kits- FY2013</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>UK_Marketing_Campaigns</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>CAMPAIGN.ACTUAL_COST</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.NAME</field>
+            <operation>contains</operation>
+            <value>UK</value>
+        </filters>
+        <label>UK Marketing Campaigns</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>WS_Live_Series_FY2013</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>PARENT_NAME</columns>
+        <columns>CAMPAIGN.RECORDTYPE</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CAMPAIGN.ACTIVE</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>PARENT_NAME</field>
+            <operation>equals</operation>
+            <value>WS-Live-Series- FY2013</value>
+        </filters>
+        <label>WS-Live-Series- FY2013</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>Guidewire_Live</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Web_Site_Active</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Web Site</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Web Site - Active</label>
+    </listViews>
+    <listViews>
+        <fullName>Web_Site_Inactive</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Web Site</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <label>Web Site - Inactive</label>
+    </listViews>
+    <listViews>
+        <fullName>Webinars_Active</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>Webinar_Presenter__c</columns>
+        <columns>Distribution__c</columns>
+        <columns>Hosted_File_Location__c</columns>
+        <columns>Hosted_File_Expiration_Date__c</columns>
+        <columns>Product_Interest__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Web Seminar</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Webinars - Active</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Webinars_FY2011</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>Region__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Web Seminar</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>7/31/2010</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.END_DATE</field>
+            <operation>lessThan</operation>
+            <value>7/31/2011</value>
+        </filters>
+        <label>Webinars - FY2011</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Webinars_FY2012</fullName>
+        <columns>Region__c</columns>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>Webinar_Presenter__c</columns>
+        <columns>Webinar_Recording_Date__c</columns>
+        <columns>Hosted_File_Location__c</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CAMPAIGN.ACTUAL_COST</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>7/31/2011</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Web Seminar</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.END_DATE</field>
+            <operation>lessOrEqual</operation>
+            <value>8/1/2012</value>
+        </filters>
+        <label>Webinars - FY2012</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Webinars_FY2013</fullName>
+        <columns>Region__c</columns>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>Webinar_Presenter__c</columns>
+        <columns>Webinar_Recording_Date__c</columns>
+        <columns>Hosted_File_Location__c</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CAMPAIGN.ACTUAL_COST</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>7/31/2012</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.END_DATE</field>
+            <operation>lessThan</operation>
+            <value>8/1/2013</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Web Seminar</value>
+        </filters>
+        <label>Webinars - FY2013</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Webinars_FY20131</fullName>
+        <columns>Region__c</columns>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>Webinar_Presenter__c</columns>
+        <columns>Webinar_Recording_Date__c</columns>
+        <columns>Hosted_File_Location__c</columns>
+        <columns>CAMPAIGN.NUM_RESPONSES</columns>
+        <columns>CAMPAIGN.NUM_OPPORTUNITIES</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CAMPAIGN.ACTUAL_COST</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.START_DATE</field>
+            <operation>greaterThan</operation>
+            <value>7/31/2013</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.END_DATE</field>
+            <operation>lessThan</operation>
+            <value>8/1/2014</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Web Seminar</value>
+        </filters>
+        <label>Webinars - FY2014</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Webinars_Inactive</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>Webinar_Recording_Date__c</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>Region__c</columns>
+        <columns>Hosted_File_Location__c</columns>
+        <columns>Hosted_File_Expiration_Date__c</columns>
+        <columns>Webinar_Presenter__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.CAMPAIGN_TYPE</field>
+            <operation>equals</operation>
+            <value>Web Seminar</value>
+        </filters>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <label>Webinars - Inactive</label>
+    </listViews>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypes>
+        <fullName>Child_Campaign</fullName>
+        <active>true</active>
+        <description>Use this when you want to roll this campaign into reporting with other related campaigns</description>
+        <label>Child Campaign</label>
+        <picklistValues>
+            <picklist>Ad_Type__c</picklist>
+            <values>
+                <fullName>Banner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Print</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Analyst_Meeting_Type__c</picklist>
+            <values>
+                <fullName>Corporate Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inquiry Call</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inquiry Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Briefing</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Content_Subject_to_IP_Review__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Contract_Signed__c</picklist>
+            <values>
+                <fullName>In Negotiations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Distribution__c</picklist>
+            <values>
+                <fullName>Everyone - Open Access</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Internal Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NDA Only - Customers%2C Partners%2C Etc%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Form_Action__c</picklist>
+            <values>
+                <fullName>Generate Email to Campaign Owner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Import information into SFDC Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Import information into SFDC%2FEloqua</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Future_Recommendation__c</picklist>
+            <values>
+                <fullName>Attend Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Continue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Do not continue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Re-evaluate for next year</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Marketing_Attendees__c</picklist>
+            <values>
+                <fullName>Amalia Gonzalez-Revilla</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brian Desmond</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brian Retson</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brian Vannoni</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Danielle Williams</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Diana Stott</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ellie Javadi</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Eugene Lee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>James McCully</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Judith Neumann</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lissette Melo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maryann Ibrahim</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Neil Betteridge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Neil Weiss</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Virginie Capri</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Marketing_Producer_s__c</picklist>
+            <values>
+                <fullName>Amalia Gonzalez-Revilla</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brian Desmond</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Danielle Williams</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Darlene Smith</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Darrell Smith</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Diana Stott</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Eugene Lee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Judith Neumann</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Karen Derossett</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Keith Pfeiffer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Narihisa Hattori</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Virginie Capri</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>BillingCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ClaimCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidewire Live</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not GW Product Specific</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PolicyCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Technology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Value Consulting</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Region__c</picklist>
+            <values>
+                <fullName>Australia%2FNew Zealand</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Belgium</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>China</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Eastern Europe</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>France</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Global</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Iberia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Italy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Japan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Latin America</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Netherlands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Nordics</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North America</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RoA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Russia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turkey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>United Kingdom</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Sponsorship_Type__c</picklist>
+            <values>
+                <fullName>Booth 10x10 or smaller</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Booth 10x20</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Booth 20x20</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Booth Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Speaking Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sponsor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tabletop</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Aborted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Planned</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>Account Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Advertisement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Analyst Meeting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Analyst Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Assessments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Banner Ads</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Direct Mail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GW Event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>List</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Parent Campaign</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partners</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Referral Program</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Seminar%2FConference%2FTradeshow</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telemarketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Value Consulting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web Seminar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web Site</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Webinar_Managed_By__c</picklist>
+            <values>
+                <fullName>GoToMeeting%2FWebinar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Live Meeting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>On24</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WebEx</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Parent_Campaign</fullName>
+        <active>true</active>
+        <description>Use this to set up relating multiple campaigns, or when you are doing a one off campaign</description>
+        <label>Parent Campaign</label>
+        <picklistValues>
+            <picklist>Ad_Type__c</picklist>
+            <values>
+                <fullName>Banner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Print</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Analyst_Meeting_Type__c</picklist>
+            <values>
+                <fullName>Corporate Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inquiry Call</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inquiry Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Briefing</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Content_Subject_to_IP_Review__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Contract_Signed__c</picklist>
+            <values>
+                <fullName>In Negotiations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Distribution__c</picklist>
+            <values>
+                <fullName>Everyone - Open Access</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Internal Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NDA Only - Customers%2C Partners%2C Etc%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Form_Action__c</picklist>
+            <values>
+                <fullName>Generate Email to Campaign Owner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Import information into SFDC Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Import information into SFDC%2FEloqua</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Future_Recommendation__c</picklist>
+            <values>
+                <fullName>Attend Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Continue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Do not continue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Re-evaluate for next year</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Marketing_Attendees__c</picklist>
+            <values>
+                <fullName>Amalia Gonzalez-Revilla</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brian Desmond</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brian Retson</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brian Vannoni</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Danielle Williams</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Diana Stott</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ellie Javadi</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Eugene Lee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>James McCully</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Judith Neumann</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lissette Melo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maryann Ibrahim</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Neil Betteridge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Neil Weiss</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Virginie Capri</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Marketing_Producer_s__c</picklist>
+            <values>
+                <fullName>Amalia Gonzalez-Revilla</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brian Desmond</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Danielle Williams</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Darlene Smith</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Darrell Smith</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Diana Stott</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Eugene Lee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Judith Neumann</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Karen Derossett</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Keith Pfeiffer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Narihisa Hattori</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Virginie Capri</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>BillingCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ClaimCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guidewire Live</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not GW Product Specific</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PolicyCenter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Technology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Value Consulting</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Region__c</picklist>
+            <values>
+                <fullName>Australia%2FNew Zealand</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Belgium</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>China</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Eastern Europe</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>France</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Global</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Iberia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Italy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Japan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Latin America</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Netherlands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Nordics</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North America</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RoA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Russia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turkey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>United Kingdom</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Sponsorship_Type__c</picklist>
+            <values>
+                <fullName>Booth 10x10 or smaller</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Booth 10x20</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Booth 20x20</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Booth Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Speaking Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sponsor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tabletop</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Aborted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Planned</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>Account Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Advertisement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Analyst Meeting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Analyst Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Assessments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Banner Ads</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Direct Mail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GW Event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>List</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Parent Campaign</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partners</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Referral Program</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Seminar%2FConference%2FTradeshow</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telemarketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Value Consulting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web Seminar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web Site</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Webinar_Managed_By__c</picklist>
+            <values>
+                <fullName>GoToMeeting%2FWebinar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Live Meeting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>On24</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WebEx</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>CAMPAIGN.NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PARENT_NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CAMPAIGN.RECORDTYPE</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CAMPAIGN.ACTIVE</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CAMPAIGN.STATUS</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CAMPAIGN.START_DATE</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CAMPAIGN.NUM_RESPONSES</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CAMPAIGN.NUM_OPPORTUNITIES</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Region__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CORE.USERS.ALIAS</customTabListAdditionalFields>
+        <listViewButtons>Mass_Edit</listViewButtons>
+        <listViewButtons>Mass_Update</listViewButtons>
+        <lookupDialogsAdditionalFields>CAMPAIGN.NAME</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CAMPAIGN.RECORDTYPE</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>PARENT_NAME</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CAMPAIGN.STATUS</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CAMPAIGN.ACTIVE</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CAMPAIGN.START_DATE</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CAMPAIGN.CAMPAIGN_TYPE</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CAMPAIGN.NUM_CONTACTS</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CAMPAIGN.TOT_CONTACTS</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CAMPAIGN.NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Organizer_Phone_Number__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>PARENT_NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CAMPAIGN.START_DATE</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CAMPAIGN.END_DATE</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CAMPAIGN.CAMPAIGN_TYPE</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CAMPAIGN.ACTIVE</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>CAMPAIGN.NAME</searchFilterFields>
+        <searchFilterFields>PARENT_NAME</searchFilterFields>
+        <searchFilterFields>CAMPAIGN.START_DATE</searchFilterFields>
+        <searchFilterFields>CAMPAIGN.END_DATE</searchFilterFields>
+        <searchFilterFields>CAMPAIGN.CAMPAIGN_TYPE</searchFilterFields>
+        <searchFilterFields>CAMPAIGN.STATUS</searchFilterFields>
+        <searchResultsAdditionalFields>CAMPAIGN.NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PARENT_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CAMPAIGN.RECORDTYPE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CAMPAIGN.ACTIVE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CAMPAIGN.STATUS</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CAMPAIGN.START_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Region__c</searchResultsAdditionalFields>
+        <searchResultsCustomButtons>Mass_Edit</searchResultsCustomButtons>
+        <searchResultsCustomButtons>Mass_Update</searchResultsCustomButtons>
+    </searchLayouts>
+    <sharingModel>FullAccess</sharingModel>
+    <webLinks>
+        <fullName>CampaignContactsandLeads</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Campaign Contacts and Leads</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00O?returl=%2F00O&amp;rt=5&amp;c=CAN&amp;c=MEMBER_TYPE&amp;c=MEMBER_STATUS&amp;c=FIRST_NAME&amp;c=LAST_NAME&amp;c=TITLE&amp;c=COMPANY&amp;c=PHONE&amp;c=EMAIL&amp;details=yes&amp;break0=CAN&amp;scopeid_lkid={!Campaign.Id}&amp;scope=one&amp;scopeid={!Campaign.Name}</url>
+        <width>800</width>
+    </webLinks>
+    <webLinks>
+        <fullName>Mass_Edit</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Mass Edit</masterLabel>
+        <openType>sidebar</openType>
+        <page>MassEditCampaign</page>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+    </webLinks>
+    <webLinks>
+        <fullName>Mass_Update</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Mass Update</masterLabel>
+        <openType>sidebar</openType>
+        <page>MassUpdateCampaign</page>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+    </webLinks>
+    <webLinks>
+        <fullName>UploadCampaignMembers</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Upload Campaign Members</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>https://secure.eloqua.com/cvp.aspx?LP=ELQA&amp;SFDCUserName={!User_Username}&amp;SFDCUserFirstName={!User_FirstName}&amp;SFDCUserLastName={!User_LastName}&amp;SFDCUserEmail={!User_Email}&amp;SFDCUserPhone={!User_Phone}&amp;SFDCUserAlias={!User_Alias}&amp;SFDCUserTitle={!User_Title}&amp;SFDCUserDepartment={!User_Department}&amp;SFDCUserCompany={!User_CompanyName}&amp;SFDCOrg={!Org_ID}&amp;SFDCOrgName={!Org_Name}&amp;SFDCOrgPhone={!Org_Phone}&amp;URL=/eloquaroot/agent/contact/ContactUploadWizard.aspx?Border=True%26Context=ExternalLink%26CRMIntegrationCampaignID={!Campaign_ID}%26CRMIntegrationCampaignName={!Campaign_Name}</url>
+    </webLinks>
+</CustomObject>

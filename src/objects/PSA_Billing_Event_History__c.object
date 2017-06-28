@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Archive of Billing Events after they&apos;ve been deleted</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>CR_PSA_GW_Integration_Id__c</fullName>
+        <externalId>false</externalId>
+        <label>CR GW Integration Id</label>
+        <length>40</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CR_PSA_Integration_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>CR Integration Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Ineligible</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Eligible for Invoicing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Processing Invoice</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Complete</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Error</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>CR_PSA_Invoice_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>CR Invoice Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>CR_PSA_Invoice_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>CR Invoice Number</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Account_Discount_Services_Total__c</fullName>
+        <description>Total Services amount used to calculate the Account Discount amount for specific Billing Events</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total Services amount used to calculate the Account Discount amount for specific Billing Events</inlineHelpText>
+        <label>Account Discount Services Total</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Approved__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Approved</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Bill_To_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Copied from Project, for invoice header address info</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Copied from Project, for invoice header address info</inlineHelpText>
+        <label>Bill To Contact</label>
+        <referenceTo>Account_Contact__c</referenceTo>
+        <relationshipLabel>Billing Event History</relationshipLabel>
+        <relationshipName>Billing_Event_History</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Billing_Detail_Template__c</fullName>
+        <description>Determines the level of detail for time/expense supporting documents</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines the level of detail for time/expense supporting documents</inlineHelpText>
+        <label>Billing Detail Template</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Billing_Event_Batch__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Billing Event Batch</label>
+        <referenceTo>pse__Billing_Event_Batch__c</referenceTo>
+        <relationshipLabel>Billing Event History</relationshipLabel>
+        <relationshipName>Billing_Event_History</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Billing_Stage__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Used for Integration Logging</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for Integration Logging</inlineHelpText>
+        <label>PSA Billing Stage</label>
+        <referenceTo>PSA_Billing_Stage__c</referenceTo>
+        <relationshipLabel>Billing Event History</relationshipLabel>
+        <relationshipName>Billing_Event_History</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_CIM_Reviewed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>For the review process, for CIM to indicate they have reviewed the billing event</description>
+        <externalId>false</externalId>
+        <inlineHelpText>For the review process, for CIM to indicate they have reviewed the billing event</inlineHelpText>
+        <label>CIM Reviewed</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_CIM_User__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>CIM on the related project</description>
+        <externalId>false</externalId>
+        <inlineHelpText>CIM on the related project</inlineHelpText>
+        <label>CIM User</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Billing_Event_History</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Comments</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Billing Event History</relationshipLabel>
+        <relationshipName>Billing_Event_History</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Current_Billing_Amount__c</fullName>
+        <description>Used to determine if the CIM and PM Reviewed checkboxes need to be reset. Updated by Billing Rule Application logic.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to determine if the CIM and PM Reviewed checkboxes need to be reset. Updated by Billing Rule Application logic.</inlineHelpText>
+        <label>Current Billing Amount</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Current_Billing_Event_Item_Count__c</fullName>
+        <description>Used to determine if the CIM and PM Reviewed checkboxes need to be reset. Updated by Billing Rule Application logic.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to determine if the CIM and PM Reviewed checkboxes need to be reset. Updated by Billing Rule Application logic.</inlineHelpText>
+        <label>Current Billing Event Item Count</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Date__c</fullName>
+        <description>Billing Event Date, not necessarily the Invoice Date</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Billing Event Date, not necessarily the Invoice Date</inlineHelpText>
+        <label>Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Discount_Applied__c</fullName>
+        <description>Summary of included BEI&apos;s representing discount-related billing rule credits, consisting of Miscellaneous Adjustments with Billing Rule Type: Services Credit - Customer Discount Services Credit - Project Discount Discount Adjustment</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Summary of included BEI&apos;s representing discount-related billing rule credits, consisting of Miscellaneous Adjustments with Billing Rule Type: Services Credit - Customer Discount Services Credit - Project Discount Discount Adjustment</inlineHelpText>
+        <label>Discount Applied</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Expense_Credits_Applied__c</fullName>
+        <description>Summary of included BEI&apos;s representing expense-related billing rule credits, consisting of Miscellaneous Adjustments with Billing Rule Type: Expense Credit - Cap Percent of Services Expense Credit - Cap Flat Amount</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Summary of included BEI&apos;s representing expense-related billing rule credits, consisting of Miscellaneous Adjustments with Billing Rule Type: Expense Credit - Cap Percent of Services Expense Credit - Cap Flat Amount</inlineHelpText>
+        <label>Expense Credits Applied</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Expense_Total__c</fullName>
+        <description>Summary of included BEI&apos;s related to expense charges, including: Expense Lines Milestones: Billable Expenses - Fixed Misc Adjustments with Billing Rule Type: Expense Charge - Percent of Services Expense Charge - Flat Amount Miscellaneous</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Summary of included BEI&apos;s related to expense charges, including: Expense Lines Milestones: Billable Expenses - Fixed Misc Adjustments with Billing Rule Type: Expense Charge - Percent of Services Expense Charge - Flat Amount Miscellaneous</inlineHelpText>
+        <label>Expense Total</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Holdback_Applied__c</fullName>
+        <description>Summary of included BEI&apos;s representing holdback-related billing rule credits, consisting of Miscellaneous Adjustments with Billing Rule Type: Holdback Holdback Adjustment</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Summary of included BEI&apos;s representing holdback-related billing rule credits, consisting of Miscellaneous Adjustments with Billing Rule Type: Holdback Holdback Adjustment</inlineHelpText>
+        <label>Holdback Applied</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Holdback_Release_Applied__c</fullName>
+        <description>Total of holdback release amounts</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total of holdback release amounts</inlineHelpText>
+        <label>Holdback Release Applied</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Integration_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Integration Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Invoice_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Invoice Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Invoice_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Invoice Number</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Invoiced__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Invoiced</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_PM_Reviewed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>For the review process, for PM to indicate they have reviewed the billing event</description>
+        <externalId>false</externalId>
+        <inlineHelpText>For the review process, for PM to indicate they have reviewed the billing event</inlineHelpText>
+        <label>PM Reviewed</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_PO_Number__c</fullName>
+        <description>Copied from the Project</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Copied from the Project</inlineHelpText>
+        <label>PO Number</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Prior_Billing_Event__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Copied from deleted billing event -- lookup to prior billing event history record</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Copied from deleted billing event -- lookup to prior billing event history record</inlineHelpText>
+        <label>Prior Billing Event</label>
+        <referenceTo>PSA_Billing_Event_History__c</referenceTo>
+        <relationshipLabel>Billing Event History</relationshipLabel>
+        <relationshipName>Billing_Event_History</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Project</label>
+        <referenceTo>pse__Proj__c</referenceTo>
+        <relationshipLabel>Billing Event History</relationshipLabel>
+        <relationshipName>Billing_Event_History</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Released__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Released</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Send_CIM_Notification__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>If checked, send an email notification to the CIM when the Invoice Detail docs are attached. If not checked, don&apos;t automatically send email notification to the CIM when the Invoice Detail docs are attached.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked, send an email notification to the CIM when the Invoice Detail docs are attached. If not checked, don&apos;t automatically send email notification to the CIM when the Invoice Detail docs are attached.</inlineHelpText>
+        <label>Send CIM Notification</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Services_Credits_Applied__c</fullName>
+        <description>Summary of included BEI&apos;s representing services-related billing rule credits, consisting of Miscellaneous Adjustments with Billing Rule Type: Services Credit - Cap Flat Amount</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Summary of included BEI&apos;s representing services-related billing rule credits, consisting of Miscellaneous Adjustments with Billing Rule Type: Services Credit - Cap Flat Amount</inlineHelpText>
+        <label>Services Credits Applied</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Ship_To_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Copied from Project, for invoice header address info</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Copied from Project, for invoice header address info</inlineHelpText>
+        <label>Ship To Contact</label>
+        <referenceTo>Account_Contact__c</referenceTo>
+        <relationshipLabel>Billing Event History (Ship To Contact)</relationshipLabel>
+        <relationshipName>Billing_Event_History1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Special_Invoice_Instructions__c</fullName>
+        <externalId>false</externalId>
+        <label>Special Invoice Instructions</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>PSA_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Summary_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Summary Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_T_M_Services_Total__c</fullName>
+        <description>Summary of included BEI&apos;s related to T&amp;M services: Timecard splits Misc Adjustments with Billing Rule Type: Services Charge - Minimum Hours Miscellaneous Services Charge Miscellaneous Services Credit</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Summary of included BEI&apos;s related to T&amp;M services: Timecard splits Misc Adjustments with Billing Rule Type: Services Charge - Minimum Hours Miscellaneous Services Charge Miscellaneous Services Credit</inlineHelpText>
+        <label>T&amp;M Services Total</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Time_Period__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Used to set the Invoice Date of the billing event</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to set the Invoice Date of the billing event</inlineHelpText>
+        <label>Time Period</label>
+        <referenceTo>pse__Time_Period__c</referenceTo>
+        <relationshipLabel>Billing Event History</relationshipLabel>
+        <relationshipName>Billing_Event_History</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Billing Event History</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Project__c</columns>
+        <columns>PSA_Time_Period__c</columns>
+        <columns>PSA_Name__c</columns>
+        <columns>PSA_Released__c</columns>
+        <columns>PSA_Invoice_Date__c</columns>
+        <columns>PSA_Invoiced__c</columns>
+        <columns>PSA_Summary_Amount__c</columns>
+        <columns>PSA_Status__c</columns>
+        <columns>PSA_CIM_Reviewed__c</columns>
+        <columns>PSA_Integration_Status__c</columns>
+        <columns>PSA_Billing_Detail_Template__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All1</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>BEH-{000000}</displayFormat>
+        <label>Billing Event History Id</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Billing Event History</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>PSA_Project__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Time_Period__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Summary_Amount__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Status__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Invoice_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_CIM_Reviewed__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Integration_Status__c</customTabListAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

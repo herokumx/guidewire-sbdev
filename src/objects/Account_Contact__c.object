@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>This object allows tracking of multiple addresses/sites and Contact types.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>Account_Currency__c</fullName>
+        <description>Currency set on the Associated Account</description>
+        <externalId>false</externalId>
+        <formula>TEXT(Account__r.CurrencyIsoCode)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Currency set on the Associated Account</inlineHelpText>
+        <label>Account Currency</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account__c</fullName>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Bill To \ Ship To</relationshipLabel>
+        <relationshipName>Account_Contacts</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Contact_Identifier__c</fullName>
+        <externalId>false</externalId>
+        <label>Contact Identifier</label>
+        <length>200</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact_Key__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>Contact Key</label>
+        <length>5</length>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Contact_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Contact Name</label>
+        <length>200</length>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact_RecordType__c</fullName>
+        <externalId>false</externalId>
+        <formula>Contact__r.RecordType.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contact RecordType</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Contact Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Bill To</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Ship To</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <externalId>false</externalId>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Bill To\ Ship To</relationshipLabel>
+        <relationshipName>Account_Contacts</relationshipName>
+        <relationshipOrder>1</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Integration_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Integration Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Pending Integration</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Integrated</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Not Integrated</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Is_Community_User__c</fullName>
+        <externalId>false</externalId>
+        <formula>Contact__r.Is_Community_User__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Is Community User</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Legacy_SF2_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>Legacy SF2 ID</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Legacy_SF2_Information__c</fullName>
+        <externalId>false</externalId>
+        <label>Legacy SF2 Information</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Participant_Account__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Participant Account</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Account.RecordType.Name</field>
+                <operation>notEqual</operation>
+                <value>Site</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Bill To \ Ship To - All</relationshipLabel>
+        <relationshipName>Account_Contacts1</relationshipName>
+        <required>true</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>RecordStatus__c</fullName>
+        <externalId>false</externalId>
+        <label>Record Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Site_Account_Address__c</fullName>
+        <externalId>false</externalId>
+        <formula>(Account__r.BillingStreet)+ &quot;, &quot; +(Account__r.BillingCity)+ &quot;, &quot;+(Account__r.BillingState)+ &quot;, &quot; +(Account__r.BillingCountry)+ &quot;, &quot;+( Account__r.BillingPostalCode)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Site Account Address</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Bill To</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Ship To</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Used_for__c</fullName>
+        <externalId>false</externalId>
+        <label>Used for</label>
+        <picklist>
+            <picklistValues>
+                <fullName>BillingCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ClaimCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PolicyCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Suite</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>DataHub</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>LMS</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Mobile &amp; Portals</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PC Solutions Fee</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Professional Services</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>RFG Payment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PartnerConnect</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Guidewire Live</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>8</visibleLines>
+    </fields>
+    <label>Account Contact</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Contact_Name__c</columns>
+        <columns>Contact_Key__c</columns>
+        <columns>Integration_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <label>Account Contact Name</label>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Account Contacts</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Contact_Type__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Contact_Key__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Contact_Type__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Contact_Key__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Contact_RecordType__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Is_Community_User__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Contact_Type__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Contact_Key__c</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Contact_Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Contact_Key__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Contact_Type_Is_not_Editable</fullName>
+        <active>true</active>
+        <description>Please ensure that user is not able to change value of Contact Type one ACR is created</description>
+        <errorConditionFormula>ISCHANGED(Contact_Type__c) &amp;&amp; NOT(ISNEW())</errorConditionFormula>
+        <errorDisplayField>Contact_Type__c</errorDisplayField>
+        <errorMessage>Can not change value of Contact Type.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Participant_Account_Is_not_Editable</fullName>
+        <active>true</active>
+        <description>Please ensure that user is not able to change value of Participant Account one ACR is created.</description>
+        <errorConditionFormula>ISCHANGED(Participant_Account__c) &amp;&amp; NOT(ISNEW()) &amp;&amp; NOT($User.ProfileId == &apos;00e30000000cGt8&apos;)</errorConditionFormula>
+        <errorDisplayField>Participant_Account__c</errorDisplayField>
+        <errorMessage>Can not change value of Participant Account.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>TRAC_Acct_ParticipantID_Verification</fullName>
+        <active>true</active>
+        <description>Checks to ensure that the Participant Account attached to an ACR record has the ParticipantID field populated.</description>
+        <errorConditionFormula>ISBLANK( Participant_Account__r.Participant_id__c )</errorConditionFormula>
+        <errorMessage>Please ensure that the Participant Account you are trying to add has a valid Participant ID.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>TRAC_Contact_Email_Verification</fullName>
+        <active>true</active>
+        <description>Checks to ensure that the Contact attached to an ACR record has an Email address</description>
+        <errorConditionFormula>ISNEW() &amp;&amp; ISBLANK(Contact__r.Email)</errorConditionFormula>
+        <errorMessage>Please ensure that the associated Contact record has a valid email address.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>TRAC_Contact_Print_As_Verification</fullName>
+        <active>true</active>
+        <description>Checks to ensure that the Contact attached to an ACR record has the Print As field populated</description>
+        <errorConditionFormula>ISBLANK(Contact__r.Print_As__c) &amp;&amp;  ISNEW()</errorConditionFormula>
+        <errorMessage>Please ensure that the associated Contact record has the &quot;Print As&quot; filled out.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>New_Invoicing_Contact_Account</fullName>
+        <availability>online</availability>
+        <description>Relabeled &quot;New&quot; button for Accounts</description>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Invoicing Contact</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/a4e/e?
+CF00N34000005W6zW={!Account.Name}
+&amp;CF00N34000005W6zW_lkid={!Account.Id}
+&amp;retURL=%2F{!Account.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Invoicing_Contact_Account_Address</fullName>
+        <availability>online</availability>
+        <description>New Button for Account Address.</description>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Invoicing Contact</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/a4e/e?
+CF00N34000005W6yx={!Account.Name}
+&amp;CF00N34000005W6yx_lkid={!Account.Id}
+&amp;retURL=%2F{!Account.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Invoicing_Contact_Contact</fullName>
+        <availability>online</availability>
+        <description>Relabeled New button for creating a new ACR record from Contacts</description>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Invoicing Contact</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/a4e/e?CF00N34000005W6yy={!Contact.FirstName} {!Contact.LastName} &amp;CF00N34000005W6yy_lkid={!Contact.Id}&amp;saveURL=%2F{!Contact.Id}&amp;retURL=%2F{!Contact.Id}</url>
+    </webLinks>
+</CustomObject>

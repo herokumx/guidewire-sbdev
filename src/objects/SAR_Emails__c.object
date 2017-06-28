@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Alliances_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>Alliances Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>HelpDesk_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>HelpDesk Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Live_Request_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>Live Request Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Predictive_Products_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>Predictive Products Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Software_Delivery_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>Software Delivery Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SupportOperations_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>SupportOperations Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TDC_MGMT_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>TDC MGMT Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ThunderheadEmail__c</fullName>
+        <externalId>false</externalId>
+        <label>ThunderheadEmail</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <label>SAR Emails</label>
+    <visibility>Protected</visibility>
+</CustomObject>

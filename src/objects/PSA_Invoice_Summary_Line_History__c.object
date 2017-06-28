@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Contains a copy of records deleted from the invoice summary line object (when billing events are deleted)</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>PSA_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Amount</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Billing_Event_History__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Lookup to the parent Billing Event History record</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to the parent Billing Event History record</inlineHelpText>
+        <label>Billing Event History</label>
+        <referenceTo>PSA_Billing_Event_History__c</referenceTo>
+        <relationshipLabel>Invoice Summary Line History</relationshipLabel>
+        <relationshipName>Invoice_Summary_Line_History</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Billing_Event_Name__c</fullName>
+        <description>Name of the related Billing Event that was deleted.  This will be used to link to the parent Billing Event History record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of the related Billing Event that was deleted.  This will be used to link to the parent Billing Event History record.</inlineHelpText>
+        <label>Billing Event Name</label>
+        <length>80</length>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Summary_Line_Type__c</fullName>
+        <description>Categories according to which billing event items will be subtotaled and displayed on an invoice</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Categories according to which billing event items will be subtotaled and displayed on an invoice</inlineHelpText>
+        <label>Summary Line Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Summary_Line_Id__c</fullName>
+        <externalId>false</externalId>
+        <label>Summary Line Id</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Invoice Summary Line History</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Billing_Event_History__c</columns>
+        <columns>PSA_Billing_Event_Name__c</columns>
+        <columns>PSA_Amount__c</columns>
+        <columns>Summary_Line_Id__c</columns>
+        <columns>PSA_Summary_Line_Type__c</columns>
+        <columns>PSA_Description__c</columns>
+        <columns>CURRENCY_ISO_CODE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <displayFormat>ISLH-{000000}</displayFormat>
+        <label>Invoice Summary Line History Id</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Invoice Summary Line History</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>PSA_Billing_Event_History__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Billing_Event_Name__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Summary_Line_Type__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Amount__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Description__c</customTabListAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

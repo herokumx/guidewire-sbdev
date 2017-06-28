@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Account_Requesting__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account Requesting</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Reference Request</relationshipLabel>
+        <relationshipName>Reference_Request</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CRM_email_Field__c</fullName>
+        <externalId>false</externalId>
+        <label>CRM email Field</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DWP__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Account_Requesting__r.OverallDWP__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Overall DWP (in Million US$)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Direct_Premiums__c</fullName>
+        <externalId>false</externalId>
+        <formula>Text(Account_Requesting__r.Direct_Premiums__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Direct Premiums in Thousands</inlineHelpText>
+        <label>Direct Premiums</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Guidewire_Person_Requesting__c</fullName>
+        <externalId>false</externalId>
+        <formula>CreatedBy.FirstName+&quot; &quot;+CreatedBy.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Guidewire Person Requesting</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Gw_products_tobe_discussed_on_REF_Call__c</fullName>
+        <externalId>false</externalId>
+        <label>Product(s) to Discuss</label>
+        <picklist>
+            <picklistValues>
+                <fullName>BillingCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ClaimCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>DataHub</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Digital Portals</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Guidewire Live</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>InfoCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>InsuranceSuite</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PolicyCenter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Predictive Analytics</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SBTs</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Internal_Comments_for_Team_Fulfilling__c</fullName>
+        <externalId>false</externalId>
+        <label>Internal Comments for Team Fulfilling</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>LOB_s__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(INCLUDES( Account_Requesting__r.LOBNEW__c ,&quot;Commercial&quot;),&quot;Commercial&quot;,NULL)+BR()+
+IF(INCLUDES( Account_Requesting__r.LOBNEW__c ,&quot;Personal&quot;),&quot;Personal&quot;,NULL)+BR()+
+IF(INCLUDES( Account_Requesting__r.LOBNEW__c ,&quot;Reinsurance&quot;),&quot;Reinsurance&quot;,NULL)+BR()+
+IF(INCLUDES( Account_Requesting__r.LOBNEW__c ,&quot;Workers Compensation&quot;),&quot;Workers Compensation&quot;,NULL)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>LOB&apos;s</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>List_Other_Topics_to_Discuss__c</fullName>
+        <externalId>false</externalId>
+        <label>List Other Topics to Discuss</label>
+        <length>400</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>No_Longer_Needed1__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( No_Longer_Needed__c = true, &apos;TRUE&apos;, &apos;FALSE&apos;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>No Longer Needed1</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>No_Longer_Needed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>No Longer Needed</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Number_of_Reference_s_requested__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Reference(s) requested</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Related_To__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity Related To</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>$Source.Account_Requesting__c</field>
+                <operation>equals</operation>
+                <valueField>Opportunity.Account.Id</valueField>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Reference Request (Opportunity Related To)</relationshipLabel>
+        <relationshipName>Reference_Request1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Status__c</fullName>
+        <description>display stage of the opportunity from opportunity related to</description>
+        <externalId>false</externalId>
+        <formula>text( Opportunity_Related_To__r.StageName )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Opportunity Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Premium_in_Scope__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity_Related_To__r.Premium_In_Scope__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Premium in Scope</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Primary_Reference_Objectives__c</fullName>
+        <externalId>false</externalId>
+        <label>Primary Objective(s) to Make Successful</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Primary_Topics_to_be_discussed__c</fullName>
+        <externalId>false</externalId>
+        <label>Primary Topic(s) to Discuss</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Change Management</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Competitor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Integrations</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>LOBs</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Partners / SI’s</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Product functionality</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Project / Implementation Effort &amp; Cost</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Upgrades</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Why Guidewire</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>true</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Reference_Attendee_Names_Titles__c</fullName>
+        <externalId>false</externalId>
+        <label>Reference Attendee Names &amp; Titles</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Reference_Contact_Prospect_Customer__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Reference Contact (Prospect/Customer)</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>$Source.Account_Requesting__c</field>
+                <operation>equals</operation>
+                <valueField>Contact.Account.Id</valueField>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Reference Request</relationshipLabel>
+        <relationshipName>Reference_Request</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Region_Requested_to_Fulfill_Reference__c</fullName>
+        <externalId>false</externalId>
+        <label>Region requested to Fulfill Reference</label>
+        <picklist>
+            <picklistValues>
+                <fullName>AMER</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>LatAM</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EMEA</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>APAC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Request_Category__c</fullName>
+        <externalId>false</externalId>
+        <label>Request Category</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Prospect/Customer Reference related to active sales cycle</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Customer-to-Customer discussion not related to active sales cycle</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Requested_by_fulfillment_date__c</fullName>
+        <externalId>false</externalId>
+        <label>Date Requested for Completion</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Tier_Aggregate_Organization__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE(Account_Requesting__r.RecordType.DeveloperName,
+&quot;Prospect&quot;,TEXT(Account_Requesting__r.Aggregate_Org_Tier__c),
+&quot;Customer&quot;,Account_Requesting__r.Tier_Aggregate_Organization__c,
+NULL
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Tier Aggregate Organization</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Type_of_Reference_Request__c</fullName>
+        <externalId>false</externalId>
+        <label>Request Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Phone Call / WebEx</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Onsite Visit</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Analysts</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Connections</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other (User Groups, etc.)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <label>Reference Request</label>
+    <nameField>
+        <displayFormat>RefReq-{00000}</displayFormat>
+        <label>Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Reference Request</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Guidewire_Person_Requesting__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Gw_products_tobe_discussed_on_REF_Call__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Primary_Topics_to_be_discussed__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Number_of_Reference_s_requested__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Requested_by_fulfillment_date__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Account_Requesting__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Guidewire_Person_Requesting__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Gw_products_tobe_discussed_on_REF_Call__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Primary_Topics_to_be_discussed__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Number_of_Reference_s_requested__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Requested_by_fulfillment_date__c</lookupDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Account_Requesting__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Requested_by_fulfillment_date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>List_Other_Topics_to_Discuss__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Fill_the_List_Other_Topics_to_Discuss</fullName>
+        <active>true</active>
+        <errorConditionFormula>IF(
+AND(
+      Text( Primary_Topics_to_be_discussed__c )=&quot;Other&quot;,
+     ISBLANK( List_Other_Topics_to_Discuss__c )),True,False)</errorConditionFormula>
+        <errorDisplayField>List_Other_Topics_to_Discuss__c</errorDisplayField>
+        <errorMessage>Please Fill The &quot;List Other Topics to Discuss&quot;</errorMessage>
+    </validationRules>
+</CustomObject>

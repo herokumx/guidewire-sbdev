@@ -1,0 +1,781 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <enableFeeds>true</enableFeeds>
+    <fields>
+        <fullName>AccountId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>ActivationDate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>ApprovalStatus</fullName>
+        <picklist>
+            <picklistValues>
+                <fullName>Draft</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>In Approval Process</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Activated</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>BillingAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>CPQ_Contract_Identifier__c</fullName>
+        <externalId>true</externalId>
+        <label>Contract Identifier</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CPQ_Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Service Contracts</relationshipLabel>
+        <relationshipName>Service_Contracts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CS_Account_Short_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(Account.CS_Account_Short_Name__c,&apos;Account Short name is Blank&apos;)</formula>
+        <label>Account Short Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_BFO_Key__c</fullName>
+        <externalId>false</externalId>
+        <label>BFO Key</label>
+        <length>155</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_BFO__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>BFO</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CS_Bill_To_Contact_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>CS_Bill_to_Contact__r.Contact__r.FirstName+&apos; &apos;+ CS_Bill_to_Contact__r.Contact__r.LastName</formula>
+        <label>Bill To Contact Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Bill_to_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Bill To Contact</inlineHelpText>
+        <label>Bill to Contact</label>
+        <lookupFilter>
+            <active>false</active>
+            <filterItems>
+                <field>Account_Contact__c.Contact_Type__c</field>
+                <operation>equals</operation>
+                <value>Bill To</value>
+            </filterItems>
+            <filterItems>
+                <field>Account_Contact__c.Account__c</field>
+                <operation>equals</operation>
+                <value>Service Contract: Account ID</value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>Account_Contact__c</referenceTo>
+        <relationshipLabel>Service Contracts</relationshipLabel>
+        <relationshipName>Service_Contracts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CS_Customer_Contact_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>CS_Ship_to_Contact__r.Contact__c</formula>
+        <label>Customer Contact Id</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_LIne_Item_with_SN__c</fullName>
+        <externalId>false</externalId>
+        <label>Line Item with SN</label>
+        <summaryFilterItems>
+            <field>ContractLineItem.CS_Serial_Number__c</field>
+            <operation>notEqual</operation>
+            <value>NA</value>
+        </summaryFilterItems>
+        <summaryForeignKey>ContractLineItem.ServiceContractId</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>CS_Non_Standard__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE(Account.CS_Account_Short_Name__c, 
+&apos;Aviva Canada&apos;,&apos;Customer has Non Standard SLA&apos;,
+&apos;Aviva UK&apos;, &apos;Customer has Non Standard SLA&apos;,
+&apos;Berkley&apos;, &apos;Customer has Non Standard SLA&apos;,
+&apos;Catlin&apos;, &apos;Customer has Non Standard SLA&apos;,
+&apos;ICBC&apos;, &apos;Customer has Non Standard SLA&apos;,
+&apos;MiddleOak&apos;, &apos;Customer has Non Standard SLA&apos;,
+&apos;Harleysville&apos;, &apos;Customer has Non Standard SLA&apos;,
+&apos;Nationwide&apos;, &apos;Customer has Non Standard SLA&apos;,
+&apos;Dentists&apos;, &apos;Customer has Non Standard SLA&apos;,
+&apos;Riverstone&apos;, &apos;Customer has Non Standard SLA&apos;,
+&apos;NA&apos;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Non Standard</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Rating_Management_Key__c</fullName>
+        <description>*** Service Cloud Rating Management Product Key *****</description>
+        <externalId>false</externalId>
+        <label>Rating Management Key</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Rating_Management__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Rating Management</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CS_Re_Insurance_Key__c</fullName>
+        <description>***** Service Cloud- Rating Management Product Key****</description>
+        <externalId>false</externalId>
+        <label>Re Insurance Key</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Re_Insurance__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Re Insurance</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CS_SAP_Production_Key__c</fullName>
+        <description>*** Service Cloud SAP Production Key *****</description>
+        <externalId>false</externalId>
+        <label>SAP Production Key</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_SAP_Production__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>SAP Production</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CS_SN_Template_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>/*
+IF(CS_LIne_Item_with_SN__c &gt; 0,  $Setup.CS_Software_Delivery__c.CS_Conga_Key_Attachment_Template_Id__c ,&apos;&apos;)
+*/
+
+IF(CS_Rating_Management__c, $Setup.CS_Software_Delivery__c.CS_Rating_Management_Template__c ,&apos;&apos;)+&apos;,&apos;+
+IF(CS_Re_Insurance__c, $Setup.CS_Software_Delivery__c.CS_Re_Insurance_Template__c ,&apos;&apos;)+&apos;,&apos;+
+IF(CS_BFO__c, $Setup.CS_Software_Delivery__c.CS_BFO_Template__c,&apos;&apos;)+&apos;,&apos;+
+IF(CS_SAP_Production__c, $Setup.CS_Software_Delivery__c.CS_SAP_Production_Template__c,&apos;&apos;)</formula>
+        <label>Serial Number Template ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Sales_Account_Manager_Email__c</fullName>
+        <description>Sales Account Manager Email</description>
+        <externalId>false</externalId>
+        <formula>Account.Customer_Relationship_Mgr__r.Email</formula>
+        <label>Sales Account  Manager Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Services_Account_Manager_Email__c</fullName>
+        <description>Services Contact Manager Id</description>
+        <externalId>false</externalId>
+        <formula>Account.Services_Account_Manager__r.Email</formula>
+        <label>Services Account Manager Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Ship_To_Contact_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>CS_Ship_to_Contact__r.Contact__r.FirstName+&apos; &apos;+ CS_Ship_to_Contact__r.Contact__r.LastName</formula>
+        <label>Ship To Contact Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Ship_to_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Ship To Contact</inlineHelpText>
+        <label>Ship to Contact</label>
+        <lookupFilter>
+            <active>false</active>
+            <filterItems>
+                <field>Account_Contact__c.Contact_Type__c</field>
+                <operation>equals</operation>
+                <value>Ship To</value>
+            </filterItems>
+            <filterItems>
+                <field>Account_Contact__c.Account__c</field>
+                <operation>equals</operation>
+                <value>Service Contract: Account ID</value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>Account_Contact__c</referenceTo>
+        <relationshipLabel>Service Contracts</relationshipLabel>
+        <relationshipName>Support_Service_Contracts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CS_Software_Delivery_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Software Delivery Date</inlineHelpText>
+        <label>Software Delivery Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>CS_Software_Delivery_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(CS_is_Delivered__c, IMAGE(&quot;/img/samples/flag_green.gif&quot;,&quot;Green&quot;),
+IMAGE(&quot;/img/samples/flag_red.gif&quot;,&quot;Red&quot;))</formula>
+        <label>Software Delivery Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Software_Delivery_Template_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>$Setup.CS_Software_Delivery__c.CS_Conga_Email_Template_Id__c</formula>
+        <label>Software Delivery Template Id</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_is_Delivered__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>is Delivered</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ContactId</fullName>
+        <inlineHelpText>Primary Contact on the Asset for software Delivery Notification</inlineHelpText>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CurrencyIsoCode</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Description</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Discount</fullName>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>EndDate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>GrandTotal</fullName>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>LineItemCount</fullName>
+        <inlineHelpText>Number of Line Items in the Service Contract</inlineHelpText>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Name</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>OwnerId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>ParentServiceContractId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>RootServiceContractId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Services_Account_Manager__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account.Services_Account_Manager__r.FirstName + &apos; &apos; + Account.Regional_Alliance_Manager__r.LastName</formula>
+        <label>Services Account Manager</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ShippingAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>ShippingHandling</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Software_Delivery_Alias__c</fullName>
+        <description>Software delivery Alias</description>
+        <externalId>false</externalId>
+        <label>Software Delivery Alias</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SpecialTerms</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>StartDate</fullName>
+        <inlineHelpText>Start Date of the Contract</inlineHelpText>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Status</fullName>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>StatusIndicator</fullName>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Subtotal</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Tax</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Term</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>TotalPrice</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <listViews>
+        <fullName>All_ServiceContracts</fullName>
+        <columns>CONTRACT.NAME</columns>
+        <columns>CONTRACT.APPROVALSTATUS</columns>
+        <columns>CONTRACT.STARTDATE</columns>
+        <columns>CONTRACT.ENDDATE</columns>
+        <columns>CONTRACT.STATUS</columns>
+        <filterScope>Everything</filterScope>
+        <label>All Service Contracts</label>
+    </listViews>
+    <listViews>
+        <fullName>All_ServiceContracts</fullName>
+        <columns>CONTRACT.NAME</columns>
+        <columns>CONTRACT.APPROVALSTATUS</columns>
+        <columns>CONTRACT.STARTDATE</columns>
+        <columns>CONTRACT.ENDDATE</columns>
+        <columns>CONTRACT.STATUS</columns>
+        <filterScope>Everything</filterScope>
+        <label>All Service Contracts</label>
+    </listViews>
+    <searchLayouts>
+        <customTabListAdditionalFields>CONTRACT.NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CONTRACT.STARTDATE</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CONTRACT.ENDDATE</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CONTRACT.APPROVALSTATUS</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CONTRACT.STATUS</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CONTRACT.STATUSINDICATOR</customTabListAdditionalFields>
+        <searchResultsAdditionalFields>CONTRACT.NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CONTRACT.STARTDATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CONTRACT.ENDDATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CONTRACT.APPROVALSTATUS</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CONTRACT.STATUS</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CONTRACT.STATUSINDICATOR</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Private</sharingModel>
+    <webLinks>
+        <fullName>CS_Asset_Entitlement_Setup</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>Asset &amp; Entitlement Setup</masterLabel>
+        <openType>newWindow</openType>
+        <page>CS_ManageAsset</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+    <webLinks>
+        <fullName>CS_SaaS_Delivery</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>SaaS Delivery</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://composer.congamerge.com
+?sessionId={!API.Session_ID}
+&amp;serverUrl={!API.Partner_Server_URL_290}
+&amp;id={!ServiceContract.Id}
+&amp;defaultpdf=1
+&amp;sc0=1
+&amp;sc1=attachments
+&amp;EmailFromID={!$Setup.CS_Software_Delivery__c.CS_From_Email_id__c}
+&amp;AC0=0
+&amp;DS3=0
+&amp;APDF=0
+&amp;EmailToId={!ServiceContract.CS_Customer_Contact_Id__c}
+&amp;EmailBCC={!$Setup.CS_Software_Delivery__c.CS_Software_Delivery_Email__c},
+{!ServiceContract.CS_Services_Account_Manager_Email__c},{!ServiceContract.CS_Sales_Account_Manager_Email__c}
+&amp;CongaEmailTemplateId={!$Setup.CS_Software_Delivery__c.CS_SaaS_Conga_Template__c}
+&amp;TemplateId={!$Setup.CS_Software_Delivery__c.CS_SaaSAttachmentTemplate__c},
+{!ServiceContract.CS_SN_Template_ID__c}
+&amp;queryid=[Related]{!$Setup.CS_Software_Delivery__c.CS_Related_Query_Id__c}?pv0={!ServiceContract.Id}
+&amp;ds7=2
+&amp;EC={!IF(ServiceContract.CS_is_Delivered__c =True, &apos;0&apos;,&apos;1&apos;) }
+&amp;ECL=Software+has+been+delivered+to+customer
+&amp;UF0=1
+&amp;MFTS0=CS_is_Delivered__c
+&amp;MFTSValue0=True
+&amp;MFTS1=CS_Software_Delivery_Date__c
+&amp;MFTSValue1=Today
+&amp;EmailRelatedToId={!ServiceContract.Id}
+&amp;EmailTemplateAttachments=1</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Dev_Software_Delivery</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Dev  Software Delivery</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://composer.congamerge.com
+?sessionId={!API.Session_ID}
+&amp;serverUrl={!API.Partner_Server_URL_290}
+&amp;id={!ServiceContract.Id}
+&amp;defaultpdf=1
+&amp;sc0=1
+&amp;sc1=attachments
+&amp;EmailFromID={!$Setup.CS_Software_Delivery__c.CS_From_Email_id__c}
+&amp;AC0=0
+&amp;DS3=0
+&amp;APDF=0
+&amp;EmailToId={!ServiceContract.CS_Customer_Contact_Id__c}
+&amp;EmailBCC={!$Setup.CS_Software_Delivery__c.CS_Live_Request_Email__c},{!$Setup.CS_Software_Delivery__c.CS_Software_Delivery_Email__c},
+{!ServiceContract.CS_Services_Account_Manager_Email__c},{!ServiceContract.CS_Sales_Account_Manager_Email__c}
+&amp;CongaEmailTemplateId={!ServiceContract.CS_Software_Delivery_Template_Id__c}
+&amp;TemplateId={!$Setup.CS_Software_Delivery__c.CS_General_Software_Delivery_Template__c},
+{!ServiceContract.CS_SN_Template_ID__c}
+&amp;queryid=[Related]{!$Setup.CS_Software_Delivery__c.CS_Related_Query_Id__c}?pv0={!ServiceContract.Id}
+&amp;ds7=0
+&amp;EC={!IF(ServiceContract.CS_is_Delivered__c =True, &apos;0&apos;,&apos;1&apos;) }
+&amp;ECL=Software+has+been+delivered+to+customer
+&amp;UF0=1
+&amp;MFTS0=CS_is_Delivered__c
+&amp;MFTSValue0=True
+&amp;MFTS1=CS_Software_Delivery_Date__c
+&amp;MFTSValue1=Today
+&amp;EmailRelatedToId={!ServiceContract.Id}
+&amp;EmailTemplateAttachments=1</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Software_Delivery</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>General Software Delivery</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://composer.congamerge.com
+?sessionId={!API.Session_ID}
+&amp;serverUrl={!API.Partner_Server_URL_290}
+&amp;id={!ServiceContract.Id}
+&amp;defaultpdf=1
+&amp;sc0=1
+&amp;sc1=attachments
+&amp;EmailFromID={!$Setup.CS_Software_Delivery__c.CS_From_Email_id__c}
+&amp;AC0=0
+&amp;DS3=0
+&amp;APDF=0
+&amp;EmailToId={!ServiceContract.CS_Customer_Contact_Id__c}
+&amp;EmailBCC={!$Setup.CS_Software_Delivery__c.CS_Software_Delivery_Email__c},
+{!ServiceContract.CS_Services_Account_Manager_Email__c},{!ServiceContract.CS_Sales_Account_Manager_Email__c}
+&amp;CongaEmailTemplateId={!ServiceContract.CS_Software_Delivery_Template_Id__c}
+&amp;TemplateId={!$Setup.CS_Software_Delivery__c.CS_General_Software_Delivery_Template__c},
+{!ServiceContract.CS_SN_Template_ID__c}
+&amp;queryid=[Related]{!$Setup.CS_Software_Delivery__c.CS_Related_Query_Id__c}?pv0={!ServiceContract.Id}
+&amp;ds7=2
+&amp;EC={!IF(ServiceContract.CS_is_Delivered__c =True, &apos;0&apos;,&apos;1&apos;) }
+&amp;ECL=Software+has+been+delivered+to+customer
+&amp;UF0=1
+&amp;MFTS0=CS_is_Delivered__c
+&amp;MFTSValue0=True
+&amp;MFTS1=CS_Software_Delivery_Date__c
+&amp;MFTSValue1=Today
+&amp;EmailRelatedToId={!ServiceContract.Id}
+&amp;EmailTemplateAttachments=1</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Software_Setup</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Software Setup</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>window.open(&apos;/apex/SoftwareAccessRequest&apos;, &apos;_self&apos;)</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Test_Hari</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Test-Hari</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://composer.congamerge.com 
+?sessionId={!API.Session_ID} 
+&amp;serverUrl={!API.Partner_Server_URL_290} 
+&amp;id={!ServiceContract.Id} 
+&amp;defaultpdf=1 
+&amp;sc0=1 
+&amp;sc1=attachments 
+&amp;EmailFromID={!$Setup.CS_Software_Delivery__c.CS_From_Email_id__c} 
+&amp;AC0=0 
+&amp;DS3=0 
+&amp;APDF=0 
+&amp;EmailToId={!ServiceContract.CS_Customer_Contact_Id__c} 
+
+&amp;QVar2Id=a5t290000009IaC
+&amp;QVar2Format=10000
+
+&amp;EmailBCC={!$Setup.CS_Software_Delivery__c.CS_Live_Request_Email__c},{!$Setup.CS_Software_Delivery__c.CS_Software_Delivery_Email__c}, 
+{!ServiceContract.CS_Services_Account_Manager_Email__c},{!ServiceContract.CS_Sales_Account_Manager_Email__c},{QVar2}
+
+&amp;CongaEmailTemplateId={!ServiceContract.CS_Software_Delivery_Template_Id__c} 
+&amp;TemplateId={!$Setup.CS_Software_Delivery__c.CS_General_Software_Delivery_Template__c}, 
+{!ServiceContract.CS_SN_Template_ID__c} 
+&amp;queryid=[Related]{!$Setup.CS_Software_Delivery__c.CS_Related_Query_Id__c}?pv0={!ServiceContract.Id} 
+&amp;ds7=2 
+&amp;EC={!IF(ServiceContract.CS_is_Delivered__c =True, &apos;0&apos;,&apos;1&apos;) } 
+&amp;ECL=Software+has+been+delivered+to+customer 
+&amp;UF0=1 
+&amp;MFTS0=CS_is_Delivered__c 
+&amp;MFTSValue0=True 
+&amp;MFTS1=CS_Software_Delivery_Date__c 
+&amp;MFTSValue1=Today 
+&amp;EmailRelatedToId={!ServiceContract.Id} 
+&amp;EmailTemplateAttachments=1</url>
+    </webLinks>
+</CustomObject>

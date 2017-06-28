@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Used to store attachments to be converted as well as the conversion status of each attachment</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>PSA_Attachment_Parent_Id__c</fullName>
+        <description>Salesforce Id of the related Attachment Parent</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Salesforce Id of the related Attachment Parent</inlineHelpText>
+        <label>Attachment Parent Id</label>
+        <length>18</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Batch_Number__c</fullName>
+        <description>Groups a list of attachments that will need to be done converting before a combined expense receipt document can be generated</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Groups a list of attachments that will need to be done converting before a combined expense receipt document can be generated</inlineHelpText>
+        <label>Batch Number</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Batch_Type__c</fullName>
+        <description>Used to indicate which object the converted files will be related to when they are combined into a pdf document</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to indicate which object the converted files will be related to when they are combined into a pdf document</inlineHelpText>
+        <label>Batch Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>BillingEvent</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ExpenseReport</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Conversion_Job_Id__c</fullName>
+        <description>Job Id assigned by the file conversion service -- used to retrieve converted files</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Job Id assigned by the file conversion service -- used to retrieve converted files</inlineHelpText>
+        <label>Conversion Job Id</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Conversion_Status__c</fullName>
+        <description>Status of the file conversion -- as formatted by the file conversion service</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Status of the file conversion -- as formatted by the file conversion service</inlineHelpText>
+        <label>Conversion Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Expense__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Lookup to the related Expense record</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to the related Expense record</inlineHelpText>
+        <label>Expense</label>
+        <referenceTo>pse__Expense__c</referenceTo>
+        <relationshipLabel>PSA File Convert</relationshipLabel>
+        <relationshipName>PSA_File_Convert</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_File_Convert_HTTP_Response__c</fullName>
+        <description>Http Response from the file conversion service -- may be useful for debugging</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Http Response from the file conversion service -- may be useful for debugging</inlineHelpText>
+        <label>File Convert HTTP Response</label>
+        <length>131072</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>PSA_File_Convert_Status_HTTP_Response__c</fullName>
+        <description>Http Response from the file conversion service when doing a status request -- may be useful for debugging</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Http Response from the file conversion service when doing a status request -- may be useful for debugging</inlineHelpText>
+        <label>File Convert Status HTTP Response</label>
+        <length>131072</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>PSA_Source_Attachment_Id__c</fullName>
+        <description>Salesforce Id of the related source Attachment record</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Salesforce Id of the related source Attachment record</inlineHelpText>
+        <label>Source Attachment Id</label>
+        <length>18</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Source_File_Job_Id__c</fullName>
+        <description>Id of the source file -- set by the file conversion service</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Id of the source file -- set by the file conversion service</inlineHelpText>
+        <label>Source File Job Id</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Source_File_Name__c</fullName>
+        <description>Name of the source file passed to the file conversion service</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of the source file passed to the file conversion service</inlineHelpText>
+        <label>Source File Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Target_File_Count__c</fullName>
+        <description>The number of converted files, excluding any .zip files</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of converted files, excluding any .zip files</inlineHelpText>
+        <label>Target File Count</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Target_File_Job_Id__c</fullName>
+        <description>Id of the target (converted) file as set by the file conversion service</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Id of the target (converted) file as set by the file conversion service</inlineHelpText>
+        <label>Target File Job Id</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Target_Format__c</fullName>
+        <description>List of eligible conversion formats for the target file</description>
+        <externalId>false</externalId>
+        <inlineHelpText>List of eligible conversion formats for the target file</inlineHelpText>
+        <label>Target Format</label>
+        <picklist>
+            <picklistValues>
+                <fullName>png</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>jpg</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <label>PSA File Convert</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>PSA_Batch_Number__c</columns>
+        <columns>PSA_Batch_Type__c</columns>
+        <columns>NAME</columns>
+        <columns>PSA_Attachment_Parent_Id__c</columns>
+        <columns>PSA_Conversion_Job_Id__c</columns>
+        <columns>PSA_Conversion_Status__c</columns>
+        <columns>PSA_Expense__c</columns>
+        <columns>PSA_Source_Attachment_Id__c</columns>
+        <columns>PSA_Source_File_Name__c</columns>
+        <columns>PSA_Target_File_Job_Id__c</columns>
+        <columns>PSA_Target_Format__c</columns>
+        <columns>PSA_File_Convert_HTTP_Response__c</columns>
+        <columns>PSA_File_Convert_Status_HTTP_Response__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <displayFormat>FCN-{000000}</displayFormat>
+        <label>File Convert Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>PSA File Convert</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>
