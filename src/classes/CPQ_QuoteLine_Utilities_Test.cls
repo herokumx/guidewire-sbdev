@@ -1,5 +1,5 @@
 @isTest
-private class CPQ_QuoteLine_Utilities_Test {
+public class CPQ_QuoteLine_Utilities_Test {
 
   @isTest static void populateBaseLineInfo_processFirstTimeSet() {
     Account account = CS_TestDataUtility.createProspectAccount();
