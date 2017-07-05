@@ -1,0 +1,1081 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>This object will contain the results of the BoA integration with Guidewire for handoff of corporate card transaction data.  The table below describes each data element:</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Amount_in_Billing_Currency_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>PSA_Amount_in_Billing_Currency__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Amount in Billing Currency Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Amount_in_Original_Currency_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>PSA_Amount_in_Original_Currency__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Amount in Original Currency Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Itemized_Card_Reimbursement_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Itemized Card Reimbursement Amount</label>
+        <summarizedField>PSA_Card_Transaction_Item__c.GW_Card_Reimbursement_Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>PSA_Card_Transaction_Item__c.PSA_Charge_Type__c</field>
+            <operation>equals</operation>
+            <value>Personal</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Card_Transaction_Item__c.PSA_Card_Transaction__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Number_of_Personal_Transactions__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Personal Transactions</label>
+        <summaryFilterItems>
+            <field>PSA_Card_Transaction_Item__c.PSA_Charge_Type__c</field>
+            <operation>equals</operation>
+            <value>Personal</value>
+        </summaryFilterItems>
+        <summaryForeignKey>PSA_Card_Transaction_Item__c.PSA_Card_Transaction__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Amount_in_Billing_Currency__c</fullName>
+        <description>Copied from same field in PSA Card Transaction Stage.  This represents the amount Bank of America expects to be repaid for the given transaction.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Copied from same field in PSA Card Transaction Stage.  This represents the amount Bank of America expects to be repaid for the given transaction.</inlineHelpText>
+        <label>Amount in Billing Currency</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Amount_in_Original_Currency__c</fullName>
+        <description>The amount of the transaction, in terms of the OriginalCurrencyCode. This will be used to set the expense amount.
+
+Note: If the transaction is brought in by the integration as a debit, this will be a negative value.</description>
+        <externalId>false</externalId>
+        <label>Amount in Original Currency</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Assigned_Itemized_Amount__c</fullName>
+        <description>Sum of all Assigned itemized transaction amounts.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of all itemized transaction amounts</inlineHelpText>
+        <label>PSA Assigned Itemized Amount</label>
+        <summarizedField>PSA_Card_Transaction_Item__c.PSA_Amount_in_Original_Currency__c</summarizedField>
+        <summaryForeignKey>PSA_Card_Transaction_Item__c.PSA_Card_Transaction__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Card_Transaction_Stage__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>the staging object used to create this card transaction</description>
+        <externalId>false</externalId>
+        <inlineHelpText>the staging object used to create this card transaction</inlineHelpText>
+        <label>PSA Card Transaction Stage</label>
+        <referenceTo>PSA_Card_Transaction_Stage__c</referenceTo>
+        <relationshipLabel>PSA Card Transactions</relationshipLabel>
+        <relationshipName>PSA_Card_Transactions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Charge_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Charge Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Company</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Personal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Discard__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Discard</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_EmployeeId__c</fullName>
+        <description>Employee Id provided by Bank of America - for lookup of the corresponding PSA Resource / Salesforce User</description>
+        <externalId>false</externalId>
+        <label>EmployeeId</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Expense_Report__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>When a transaction is converted to one or more PSA expenses, this will be updated to refer to the expense report to which the expense(s) were added.  
+
+A single transaction may result in multiple expense lines, so there is no lookup on this object to Expense.</description>
+        <externalId>false</externalId>
+        <label>Expense Report</label>
+        <referenceTo>pse__Expense_Report__c</referenceTo>
+        <relationshipLabel>PSA Card Transactions</relationshipLabel>
+        <relationshipName>PSA_Card_Transactions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Expense_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>PSA Expense Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Airfare - Domestic</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Airfare - International</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Visas/Passport</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Hotel</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Corp Apartment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Taxi/Train/Public Transit</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Parking/Tolls</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Car Rental</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Gas for Rental Car</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Personal Mileage</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meals - Self - Breakfast</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meals - Self - Lunch</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meals - Self - Dinner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meals - GW Emp Only</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meals - With 3rd Parties</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meals - Per Diem</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Entertain - GW Emp only</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Entertain - With 3rd Parties</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Telecom - Mobile (Cell)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Telecom - Non Mobile</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Currency exch/bank fees</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Excess Baggage</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Misc Expense - T &amp; E</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Laundry/Dry Cleaning</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Office Supplies</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Postage/Courier Cost</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Relocation Exp</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Tax Prep Cost for Addtl State(s)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Tips/Gratuities</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dept/Co Meetings &amp; Events</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Mtng Rooms/Facility Rental</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Seminars/Training/Tuition</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dues/Subs/Books</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Airfare Domestic</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Airfare International</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Visas/Passport</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Hotel</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Corporate Apart</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Taxi/Train/Public Transit</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Parking/Tolls</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Car Rental</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Gas for Rental Car</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Personal Mileage</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Meals Self</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GM - Relocation Expenses</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PSA_FX__c</fullName>
+        <description>The exchange rate between the incurred currency and billing (resource) currency.  This will be applied to the expense’s user-supplied exchange rate, to override the system-provided exchange rate, in order to match the transaction.
+
+Note: This assumes that the “billing currency” from the B of A transaction, which represents the card customer’s currency, will always match the PSA Resource currency of the cardholder.</description>
+        <externalId>false</externalId>
+        <label>FX Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Incurred_Country__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Incurred Country</label>
+        <referenceTo>pw_cc__CountryObject__c</referenceTo>
+        <relationshipLabel>PSA Card Transactions</relationshipLabel>
+        <relationshipName>PSA_Card_Transactions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Incurred_State_Province__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Incurred State / Province</label>
+        <referenceTo>pw_cc__State__c</referenceTo>
+        <relationshipLabel>PSA Card Transactions</relationshipLabel>
+        <relationshipName>PSA_Card_Transactions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Invalid_Transaction__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Check to indicate the transaction is invalid.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Check to indicate the transaction is invalid.</inlineHelpText>
+        <label>Invalid Transaction</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Merchant_Country_Code__c</fullName>
+        <description>For setting the expense description and incurred location info on the expense</description>
+        <externalId>false</externalId>
+        <label>Merchant Country Code</label>
+        <length>5</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Merchant_Name__c</fullName>
+        <description>For setting the expense description</description>
+        <externalId>false</externalId>
+        <label>Merchant Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Merchant_Postal_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Merchant Postal Code</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Merchant_State_Province__c</fullName>
+        <description>For setting the expense description and incurred location info on the expense</description>
+        <externalId>false</externalId>
+        <label>Merchant State/Province</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Operations_Review_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Operations Review Comments</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Operations_Review_Reason__c</fullName>
+        <description>NUSR - (No Salesforce User Found)
+NCNT - (No Contact Found)
+NRSC - (Contact.pse__Is_Resource__c = False)
+ACTV - (Contact.pse__Is_Resource_Active__c = False)
+TERM - (Contact.PSA_Resource_Review_Status__c = ‘Termination’)
+TRNS - (Contact.PSA_Resource_Review_Status__c = ‘Transfer Out’)
+LCTN - (No matching country or state objects were found and so the Incurred Country and/or Incurred State / Province could not be set)</description>
+        <externalId>false</externalId>
+        <label>Operations Review Reason</label>
+        <picklist>
+            <picklistValues>
+                <fullName>NUSR</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NCNT</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NRSC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ACTV</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>TERM</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>TRNS</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>LCTN</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Operations_Review__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Operations Review</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Posting_Date__c</fullName>
+        <description>Needed for informational purposes, but not for expense creation/processing</description>
+        <externalId>false</externalId>
+        <label>Posting Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Previously_Entered__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Note, by selecting this box you are stating you have already processed this transaction.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Note, by selecting this box you are stating you have already processed this transaction.</inlineHelpText>
+        <label>Previously Entered</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Processor_Transaction_Id__c</fullName>
+        <description>External, unique transaction Id provided by Bank of America for each transaction</description>
+        <externalId>true</externalId>
+        <label>Processor Transaction Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Remaining_Transaction_Amount__c</fullName>
+        <description>Remaining card transaction amount to expense</description>
+        <externalId>false</externalId>
+        <formula>PSA_Amount_in_Original_Currency__c  -  PSA_Assigned_Itemized_Amount__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Remaining card transaction amount to expense</inlineHelpText>
+        <label>Remaining Transaction Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Resource_Inactive__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Resource Inactive</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Resource__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Resource</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>PSA Card Transactions</relationshipLabel>
+        <relationshipName>PSA_Card_Transactions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Salesforce_User__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>The Salesforce user associated with the EmployeeId value.  For mapping of the transaction to a PSA user. Each PSA Card Transaction record will be given ownership to this user, so that with private sharing enabled, users won’t be able to see each others’ card transaction info.</description>
+        <externalId>false</externalId>
+        <label>Salesforce User</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>PSA_Card_Transactions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Status__c</fullName>
+        <description>The status of the transaction record regarding how it will be used.  Options include:
+Unassigned (default)
+Assigned
+Discarded</description>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Unassigned (default)</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Assigned</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Transaction_Date__c</fullName>
+        <description>Represents the date that the transaction took place. This will be used to set the incurred date for any expenses created from the transaction.</description>
+        <externalId>false</externalId>
+        <label>Transaction Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Transaction_Id__c</fullName>
+        <description>System generated sequential</description>
+        <displayFormat>CTR-{0000}</displayFormat>
+        <externalId>false</externalId>
+        <label>Transaction Id</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Paid__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Paid?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Personal_Card_Reimbursement_Amount__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISPICKVAL(PSA_Charge_Type__c,&apos;Company&apos;),&apos;0&apos;, IF(ISPICKVAL(PSA_Charge_Type__c,&apos;Personal&apos;), PSA_Card_Transaction_Stage__r.PSA_Billing_Currency_Currency_Code__c &amp; &apos; &apos; &amp; Text(ROUND(Amount_in_Original_Currency_Value__c,2) ), PSA_Card_Transaction_Stage__r.PSA_Billing_Currency_Currency_Code__c &amp; &apos; &apos; &amp; Text(ROUND(Itemized_Card_Reimbursement_Amount__c,2))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Personal Expense Amount</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Personal_Expense_Amount__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISPICKVAL(PSA_Charge_Type__c,&apos;Company&apos;),0, 
+IF(ISPICKVAL(PSA_Charge_Type__c,&apos;Personal&apos;), Amount_in_Original_Currency_Value__c,Itemized_Card_Reimbursement_Amount__c))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Personal Expense Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Personal_Expense_Currency__c</fullName>
+        <externalId>false</externalId>
+        <formula>PSA_Card_Transaction_Stage__r.PSA_Billing_Currency_Currency_Code__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Personal Expense Currency</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>PSA Card Transaction</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Processor_Transaction_Id__c</columns>
+        <columns>PSA_Resource__c</columns>
+        <columns>PSA_Amount_in_Billing_Currency__c</columns>
+        <columns>PSA_Amount_in_Original_Currency__c</columns>
+        <columns>PSA_Operations_Review__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>PSA_Posting_Date__c</columns>
+        <columns>PSA_Merchant_Name__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Discarded_Transactions</fullName>
+        <columns>PSA_Processor_Transaction_Id__c</columns>
+        <columns>PSA_Transaction_Date__c</columns>
+        <columns>PSA_Operations_Review__c</columns>
+        <columns>PSA_Operations_Review_Reason__c</columns>
+        <columns>PSA_Status__c</columns>
+        <columns>PSA_Amount_in_Original_Currency__c</columns>
+        <columns>PSA_Charge_Type__c</columns>
+        <columns>PSA_EmployeeId__c</columns>
+        <columns>PSA_Resource_Inactive__c</columns>
+        <columns>PSA_Discard__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PSA_Discard__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Discarded  Transactions</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>PSA_Operations</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>My_Transactions_Company</fullName>
+        <columns>PSA_Processor_Transaction_Id__c</columns>
+        <columns>PSA_Transaction_Date__c</columns>
+        <columns>PSA_Status__c</columns>
+        <columns>PSA_Merchant_Name__c</columns>
+        <columns>PSA_Merchant_State_Province__c</columns>
+        <columns>PSA_Merchant_Country_Code__c</columns>
+        <columns>PSA_Amount_in_Original_Currency__c</columns>
+        <columns>PSA_Charge_Type__c</columns>
+        <columns>PSA_EmployeeId__c</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>PSA_Status__c</field>
+            <operation>equals</operation>
+            <value>Unassigned (default),Unassigned</value>
+        </filters>
+        <filters>
+            <field>PSA_Operations_Review__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>PSA_Charge_Type__c</field>
+            <operation>equals</operation>
+            <value>Company</value>
+        </filters>
+        <filters>
+            <field>PSA_Previously_Entered__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <label>My Transactions Company</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>My_Transactions_Expensed</fullName>
+        <columns>PSA_Processor_Transaction_Id__c</columns>
+        <columns>PSA_Transaction_Date__c</columns>
+        <columns>PSA_Status__c</columns>
+        <columns>PSA_Merchant_Name__c</columns>
+        <columns>PSA_Merchant_State_Province__c</columns>
+        <columns>PSA_Merchant_Country_Code__c</columns>
+        <columns>PSA_Amount_in_Original_Currency__c</columns>
+        <columns>PSA_Charge_Type__c</columns>
+        <columns>PSA_EmployeeId__c</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>PSA_Status__c</field>
+            <operation>equals</operation>
+            <value>Assigned</value>
+        </filters>
+        <filters>
+            <field>PSA_Operations_Review__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>PSA_Charge_Type__c</field>
+            <operation>equals</operation>
+            <value>Company</value>
+        </filters>
+        <filters>
+            <field>PSA_Previously_Entered__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <label>My Transactions Expensed</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>My_Transactions_Personal</fullName>
+        <booleanFilter>1 AND 3 AND (2 OR 4)</booleanFilter>
+        <columns>NAME</columns>
+        <columns>PSA_Processor_Transaction_Id__c</columns>
+        <columns>PSA_Transaction_Date__c</columns>
+        <columns>PSA_Status__c</columns>
+        <columns>PSA_Merchant_Name__c</columns>
+        <columns>PSA_Merchant_State_Province__c</columns>
+        <columns>PSA_Merchant_Country_Code__c</columns>
+        <columns>PSA_Amount_in_Original_Currency__c</columns>
+        <columns>Personal_Card_Reimbursement_Amount__c</columns>
+        <columns>PSA_Charge_Type__c</columns>
+        <columns>Paid__c</columns>
+        <columns>PSA_EmployeeId__c</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>PSA_Operations_Review__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>PSA_Charge_Type__c</field>
+            <operation>equals</operation>
+            <value>Personal</value>
+        </filters>
+        <filters>
+            <field>PSA_Previously_Entered__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>Number_of_Personal_Transactions__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <label>My Transactions Personal</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>My_Transactions_Unassigned</fullName>
+        <columns>PSA_Processor_Transaction_Id__c</columns>
+        <columns>PSA_Transaction_Date__c</columns>
+        <columns>PSA_Status__c</columns>
+        <columns>PSA_Merchant_Name__c</columns>
+        <columns>PSA_Merchant_State_Province__c</columns>
+        <columns>PSA_Merchant_Country_Code__c</columns>
+        <columns>PSA_Amount_in_Original_Currency__c</columns>
+        <columns>PSA_Charge_Type__c</columns>
+        <columns>PSA_EmployeeId__c</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>PSA_Status__c</field>
+            <operation>equals</operation>
+            <value>Unassigned (default),Unassigned</value>
+        </filters>
+        <filters>
+            <field>PSA_Operations_Review__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>PSA_Charge_Type__c</field>
+            <operation>notEqual</operation>
+            <value>Company,Personal</value>
+        </filters>
+        <filters>
+            <field>PSA_Previously_Entered__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <label>My Transactions Unassigned</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Operations_Review_Queue_PSA_Card_Transaction</fullName>
+        <columns>PSA_Resource__c</columns>
+        <columns>NAME</columns>
+        <columns>PSA_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PSA_Status__c</field>
+            <operation>equals</operation>
+            <value>Unassigned</value>
+        </filters>
+        <label>PSA Operations Review Queue</label>
+        <language>en_US</language>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Operations_Review_Required</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Transaction_Id__c</columns>
+        <columns>PSA_Transaction_Date__c</columns>
+        <columns>PSA_Operations_Review__c</columns>
+        <columns>PSA_Operations_Review_Reason__c</columns>
+        <columns>PSA_Amount_in_Original_Currency__c</columns>
+        <columns>PSA_EmployeeId__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PSA_Operations_Review__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>PSA_Discard__c</field>
+            <operation>notEqual</operation>
+            <value>1</value>
+        </filters>
+        <label>Operations Review Required</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>PSA_Operations</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Transactions_Created_Today</fullName>
+        <columns>PSA_Processor_Transaction_Id__c</columns>
+        <columns>PSA_Transaction_Date__c</columns>
+        <columns>PSA_Status__c</columns>
+        <columns>PSA_Posting_Date__c</columns>
+        <columns>PSA_Merchant_Name__c</columns>
+        <columns>PSA_Merchant_State_Province__c</columns>
+        <columns>PSA_Merchant_Country_Code__c</columns>
+        <columns>PSA_Amount_in_Original_Currency__c</columns>
+        <columns>PSA_Charge_Type__c</columns>
+        <columns>PSA_EmployeeId__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>equals</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>Transactions Created Today</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Transactions_for_Inactive_Resources</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Processor_Transaction_Id__c</columns>
+        <columns>PSA_Transaction_Date__c</columns>
+        <columns>PSA_Operations_Review__c</columns>
+        <columns>PSA_Operations_Review_Reason__c</columns>
+        <columns>PSA_Status__c</columns>
+        <columns>PSA_Amount_in_Original_Currency__c</columns>
+        <columns>PSA_Charge_Type__c</columns>
+        <columns>PSA_EmployeeId__c</columns>
+        <columns>PSA_Resource_Inactive__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PSA_Operations_Review__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>PSA_Operations_Review_Reason__c</field>
+            <operation>equals</operation>
+            <value>ACTV,TERM,TRNS</value>
+        </filters>
+        <filters>
+            <field>PSA_Discard__c</field>
+            <operation>notEqual</operation>
+            <value>1</value>
+        </filters>
+        <label>Transactions for Inactive Resources</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>PSA_Operations</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Unassigned_Transactions</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Processor_Transaction_Id__c</columns>
+        <columns>PSA_Transaction_Date__c</columns>
+        <columns>PSA_Operations_Review__c</columns>
+        <columns>PSA_Operations_Review_Reason__c</columns>
+        <columns>PSA_Status__c</columns>
+        <columns>PSA_Amount_in_Original_Currency__c</columns>
+        <columns>PSA_Charge_Type__c</columns>
+        <columns>PSA_EmployeeId__c</columns>
+        <columns>PSA_Resource_Inactive__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PSA_Status__c</field>
+            <operation>equals</operation>
+            <value>Unassigned (default),Unassigned</value>
+        </filters>
+        <filters>
+            <field>PSA_Discard__c</field>
+            <operation>notEqual</operation>
+            <value>1</value>
+        </filters>
+        <label>Unassigned Transactions</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>PSA_Operations</group>
+        </sharedTo>
+    </listViews>
+    <nameField>
+        <label>PSA Card Transaction Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>PSA Card Transactions</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>Private</sharingModel>
+</CustomObject>

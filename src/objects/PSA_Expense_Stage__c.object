@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>The PSA Expense Stage object will be accessed by the Accounting Application (Intacct) integration for updates needed to expense reports, including Reimbursement Status.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>PSA_Expense_Report__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>The Id (record name) of the expense report to update (e.g., “ER-39843”). This is used for lookup of the expense report</description>
+        <externalId>false</externalId>
+        <label>Expense Report</label>
+        <referenceTo>pse__Expense_Report__c</referenceTo>
+        <relationshipLabel>PSA Expense Stage</relationshipLabel>
+        <relationshipName>PSA_Expense_Stage</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_GW_Integration_Id__c</fullName>
+        <description>Source Id used to uniquely identify the associated source system record</description>
+        <externalId>false</externalId>
+        <label>GW Integration Id</label>
+        <length>40</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Processed_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Processed Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Processed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Processed</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Processing_Error_Message__c</fullName>
+        <externalId>false</externalId>
+        <label>Processing Error Message</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>PSA_Reimbursement_Status__c</fullName>
+        <description>A Reimbursement Status value to set on the expense report. Valid values from the integration include: Reimbursed, Denied</description>
+        <externalId>false</externalId>
+        <label>Reimbursement Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Reimbursed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Error</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <label>PSA Expense Stage</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Expense_Report__c</columns>
+        <columns>PSA_Reimbursement_Status__c</columns>
+        <columns>PSA_GW_Integration_Id__c</columns>
+        <columns>PSA_Processed__c</columns>
+        <columns>PSA_Processed_Date__c</columns>
+        <columns>PSA_Processing_Error_Message__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <displayFormat>ES-{00000}</displayFormat>
+        <label>Expense Stage Id</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>PSA Expense Stage</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>PSA_Expense_Report__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Reimbursement_Status__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_GW_Integration_Id__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Processed__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Processed_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Processing_Error_Message__c</customTabListAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

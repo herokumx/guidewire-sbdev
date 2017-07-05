@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Summary of Hours, Revenue and Cost by Monthly Time Periods on a Project based on scheduled Assignments, Resources Requests and Milestones.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>PM_ETC_Cost__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Project Manager&apos;s override of Forecast Cost for the period</inlineHelpText>
+        <label>PM ETC Cost</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PM_ETC_Hours__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Project Manager&apos;s manual entry of Estimate to Complete hours. This will override Forecast Hours.</inlineHelpText>
+        <label>PM ETC Hours</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PM_ETC_Revenue__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Project Manager&apos;s override of Forecast Revenue for the period.</inlineHelpText>
+        <label>PM ETC Revenue</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Colored_Text__c</fullName>
+        <externalId>false</externalId>
+        <label>Colored Text</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>PSA_External_Id__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_For_Month_Ending__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>End date of the Forecast Month</inlineHelpText>
+        <label>For Month Ending</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Billings__c</fullName>
+        <description>Scheduled Time Billings Seasonal + Scheduled Milestone Billings + Forecast Expense Billings + Forecast Services Adjustments + Forecast Expense Adjustments</description>
+        <externalId>false</externalId>
+        <formula>PSA_Scheduled_Time_Billings__c + PSA_Forecast_Milestone_Billings__c + 
+PSA_Forecast_Expense_Billings__c +  PSA_Forecast_Services_Adjustments__c +  PSA_Forecast_Expense_Adjustments__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Forecast Billings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Cost_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>PSA_Forecast_Cost__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Forecast Cost as a number (used in Roll Up Summary on Project).</inlineHelpText>
+        <label>Forecast Cost (Number)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Cost__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF((ISBLANK( PM_ETC_Cost__c ) || PM_ETC_Cost__c = 0), PSA_Scheduled_Cost__c , PM_ETC_Cost__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Will be &apos;PM ETC Cost&apos; if not blank, otherwise will be &apos;Scheduled Cost&apos;.</inlineHelpText>
+        <label>Forecast Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Expense_Adjustments__c</fullName>
+        <description>Potential Charges and Credits related to expense billings, based on project billing rule logic that may be applied</description>
+        <externalId>false</externalId>
+        <label>Forecast Expense Adjustments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Expense_Billings__c</fullName>
+        <description>Sum of forecast expenses for the period</description>
+        <externalId>false</externalId>
+        <label>Forecast Expense Billings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Hours__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF((ISBLANK(PM_ETC_Hours__c) || PM_ETC_Hours__c = 0),PSA_Scheduled_Hours__c, PM_ETC_Hours__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Will be &apos;PM ETC Hours&apos; if not blank, otherwise will be the &apos;Scheduled Hours&apos;.</inlineHelpText>
+        <label>Forecast Hours</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Milestone_Billings__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of expected Billings from billable fixed fee services milestones.</inlineHelpText>
+        <label>Forecast Milestone Billings</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Revenue_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>PSA_Forecast_Revenue__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Forecast Revenue field as a number (used in Roll Up Summary on Project).</inlineHelpText>
+        <label>Forecast Revenue (Number)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Revenue__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF((ISBLANK( PM_ETC_Revenue__c ) || PM_ETC_Revenue__c = 0), PSA_Forecast_Billings__c , PM_ETC_Revenue__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Will be &apos;PM ETC Revenue&apos; if not blank, otherwise will be &apos;Scheduled Revenue&apos;.</inlineHelpText>
+        <label>Forecast Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Services_Adjustments__c</fullName>
+        <description>Potential Charges and Credits related to services billings, based on project billing rule logic that may be applied</description>
+        <externalId>false</externalId>
+        <label>Forecast Services Adjustments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Include_In_Forecast__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked then values will be rolled-up into parent Project&apos;s forecast / estimate to complete values</inlineHelpText>
+        <label>Include In Forecast</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Project__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Parent Project for the forecast</inlineHelpText>
+        <label>Project</label>
+        <referenceTo>pse__Proj__c</referenceTo>
+        <relationshipLabel>Billing Forecasts</relationshipLabel>
+        <relationshipName>Billing_Forecasts</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Cost_Seasonal_Number__c</fullName>
+        <description>Scheduled Cost Seasonal converted to number for roll-up summary to project</description>
+        <externalId>false</externalId>
+        <formula>PSA_Scheduled_Cost_Seasonal__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Scheduled Cost Seasonal Number</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Cost_Seasonal__c</fullName>
+        <description>Scheduled Cost multiplied by Seasonality Factor</description>
+        <externalId>false</externalId>
+        <formula>If(NOT(IsBlank(PSA_Seasonality_Factor__c)), PSA_Scheduled_Cost__c * PSA_Seasonality_Factor__c, PSA_Scheduled_Cost__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Scheduled Cost Seasonal</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Cost__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of expected Cost from scheduled Assignments and Resource Requests. Will be calculated based on the schedule Hours x Cost Rate on Assignments and Resource Requests.</inlineHelpText>
+        <label>Scheduled Cost</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Hours_Seasonal__c</fullName>
+        <description>Scheduled hours multiplied by Seasonality Factor</description>
+        <externalId>false</externalId>
+        <formula>IF(NOT(IsBlank(PSA_Seasonality_Factor__c)), PSA_Scheduled_Hours__c *  PSA_Seasonality_Factor__c,  PSA_Scheduled_Hours__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Scheduled Hours Seasonal</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Hours__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of hours from Assignments and Resource requests or the current Forecast period.</inlineHelpText>
+        <label>Scheduled Hours</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Time_Billings_Seasonal__c</fullName>
+        <description>Schedule Time Billings multiplied by Seasonality Factor</description>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISBLANK(PSA_Seasonality_Factor__c)), PSA_Seasonality_Factor__c * PSA_Scheduled_Time_Billings__c,  PSA_Scheduled_Time_Billings__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Scheduled Time Billings Seasonal</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Time_Billings__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of expected Billings from scheduled Assignments and Resource Requests. Will be calculated based on the schedule Hours x Bill Rate on Assignments and Resource Requests.</inlineHelpText>
+        <label>Scheduled Time Billings</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Seasonality_Factor__c</fullName>
+        <externalId>false</externalId>
+        <formula>PSA_Time_Period__r.PSA_Seasonality_Factor__c</formula>
+        <label>Seasonality Factor</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Time_Period__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Time Period</label>
+        <referenceTo>pse__Time_Period__c</referenceTo>
+        <relationshipLabel>Billing Forecasts</relationshipLabel>
+        <relationshipName>Billing_Forecasts</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Billing Forecast</label>
+    <nameField>
+        <displayFormat>BF-{0000}</displayFormat>
+        <label>Billing Forecast Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Billing Forecasts</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>

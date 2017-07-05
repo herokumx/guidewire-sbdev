@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Billing Schedules will be created when orders are created and will contain all the broken out line items from the order based on the billing frequency</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>Bill_To_Customer_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASESAFEID(Order__r.SFDC_Bill_To_Customer_ID__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Bill To Customer Id</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_Ref_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.Contract_Ref_Number__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract Ref #</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_Sign_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.Contract_Sign_Date__c</formula>
+        <label>Contract Sign Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>List_Price__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order_Product__r.List_Price__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>List Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Oppty_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASESAFEID(Order__r.OpportunityId)</formula>
+        <label>Oppty Id</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Order_Product__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Order Product</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Order Product must be related to the Order of this Billing Schedule.</errorMessage>
+            <filterItems>
+                <field>$Source.Order__c</field>
+                <operation>equals</operation>
+                <valueField>OrderItem.OrderId</valueField>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>OrderItem</referenceTo>
+        <relationshipLabel>Billing Schedules</relationshipLabel>
+        <relationshipName>Billing_Schedules</relationshipName>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Order_Type__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Order__r.Order_Type__c)</formula>
+        <label>Order Type</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Order__c</fullName>
+        <externalId>false</externalId>
+        <label>Order</label>
+        <referenceTo>Order</referenceTo>
+        <relationshipLabel>Billing Schedules</relationshipLabel>
+        <relationshipName>Billing_Schedules</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Original_Order_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.If_Replacement_Order_Original_Order__c</formula>
+        <label>Original Order #</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Out_Clause_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.Out_Clause_date__c</formula>
+        <label>Out Clause Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PO_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.PO_Number__c</formula>
+        <label>PO #</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Payment_Due__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Order__r.Payment_Due__c)</formula>
+        <label>Payment Due</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Prorated_Support_Cost__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order_Product__r.SBQQ__QuoteLine__r.CPQ_Maintenance_Cost__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Prorated Support Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Sales_Order_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.Sales_Order_End_Date__c</formula>
+        <label>Sales Order End Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Software_Delivery_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.Software_Delivery_Date__c</formula>
+        <label>Software Delivery Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Subscription_Term_Duration__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.Subscription_Term_Duration__c</formula>
+        <label>Subscription Term Duration</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Term_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Term End Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Term_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Term Start Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Timestamp_for_Order_Upload__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.Timestamp_for_Order_Upload__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Timestamp for Order Upload</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>basecurr__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.basecurr__c</formula>
+        <label>Bill To Currency</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>billto__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.billto__c</formula>
+        <label>Bill To</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_AUTO_RENEWAL__c</fullName>
+        <defaultValue>&apos;Y&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Auto Renewal</label>
+        <length>1</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_Baseline_Measure__c</fullName>
+        <defaultValue>&apos;GWP = Gross Written Premiums&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Baseline Measure</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_Escalation_Description__c</fullName>
+        <defaultValue>&apos;Lesser of CPI or 3%&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Escalation Description</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_Escalation_Effective_Period__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.ch_Escalation_Effective_Period__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Opportunity State</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_Escalation_on_Fees__c</fullName>
+        <defaultValue>&apos;Y&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Escalation on Fees</label>
+        <length>1</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_Growth_Rate_Buffer__c</fullName>
+        <defaultValue>&apos;&gt;0%&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Growth Rate Buffer</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_Growth_Rate_Clause__c</fullName>
+        <defaultValue>&apos;Y&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Growth Rate Clause included in contract?</label>
+        <length>1</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_License_Type__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.ch_License_Type__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Deal Type</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_Notification_Period__c</fullName>
+        <externalId>false</externalId>
+        <label>Notification Period</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_Notification_Required__c</fullName>
+        <defaultValue>&apos;N&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Notification Required?</label>
+        <length>1</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_Perpetual_Buyout_Option__c</fullName>
+        <defaultValue>&apos;N&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Contract has Perpetual Buyout Option?</label>
+        <length>1</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_Reduction_Rate_Buffer__c</fullName>
+        <externalId>false</externalId>
+        <label>Reduction Rate Buffer</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_Reduction_Rate_Clause__c</fullName>
+        <defaultValue>&apos;N&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Reduction Rate Clause incl. in contract?</label>
+        <length>1</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_Term_Years__c</fullName>
+        <defaultValue>1</defaultValue>
+        <externalId>false</externalId>
+        <label>Number of Term Year</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ch_Warranty_Period__c</fullName>
+        <defaultValue>&apos;365 days from Notification Date&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Warranty Period</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>currency__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.currency__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Opportunity Currency</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>customerid__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.customerid__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Participant ID</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>datecreated__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.CreatedDate</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Sales Order Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>departmentid__c</fullName>
+        <defaultValue>&apos;310&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Intacct Department Code</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>eom__c</fullName>
+        <defaultValue>&apos;FALSE&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Intacct EOM</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>exchratetype__c</fullName>
+        <defaultValue>&apos;Intacct Daily Rate&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Exchange Rate Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>itemdesc_original__c</fullName>
+        <externalId>false</externalId>
+        <label>SKU Description</label>
+        <length>500</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>itemid__c</fullName>
+        <externalId>false</externalId>
+        <label>SKU ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>l_classid__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.l_classid__c</formula>
+        <label>Bill TO Country</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>l_customerid__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.l_customerid__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Participant ID 2</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>l_employeeid__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order_Product__r.l_employeeid__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Product Line ID</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>locationid__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.locationid__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Intacct Company Code</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>memo__c</fullName>
+        <externalId>false</externalId>
+        <label>Notes</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>modenew__c</fullName>
+        <defaultValue>&apos;none&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Intacct Mode New</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>price__c</fullName>
+        <externalId>false</externalId>
+        <label>Price</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>quantity__c</fullName>
+        <defaultValue>1</defaultValue>
+        <externalId>false</externalId>
+        <label>Quantity</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>referenceno__c</fullName>
+        <externalId>false</externalId>
+        <label>Purpose of the Contract</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>revrecenddate__c</fullName>
+        <externalId>false</externalId>
+        <label>Revenue Recognition End date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>revrecstartdate__c</fullName>
+        <externalId>false</externalId>
+        <label>Revenue Recognition Start date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>revrectemplate__c</fullName>
+        <externalId>false</externalId>
+        <label>Revenue Recognition Template</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>shippingmethod__c</fullName>
+        <defaultValue>&apos;Electronically Delivered Software&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Shipping Method</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>shipto__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.shipto__c</formula>
+        <label>Ship To</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>startdate__c</fullName>
+        <externalId>false</externalId>
+        <label>Invoice Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>termname__c</fullName>
+        <externalId>false</externalId>
+        <label>Payment Term</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>transactiontype__c</fullName>
+        <defaultValue>&apos;Automated Sales Order&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Sales Order Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>unit__c</fullName>
+        <defaultValue>&apos;Each&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Unit</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Billing Schedule</label>
+    <nameField>
+        <displayFormat>BS-{000000}</displayFormat>
+        <label>Billing Schedule Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Billing Schedules</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Price_less_than_zero</fullName>
+        <active>true</active>
+        <description>Should display an error when price is less than 0.</description>
+        <errorConditionFormula>price__c &lt; 0</errorConditionFormula>
+        <errorDisplayField>price__c</errorDisplayField>
+        <errorMessage>The price cannot be negative.</errorMessage>
+    </validationRules>
+</CustomObject>

@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>PSA_Cost_Level__c</fullName>
+        <description>Combination of Entity Code (2 digit), Department Code (3 digit), and PS Level (3 digit) to determine cost rates.</description>
+        <externalId>false</externalId>
+        <formula>PSA_Legal_Entity__r.PSA_Entity_Code__c + &apos;-&apos; +  PSA_Department__r.PSA_Department_Code__c + &apos;-&apos; +  TEXT( PSA_PS_Level__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Combination of Entity Code (2 digit), Department Code (3 digit), and PS Level (3 digit) to determine cost rates.</inlineHelpText>
+        <label>Cost Level</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Delivery_Cost_Rate__c</fullName>
+        <externalId>false</externalId>
+        <label>Delivery Cost Rate</label>
+        <precision>18</precision>
+        <required>true</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Department__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Used in combination with Legal Entity and PS Level to match with Resources</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used in combination with Legal Entity and PS Level to match with Resources</inlineHelpText>
+        <label>Department</label>
+        <referenceTo>PSA_Department__c</referenceTo>
+        <relationshipLabel>PSA Cost Rates</relationshipLabel>
+        <relationshipName>PSA_Cost_Rates</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Effective_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Effective Date</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Fully_Loaded_Cost_Rate__c</fullName>
+        <externalId>false</externalId>
+        <label>Fully Loaded Cost Rate</label>
+        <precision>18</precision>
+        <required>true</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Legal_Entity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Legal Entity</label>
+        <referenceTo>PSA_Entity__c</referenceTo>
+        <relationshipLabel>PSA Cost Rates</relationshipLabel>
+        <relationshipName>PSA_Cost_Rates</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_PS_Level__c</fullName>
+        <externalId>false</externalId>
+        <label>PS Level</label>
+        <picklist>
+            <picklistValues>
+                <fullName>100</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>105</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>110</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>120</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>130</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>140</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>141</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>142</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>145</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>150</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>200</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>203</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>206</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>210</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>220</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>230</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>235</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>240</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>245</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>250</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>255</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>300</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>305</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>310</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>320</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>330</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>335</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>340</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>345</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>350</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>355</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>400</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>410</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>420</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>430</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>435</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>440</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>450</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Propagated_Date__c</fullName>
+        <description>The date/time this rate has been propagated to the active resource records matching PS Level, Entity, and currency.</description>
+        <externalId>false</externalId>
+        <label>Propagated Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <label>PSA Cost Rate</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Effective_Date__c</columns>
+        <columns>CURRENCY_ISO_CODE</columns>
+        <columns>PSA_PS_Level__c</columns>
+        <columns>PSA_Delivery_Cost_Rate__c</columns>
+        <columns>PSA_Fully_Loaded_Cost_Rate__c</columns>
+        <columns>PSA_Legal_Entity__c</columns>
+        <columns>PSA_Department__c</columns>
+        <columns>PSA_Cost_Level__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Canadian_Cost_Rates</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Effective_Date__c</columns>
+        <columns>CURRENCY_ISO_CODE</columns>
+        <columns>PSA_PS_Level__c</columns>
+        <columns>PSA_Delivery_Cost_Rate__c</columns>
+        <columns>PSA_Fully_Loaded_Cost_Rate__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CURRENCY_ISO_CODE</field>
+            <operation>equals</operation>
+            <value>CAD</value>
+        </filters>
+        <label>Canadian Cost Rates</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>US_Cost_Rates</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Effective_Date__c</columns>
+        <columns>CURRENCY_ISO_CODE</columns>
+        <columns>PSA_PS_Level__c</columns>
+        <columns>PSA_Delivery_Cost_Rate__c</columns>
+        <columns>PSA_Fully_Loaded_Cost_Rate__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CURRENCY_ISO_CODE</field>
+            <operation>equals</operation>
+            <value>USD</value>
+        </filters>
+        <label>United States Cost Rates</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <displayFormat>CR-{00000}</displayFormat>
+        <label>Cost Rate Id</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>PSA Cost Rates</pluralLabel>
+    <searchLayouts>
+        <listViewButtons>Propagate_Selected_Rates</listViewButtons>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Propagate_Selected_Rates</fullName>
+        <availability>online</availability>
+        <description>Clicking button propagates the rates selected to matching resources.</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Propagate Selected Rate(s)</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/15.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/15.0/apex.js&quot;)} 
+
+this.style.color = &apos;#FF4500&apos;; 
+this.value = &apos;Processing...&apos;; 
+var okToGo = false; 
+
+// Restrict to certain profile(s)...
+if(&apos;{!$Profile.Name}&apos; == &apos;System Administrator&apos;){ 
+   okToGo = true; 
+} 
+
+if(!okToGo){ 
+   alert(&quot;Sorry, you do NOT have sufficient permissions to perform this action&quot;); 
+} 
+else{ 
+   okToGo = confirm(&quot;You are about to propagate the selected rate(s) to contact(s), click ok to continue.&quot;); 
+} 
+
+if (okToGo){ 
+   var records = {!GETRECORDIDS($ObjectType.PSA_Cost_Rate__c)}; 
+
+   if(records.length == 0){ 
+      alert(&quot;Please select at least one psa cost rate&quot;); 
+   } 
+   else{ 
+      var result = sforce.apex.execute(&quot;psaCostRates&quot;,&quot;propagateSpecificRates&quot;,{psa_Cost_Rates:records}); 
+
+    alert(result); 
+    window.location.reload(); 
+   } 
+}  
+
+this.style.color = &apos;#000000&apos;; 
+this.value = &apos;Propagate Selected Rate(s)&apos;;</url>
+    </webLinks>
+</CustomObject>

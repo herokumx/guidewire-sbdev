@@ -7,11 +7,6 @@
         <namespace>SBQQ</namespace>
     </packageVersions>
     <packageVersions>
-        <majorNumber>1</majorNumber>
-        <minorNumber>162</minorNumber>
-        <namespace>pse</namespace>
-    </packageVersions>
-    <packageVersions>
         <majorNumber>5</majorNumber>
         <minorNumber>50</minorNumber>
         <namespace>pw_cc</namespace>

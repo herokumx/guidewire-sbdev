@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Custom settings related to billing/invoicing</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>PSA_Billing_Event_Max_Refresh__c</fullName>
+        <defaultValue>1000</defaultValue>
+        <description>Maximum number of times the Billing Event Regenerate page will be refreshed before displaying a warning message and discontinuing the refresh process</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum number of times the Billing Event Regenerate page will be refreshed before displaying a warning message and discontinuing the refresh process</inlineHelpText>
+        <label>PSA Billing Event Max Refresh</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Billing_History_Error_Notify_List__c</fullName>
+        <description>Email list to notify admins of an error attempting to link the current and archived billing events</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Email list to notify admins of an error attempting to link the current and archived billing events</inlineHelpText>
+        <label>Billing History Error Notify List</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Billing_History_Job_Seconds_Delay__c</fullName>
+        <defaultValue>180</defaultValue>
+        <description>How many seconds in the future the scheduled job to link &quot;current&quot; billing events with archived billing events that were released but then deleted</description>
+        <externalId>false</externalId>
+        <inlineHelpText>How many seconds in the future the scheduled job to link &quot;current&quot; billing events with archived billing events that were released but then deleted</inlineHelpText>
+        <label>Billing History Job Seconds Delay</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Billing_Rules_Batch_Done_Email_List__c</fullName>
+        <description>List of email addresses to notify when the Billing Rules Batch apex job is finished</description>
+        <externalId>false</externalId>
+        <inlineHelpText>List of email addresses to notify when the Billing Rules Batch apex job is finished</inlineHelpText>
+        <label>Billing Rules Batch Done Email List</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Billing_Rules_Batch_Size__c</fullName>
+        <defaultValue>5</defaultValue>
+        <description>Number of projects to apply the billing rules logic at one time</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of projects to apply the billing rules logic at one time</inlineHelpText>
+        <label>PSA Billing Rules Batch Size</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Earliest_LTA_Date__c</fullName>
+        <description>Earliest date from which to include LTA Expenses for Projects where Expenses Billing Type is not &quot;As Incurred&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Earliest date from which to include LTA Expenses for Projects where Expenses Billing Type is not &quot;As Incurred&quot;</inlineHelpText>
+        <label>Earliest LTA Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <label>PSA Billing</label>
+    <visibility>Public</visibility>
+</CustomObject>

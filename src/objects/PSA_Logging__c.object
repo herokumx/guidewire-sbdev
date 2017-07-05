@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Used for custom apex logging functions</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>PSA_Enable_Apex_Logging__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Turns on custom apex logging</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Turns on custom apex logging</inlineHelpText>
+        <label>Enable Apex Logging</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Error_Email_List__c</fullName>
+        <description>List of email addresses to notify of an error</description>
+        <externalId>false</externalId>
+        <inlineHelpText>List of email addresses to notify of an error</inlineHelpText>
+        <label>Error Email List</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Logging_Level__c</fullName>
+        <description>Used to determine which apex log records to log - higher numbers mean more detailed logging.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to determine which apex log records to log - higher numbers mean more detailed logging.</inlineHelpText>
+        <label>Logging Level</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_No_psaBillingEventGeneration__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Exclude logging from occurring in the psaBillingEventGeneration class</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Exclude logging from occurring in the psaBillingEventGeneration class</inlineHelpText>
+        <label>No psaBillingEventGeneration</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_No_psaBillingEventRecalc__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>If true, psa apex log records will not be created for this class</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, psa apex log records will not be created for this class</inlineHelpText>
+        <label>No psaBillingEventRecalc</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_No_psaBillingEventRegenerateControl__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>If true, no apex log records for this class will be saved</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, no apex log records for this class will be saved</inlineHelpText>
+        <label>No psaBillingEventRegenerateController</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_No_psaBillingEventRegenerate__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>If true, no apex log records will be saved for this class</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, no apex log records will be saved for this class</inlineHelpText>
+        <label>No psaBillingEventRegenerate</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_No_psaBillingRulesApplication__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Exclude logging from occurring in the psaBillingRulesApplication class</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Exclude logging from occurring in the psaBillingRulesApplication class</inlineHelpText>
+        <label>No psaBillingRulesApplication</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_No_psaInvoiceSummaryLineRefresh__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Exclude logging from occurring in the psaInvoiceSummaryLineRefresh class</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Exclude logging from occurring in the psaInvoiceSummaryLineRefresh class</inlineHelpText>
+        <label>No psaInvoiceSummaryLineRefresh</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_No_psaRefreshProjectBillingBalances__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Exclude logging from occurring in the psaRefreshProjectBillingBalances class</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Exclude logging from occurring in the psaRefreshProjectBillingBalances class</inlineHelpText>
+        <label>No psaRefreshProjectBillingBalances</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_No_psaTimecardDailyCap__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Exclude logging from occurring in the psaTimecardDailyCap class</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Exclude logging from occurring in the psaTimecardDailyCap class</inlineHelpText>
+        <label>No psaTimecardDailyCap</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>PSA Logging</label>
+    <visibility>Public</visibility>
+</CustomObject>

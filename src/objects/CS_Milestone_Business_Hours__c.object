@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>**** Service Cloud  Milestone Business Hours ******</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>CS_Business_Days__c</fullName>
+        <externalId>false</externalId>
+        <label>Business Days</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Entitlement_Process_Name__c</fullName>
+        <description>Entitlement Process Name</description>
+        <externalId>false</externalId>
+        <label>Entitlement Process Name</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Exception_Email__c</fullName>
+        <defaultValue>&apos;mgunasekaran@guidewire.com&apos;</defaultValue>
+        <description>***** Email Id to Send Exception *****</description>
+        <externalId>false</externalId>
+        <label>Exception Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Milestone_Name__c</fullName>
+        <description>Milestone Name</description>
+        <externalId>false</externalId>
+        <label>Milestone Name</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Severity__c</fullName>
+        <externalId>false</externalId>
+        <label>Severity</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>GW Milestone Business Hours</label>
+    <visibility>Public</visibility>
+</CustomObject>

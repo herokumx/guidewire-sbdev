@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Provides detail level for rollup to monthly PSA Project Forecast records, with each record referencing an assigment, resource request, or sum of scheduled expense or fixed fee services billings or billing rule adjustments</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>PSA_Actual_Billings__c</fullName>
+        <description>Contains amount of actual billings for the related source record(s).  If source is an assignment, contains the actual time-based billings.  Otherwise contains any actual billings based on expenses, fixed fee services, or adjustments.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Contains amount of actual billings for the related source record(s). If source is an assignment, contains the actual timecard-based billings. Otherwise contains any actual billings based on expenses, fixed fee services, or adjustments.</inlineHelpText>
+        <label>Actual Billings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Actual_Cost__c</fullName>
+        <description>From Est v Actuals for any related assignment, the actual hours time cost rate</description>
+        <externalId>false</externalId>
+        <inlineHelpText>From Est v Actuals for any related assignment, the actual hours time cost rate</inlineHelpText>
+        <label>Actual Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Actual_Hours__c</fullName>
+        <description>Provided from Est vs Actuals, actual hours approved for the period for any related Assignment</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Provided from Est vs Actuals by the calculation. Contains the actual hours approved for the period for any related assignment.</inlineHelpText>
+        <label>Actual Hours</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Est_Vs_Actuals__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Lookup to the related Estimate vs Actuals record if the source is an Assignment or Resource Request</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to the related Estimate vs Actuals record if the source is an Assignment or Resource Request</inlineHelpText>
+        <label>Est Vs Actuals</label>
+        <referenceTo>pse__Est_Vs_Actuals__c</referenceTo>
+        <relationshipLabel>PSA Project Forecast Details</relationshipLabel>
+        <relationshipName>PSA_Project_Forecast_Details</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_For_Month_Ending__c</fullName>
+        <description>Date representing the last day of the month to which the record relates</description>
+        <externalId>false</externalId>
+        <formula>PSA_Project_Forecast__r.PSA_For_Month_Ending__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>For Month Ending</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Billings__c</fullName>
+        <description>Scheduled Billings multiplied by Forecast Category Percent</description>
+        <externalId>false</externalId>
+        <formula>PSA_Scheduled_Billings__c *  PSA_Forecast_Category_Percent__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Scheduled Billings multiplied by Forecast Category Percent</inlineHelpText>
+        <label>Forecast Billings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Category_Percent__c</fullName>
+        <description>A percentage representing the confidence level associated with the Forecast Category value</description>
+        <externalId>false</externalId>
+        <inlineHelpText>A percentage representing the confidence level associated with the Forecast Category value.  This is supplied from the percentages defined in PSA Forecast Settings.</inlineHelpText>
+        <label>Forecast Category Percent</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Category__c</fullName>
+        <description>For weighting of calculated billings based on a confidence level percentage associated with each category. If the source record doesn’t have its own Forecast Category value, the value is supplied as the Project&apos;s Forecast Category.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>For weighting of calculated billings based on a confidence level percentage associated with each category. If the source record doesn’t have its own Forecast Category value, the value is supplied as the Project&apos;s Forecast Category.</inlineHelpText>
+        <label>Forecast Category</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Upside</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Pipeline</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Forecast</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Committed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Source__c</fullName>
+        <description>Description of the source of the forecast detail</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Description of the source of the forecast detail, for use in reporting</inlineHelpText>
+        <label>Forecast Source</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Forecast_Type__c</fullName>
+        <description>Specifies the type of record comprising the forecast detail source</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies the type of record comprising the forecast detail source</inlineHelpText>
+        <label>Forecast Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Assignment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Resource Request</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fixed Fee Services</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Expenses</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Services Adjustment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Include_in_Forecast__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Specifies whether the record should be included in forecast reporting</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Automatically set by the Billing Forecast calculation, specifies whether the record should be included in forecast reporting</inlineHelpText>
+        <label>Include in Forecast</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Item_Key__c</fullName>
+        <description>Unique key generated by the forecast calculation identifying the source of the calculated and/or summarized info, allowing the calculation process to find and update previously created records.</description>
+        <externalId>false</externalId>
+        <label>Item Key</label>
+        <length>40</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Project_Forecast__c</fullName>
+        <externalId>false</externalId>
+        <label>PSA Project Forecast</label>
+        <referenceTo>PSA_Project_Forecast__c</referenceTo>
+        <relationshipLabel>PSA Project Forecast Details</relationshipLabel>
+        <relationshipName>PSA_Project_Forecast_Details</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>PSA_Resource__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>If the Forecast Detail relates to an assignment, provides a lookup the assigned resource</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If the Forecast Detail relates to an assignment, provides a lookup the assigned resource</inlineHelpText>
+        <label>Resource</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>PSA Project Forecast Details</relationshipLabel>
+        <relationshipName>PSA_Project_Forecast_Details</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Bill_Rate__c</fullName>
+        <description>Bill Rate from either the Assignment or Resource Request (as related to the EVA record)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Bill Rate from either the Assignment or Resource Request</inlineHelpText>
+        <label>Scheduled Bill Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Billings__c</fullName>
+        <description>Scheduled billings based on the source. If from Assignment or Resource Request, will be set to Scheduled Time Billings Seasonal.  If from Expense, Fixed Fee Services, or Adjustments, will be calculated and set separately.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Scheduled billings based on the forecast source. If from Assignment or Resource Request, will be set to the same value as Scheduled Time Billings Seasonal. If from Expense, Fixed Fee Services, or Adjustments, will be calculated and set separately.</inlineHelpText>
+        <label>Scheduled Billings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Cost_Seasonal__c</fullName>
+        <description>Scheduled cost multiplied by Seasonality Factor</description>
+        <externalId>false</externalId>
+        <formula>If(NOT(IsBlank(PSA_Seasonality_Factor__c)), PSA_Scheduled_Cost__c * PSA_Seasonality_Factor__c, PSA_Scheduled_Cost__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Scheduled Cost multiplied by related Seasonality Factor, to provide cost adjusted by seasonal availability</inlineHelpText>
+        <label>Scheduled Cost Seasonal</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Cost__c</fullName>
+        <description>Scheduled hours times cost rate for a related resource request or assignment (if applicable), and month</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Scheduled hours times cost rate for a related resource request or assignment (if applicable), and month</inlineHelpText>
+        <label>Scheduled Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Days__c</fullName>
+        <description>Summarized Estimated Days value from Est vs Actuals records for related assignments or resource requests. Used in calculating forecast billings of Expenses as Flat Amount per Day.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Summarized Estimated Days value from Est vs Actuals records for related assignments or resource requests. Used in calculating forecast billings of Expenses as Flat Amount per Day.</inlineHelpText>
+        <label>Scheduled Days</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Hours_Seasonal__c</fullName>
+        <description>Scheduled Hours * related Seasonality Factor, to provide hours adjusted by seasonal availability</description>
+        <externalId>false</externalId>
+        <formula>IF(NOT(IsBlank(PSA_Seasonality_Factor__c)), PSA_Scheduled_Hours__c * PSA_Seasonality_Factor__c, PSA_Scheduled_Hours__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Scheduled Hours * related Seasonality Factor, to provide hours adjusted by seasonal availability</inlineHelpText>
+        <label>Scheduled Hours Seasonal</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Hours__c</fullName>
+        <description>Scheduled hours for a related resource request or assignment (if applicable), and month</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Scheduled hours for a related resource request or assignment (if applicable), and month</inlineHelpText>
+        <label>Scheduled Hours</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Time_Billings_Seasonal__c</fullName>
+        <description>Scheduled Time Billings multiplied by Seasonality Factor</description>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISBLANK(PSA_Seasonality_Factor__c)), PSA_Seasonality_Factor__c * PSA_Scheduled_Time_Billings__c, PSA_Scheduled_Time_Billings__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Scheduled Time Billings multiplied by Seasonality Factor</inlineHelpText>
+        <label>Scheduled Time Billings Seasonal</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Scheduled_Time_Billings__c</fullName>
+        <description>Sum of expected Billings from scheduled Assignments and Resource Requests</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of scheduled billings for the period from a scheduled Assignment or Resource Request</inlineHelpText>
+        <label>Scheduled Time Billings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Seasonality_Factor__c</fullName>
+        <description>Obtained from the monthly Time Period related to the record, a percentage supplied by Guidewire to the time period representing an adjustment factor for scheduled hours based on history of resource time off, etc., to produce forecasts based on expected (as opposed to scheduled) hours</description>
+        <externalId>false</externalId>
+        <inlineHelpText>For calculating seasonally-adjusted hours, costs, and time-related billings based on resource availability</inlineHelpText>
+        <label>Seasonality Factor</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <label>PSA Project Forecast Detail</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <displayFormat>PFD-{0000000}</displayFormat>
+        <label>PSA Project Forecast Detail Id</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>PSA Project Forecast Details</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>

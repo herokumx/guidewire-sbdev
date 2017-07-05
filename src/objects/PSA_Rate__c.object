@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Custom - Records the suggested bill rate or average cost rate for a resource role in a region, practice, or group (for example, the bill rate for a Consultant in Europe) or for projects on an account. Use rate cards early in the staffing process, to provide information on likely billing and cost rates when creating resource requests. If configured, start and end dates on rate cards determine if the rate only applies to resource requests which lie between the given dates.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>PSA_Average_Cost_Rate__c</fullName>
+        <description>PSA Average cost rate</description>
+        <externalId>false</externalId>
+        <label>Average Cost Rate</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Bill_Rate_Amount__c</fullName>
+        <description>PSA Bill rate for resource</description>
+        <externalId>false</externalId>
+        <label>Bill Rate</label>
+        <precision>10</precision>
+        <required>true</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Bill_Rate_Set__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <description>PSA Bill Rate Set</description>
+        <externalId>false</externalId>
+        <label>PSA Bill Rate Set</label>
+        <referenceTo>PSA_Rate_Set__c</referenceTo>
+        <relationshipName>PSA_Bill_Rates</relationshipName>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Billing_Level__c</fullName>
+        <description>PSA Billing Level</description>
+        <externalId>false</externalId>
+        <label>Billing Level</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Default</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>105</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>100</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>110</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>120</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>130</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>140</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>200</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>220</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ODC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Forecast Blended</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Non-Bill</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>TH Offshore</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Actuary</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor4</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor5</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor6</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor7</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor8</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor9</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor10</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor11</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor12</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor13</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor14</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor15</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor16</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor17</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor18</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor19</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor20</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>UM Offshore</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PSA_End_Date__c</fullName>
+        <description>PSA End date</description>
+        <externalId>false</externalId>
+        <label>End Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Start_Date__c</fullName>
+        <description>PSA Start date</description>
+        <externalId>false</externalId>
+        <label>Start Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <label>PSA Rate</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Billing_Level__c</columns>
+        <columns>PSA_Start_Date__c</columns>
+        <columns>PSA_End_Date__c</columns>
+        <columns>CURRENCY_ISO_CODE</columns>
+        <columns>PSA_Bill_Rate_Amount__c</columns>
+        <columns>PSA_Average_Cost_Rate__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Global_Rates</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Bill_Rate_Set__c</columns>
+        <columns>PSA_Billing_Level__c</columns>
+        <columns>PSA_Bill_Rate_Amount__c</columns>
+        <columns>PSA_Average_Cost_Rate__c</columns>
+        <columns>PSA_Start_Date__c</columns>
+        <columns>PSA_End_Date__c</columns>
+        <columns>CURRENCY_ISO_CODE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PSA_Bill_Rate_Set__c</field>
+            <operation>equals</operation>
+            <value>2015 Global Rate Set</value>
+        </filters>
+        <filters>
+            <field>CURRENCY_ISO_CODE</field>
+            <operation>equals</operation>
+            <value>USD</value>
+        </filters>
+        <label>Global Rates</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <displayFormat>PBR-{0000}</displayFormat>
+        <label>Rate Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>PSA Rates</pluralLabel>
+    <searchLayouts>
+        <listViewButtons>Propagate_Selected_Rate_s</listViewButtons>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Propagate_Selected_Rate_s</fullName>
+        <availability>online</availability>
+        <description>Clicking button propagates the rates selected to matching resource requests.</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Propagate Selected Rate(s)</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/15.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/15.0/apex.js&quot;)} 
+
+this.style.color = &apos;#FF4500&apos;; 
+this.value = &apos;Processing...&apos;; 
+var okToGo = false; 
+
+// Restrict to certain profile(s)... 
+if(&apos;{!$Profile.Name}&apos; == &apos;System Administrator&apos;){ 
+okToGo = true; 
+} 
+
+if(!okToGo){ 
+alert(&quot;Sorry, you do NOT have sufficient permissions to perform this action&quot;); 
+} 
+else{ 
+okToGo = confirm(&quot;You are about to propagate the selected rate(s) to resource request(s), click ok to continue.&quot;); 
+} 
+
+if (okToGo){ 
+var records = {!GETRECORDIDS($ObjectType.PSA_Cost_Rate__c)}; 
+
+if(records.length == 0){ 
+alert(&quot;Please select at least one psa rate&quot;); 
+} 
+else{ 
+var result = sforce.apex.execute(&quot;psaBillRates&quot;,&quot;propagateSpecificRates&quot;,{bill_Rate_ids:records}); 
+
+alert(result); 
+window.location.reload(); 
+} 
+} 
+
+this.style.color = &apos;#000000&apos;; 
+this.value = &apos;Propagate Selected Rate(s)&apos;;</url>
+    </webLinks>
+</CustomObject>

@@ -36,7 +36,7 @@ private class CPQ_OrderUtilityTest {
     /**
      * Test method to create Opportunity for Contract test data
      */
-    public static Opportunity createOriginalOppTestData(Id accId){
+    public static Opportunity createOriginalOppTestData(Id accId, boolean isInsert){
 
       Opportunity objOpportunity = new Opportunity();
       objOpportunity.Name = 'TestOriginalOpportunity';
@@ -46,7 +46,9 @@ private class CPQ_OrderUtilityTest {
       objOpportunity.CPQ_Renewal_In_Scope_DWP__c = 6000000;
       objOpportunity.Premium_In_Scope__c = 6000000;
       objOpportunity.CurrencyIsoCode = 'USD';
-      insert objOpportunity;
+      if (isInsert == true) {
+          insert objOpportunity;
+      }
       return objOpportunity;
     }
 
@@ -78,7 +80,7 @@ private class CPQ_OrderUtilityTest {
             insert objCon;
 
             Opportunity objOpportunity = new Opportunity();
-            objOpportunity.pse__Parent_Opportunity__c = oppId;
+            objOpportunity.Original_Opportunity_New__c = oppId;
             objOpportunity.Name = 'TestOpportunity';
             objOpportunity.AccountId = accId;
             objOpportunity.StageName = 'Working';
@@ -108,6 +110,7 @@ private class CPQ_OrderUtilityTest {
             objQuote.SBQQ__SubscriptionTerm__c = 6;
             objQuote.SBQQ__Type__c = 'Quote';
             objQuote.CPQ_Royalties__c = false;
+            objQuote.CPQ_Prorated_Start_Date__c = System.Today();
             //objQuote.CurrencyIsoCode = 'USD';
             //objAccount.Email = strEmail;
             //objAccount.Company = 'TestCompany';
@@ -120,14 +123,15 @@ private class CPQ_OrderUtilityTest {
      */
     @isTest static void test_createOrder() {
 
-           // insert account
+        Test.startTest();
+            //insert account
            Account objAcc = CPQ_TestDataUtility.accountTestData(false);
            objAcc.Participant_id__c = '1378';
            objAcc.Payment_Term__c = 'Net 30';
            insert objAcc ;
            system.debug('Created Account: ' + objAcc);
 
-           Opportunity originalOpp = createOriginalOppTestData(objAcc.Id);
+           Opportunity originalOpp = createOriginalOppTestData(objAcc.Id,true);
            system.debug('Created Original Opp: ' + originalOpp);
            Opportunity objOpportunity = createOppTestData(objAcc.Id, originalOpp.Id);
            system.debug('Created Opportunity: ' + objOpportunity);
@@ -140,7 +144,7 @@ private class CPQ_OrderUtilityTest {
            system.assertEquals(0,lstOrder.size());
            system.debug('Verify there was no Order so far');
 
-           Test.startTest();
+
                 //Id oppId,Id primaryQuoteId,Id accId,String basecurr,String l_classid
                 String returned = CPQ_OrderUtility.createOrder(objOpportunity.Id,objQuote.Id,objAcc.Id,'USD');
                 System.debug('------ returned ------ : ' + returned);
@@ -162,15 +166,17 @@ private class CPQ_OrderUtilityTest {
         List<sObject> countryCode = Test.loadData(pw_cc__CountryObject__c.sObjectType, 'CPQ_TestDataCountryObject');
         pw_cc__CountryObject__c countryObj = (pw_cc__CountryObject__c)countryCode[2];
 
+            Test.startTest();
            // insert account
            Account objAcc = CPQ_TestDataUtility.accountTestData(false);
            objAcc.Participant_id__c = '1378';
            insert objAcc ;
 
-           Opportunity originalOpp = createOriginalOppTestData(objAcc.Id);
+           Opportunity originalOpp = createOriginalOppTestData(objAcc.Id,true);
 
            Contract contObj = contractTestData(objAcc.Id, originalOpp.Id);
            contObj.AccountId  = objAcc.ID;
+           contObj.Status = 'Activated';
            update contObj;
 
            Opportunity objOpportunity = createOppTestData(objAcc.Id, originalOpp.Id);
@@ -191,7 +197,7 @@ private class CPQ_OrderUtilityTest {
            orderObj.Is_Primary__c = true;
            insert  orderObj ;
 
-           Test.startTest();
+
                //Id oppId,Id primaryQuoteId,Id accId,String basecurr,String l_classid
                CPQ_OrderUtility.createOrder(objOpportunity.Id,objQuote.Id,objAcc.Id,'USD');
            Test.stopTest();
@@ -214,6 +220,7 @@ private class CPQ_OrderUtilityTest {
               List<sObject> countryCode = Test.loadData(pw_cc__CountryObject__c.sObjectType, 'CPQ_TestDataCountryObject');
               pw_cc__CountryObject__c countryObj = (pw_cc__CountryObject__c)countryCode[2];
 
+               Test.startTest();
                // insert account
                Account objAcc = new Account();
                objAcc.Name = 'TestAcc';
@@ -238,16 +245,16 @@ private class CPQ_OrderUtilityTest {
                accContactObj.Account__c=accObject.ID;
                insert accContactObj;
 
-               Opportunity originalOpp = createOriginalOppTestData(accObject.Id);
+               Opportunity originalOpp = createOriginalOppTestData(accObject.Id,true);
                system.debug('Created Original Opp: ' + originalOpp);
 
                Contract contractObj = contractTestData(accObject.Id, originalOpp.Id);
                system.debug('Created Contract: ' + contractObj);
                //Opportunity objOpportunity = CPQ_TestDataUtility.opportunityTestData(objAcc.Id,contractObj.ID,false);
-               Opportunity objOpportunity = createOppTestData(accObject.Id, originalOpp.Id);
-               system.debug('Created Opp: ' + objOpportunity);
+
+               Opportunity objOpportunity = CPQ_TestDataUtility.opportunityTestData(accObject.Id, contractObj.Id,false);
                objOpportunity.Bill_To__c = accContactObj.ID;
-               update  objOpportunity;
+               insert  objOpportunity;
                system.debug('Updated Opp: ' + objOpportunity);
 
                SBQQ__Quote__c objQuote = createQuoteTestData(objOpportunity.Id);
@@ -258,7 +265,7 @@ private class CPQ_OrderUtilityTest {
                List<Order> lstOrder = [Select Id From Order];
                system.assertEquals(0,lstOrder.size());
 
-               Test.startTest();
+
                    //Id oppId,Id primaryQuoteId,Id accId,String basecurr,String l_classid
                    CPQ_OrderUtility.createOrder(objOpportunity.Id,objQuote.Id,accObject.Id,'USD');
                Test.stopTest();
@@ -280,7 +287,8 @@ private class CPQ_OrderUtilityTest {
               List<sObject> countryCode = Test.loadData(pw_cc__CountryObject__c.sObjectType, 'CPQ_TestDataCountryObject');
               pw_cc__CountryObject__c countryObj = (pw_cc__CountryObject__c)countryCode[2];
 
-               // insert account
+               Test.startTest();
+              // insert account
                Account objAcc = new Account();
                objAcc.Name = 'TestAcc';
                objAcc.pw_cc__BillingCountryLookup__c = countryObj.ID;
@@ -301,7 +309,7 @@ private class CPQ_OrderUtilityTest {
                accContactObj.Account__c=accObject.ID;
                insert accContactObj;
 
-               Opportunity originalOpp = createOriginalOppTestData(objAcc.Id);
+               Opportunity originalOpp = createOriginalOppTestData(objAcc.Id,true);
 
                Contract contractObj = contractTestData(objAcc.Id, originalOpp.Id);
                Opportunity objOpportunity = CPQ_TestDataUtility.opportunityTestData(objAcc.Id,contractObj.ID,false);
@@ -315,7 +323,7 @@ private class CPQ_OrderUtilityTest {
                List<Order> lstOrder = [Select Id From Order];
                system.assertEquals(0,lstOrder.size());
 
-               Test.startTest();
+
                    //Id oppId,Id primaryQuoteId,Id accId,String basecurr,String l_classid
                    CPQ_OrderUtility.createOrder(objOpportunity.Id,objQuote.Id,objAcc.Id,'EUR');
                Test.stopTest();
@@ -328,5 +336,174 @@ private class CPQ_OrderUtilityTest {
            system.assertEquals(Date.today(),lstOrderInserted[0].Contract_Sign_Date__c );
         }
 
+        /**
+         * Test method to check Order creation With Opportunity Quote StartDate blank
+         */
+        @isTest public static void test_createOrderWithOppQuoteStartDateBlank() {
+
+
+              List<sObject> countryCode = Test.loadData(pw_cc__CountryObject__c.sObjectType, 'CPQ_TestDataCountryObject');
+              pw_cc__CountryObject__c countryObj = (pw_cc__CountryObject__c)countryCode[2];
+
+              Test.startTest();
+              // insert account
+              Account objAcc = CPQ_TestDataUtility.accountTestData(false);
+              objAcc.Participant_id__c = '1378';
+              objAcc.Payment_Term__c = 'Net 30';
+              insert objAcc ;
+              system.debug('Created Account: ' + objAcc);
+
+
+              Opportunity originalOpp = createOriginalOppTestData(objAcc.Id,true);
+              system.debug('Created Original Opp: ' + originalOpp);
+
+              Contract contractObj = contractTestData(objAcc.Id, originalOpp.Id);
+              SBQQ__Quote__c objQuote1 = CPQ_TestDataUtility.quoteTestData(originalOpp.Id,false);
+              objQuote1.SBQQ__StartDate__c = null;
+              insert objQuote1;
+              system.debug('Created objQuote1: ' + objQuote1);
+
+              Opportunity objOpportunity = CPQ_TestDataUtility.opportunityTestData(objAcc.Id, contractObj.Id,false);
+              objOpportunity.SBQQ__PrimaryQuote__c = objQuote1.ID;
+              insert objOpportunity;
+              system.debug('Created Opportunity:test class ' + objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__StartDate__c);
+
+              /*SBQQ__Quote__c objQuote = createQuoteTestData(objOpportunity.Id);
+              system.debug('Created Quote: ' + objQuote);*/
+              List<sObject> testDataOfWireMessages = Test.loadData(CPQ_Wire_Message__c.sObjectType, 'CPQ_TestDataWireMessage');
+              // Verify that all 3 test accounts were created
+              //System.assert(testDataOfWireMessages.size() == 1);
+              List<Order> lstOrder = [Select Id From Order];
+              system.assertEquals(0,lstOrder.size());
+              system.debug('Verify there was no Order so far');
+
+
+                   //Id oppId,Id primaryQuoteId,Id accId,String basecurr,String l_classid
+              String returned = CPQ_OrderUtility.createOrder(objOpportunity.Id,objQuote1.Id,objAcc.Id,'USD');
+              System.debug('------ returned ------ : ' + returned);
+              Test.stopTest();
+              List<Order> lstOrderInserted = [Select Id,SBQQ__Quote__c,Is_Primary__c,Status,Pricebook2Id,Contract_Sign_Date__c  From Order];
+
+       }
+
+       /**
+        * Test method to check Order record creation Opportunity Account Payment__c blank value.
+        */
+       @isTest static void test_createOrderOppAccountpaymnetBlank() {
+
+           List<sObject> countryCode = Test.loadData(pw_cc__CountryObject__c.sObjectType, 'CPQ_TestDataCountryObject');
+           pw_cc__CountryObject__c countryObj = (pw_cc__CountryObject__c)countryCode[2];
+
+           Test.startTest();
+              // insert account
+              Account objAcc = CPQ_TestDataUtility.accountTestData(false);
+              objAcc.Participant_id__c = '';
+              objAcc.Payment_Term__c = '';
+              insert objAcc ;
+
+              Opportunity originalOpp = createOriginalOppTestData(objAcc.Id,false);
+              originalOpp.Opportunity_Type__c = '';
+              insert originalOpp;
+
+              Contract contObj = contractTestData(objAcc.Id, originalOpp.Id);
+              contObj.AccountId  = objAcc.ID;
+              contObj.Status = 'Activated';
+              update contObj;
+
+
+
+              SBQQ__Quote__c quote1 = CPQ_TestDataUtility.quoteTestData(originalOpp.Id,false);
+              quote1.SBQQ__BillingFrequency__c = '';
+              insert quote1;
+
+              Opportunity objOpportunity = CPQ_TestDataUtility.opportunityTestData(objAcc.Id,contObj.Id,false);
+              objOpportunity.SBQQ__PrimaryQuote__c = quote1.Id;
+              insert objOpportunity;
+              System.debug('objOpportunity with billing Frequency---'+objOpportunity);
+
+              //SBQQ__Quote__c objQuote = createQuoteTestData(objOpportunity.Id);
+              List<sObject> testDataOfWireMessages = Test.loadData(CPQ_Wire_Message__c.sObjectType, 'CPQ_TestDataWireMessage');
+
+              List<Order> lstOrder = [Select Id From Order];
+              system.assertEquals(0,lstOrder.size());
+
+              Order orderObj = new Order();
+              orderObj.AccountID = objAcc .ID;
+              orderObj.EffectiveDate = System.TODAY();
+              orderObj.CurrencyIsoCode = 'USD';
+              orderObj.ContractID = contObj.ID;
+              orderObj.Status = 'Draft';
+              orderObj.OpportunityID =objOpportunity.ID;
+              orderObj.Is_Primary__c = true;
+              insert  orderObj ;
+
+                  //Id oppId,Id primaryQuoteId,Id accId,String basecurr,String l_classid
+              CPQ_OrderUtility.createOrder(objOpportunity.Id,quote1.Id,objAcc.Id,'USD');
+              Test.stopTest();
+              List<Order> lstOrderInserted = [Select Id,SBQQ__Quote__c,Is_Primary__c,Status,Pricebook2Id,Contract_Sign_Date__c,CreatedDate
+                                              From Order
+                                              Order By CreatedDate  asc];
+
+        }
+
+        /**
+         * Test method to check Order creation with null values
+         */
+        @isTest static void test_createOrderWithNullValues() {
+
+            List<sObject> countryCode = Test.loadData(pw_cc__CountryObject__c.sObjectType, 'CPQ_TestDataCountryObject');
+            pw_cc__CountryObject__c countryObj = (pw_cc__CountryObject__c)countryCode[2];
+
+            Test.startTest();
+               // insert account
+               Account objAcc = CPQ_TestDataUtility.accountTestData(false);
+               objAcc.Participant_id__c = '1378';
+               objAcc.Payment_Term__c = '';
+               insert objAcc ;
+
+               Opportunity originalOpp = createOriginalOppTestData(objAcc.Id,false);
+               originalOpp.Opportunity_Type__c = '';
+               insert originalOpp;
+
+               Contract contObj = contractTestData(objAcc.Id, originalOpp.Id);
+               contObj.AccountId  = objAcc.ID;
+               contObj.Status = 'Activated';
+               update contObj;
+
+
+
+               SBQQ__Quote__c quote1 = CPQ_TestDataUtility.quoteTestData(originalOpp.Id,false);
+               quote1.SBQQ__BillingFrequency__c = '';
+               insert quote1;
+
+               Opportunity objOpportunity = CPQ_TestDataUtility.opportunityTestData(objAcc.Id,contObj.Id,false);
+               objOpportunity.SBQQ__PrimaryQuote__c = quote1.Id;
+               insert objOpportunity;
+               System.debug('objOpportunity with billing Frequency---'+objOpportunity);
+
+               //SBQQ__Quote__c objQuote = createQuoteTestData(objOpportunity.Id);
+               List<sObject> testDataOfWireMessages = Test.loadData(CPQ_Wire_Message__c.sObjectType, 'CPQ_TestDataWireMessage');
+
+               List<Order> lstOrder = [Select Id From Order];
+               system.assertEquals(0,lstOrder.size());
+
+               Order orderObj = new Order();
+               orderObj.AccountID = objAcc .ID;
+               orderObj.EffectiveDate = System.TODAY();
+               orderObj.CurrencyIsoCode = 'USD';
+               orderObj.ContractID = contObj.ID;
+               orderObj.Status = 'Draft';
+               orderObj.OpportunityID =objOpportunity.ID;
+               orderObj.Is_Primary__c = true;
+               insert  orderObj ;
+
+                   //Id oppId,Id primaryQuoteId,Id accId,String basecurr,String l_classid
+               CPQ_OrderUtility.createOrder(null,null,null,'');
+               Test.stopTest();
+               List<Order> lstOrderInserted = [Select Id,SBQQ__Quote__c,Is_Primary__c,Status,Pricebook2Id,Contract_Sign_Date__c,CreatedDate
+                                               From Order
+                                               Order By CreatedDate  asc];
+
+         }
 
 }

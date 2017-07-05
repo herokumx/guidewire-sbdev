@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Contains account-level billing discount information</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>PSA_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>PSA_Account_Discounts</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Discount_Active__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Allows the discount to be made inactive so that a different one may be applied to the account.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Allows the discount to be made inactive so that a different one may be applied to the account.</inlineHelpText>
+        <label>Credit Active</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Discount_Amount_Applied__c</fullName>
+        <defaultValue>0</defaultValue>
+        <description>Summary of past billed discount adjustments based on the account discount</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Summary of past billed discount adjustments based on the account discount</inlineHelpText>
+        <label>Credit Amount Applied</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Discount_Amount_Remaining__c</fullName>
+        <description>If a discount cap applies, the cap minus discount amount applied</description>
+        <externalId>false</externalId>
+        <formula>IF( AND( NOT( ISBLANK( PSA_Discount_Cap__c ) ), NOT( PSA_Discount_Cap__c = 0 ) ), PSA_Discount_Cap__c +  PSA_Discount_Amount_Applied__c , null )</formula>
+        <inlineHelpText>If a discount cap applies, the cap minus discount amount applied</inlineHelpText>
+        <label>Credit Amount Remaining</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Discount_Billing_Levels__c</fullName>
+        <description>For specifying one or more billing levels.  Discount will be based only on billings from assignments with the selected billing levels.
+Options will consist of the defined Billing Levels</description>
+        <externalId>false</externalId>
+        <inlineHelpText>For specifying one or more billing levels.  Discount will be based only on billings from assignments with the selected billing levels.
+Options will consist of the defined Billing Levels</inlineHelpText>
+        <label>Credit Billing Levels</label>
+        <picklist>
+            <picklistValues>
+                <fullName>100</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>105</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>110</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>120</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>130</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>140</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>200</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>220</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ODC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Forecast Blended</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Non-Bill</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>PSA_Discount_Cap__c</fullName>
+        <description>Sum of accumulated discount credits billed, over which cumulative T&amp;M billings will no longer be subject to the discount. Optional.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of accumulated discount credits billed, over which cumulative T&amp;M billings will no longer be subject to the discount. Optional.</inlineHelpText>
+        <label>Credit Cap</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Discount_Eligible_Billings_To_Date__c</fullName>
+        <defaultValue>0</defaultValue>
+        <description>Summary of Discount Eligible Billings to Date from all related projects. Based on timecards for assignments with applicable billing levels that have billing events associated with them.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Summary of Discount Eligible Billings to Date from all related projects. Based on timecards for assignments with applicable billing levels that have billing events associated with them.</inlineHelpText>
+        <label>Credit Eligible Billings To Date</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Discount_End_Date__c</fullName>
+        <description>Date after which T&amp;M billings will no longer be subject to the discount. Optional.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date after which T&amp;M billings will no longer be subject to the discount. Optional.</inlineHelpText>
+        <label>Credit End Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Discount_Percent__c</fullName>
+        <description>The percentage to apply to monthly T&amp;M Billings as a discount</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The percentage to apply to monthly T&amp;M Billings as a discount</inlineHelpText>
+        <label>Credit Percent</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Discount_Type__c</fullName>
+        <description>The type of discount that applies to the account.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The type of discount that applies to the account.</inlineHelpText>
+        <label>Credit Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Investment Credit with Carve-out</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Investment Credit without Carve-out</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Refund from POC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Services Credit with Carve-out</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Services Credit without Carve-out</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <label>PSA Account Credit</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Account__c</columns>
+        <columns>PSA_Discount_Percent__c</columns>
+        <columns>PSA_Discount_Type__c</columns>
+        <columns>PSA_Discount_Cap__c</columns>
+        <columns>PSA_Discount_End_Date__c</columns>
+        <columns>PSA_Discount_Active__c</columns>
+        <columns>PSA_Discount_Amount_Applied__c</columns>
+        <columns>PSA_Discount_Amount_Remaining__c</columns>
+        <columns>PSA_Discount_Eligible_Billings_To_Date__c</columns>
+        <columns>PSA_Discount_Billing_Levels__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <displayFormat>AD-{0000}</displayFormat>
+        <label>Account Discount Id</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>PSA Account Credits</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>PSA_Account__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Discount_Active__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Discount_Amount_Applied__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Discount_Billing_Levels__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Discount_Cap__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Discount_End_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Discount_Percent__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Discount_Type__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>PSA_Account__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>PSA_Discount_Active__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>PSA_Discount_Amount_Applied__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>PSA_Discount_Billing_Levels__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>PSA_Discount_Cap__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>PSA_Discount_Eligible_Billings_To_Date__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>PSA_Discount_End_Date__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>PSA_Discount_Percent__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>PSA_Discount_Type__c</lookupDialogsAdditionalFields>
+        <searchResultsAdditionalFields>PSA_Account__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PSA_Discount_Active__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PSA_Discount_Amount_Applied__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PSA_Discount_Billing_Levels__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PSA_Discount_Cap__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PSA_Discount_Eligible_Billings_To_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PSA_Discount_End_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PSA_Discount_Percent__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PSA_Discount_Type__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>PSA_Account_Credit_End_Date</fullName>
+        <active>true</active>
+        <description>The Credit End Date of the Account Credit must fall on the last day of the month</description>
+        <errorConditionFormula>AND( 
+  NOT( ISBLANK( PSA_Discount_End_Date__c ) ), 
+  OR( 
+    ISNEW(), 
+    ISCHANGED( PSA_Discount_End_Date__c )
+  ), 
+  DAY( PSA_Discount_End_Date__c +1) != 1
+)</errorConditionFormula>
+        <errorDisplayField>PSA_Discount_End_Date__c</errorDisplayField>
+        <errorMessage>The Account Credit End Date must fall on the last day of the month</errorMessage>
+    </validationRules>
+</CustomObject>

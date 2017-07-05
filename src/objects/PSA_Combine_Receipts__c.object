@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Used in the code that creates combined receipts documents from Expense attachments</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>PSA_Email_Notify_List__c</fullName>
+        <description>Comma-separated list of email addresses that should be notified with the number of remaining credits</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Comma-separated list of email addresses that should be notified with the number of remaining credits</inlineHelpText>
+        <label>Email Notify List</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Max_Convert_Attempts__c</fullName>
+        <defaultValue>5</defaultValue>
+        <description>Number of times PSA will check the status of the conversion jobs.  After this number is reached, the job that checks the conversion status will no longer run</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of times PSA will check the status of the conversion jobs.  After this number is reached, the job that checks the conversion status will no longer run</inlineHelpText>
+        <label>Max Convert Attempts</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Notification_Threshold__c</fullName>
+        <description>Number of remaining credits below which an email notification should be sent</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of remaining credits below which an email notification should be sent</inlineHelpText>
+        <label>Notification Threshold</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Send_Low_Credit_Notifications__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>If true, checks to see the remaining credits are below a pre-defined threshold.  If so, then send an email alert</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, checks to see the remaining credits are below a pre-defined threshold.  If so, then send an email alert</inlineHelpText>
+        <label>Send Low Credit Notifications</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Target_Format__c</fullName>
+        <description>Target format for the converted file</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Target format for the converted file</inlineHelpText>
+        <label>Target Format</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Test_Mode__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Determines whether or not to use the file conversion test system</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines whether or not to use the file conversion test system</inlineHelpText>
+        <label>Test Mode</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Zamzar_API_Key__c</fullName>
+        <description>api key used to authenticate to the zamzar file conversion service</description>
+        <externalId>false</externalId>
+        <inlineHelpText>api key used to authenticate to the zamzar file conversion service</inlineHelpText>
+        <label>Zamzar API Key</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Zamzar_Prod_URL__c</fullName>
+        <description>Production URL for Zamzar file conversion service</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Production URL for Zamzar file conversion service</inlineHelpText>
+        <label>Zamzar Prod URL</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Zamzar_Test_URL__c</fullName>
+        <description>Test URL for Zamzar file conversion service</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Test URL for Zamzar file conversion service</inlineHelpText>
+        <label>Zamzar Test URL</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>PSA Combine Receipts</label>
+    <visibility>Public</visibility>
+</CustomObject>

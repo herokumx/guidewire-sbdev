@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Read</externalSharingModel>
+    <fields>
+        <fullName>CS_DocumentId__c</fullName>
+        <externalId>false</externalId>
+        <label>Content Id</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_External_URL__c</fullName>
+        <externalId>false</externalId>
+        <label>External URL</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>CS_IsActive__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Active</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CS_Language__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(CS_Release_Version__r.CS_Localization__c)</formula>
+        <label>Localization</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Publish_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(CS_IsActive__c, IMAGE(&quot;/img/samples/flag_green.gif&quot;,&quot;Green&quot;),
+IMAGE(&quot;/img/samples/flag_red.gif&quot;,&quot;Red&quot;))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Publish Status</inlineHelpText>
+        <label>Publish Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Release_Version__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Release Version</label>
+        <referenceTo>CS_Release__c</referenceTo>
+        <relationshipLabel>Product Documentation</relationshipLabel>
+        <relationshipName>Product_Documentation</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CS_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Documentation Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Release Notes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Documentation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Product_Version__c</fullName>
+        <externalId>false</externalId>
+        <formula>CS_Release_Version__r.Name</formula>
+        <inlineHelpText>Release Version</inlineHelpText>
+        <label>Product Version</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Product Documentation</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>CS_IsActive__c</columns>
+        <columns>CS_Release_Version__c</columns>
+        <columns>CS_Type__c</columns>
+        <columns>CS_External_URL__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <label>Documentation Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Product Documentation</pluralLabel>
+    <searchLayouts>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>CS_Type__c</searchFilterFields>
+        <searchFilterFields>CS_Release_Version__c</searchFilterFields>
+        <searchResultsAdditionalFields>CS_Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Product_Version__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>CS_URLRequired_Documentation</fullName>
+        <active>false</active>
+        <description>External URL required for Documentation</description>
+        <errorConditionFormula>AND(TEXT(CS_Type__c)=&apos;Documentation&apos;, ISBLANK(CS_External_URL__c) 
+)</errorConditionFormula>
+        <errorMessage>Please Add URL for Documentation</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Publish</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Publish</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/30.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/24.0/apex.js&quot;)} 
+var CountCheck = sforce.connection.query(&quot;select Id from ContentDocumentLink where LinkedEntityId=&apos;{!CS_Product_Documentation__c.Id}&apos; limit 1&quot;); 
+records = CountCheck.getArray(&quot;size&quot;); 
+var CSdocumentation = new sforce.SObject(&apos;CS_Product_Documentation__c&apos;); 
+if({!CS_Product_Documentation__c.CS_IsActive__c} == 0 &amp;&amp; (records &gt; 0 || {! NOT ISNULL(CS_Product_Documentation__c.CS_External_URL__c)} || 
+{! NOT ISNULL(CS_Product_Documentation__c.CS_DocumentId__c)}
+
+)) { 
+
+
+try{ 
+CSdocumentation.Id = &apos;{!CS_Product_Documentation__c.Id}&apos;; 
+CSdocumentation.CS_IsActive__c =1; 
+var resultRelease = sforce.connection.update([CSdocumentation]); 
+if(resultRelease[0].success==&apos;true&apos; ){ 
+alert(&apos;Product Documentation has been published successfully and the Documentation is now available to customers.&apos;); 
+location.reload(); 
+} 
+} 
+catch(e){ 
+alert(&apos;An Error has Occured. Error: &apos; + e); 
+} 
+} 
+else { 
+alert(&apos;Product Documentation has been already Published or Product Documentation File is not Uploaded&apos;); 
+}</url>
+    </webLinks>
+</CustomObject>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>****  Service Cloud  Custom Setting for Entitlement Process and default  Solution Owners****</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>CS_Number_Of_Solution_Owners__c</fullName>
+        <description>****** Stores the Number of Solution Owners for Entitlement Process for  the Purpose of defaulting on Service Contract Line Item *********</description>
+        <externalId>false</externalId>
+        <label>Number Of Solution Owners Allowed</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Type__c</fullName>
+        <description>***** Stores the Type of Custom Setting Value ******</description>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>GW Customer Support</label>
+    <visibility>Public</visibility>
+</CustomObject>

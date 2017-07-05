@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>The PSA Billing Stage object will be accessed by the Invoice Application integration for updates needed to billing events, including Integration Status and invoice information.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>PSA_Billing_Event__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Id of related Billing Event</description>
+        <externalId>false</externalId>
+        <label>Billing Event</label>
+        <referenceTo>pse__Billing_Event__c</referenceTo>
+        <relationshipLabel>PSA Billing Stage</relationshipLabel>
+        <relationshipName>PSA_Billing_Stage</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_GW_Integration_Id__c</fullName>
+        <description>Source Id used to uniquely identify the associated source system record</description>
+        <externalId>false</externalId>
+        <label>GW Integration Id</label>
+        <length>40</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Integration_Status__c</fullName>
+        <description>An Integration Status value to set on the billing event. Valid values include: Processing Invoice, Error, and Complete</description>
+        <externalId>false</externalId>
+        <label>Integration Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Complete</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Error</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Invoice_Date__c</fullName>
+        <description>Will not be used by the integration initially, since the invoice date will be set in PSA. Placeholder in case invoice date is ever to be supplied from the Accounting Application (originally Intacct)</description>
+        <externalId>false</externalId>
+        <label>Invoice Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Invoice_Number__c</fullName>
+        <description>The integration to mark the billing event as invoiced should set this to the Intacct invoice number</description>
+        <externalId>false</externalId>
+        <label>Invoice Number</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Invoicing_Error_Message__c</fullName>
+        <externalId>false</externalId>
+        <label>Invoicing Error Message</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>PSA_Processed_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Processed Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Processed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Processed</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>PSA Billing Stage</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Billing_Event__c</columns>
+        <columns>PSA_Integration_Status__c</columns>
+        <columns>PSA_Invoice_Date__c</columns>
+        <columns>PSA_Invoice_Number__c</columns>
+        <columns>PSA_GW_Integration_Id__c</columns>
+        <columns>PSA_Invoicing_Error_Message__c</columns>
+        <columns>PSA_Processed__c</columns>
+        <columns>PSA_Processed_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <displayFormat>BS-{00000}</displayFormat>
+        <label>Billing Stage Id</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>PSA Billing Stage</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>PSA_Billing_Event__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Integration_Status__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Invoice_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Invoice_Number__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_GW_Integration_Id__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Invoicing_Error_Message__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Processed__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Processed_Date__c</customTabListAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

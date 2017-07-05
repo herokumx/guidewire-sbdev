@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Current billing rule-related project balances.  Records created as a part of data migration may include an initial balance.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>PSA_Balance_Type__c</fullName>
+        <description>Categorizes project balances, so billing rule true-ups can accurately reflect migrated billing balances</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Categorizes project balances, so billing rule true-ups can accurately reflect migrated billing balances</inlineHelpText>
+        <label>Balance Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>T&amp;M Services Total</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>T&amp;M Services for Billing Level</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Services Credits Applied</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Expense Total Billing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Expense Credits Applied</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Holdback Applied</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Holdback Release Applied</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Discount Applied</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Discount Services Total</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Billing_Event__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Billing Event</label>
+        <referenceTo>pse__Billing_Event__c</referenceTo>
+        <relationshipLabel>PSA Project Balances</relationshipLabel>
+        <relationshipName>PSA_Project_Balances</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Billing_Level__c</fullName>
+        <description>Populated if the balance is associated with a billing rule that has a multi-select billing level picklist</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Populated if the balance is associated with a billing rule that has a multi-select billing level picklist</inlineHelpText>
+        <label>Billing Level</label>
+        <length>20</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PSA_Current_Balance__c</fullName>
+        <defaultValue>0</defaultValue>
+        <description>The current summary amount or balance based on current and past billings.
+This value may be recalculated upon every billing event generation in order to catch up with current billings.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The current summary amount or balance based on current and past billings.
+This value may be recalculated upon every billing event generation in order to catch up with current billings.</inlineHelpText>
+        <label>Current Balance</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PSA_Project__c</fullName>
+        <externalId>false</externalId>
+        <label>Project</label>
+        <referenceTo>pse__Proj__c</referenceTo>
+        <relationshipLabel>PSA Project Balances</relationshipLabel>
+        <relationshipName>PSA_Project_Balances</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <label>PSA Project Balance</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Project__c</columns>
+        <columns>PSA_Billing_Event__c</columns>
+        <columns>PSA_Balance_Type__c</columns>
+        <columns>PSA_Current_Balance__c</columns>
+        <columns>PSA_Billing_Level__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Discount_Services_Total</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Project__c</columns>
+        <columns>PSA_Billing_Event__c</columns>
+        <columns>PSA_Balance_Type__c</columns>
+        <columns>PSA_Current_Balance__c</columns>
+        <columns>PSA_Billing_Level__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PSA_Balance_Type__c</field>
+            <operation>equals</operation>
+            <value>Discount Services Total</value>
+        </filters>
+        <label>Discount Services Total</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Specific_Project</fullName>
+        <columns>NAME</columns>
+        <columns>PSA_Project__c</columns>
+        <columns>PSA_Billing_Event__c</columns>
+        <columns>PSA_Balance_Type__c</columns>
+        <columns>PSA_Current_Balance__c</columns>
+        <columns>PSA_Billing_Level__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PSA_Project__c</field>
+            <operation>contains</operation>
+            <value>Nationwide</value>
+        </filters>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>lessOrEqual</operation>
+            <value>9/1/2015 12:00 AM</value>
+        </filters>
+        <label>Specific Project</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <displayFormat>PB-{0000}</displayFormat>
+        <label>Project Balance Id</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>PSA Project Balances</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>PSA_Project__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Balance_Type__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Current_Balance__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>PSA_Billing_Level__c</customTabListAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>
