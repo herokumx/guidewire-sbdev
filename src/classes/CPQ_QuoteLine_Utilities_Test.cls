@@ -118,6 +118,7 @@ public class CPQ_QuoteLine_Utilities_Test {
     product.Name = productName;
     product.Sku_Type__c = skuType;
     product.IsActive = true;
+    product.SBQQ__SubscriptionPercent__c = 15;
     insert product;
     return product;
   }

@@ -32,8 +32,8 @@ public without sharing class CPQ_QuoteLine_Utilities {
       }
     }
 
-    // retrieve quotelines with CPQ_Renewal_Net_Total__c (to calculate baseline license) for last quote
-    List<SBQQ__QuoteLine__c> quoteLineListForLastQuotes = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, SBQQ__Product__r.Name, CPQ_Renewal_Net_Total__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.CPQ_LastQuote__c];
+    // retrieve quotelines with CPQ_Renewal_License_Total__c (to calculate baseline license) for last quote
+    List<SBQQ__QuoteLine__c> quoteLineListForLastQuotes = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, SBQQ__Product__r.Name, CPQ_Renewal_License_Total__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.CPQ_LastQuote__c];
 
     // create a map with key as quoteline's productId, value as the corresponding quoteline
     Map<String,SBQQ__QuoteLine__c> lastQuotesRampUpInfoMap = new Map<String,SBQQ__QuoteLine__c>();
@@ -80,6 +80,11 @@ public without sharing class CPQ_QuoteLine_Utilities {
     System.debug('***quote '+quote);
     System.debug('***quoteLineList '+quoteLineList);
 
+    // will be used to calculate baseline current/last year support
+    Decimal supportPercent = getSupportPercent(quote.Id);
+    Decimal baseLineCurrentYearLicense;
+    Decimal baseLineLastYearLicense;
+
     Integer var = Integer.valueOf(quote.getsObject('SBQQ__OriginalQuote__r').get('SBQQ__SubscriptionTerm__c')) / 12;
     System.debug('***var '+var);
 
@@ -88,16 +93,24 @@ public without sharing class CPQ_QuoteLine_Utilities {
       quote.CPQ_Baseline_Last_Year_Reference__c = var;
 
       for(SBQQ__QuoteLine__c quoteline : quotelineList) {
-        quoteline.CPQ_Baseline_Current_Year_License__c = CPQ_QuoteLine_Utilities.getLicenseRampUp(var + 1, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
-        quoteline.CPQ_Baseline_Last_Year_License__c = CPQ_QuoteLine_Utilities.getLicenseRampUp(var, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
+        baseLineCurrentYearLicense = CPQ_QuoteLine_Utilities.getLicenseRampUp(var + 1, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
+        baseLineLastYearLicense = CPQ_QuoteLine_Utilities.getLicenseRampUp(var, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
+        quoteline.CPQ_Baseline_Current_Year_License__c = baseLineCurrentYearLicense;
+        quoteline.CPQ_Baseline_Last_Year_License__c = baseLineLastYearLicense;
+        quoteline.CPQ_Baseline_Current_Year_Support__c = String.valueOf(quoteline.getsObject('SBQQ__Product__r').get('Name')).contains('Maintenance') ? 0 : baseLineCurrentYearLicense * supportPercent / 100;
+        quoteline.CPQ_Baseline_Last_Year_Support__c = String.valueOf(quoteline.getsObject('SBQQ__Product__r').get('Name')).contains('Maintenance') ? 0 : baseLineLastYearLicense * supportPercent / 100;
       }
     }else{
       quote.CPQ_Baseline_Current_Year_Reference__c = var;
       quote.CPQ_Baseline_Last_Year_Reference__c = var;
 
       for(SBQQ__QuoteLine__c quoteline : quotelineList) {
-        quoteline.CPQ_Baseline_Current_Year_License__c = CPQ_QuoteLine_Utilities.getLicenseRampUp(var, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
-        quoteline.CPQ_Baseline_Last_Year_License__c = CPQ_QuoteLine_Utilities.getLicenseRampUp(var, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
+        baseLineCurrentYearLicense = CPQ_QuoteLine_Utilities.getLicenseRampUp(var, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
+        baseLineLastYearLicense = CPQ_QuoteLine_Utilities.getLicenseRampUp(var, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
+        quoteline.CPQ_Baseline_Current_Year_License__c = baseLineCurrentYearLicense;
+        quoteline.CPQ_Baseline_Last_Year_License__c = baseLineLastYearLicense;
+        quoteline.CPQ_Baseline_Current_Year_Support__c = String.valueOf(quoteline.getsObject('SBQQ__Product__r').get('Name')).contains('Maintenance') ? 0 : baseLineCurrentYearLicense * supportPercent / 100;
+        quoteline.CPQ_Baseline_Last_Year_Support__c = String.valueOf(quoteline.getsObject('SBQQ__Product__r').get('Name')).contains('Maintenance') ? 0 : baseLineLastYearLicense * supportPercent / 100;
       }
     }
   }
@@ -109,6 +122,11 @@ public without sharing class CPQ_QuoteLine_Utilities {
     System.debug('***processNonFirstTimeSet');
     System.debug('***quote '+quote);
     System.debug('***quoteLineList '+quoteLineList);
+
+    // will be used to calculate baseline current/last year support
+    Decimal supportPercent = getSupportPercent(quote.Id);
+    Decimal baseLineCurrentYearLicense;
+    Decimal baseLineLastYearLicense;
 
     Integer var;
     try {
@@ -124,16 +142,24 @@ public without sharing class CPQ_QuoteLine_Utilities {
         quote.CPQ_Baseline_Last_Year_Reference__c = var - 1;
       }
       for(SBQQ__QuoteLine__c quoteline : quotelineList) {
-        quoteline.CPQ_Baseline_Current_Year_License__c = CPQ_QuoteLine_Utilities.getAnnualNet(quoteline.SBQQ__Product__c, lastQuotesRampUpInfoMap);
-        quoteline.CPQ_Baseline_Last_Year_License__c = CPQ_QuoteLine_Utilities.getAnnualNet(quoteline.SBQQ__Product__c, lastQuotesRampUpInfoMap);
+        baseLineCurrentYearLicense = CPQ_QuoteLine_Utilities.getAnnualNet(quoteline.SBQQ__Product__c, lastQuotesRampUpInfoMap);
+        baseLineLastYearLicense = CPQ_QuoteLine_Utilities.getAnnualNet(quoteline.SBQQ__Product__c, lastQuotesRampUpInfoMap);
+        quoteline.CPQ_Baseline_Current_Year_License__c = baseLineCurrentYearLicense;
+        quoteline.CPQ_Baseline_Last_Year_License__c = baseLineLastYearLicense;
+        quoteline.CPQ_Baseline_Current_Year_Support__c = String.valueOf(quoteline.getsObject('SBQQ__Product__r').get('Name')).contains('Maintenance') ? 0 : baseLineCurrentYearLicense * supportPercent / 100;
+        quoteline.CPQ_Baseline_Last_Year_Support__c = String.valueOf(quoteline.getsObject('SBQQ__Product__r').get('Name')).contains('Maintenance') ? 0 : baseLineLastYearLicense * supportPercent / 100;
       }
     }else{
       quote.CPQ_Baseline_Current_Year_Reference__c = var;
       quote.CPQ_Baseline_Last_Year_Reference__c = var - 1;
 
       for(SBQQ__QuoteLine__c quoteline : quotelineList) {
-        quoteline.CPQ_Baseline_Current_Year_License__c = CPQ_QuoteLine_Utilities.getLicenseRampUp(var, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
-        quoteline.CPQ_Baseline_Last_Year_License__c = CPQ_QuoteLine_Utilities.getLicenseRampUp(var - 1, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
+        baseLineCurrentYearLicense = CPQ_QuoteLine_Utilities.getLicenseRampUp(var, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
+        baseLineLastYearLicense = CPQ_QuoteLine_Utilities.getLicenseRampUp(var - 1, quoteline.SBQQ__Product__c, originalQuotesRampUpInfoMap);
+        quoteline.CPQ_Baseline_Current_Year_License__c = baseLineCurrentYearLicense;
+        quoteline.CPQ_Baseline_Last_Year_License__c = baseLineLastYearLicense;
+        quoteline.CPQ_Baseline_Current_Year_Support__c = String.valueOf(quoteline.getsObject('SBQQ__Product__r').get('Name')).contains('Maintenance') ? 0 : baseLineCurrentYearLicense * supportPercent / 100;
+        quoteline.CPQ_Baseline_Last_Year_Support__c = String.valueOf(quoteline.getsObject('SBQQ__Product__r').get('Name')).contains('Maintenance') ? 0 : baseLineLastYearLicense * supportPercent / 100;
       }
     }
   }
@@ -175,7 +201,7 @@ public without sharing class CPQ_QuoteLine_Utilities {
     }
     System.debug('***quoteLine '+quoteLine);
 
-    return quoteLine.CPQ_Renewal_Net_Total__c;
+    return quoteLine.CPQ_Renewal_License_Total__c;
   }
 
 
@@ -189,7 +215,7 @@ public without sharing class CPQ_QuoteLine_Utilities {
     SBQQ__QuoteLine__c maintenanceQLI = [SELECT Id, SBQQ__Quote__c, SBQQ__SubscriptionPercent__c, SBQQ__Product__r.Sku_Type__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quoteId AND SBQQ__Product__r.Sku_Type__c = 'Maintenance' LIMIT 1];
     System.debug('***maintenanceQLI '+maintenanceQLI);
 
-    Decimal supportPercent = (maintenanceQLI == null) ? null : maintenanceQLI.SBQQ__SubscriptionPercent__c;
+    Decimal supportPercent = (maintenanceQLI == null) ? 0 : maintenanceQLI.SBQQ__SubscriptionPercent__c;
     System.debug('***supportPercent '+supportPercent);
 
     return supportPercent;
