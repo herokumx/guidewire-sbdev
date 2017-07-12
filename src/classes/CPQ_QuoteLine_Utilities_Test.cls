@@ -1,7 +1,39 @@
 @isTest
 public class CPQ_QuoteLine_Utilities_Test {
 
+  @isTest static void TestTrigger() {
+    Account account = CS_TestDataUtility.createProspectAccount();
+
+    Opportunity originalOppty = CPQ_Quote_Utilities_Test.createOpportunity(account.Id, null, null, 1, false);
+    SBQQ__Quote__c originalQuote = CPQ_Quote_Utilities_Test.createQuote(originalOppty.Id, false);
+
+    Contract originalContract = CPQ_Quote_Utilities_Test.createContract(account.Id, originalOppty.Id);
+    Opportunity renewalOppty = CPQ_Quote_Utilities_Test.createOpportunity(account.Id, originalOppty.Id, originalContract.Id, 2, true);
+    SBQQ__Quote__c renewalQuote = CPQ_Quote_Utilities_Test.createQuote(renewalOppty.Id, true);
+
+    Id pricebookId = Test.getStandardPricebookId();
+    Product2 product1 = createProduct('Billing Center License', 'License');
+    PricebookEntry pbEntry1 = createPbEntry(product1.Id, pricebookId);
+    Product2 product2 = createProduct('Maintenance - Standard', 'Maintenance');
+    PricebookEntry pbEntry2 = createPbEntry(product2.Id, pricebookId);
+
+    List<SBQQ__QuoteLine__c> quoteLineList = new List<SBQQ__QuoteLine__c>();
+    quoteLineList.add(createQuoteLineItem(product1.Id, originalQuote.Id));
+    quoteLineList.add(createQuoteLineItem(product2.Id, originalQuote.Id));
+    quoteLineList.add(createQuoteLineItem(product1.Id, renewalQuote.Id));
+    quoteLineList.add(createQuoteLineItem(product2.Id, renewalQuote.Id));
+    insert quoteLineList;
+  }
+
   @isTest static void populateBaseLineInfo_processFirstTimeSet() {
+    CS_ByPass__c byPassValidationAndTrigger = new CS_ByPass__c();
+    byPassValidationAndTrigger.CS_Disable_Trigger__c = true;
+    byPassValidationAndTrigger.CS_Disable_ValidationRule__c = true;
+    byPassValidationAndTrigger.CS_Batch_Context__c = true;
+    byPassValidationAndTrigger.CS_Disable_WF_Rules__c = true;
+    byPassValidationAndTrigger.SetupOwnerId = UserInfo.getUserId();
+    insert byPassValidationAndTrigger;
+
     Account account = CS_TestDataUtility.createProspectAccount();
 
     Opportunity originalOppty = CPQ_Quote_Utilities_Test.createOpportunity(account.Id, null, null, 1, false);
@@ -51,6 +83,14 @@ public class CPQ_QuoteLine_Utilities_Test {
   }
 
   @isTest static void populateBaseLineInfo_processNonFirstTimeSet() {
+    CS_ByPass__c byPassValidationAndTrigger = new CS_ByPass__c();
+    byPassValidationAndTrigger.CS_Disable_Trigger__c = true;
+    byPassValidationAndTrigger.CS_Disable_ValidationRule__c = true;
+    byPassValidationAndTrigger.CS_Batch_Context__c = true;
+    byPassValidationAndTrigger.CS_Disable_WF_Rules__c = true;
+    byPassValidationAndTrigger.SetupOwnerId = UserInfo.getUserId();
+    insert byPassValidationAndTrigger;
+
     Account account = CS_TestDataUtility.createProspectAccount();
 
     Opportunity originalOppty = CPQ_Quote_Utilities_Test.createOpportunity(account.Id, null, null, 1, false);

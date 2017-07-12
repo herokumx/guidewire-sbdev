@@ -1,10 +1,14 @@
 @isTest
 public class CPQ_Quote_Utilities_Test {
 
-  @isTest static void TestPopulateOriginalAndLastQuotes() {
+  @isTest static void TestTrigger() {
+    Account account = CS_TestDataUtility.createProspectAccount();
+    Opportunity originalOppty = createOpportunity(account.Id, null, null, 1, false);
+    SBQQ__Quote__c originalQuote = createQuote(originalOppty.Id, false);
+  }
 
+  @isTest static void TestPopulateOriginalAndLastQuotes() {
     CS_ByPass__c byPassValidationAndTrigger = new CS_ByPass__c();
-    // byPassValidationAndTrigger.Name = 'CS_Disable_ValidationRule';
     byPassValidationAndTrigger.CS_Disable_Trigger__c = true;
     byPassValidationAndTrigger.CS_Disable_ValidationRule__c = true;
     byPassValidationAndTrigger.CS_Batch_Context__c = true;
