@@ -55,10 +55,12 @@ public without sharing class CPQ_QuoteLine_Utilities {
     Decimal lastQuoteInvoicedLicense;
     Map<String,Decimal> lastQuoteInvoicedLicenseMap = getLastQuoteInvoicedLicenseMap(quoteId);
     Map<String,Decimal> licenseDistributionMap = getLicenseDistributionMap(quoteId);
+    Map<String,Decimal> supportDistributionMap = getSupportDistributionMap(quoteId);
 
     for(SBQQ__QuoteLine__c quoteline : quoteLineList) {
       quoteline.SBQQ__SubscriptionPercent__c = supportPercent;
       quoteline.CPQ_License_Distribution_Renewal__c = licenseDistributionMap.get(String.valueOf(quoteline.getsObject('SBQQ__Product__r').get('Name')));
+      quoteline.CPQ_Distribution_Renewal__c = supportDistributionMap.get(String.valueOf(quoteline.getsObject('SBQQ__Product__r').get('Name')));
       if(quote.SBQQ__OriginalQuote__c == quote.CPQ_LastQuote__c && quote.CPQ_Baseline_Last_Year_Reference__c != null) {
         lastQuoteInvoicedLicense = lastQuoteInvoicedLicenseMap.get(String.valueOf(quoteline.SBQQ__Product__c)+String.valueOf(quote.CPQ_Baseline_Last_Year_Reference__c));
         quoteline.CPQ_Last_Quote_Invoiced_License__c = lastQuoteInvoicedLicense;
@@ -303,5 +305,28 @@ public without sharing class CPQ_QuoteLine_Utilities {
     System.debug('***licenseDistributionMap '+licenseDistributionMap);
 
     return licenseDistributionMap;
+  }
+
+  /*
+     get map for populating renewal quote's quoteline's support distribution field
+   */
+  private static Map<String,Decimal> getSupportDistributionMap(Id quoteId){
+    System.debug('***getSupportDistributionMap');
+
+    // key as quoteline's product name, value as original quote's corresponding quoteline's support distribution
+    Map<String,Decimal> supportDistributionMap = new Map<String,Decimal>();
+
+    // get current quote
+    SBQQ__Quote__c quote = [SELECT Id, SBQQ__OriginalQuote__c FROM SBQQ__Quote__c WHERE Id =: quoteId];
+
+    List<SBQQ__QuoteLine__c> quoteLineOfOriginalQuoteList = [SELECT SBQQ__Product__r.Name, CPQ_Distribution__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.SBQQ__OriginalQuote__c];
+
+    for(SBQQ__QuoteLine__c quoteline : quoteLineOfOriginalQuoteList) {
+      supportDistributionMap.put(String.valueOf(quoteline.getsObject('SBQQ__Product__r').get('Name')), quoteline.CPQ_Distribution__c);
+    }
+
+    System.debug('***supportDistributionMap '+supportDistributionMap);
+
+    return supportDistributionMap;
   }
 }
