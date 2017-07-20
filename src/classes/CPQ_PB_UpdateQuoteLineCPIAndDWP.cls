@@ -12,7 +12,7 @@ public with sharing class CPQ_PB_UpdateQuoteLineCPIAndDWP {
 
     for(SBQQ__QuoteLine__c quoteline : quoteLineList) {
       quoteline.CPQ_CPI_Uplift_License__c = calculateCPI(quote.CPQ_Uplift_s_To_Apply__c, quoteline.CPQ_Last_Quote_Invoiced_License__c, quote.Lesser_of_CPI_or_3__c);
-      quoteline.CPQ_CPI_Uplift_Support__c = calculateCPISupport(quote.CPQ_Uplift_s_To_Apply__c, quoteline.CPQ_Last_Quote_Invoiced_License__c, quoteline.SBQQ__SubscriptionPercent__c, quoteline.CPQ_Distribution_Renewal__c);
+      quoteline.CPQ_CPI_Uplift_Support__c = calculateCPISupport(quote.CPQ_Uplift_s_To_Apply__c, quoteline.CPQ_Last_Quote_Invoiced_License__c, quote.Lesser_of_CPI_or_3__c, quoteline.SBQQ__SubscriptionPercent__c, quoteline.CPQ_Distribution_Renewal__c);
       quoteline.CPQ_DWP_Adjustment_License__c = calculateDWP(quote.CPQ_Uplift_s_To_Apply__c, quote.DWP_Renewal_Quote_Uplift__c, quoteline.CPQ_License_Distribution_Renewal__c);
       quoteline.CPQ_DWP_Adjustment_Support__c = calculateDWPSupport(quote.CPQ_Uplift_s_To_Apply__c, quote.DWP_Renewal_Quote_Uplift__c, quoteline.SBQQ__SubscriptionPercent__c, quoteline.CPQ_Distribution_Renewal__c);
     }
@@ -38,7 +38,7 @@ public with sharing class CPQ_PB_UpdateQuoteLineCPIAndDWP {
     }
   }
 
-  private static Decimal calculateCPISupport(String optionName, Decimal lastQuoteInvoicedLicense, Decimal supportPercent, Decimal supportDistribution){
+  private static Decimal calculateCPISupport(String optionName, Decimal lastQuoteInvoicedLicense, Decimal cpiUplift, Decimal supportPercent, Decimal supportDistribution){
     System.debug('***calculateCPISupport '+optionName);
 
     lastQuoteInvoicedLicense = (lastQuoteInvoicedLicense == null) ? 0 : lastQuoteInvoicedLicense;
@@ -48,7 +48,7 @@ public with sharing class CPQ_PB_UpdateQuoteLineCPIAndDWP {
     System.debug('***supportDistribution '+supportDistribution);
 
     if(optionName == 'CPI Uplift' || optionName == 'Both') {
-      return lastQuoteInvoicedLicense * supportPercent *  supportDistribution / 10000;
+      return lastQuoteInvoicedLicense * cpiUplift * supportPercent *  supportDistribution / 10000;
     }else{
       return 0;
     }
