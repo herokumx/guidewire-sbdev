@@ -229,6 +229,9 @@ public without sharing class CPQ_QuoteLine_Utilities {
   ///  utility methods to prepare maps    ///
   ////////////////////////////////////////////
 
+  /*
+     get originalQuotesRampUpInfoMap
+   */
   private static Map<String, SBQQ__QuoteLine__c> getOriginalQuotesRampUpInfoMap(SBQQ__Quote__c quote){
 
     /*
@@ -251,6 +254,9 @@ public without sharing class CPQ_QuoteLine_Utilities {
     return originalQuotesRampUpInfoMap;
   }
 
+  /*
+     get lastQuotesRampUpInfoMap
+   */
   private static Map<String, SBQQ__QuoteLine__c> getLastQuotesRampUpInfoMap(SBQQ__Quote__c quote){
     // retrieve quotelines with CPQ_Renewal_License_Total__c and CPQ_Renewal_Support_Total__c (to calculate baseline license and support) for last quote
     List<SBQQ__QuoteLine__c> quoteLineListForLastQuotes = [SELECT Id, SBQQ__Quote__c, SBQQ__Product__c, SBQQ__Product__r.Name, CPQ_Renewal_License_Total__c, CPQ_Renewal_Support_Total__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quote.CPQ_LastQuote__c];
