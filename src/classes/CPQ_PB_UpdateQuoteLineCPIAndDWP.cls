@@ -32,9 +32,11 @@ public with sharing class CPQ_PB_UpdateQuoteLineCPIAndDWP {
     System.debug('***supportQliId '+supportQliId);
     System.debug('***dwpLicenseForSupportQLI '+dwpLicenseForSupportQLI);
 
-    SBQQ__QuoteLine__c supportQLI = quoteLineMap.get(supportQliId);
-    supportQLI.CPQ_DWP_Adjustment_License__c = dwpLicenseForSupportQLI;
-    quoteLineMap.put(supportQliId, supportQLI);
+    if(supportQliId != null) {
+      SBQQ__QuoteLine__c supportQLI = quoteLineMap.get(supportQliId);
+      supportQLI.CPQ_DWP_Adjustment_License__c = dwpLicenseForSupportQLI;
+      quoteLineMap.put(supportQliId, supportQLI);
+    }
 
     update quoteLineMap.values();
 
