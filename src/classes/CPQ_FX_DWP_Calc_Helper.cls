@@ -67,7 +67,8 @@ public with sharing class CPQ_FX_DWP_Calc_Helper {
     }
 
     public void UpdateFX(SBQQ__Quote__c quote) {
-        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([SELECT Id, CurrencyIsoCode FROM Opportunity WHERE Id = :quote.Id]);
+        // DM 07-24 Changed id = :quote.id to Id = :quote.SBQQ__Opportunity2__c]);
+        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([SELECT Id, CurrencyIsoCode FROM Opportunity WHERE Id = :quote.SBQQ__Opportunity2__c]);
 
         //Modify this date to be in the future if needed.
         Date current = Date.today();
@@ -84,6 +85,8 @@ public with sharing class CPQ_FX_DWP_Calc_Helper {
                 quote.CPQ_USD_to_Quote_Currency_Conversion__c = convertFromOrgCurrency(oppWithCurr.CurrencyIsoCode, 1, current);
             }
         }
+        //DM 07-24 - Introduced Update quote.
+        Update quote;
         System.debug('Final Currency values: CPQ_Quote_Currency_to_USD_Conversion__c: ' + quote.CPQ_Quote_Currency_to_USD_Conversion__c + ' CPQ_USD_to_Quote_Currency_Conversion__c: ' + quote.CPQ_USD_to_Quote_Currency_Conversion__c);
     }
 
