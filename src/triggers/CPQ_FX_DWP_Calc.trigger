@@ -8,10 +8,12 @@ trigger CPQ_FX_DWP_Calc on SBQQ__Quote__c (before insert, after insert, after up
   //This is tricky, because when the SBQQ creates the Quote, it actually creates it, rolls it back and creates a new one in the same transaction.
   //This has to be a before trigger and also before update and we will determine in the handler more of what to do.
   if(Trigger.isBefore && Trigger.isInsert) {
+    System.debug('***CPQ_FX_DWP_Calc trigger isBefore && isInsert');
     handler.OnBeforeInsert(Trigger.new, Trigger.newMap);
   }
 
   if(Trigger.isBefore && Trigger.isUpdate) {
+    System.debug('***CPQ_FX_DWP_Calc trigger isBefore && isInsert');
     handler.OnBeforeUpdate(Trigger.new, Trigger.newMap);
   }
 
