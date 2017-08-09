@@ -6397,6 +6397,17 @@ MOD( DateValue(CreatedDate) - DATE(1985,6,24),7),
         <description>Use this Case Type to Submit Cases for Customer  Related Issues</description>
         <label>Customer Support</label>
         <picklistValues>
+            <picklist>Asset_Type__c</picklist>
+            <values>
+                <fullName>Hosted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>OnPremise</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>CS_Assign_Override_Reas__c</picklist>
             <values>
                 <fullName>Training</fullName>

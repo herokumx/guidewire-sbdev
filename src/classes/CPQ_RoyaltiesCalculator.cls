@@ -4,9 +4,7 @@ public with sharing class CPQ_RoyaltiesCalculator {
 
         Set<Id> setQuoteIds = mapId_QuoteRecord.keySet();
 
-        System.debug('------ setQuoteIds ------ : ' + setQuoteIds);
-        if( NULL == setQuoteIds
-        ||  setQuoteIds.isEmpty()) {
+        if( NULL == setQuoteIds ||  setQuoteIds.isEmpty()) {
             return;
         }
 
@@ -20,8 +18,6 @@ public with sharing class CPQ_RoyaltiesCalculator {
                                FROM SBQQ__Quote__c
                               WHERE Id IN : setQuoteIds];
 
-        System.debug('------ lstQuoteWithItems ------ : ' + lstQuoteWithItems);
-
         for(SBQQ__Quote__c quoteIterator : lstQuoteWithItems) {
 
             if( !mapId_QuoteRecord.containsKey(quoteIterator.Id) ) {
@@ -30,8 +26,7 @@ public with sharing class CPQ_RoyaltiesCalculator {
 
             mapId_QuoteRecord.get(quoteIterator.Id).CPQ_Royalties__c = false;
 
-            if( NULL == quoteIterator.SBQQ__LineItems__r
-            ||  quoteIterator.SBQQ__LineItems__r.isEmpty()) {
+            if( NULL == quoteIterator.SBQQ__LineItems__r  ||  quoteIterator.SBQQ__LineItems__r.isEmpty()) {
                 continue;
             }
 
@@ -42,7 +37,6 @@ public with sharing class CPQ_RoyaltiesCalculator {
                     mapId_QuoteRecord.get(quoteIterator.Id).CPQ_Royalties__c = true;
                 }
             }
-            // System.assert(false, '------ :::: ------ : ' + quoteIterator.CPQ_Royalties__c);
         }
     }
 }

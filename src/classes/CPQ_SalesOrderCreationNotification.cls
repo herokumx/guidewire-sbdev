@@ -1,14 +1,14 @@
 global with sharing class CPQ_SalesOrderCreationNotification {
 
-    private final static String ERROR_IN_DATA = 'There was an error in data received.';
-    private final static String ORDER_NOT_FOUND = 'The selected order could not be found.';
-    private final static String EMAIL_EXCEPTION = 'Attempt to send the email failed. Please share following message with your admin: \n{0}';
-    private final static String SUCCESS = 'Email sent successfully.';
-    private final static String BASE_URL = URL.getSalesforceBaseUrl().toExternalForm() + '/';
+    public final static String ERROR_IN_DATA = 'There was an error in data received.';
+    public final static String ORDER_NOT_FOUND = 'The selected order could not be found.';
+    public final static String EMAIL_EXCEPTION = 'Attempt to send the email failed. Please share following message with your admin: \n{0}';
+    public final static String SUCCESS = 'Email sent successfully.';
+    public final static String BASE_URL = URL.getSalesforceBaseUrl().toExternalForm() + '/';
 
-    public CPQ_SalesOrderCreationNotification() {
-        // @TODO: Nothing
-    }
+    // public CPQ_SalesOrderCreationNotification() {
+    //     // @TODO: Nothing
+    // }
 
     webservice static String notifyRevTeam(Id pOrderId) {
 

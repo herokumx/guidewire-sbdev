@@ -465,7 +465,7 @@
         <fullName>CPQ_Price_Minimum_1__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Identifies the Price Minimum for this Product. If Product is Quoted for less than this Price, an Approval Process will be triggered. Majority of Products use only one Price Minimum.</inlineHelpText>
-        <label>CPQ Price Minimum #1</label>
+        <label>CPQ Price Minimum</label>
         <precision>17</precision>
         <required>false</required>
         <scale>2</scale>
@@ -644,6 +644,10 @@
                 <fullName>NA</fullName>
                 <default>false</default>
             </picklistValues>
+            <picklistValues>
+                <fullName>Perpetual Support</fullName>
+                <default>false</default>
+            </picklistValues>
             <restrictedPicklist>true</restrictedPicklist>
             <sorted>false</sorted>
         </picklist>
@@ -769,7 +773,7 @@
         <defaultValue>false</defaultValue>
         <description>test</description>
         <externalId>false</externalId>
-        <label>Incl in Maint Premium</label>
+        <label>Incl in Maint Premium_Not Needed</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -779,7 +783,7 @@
         <defaultValue>false</defaultValue>
         <description>test</description>
         <externalId>false</externalId>
-        <label>Incl in Maint Standard</label>
+        <label>Incl in Maint Standard-Not Needed</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -3911,8 +3915,10 @@
     </fields>
     <listViews>
         <fullName>AllProducts</fullName>
+        <columns>Product_Integration_Status__c</columns>
         <columns>PRODUCT2.NAME</columns>
         <columns>PRODUCT2.FAMILY</columns>
+        <columns>Sku_Type__c</columns>
         <columns>PRODUCT2.CUSTOMER_PRODUCT_ID</columns>
         <columns>SBQQ__Component__c</columns>
         <columns>DWP_in_M__c</columns>
@@ -8654,6 +8660,7 @@
         <searchResultsAdditionalFields>PRODUCT2.ACTIVE</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>PRODUCT2.RECORD_TYPE</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CPQ_Pricing_Method__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>SKU_ID__c</searchResultsAdditionalFields>
     </searchLayouts>
     <validationRules>
         <fullName>SBQQ__Include_or_Exclude_Maintenance</fullName>

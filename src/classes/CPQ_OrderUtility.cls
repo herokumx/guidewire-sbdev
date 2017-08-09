@@ -8,9 +8,7 @@ global class CPQ_OrderUtility {
     public Static Id stdPricebookId;
 
     static {
-        stdPricebookId = Test.isRunningTest()
-                       ? Test.getStandardPricebookId()
-                       : [SELECT Id
+        stdPricebookId = Test.isRunningTest() ? Test.getStandardPricebookId() : [SELECT Id
                             FROM Pricebook2
                            WHERE IsStandard = true
                              AND IsActive = true].Id;
@@ -31,8 +29,8 @@ global class CPQ_OrderUtility {
                                                           , SBQQ__PrimaryQuote__r.SBQQ__StartDate__c
                                                           , SBQQ__PrimaryQuote__r.CPQ_Prorated_Start_Date__c
                                                           , SBQQ__PrimaryQuote__r.CPQ_Royalties__c
+                                                          , SBQQ__PrimaryQuote__r.SBQQ__PaymentTerms__c
                                                           , Account.Participant_id__c
-                                                          , Account.Payment_Term__c
                                                           , SBQQ__PrimaryQuote__r.SBQQ__SubscriptionTerm__c
                                                           , bill_to__r.Participant_Account__r.pw_cc__BillingCountryLookup__r.pw_cc__IsoCode_2__c
                                                           , Opportunity_Type__c
@@ -51,12 +49,19 @@ global class CPQ_OrderUtility {
             return 'Unable to create the order right now. Please try again later.';
         }
 
-        List<Contract> lstContracts = [SELECT Id
+        List<Contract> lstContracts = [SELECT Id, StartDate
                                          FROM Contract
                                         WHERE AccountId = : accId
+                                          AND SBQQ__Opportunity__c = :oppId
                                           AND Status = 'Activated'
                                      ORDER BY CreatedDate DESC
                                         LIMIT 1];
+        
+        List<ServiceContract> serviceContracts = [SELECT Id, CS_Software_Delivery_Date__c 
+													FROM ServiceContract 
+													WHERE CPQ_Opportunity__c = :oppId
+                                     				ORDER BY CreatedDate DESC
+                                     				LIMIT 1];
 
         String strResult = 'Following fields are missing: [{0}]';
         List<String> lstMissingFields = new List<String>();
@@ -69,9 +74,9 @@ global class CPQ_OrderUtility {
             lstMissingFields.add('Primary Quote > Start Date');
         }
 
-        if(NULL == objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__StartDate__c) {
-            lstMissingFields.add('Primary Quote > Start Date');
-        }
+        // if(NULL == objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__StartDate__c) {
+        //     lstMissingFields.add('Primary Quote > Start Date');
+        // }
 
         if( NULL == objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__SubscriptionTerm__c ) {
             lstMissingFields.add('Primary Quote > Subscription Term');
@@ -81,8 +86,8 @@ global class CPQ_OrderUtility {
             lstMissingFields.add('Account > Participant Id');
         }
 
-        if(String.isBlank(objOpportunity.Account.Payment_Term__c)) {
-            lstMissingFields.add('Account > Payment Term');
+        if(String.isBlank(objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__PaymentTerms__c)) {
+            lstMissingFields.add('Primary Quote > Payment Term');
         }
 
         if(String.isBlank(objOpportunity.bill_to__r.Participant_Account__r.pw_cc__BillingCountryLookup__r.pw_cc__IsoCode_2__c)) {
@@ -109,16 +114,16 @@ global class CPQ_OrderUtility {
         objOrder.OpportunityId = oppId;
         objOrder.Pricebook2Id = stdPricebookId;
         //objOrder.Contract_Sign_Date__c = Date.today();  //Don't default to today's date, they will fill this in when the contract is actually signed.
-        objOrder.ContractId = !lstContracts.isEmpty()
-                            ? lstContracts[0].Id
-                            : NULL;
+        objOrder.ContractId = !lstContracts.isEmpty() ? lstContracts[0].Id : NULL;
+        objOrder.Software_Delivery_Date__c = !serviceContracts.isEmpty() ? serviceContracts[0].CS_Software_Delivery_Date__c : NULL; 
 
         if( objOpportunity != NULL ) {
             objOrder.SBQQ__BillingFrequency__c = objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__BillingFrequency__c;
             objOrder.Opportunity_Id__c = oppId;
             objOrder.SFDC_Bill_To_Customer_ID__c = objOpportunity.Account.Participant_id__c;
-            objOrder.termname__c = objOpportunity.Account.Payment_Term__c;
+            objOrder.termname__c = objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__PaymentTerms__c;
             objOrder.Sales_Order_Date__c = objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__StartDate__c;
+            objOrder.EffectiveDate = objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__StartDate__c;
             objOrder.Subscription_Term_Duration__c = objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__SubscriptionTerm__c;
             objOrder.CPQ_Royalties__c = objOpportunity.SBQQ__PrimaryQuote__r.CPQ_Royalties__c;
             objOrder.TaxCode__c = System.Label.CPQ_OpportunityTypeNetNew.equalsIgnoreCase(objOpportunity.Opportunity_Type__c)

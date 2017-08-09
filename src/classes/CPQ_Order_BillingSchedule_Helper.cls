@@ -1,7 +1,7 @@
 public with sharing class CPQ_Order_BillingSchedule_Helper {
 
     //Static run variable
-    private static Boolean run = true;
+    @TestVisible private static Boolean run = true;
 
     private Boolean m_isExecuting = false;
     private Integer batchSize = 0;

@@ -91,7 +91,7 @@
     <fields>
         <fullName>CPQ_First_Period_Prorated_Amount__c</fullName>
         <externalId>false</externalId>
-        <label>First Period Prorated Amount</label>
+        <label>Prorated Period Amount</label>
         <precision>10</precision>
         <required>false</required>
         <scale>0</scale>
@@ -127,9 +127,17 @@
         <fullName>ContractName</fullName>
     </fields>
     <fields>
+        <fullName>Contract_Effective_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Contract Effective Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Contract_Ref_Number__c</fullName>
         <externalId>false</externalId>
-        <label>Contract Ref #</label>
+        <label>Contract Name</label>
         <length>255</length>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -172,7 +180,7 @@
     <fields>
         <fullName>First_Invoice_Date__c</fullName>
         <externalId>false</externalId>
-        <label>First Invoice Date</label>
+        <label>Prorated Invoice Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Date</type>
@@ -180,7 +188,7 @@
     <fields>
         <fullName>First_Invoice_Payment_Terms__c</fullName>
         <externalId>false</externalId>
-        <label>First Invoice Payment Terms</label>
+        <label>Prorated Invoice Payment Terms</label>
         <picklist>
             <picklistValues>
                 <fullName>Net 30</fullName>
@@ -208,7 +216,7 @@
     <fields>
         <fullName>First_Period_End_Date__c</fullName>
         <externalId>false</externalId>
-        <label>First Period End Date</label>
+        <label>Prorated Period End Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Date</type>
@@ -216,7 +224,7 @@
     <fields>
         <fullName>First_Period_Start_Date__c</fullName>
         <externalId>false</externalId>
-        <label>First Period Start Date</label>
+        <label>Prorated Period Start Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Date</type>
@@ -338,6 +346,14 @@
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Perpetual_Buyout_Option__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Perpetual Buyout Option</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>PoDate</fullName>
@@ -661,7 +677,7 @@
     <fields>
         <fullName>referenceno__c</fullName>
         <externalId>false</externalId>
-        <label>Purpose of the contract</label>
+        <label>Product Name</label>
         <length>255</length>
         <required>false</required>
         <trackHistory>false</trackHistory>

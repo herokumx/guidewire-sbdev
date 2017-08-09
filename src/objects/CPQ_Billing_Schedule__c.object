@@ -53,7 +53,7 @@
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
-    <enableSearch>false</enableSearch>
+    <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
@@ -67,6 +67,16 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_Effective_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.Contract_Effective_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract Effective Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Contract_Ref_Number__c</fullName>
@@ -91,7 +101,7 @@
     <fields>
         <fullName>List_Price__c</fullName>
         <externalId>false</externalId>
-        <formula>Order_Product__r.List_Price__c</formula>
+        <formula>Order_Product__r.SBQQ__QuoteLine__r.CPQ_Guidewire_List_Price__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>List Price</label>
         <precision>18</precision>
@@ -105,6 +115,17 @@
         <externalId>false</externalId>
         <formula>CASESAFEID(Order__r.OpportunityId)</formula>
         <label>Oppty Id</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>OrderNumber__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.OrderNumber</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>OrderNumber</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -195,6 +216,15 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Perpetual_Buyout_Option__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.Perpetual_Buyout_Option__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Perpetual Buyout Option</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Prorated_Support_Cost__c</fullName>
         <externalId>false</externalId>
         <formula>Order_Product__r.SBQQ__QuoteLine__r.CPQ_Maintenance_Cost__c</formula>
@@ -205,6 +235,15 @@
         <scale>2</scale>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Royalties__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order__r.CPQ_Royalties__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Royalties</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Sales_Order_End_Date__c</fullName>
@@ -235,6 +274,18 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Support_Distribution__c</fullName>
+        <externalId>false</externalId>
+        <formula>Order_Product__r.SBQQ__QuoteLine__r.CPQ_Distribution__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Support Distribution</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
     </fields>
     <fields>
         <fullName>Term_End_Date__c</fullName>
@@ -275,7 +326,7 @@
     <fields>
         <fullName>billto__c</fullName>
         <externalId>false</externalId>
-        <formula>Order__r.billto__c</formula>
+        <formula>Order__r.Opportunity.Bill_To__r.Name</formula>
         <label>Bill To</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -617,8 +668,9 @@
     <fields>
         <fullName>referenceno__c</fullName>
         <externalId>false</externalId>
-        <label>Purpose of the Contract</label>
-        <length>255</length>
+        <formula>Order__r.referenceno__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Product Name</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -664,7 +716,7 @@
     <fields>
         <fullName>shipto__c</fullName>
         <externalId>false</externalId>
-        <formula>Order__r.shipto__c</formula>
+        <formula>Order__r.Opportunity.Ship_To__r.Name</formula>
         <label>Ship To</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -712,6 +764,11 @@
         <unique>false</unique>
     </fields>
     <label>Billing Schedule</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <displayFormat>BS-{000000}</displayFormat>
         <label>Billing Schedule Name</label>

@@ -365,7 +365,7 @@ IF(CS_SAP_Production__c, $Setup.CS_Software_Delivery__c.CS_SAP_Production_Templa
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>DateTime</type>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>CS_Software_Delivery_Status__c</fullName>

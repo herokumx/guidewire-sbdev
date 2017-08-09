@@ -58,7 +58,7 @@ public class CPQ_Quote_Utilities_Test {
     oppty.CloseDate = Date.Today();
     oppty.StageName = 'Qualified';
     oppty.CPQ_Term_Sequence__c = termSequence;
-    oppty.Deal_Type__c = 'Term';
+    // oppty.Deal_Type__c = 'Term';
     oppty.CurrencyIsoCode = 'USD';
     oppty.SBQQ__Renewal__c = isRenewal;
     oppty.Original_Opportunity_New__c = isRenewal ? originalOpptyId : null;

@@ -252,10 +252,6 @@
         <name>FlowDefinition</name>
     </types>
     <types>
-        <members>*</members>
-        <name>StaticResource</name>
-    </types>
-    <types>
         <members>ACPactivateUser__c</members>
         <members>AT_Adoption_Trend__c</members>
         <members>Access_Request_Community__c</members>

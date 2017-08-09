@@ -3314,7 +3314,7 @@
         <externalId>false</externalId>
         <label>Primary Reference Contact</label>
         <lookupFilter>
-            <active>true</active>
+            <active>false</active>
             <booleanFilter>1 AND (2 OR 3)</booleanFilter>
             <filterItems>
                 <field>$Source.Id</field>

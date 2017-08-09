@@ -53,6 +53,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Closed Won - Inflight Renewal</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Declined to Bid</fullName>
             <default>false</default>
         </values>
@@ -1493,7 +1497,7 @@
         <label>Current In-Scope DWP (USD)</label>
         <precision>18</precision>
         <required>false</required>
-        <scale>5</scale>
+        <scale>2</scale>
         <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
@@ -3091,6 +3095,14 @@ TEXT (YEAR(CloseDate))
             </picklistValues>
             <picklistValues>
                 <fullName>Customer - Acquisition</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Inflight Renewal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Renewal</fullName>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
@@ -5607,6 +5619,14 @@ ISPICKVAL(PRM_Revenue_Sharing_Frequency__c, &quot;Recurring&quot;),
                 <forecastCategory>Omitted</forecastCategory>
                 <probability>0</probability>
                 <won>false</won>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Closed Won - Inflight Renewal</fullName>
+                <default>false</default>
+                <closed>true</closed>
+                <forecastCategory>Omitted</forecastCategory>
+                <probability>100</probability>
+                <won>true</won>
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
@@ -8128,6 +8148,10 @@ ISPICKVAL(PRM_Revenue_Sharing_Frequency__c, &quot;Recurring&quot;),
                 <default>false</default>
             </values>
             <values>
+                <fullName>Inflight Renewal</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Net New</fullName>
                 <default>false</default>
             </values>
@@ -8137,6 +8161,10 @@ ISPICKVAL(PRM_Revenue_Sharing_Frequency__c, &quot;Recurring&quot;),
             </values>
             <values>
                 <fullName>RPI%2FCPI Increase</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewal</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -11333,7 +11361,7 @@ ISPICKVAL(PRM_Revenue_Sharing_Frequency__c, &quot;Recurring&quot;),
         <fullName>Check_Primary_Quote_Fields_on_Close_Won</fullName>
         <active>true</active>
         <description>Make sure Primary Quote&apos;s fields &quot;Billing Frequency&quot;, &quot;Payment Terms&quot; and &quot;Start Date&quot; are all populated</description>
-        <errorConditionFormula>IF(AND(ISCHANGED(StageName), TEXT(StageName) = &quot;Closed - Won&quot;, OR(ISBLANK(TEXT(SBQQ__PrimaryQuote__r.SBQQ__BillingFrequency__c)), ISBLANK(TEXT(SBQQ__PrimaryQuote__r.SBQQ__PaymentTerms__c)), ISBLANK(SBQQ__PrimaryQuote__r.SBQQ__StartDate__c))),TRUE,FALSE)</errorConditionFormula>
+        <errorConditionFormula>IF(AND(ISCHANGED(StageName), OR(TEXT(StageName) = &quot;Closed - Won&quot;, TEXT(StageName) = &quot;Closed Won - Inflight Renewal&quot;), OR(ISBLANK(TEXT(SBQQ__PrimaryQuote__r.SBQQ__BillingFrequency__c)), ISBLANK(TEXT(SBQQ__PrimaryQuote__r.SBQQ__PaymentTerms__c)), ISBLANK(SBQQ__PrimaryQuote__r.SBQQ__StartDate__c))),TRUE,FALSE)</errorConditionFormula>
         <errorMessage>Primary Quote&apos;s fields &quot;Billing Frequency&quot;, &quot;Payment Terms&quot; and &quot;Start Date&quot; should all be populated before marking Opportunity &quot;Closed - Won&quot;</errorMessage>
     </validationRules>
     <validationRules>
@@ -11355,7 +11383,7 @@ ISPICKVAL(PRM_Revenue_Sharing_Frequency__c, &quot;Recurring&quot;),
         <fullName>DealType_Reqd_finalist_stage</fullName>
         <active>true</active>
         <description>This rule makes the &quot;deal type&quot; a required field when an opportunity reaches finalist stage</description>
-        <errorConditionFormula>OR( ispickval (StageName, &apos;Finalist&apos;), ispickval (StageName, &apos;Closed - Won&apos;), ispickval (StageName, &apos;Selected&apos;), ispickval (StageName, &apos;Final Approvals&apos;)) &amp;&amp; (isblank (text( Deal_Type__c)))
+        <errorConditionFormula>OR( ispickval (StageName, &apos;Finalist&apos;), ispickval (StageName, &apos;Closed - Won&apos;), ispickval (StageName, &apos;Closed Won - Inflight Renewal&apos;), ispickval (StageName, &apos;Selected&apos;), ispickval (StageName, &apos;Final Approvals&apos;)) &amp;&amp; (isblank (text( Deal_Type__c)))
 &amp;&amp; RecordType.DeveloperName= &apos;Default&apos;</errorConditionFormula>
         <errorDisplayField>Deal_Type__c</errorDisplayField>
         <errorMessage>Please enter DealType for this Enterprise opportunity</errorMessage>

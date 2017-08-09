@@ -194,4 +194,16 @@ public with sharing class CPQ_TestDataUtility {
         return quoteLineItemObj;
     }
 
+    public static OpportunityLineItem opppLineItemTestData(PricebookEntry pbEntryObj, Id oppId, Boolean isInsert) {
+        OpportunityLineItem oppLineItemObj = new OpportunityLineItem();
+        oppLineItemObj.OpportunityId = oppId;
+        oppLineItemObj.PricebookEntryId  = pbEntryObj.ID;
+        oppLineItemObj.Quantity= 2;
+        oppLineItemObj.TotalPrice = pbEntryObj.UnitPrice * oppLineItemObj.Quantity;
+        if (isInsert == true) {
+            insert oppLineItemObj;
+        }
+        return oppLineItemObj;
+    }
+
 }
