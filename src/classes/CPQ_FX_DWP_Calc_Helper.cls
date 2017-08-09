@@ -1,9 +1,7 @@
 public with sharing class CPQ_FX_DWP_Calc_Helper {
-  private boolean m_isExecuting = false;
-  private integer BatchSize = 0;
-  private Map<ID,DatedConversionRate> dcrIdToDcrMap;
 
   //Static run variable
+  private static Map<ID,DatedConversionRate> dcrIdToDcrMap;
   private static boolean run = true;
   public static boolean runOnce() {
     if(run) {
@@ -14,14 +12,7 @@ public with sharing class CPQ_FX_DWP_Calc_Helper {
     }
   }
 
-  //Constructor
-  public CPQ_FX_DWP_Calc_Helper(boolean isExecuting, integer size) {
-    System.debug('***CPQ_FX_DWP_Calc_Helper Helper Created');
-    m_isExecuting = isExecuting;
-    BatchSize = size;
-  }
-
-  public void OnBeforeInsert(SBQQ__Quote__c[] newQuotes, Map<ID, SBQQ__Quote__c> quotesMap) {
+  public static void OnBeforeInsert(SBQQ__Quote__c[] newQuotes, Map<ID, SBQQ__Quote__c> quotesMap) {
     System.debug('***OnBeforeInsert');
     //Map<Id, Opportunity> quoteToOpp = new Map<Id, Opportunity>();
     Set<Id> quoteOpps = new Set<Id>();
@@ -63,12 +54,12 @@ public with sharing class CPQ_FX_DWP_Calc_Helper {
     }
   }
 
-  public void OnBeforeUpdate(SBQQ__Quote__c[] newQuotes, Map<Id, SBQQ__Quote__c> quotesMap) {
+  public static void OnBeforeUpdate(SBQQ__Quote__c[] newQuotes, Map<Id, SBQQ__Quote__c> quotesMap) {
     System.debug('***OnBeforeUpdate');
     CPQ_RoyaltiesCalculator.calculateRoyalties(quotesMap);
   }
 
-  public void UpdateFX(SBQQ__Quote__c quote) {
+  public static void UpdateFX(SBQQ__Quote__c quote) {
     System.debug('***UpdateFX');
     // DM 07-24 Changed id = :quote.id to Id = :quote.SBQQ__Opportunity2__c]);
     Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([SELECT Id, CurrencyIsoCode FROM Opportunity WHERE Id = : quote.SBQQ__Opportunity2__c]);
@@ -94,7 +85,7 @@ public with sharing class CPQ_FX_DWP_Calc_Helper {
   }
 
   //On before update trigger expected (before)
-  public void OpportunityUpdate(Opportunity[] oldOpps, Opportunity[] newOpps, Map<ID, Opportunity> oldMap, Map<ID, Opportunity> newMap) {
+  public static void OpportunityUpdate(Opportunity[] oldOpps, Opportunity[] newOpps, Map<ID, Opportunity> oldMap, Map<ID, Opportunity> newMap) {
     System.debug('***OpportunityUpdate');
     //Map<Id, Opportunity> quoteToOpp = new Map<Id, Opportunity>();
 
@@ -173,7 +164,7 @@ public with sharing class CPQ_FX_DWP_Calc_Helper {
   //  ----------------------------------------
   //  convertToOrgCurrency - convert value in some ISO currency to org currency as of given date
   //  ----------------------------------------
-  public Decimal convertToOrgCurrency(String currencyIso, Decimal currencyVal, Date currencyDate) {
+  public static Decimal convertToOrgCurrency(String currencyIso, Decimal currencyVal, Date currencyDate) {
     System.debug('***convertToOrgCurrency');
     Decimal res;
     if (currencyIso == null || currencyVal == null) {}
@@ -195,7 +186,7 @@ public with sharing class CPQ_FX_DWP_Calc_Helper {
   //  ----------------------------------------
   //  convertFromOrgCurrency - convert value in org currency to some iso currency as of given date
   //  ----------------------------------------
-  public Decimal convertFromOrgCurrency(String currencyIso, Decimal currencyVal, Date currencyDate) {
+  public static Decimal convertFromOrgCurrency(String currencyIso, Decimal currencyVal, Date currencyDate) {
     System.debug('***convertFromOrgCurrency');
     Decimal res;
     if (currencyIso == null || currencyVal == null) {}

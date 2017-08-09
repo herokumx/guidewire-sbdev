@@ -14,10 +14,9 @@ public with sharing class CPQ_FX_DWP_Calc_Refresh {
 
   //Method to refresh the FX DWP Calculation on demand
   public PageReference refreshFX() {
-    CPQ_FX_DWP_Calc_Helper handler = new CPQ_FX_DWP_Calc_Helper(true, 1);
     System.debug('Quote Id: ' + Id);
     //perform the calculation
-    handler.UpdateFX(quote);
+    CPQ_FX_DWP_Calc_Helper.UpdateFX(quote);
     PageReference pageRef = new PageReference('/'+Id);
     pageRef.setRedirect(true);
     return pageRef; //Returns to the quote page
