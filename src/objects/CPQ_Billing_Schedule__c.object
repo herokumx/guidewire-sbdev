@@ -69,6 +69,82 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Billing_Schedule_Integration_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Schedule Integration Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Ineliglible</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Eligible for Billing Schedule Setup</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Integrated</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Error</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Schedule_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Schedule Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Submitted to ERP</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Invoiced</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Terminated</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Schedule_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Schedule Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Carving</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>Contract_Effective_Date__c</fullName>
         <externalId>false</externalId>
         <formula>Order__r.Contract_Effective_Date__c</formula>
@@ -97,6 +173,26 @@
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>ERP_Invoice_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>ERP Invoice Number</label>
+        <length>25</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ERP_Order_line_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>ERP Order line Number</label>
+        <length>25</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>List_Price__c</fullName>
@@ -777,6 +873,27 @@
     <pluralLabel>Billing Schedules</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Billing_Schedule_Status_VR1</fullName>
+        <active>true</active>
+        <description>The Billing Schedule Status can be changed to “Terminated” only if the Billing Schedule Status was either &quot;Draft&quot; or “Submitted to ERP”</description>
+        <errorConditionFormula>AND(ISPICKVAL( Billing_Schedule_Status__c, &quot;Terminated&quot;),AND(NOT(ISPICKVAL(PRIORVALUE( Billing_Schedule_Status__c) , &quot;Terminated&quot;)),NOT(ISPICKVAL(PRIORVALUE( Billing_Schedule_Status__c) , &quot;Draft&quot;)),NOT(ISPICKVAL(PRIORVALUE( Billing_Schedule_Status__c) , &quot;Submitted to ERP&quot;))))</errorConditionFormula>
+        <errorMessage>The Billing Schedule Status can be changed to “Terminated” only if the Billing Schedule Status was either &quot;Draft&quot; or “Submitted to ERP”</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Billing_Schedule_Status_VR2</fullName>
+        <active>true</active>
+        <description>The Billing Schedule Status can NOT be changed after being “Terminated”</description>
+        <errorConditionFormula>AND(NOT(ISPICKVAL(Billing_Schedule_Status__c, &quot;Terminated&quot;)),ISPICKVAL(PRIORVALUE( Billing_Schedule_Status__c) , &quot;Terminated&quot;))</errorConditionFormula>
+        <errorMessage>The Billing Schedule Status can NOT be changed after being “Terminated”</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Billing_Schedule_Type_VR</fullName>
+        <active>true</active>
+        <description>The Billing Schedule Status can NOT be changed if current value is “Billing”</description>
+        <errorConditionFormula>AND(NOT(ISPICKVAL(Billing_Schedule_Type__c, &quot;Billing&quot;)),ISPICKVAL(PRIORVALUE( Billing_Schedule_Type__c) , &quot;Billing&quot;))</errorConditionFormula>
+        <errorMessage>The Billing Schedule Status can NOT be changed if current value is “Billing”</errorMessage>
+    </validationRules>
     <validationRules>
         <fullName>Price_less_than_zero</fullName>
         <active>true</active>

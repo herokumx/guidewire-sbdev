@@ -170,6 +170,16 @@
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
+        <fullName>ERP_Order_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>ERP Order Number</label>
+        <length>25</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>EffectiveDate</fullName>
         <trackHistory>true</trackHistory>
     </fields>
@@ -280,6 +290,34 @@
     <fields>
         <fullName>OrderReferenceNumber</fullName>
         <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Order_Integration_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Order Integration Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Ineliglible</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Eligible for Order Setup</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Integrated</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Error</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
     </fields>
     <fields>
         <fullName>Order_Type__c</fullName>
