@@ -446,6 +446,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
         mapOrderId_BillingSchedules.get(orderItemIterator.OrderId).add(new CPQ_Billing_Schedule__c(
                                                                          Order__c = orderItemIterator.OrderId,
                                                                          Order_Product__c = orderItemIterator.Id,
+                                                                         Billing_Schedule_Type__c = 'Billing',
                                                                          revrecstartdate__c = revrecstartdate,
                                                                          revrecenddate__c = revrecenddate,
                                                                          startdate__c = startDate,
@@ -538,6 +539,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
           mapOrderId_BillingSchedules.get(orderItemIterator.OrderId).add(new CPQ_Billing_Schedule__c(
                                                                            Order__c = orderItemIterator.OrderId,
                                                                            Order_Product__c = orderItemIterator.Id,
+                                                                           Billing_Schedule_Type__c = 'Billing',
                                                                            revrecstartdate__c = revrecstartdate,
                                                                            revrecenddate__c = revrecenddate,
                                                                            startdate__c = startDate,
@@ -602,6 +604,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
           mapOrderId_BillingSchedules.get(orderItemIterator.OrderId).add(new CPQ_Billing_Schedule__c(
                                                                            Order__c = orderItemIterator.OrderId,
                                                                            Order_Product__c = orderItemIterator.Id,
+                                                                           Billing_Schedule_Type__c = 'Billing',
                                                                            revrecstartdate__c = revrecstartdate,
                                                                            revrecenddate__c = revrecenddate,
                                                                            startdate__c = startDate,
