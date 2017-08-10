@@ -154,6 +154,9 @@ public class CS_TriggerFactory {
     if (soType == SBQQ__QuoteLine__c.sObjectType) {
       return new CPQ_QuoteLine_TriggerHandler();
     }
+    if (soType == CPQ_Billing_Schedule__c.sObjectType) {
+      return new CPQ_BillingSchedule_TriggerHandler();
+    }
 
     return null;
   }
