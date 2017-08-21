@@ -24,6 +24,14 @@ public with sharing class CPQ_Order_BillingSchedule_Helper {
     batchSize = size;
   }
 
+  public void OnBeforeUpdate(List<Order> pLstOldOrders, List<Order> pLstNewOrders, Map<Id, Order> pId_OldOrder, Map<Id, Order> pId_NewOrder) {
+    for(Order o : pLstNewOrders) {
+      if(o.Status == 'Rev Team Review Complete') {
+        o.Order_Integration_Status__c = 'Eligible for Order Setup';
+      }
+    }
+  }
+
   public void OnAfterInsert(List<Order> pLstNewOrders, Map<Id, Order> pId_NewOrder) {
     // @TODO: Invoke BillingScheduleCreatorUtility
   }
@@ -39,7 +47,7 @@ public with sharing class CPQ_Order_BillingSchedule_Helper {
   private void updateBillingScheduleStatus(Map<Id, Order> pId_OldOrder, Map<Id, Order> pId_NewOrder){
     Set<Id> orderIdSet = new Set<Id>();
     for(Id orderId : pId_NewOrder.keySet()) {
-      if(pId_OldOrder.get(orderId).get('Status') != 'Rev Team Review Complete' && pId_NewOrder.get(orderId).get('Status') == 'Rev Team Review Complete') {
+      if(pId_NewOrder.get(orderId).get('Status') == 'Rev Team Review Complete') {
         orderIdSet.add(orderId);
       }
     }
