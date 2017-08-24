@@ -403,6 +403,14 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
       monthCounter = 0;
       perYearPrice = mapOrderLineId_PerYearPrices.get(orderItemIterator.Id).get(yearCounter);
       perYearPriceFieldName = '';
+      
+      List<Date> lstDates = new List<Date> {
+            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
+            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Software_Delivery_Date__c,
+            mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c,
+            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
+            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
+          };
 
       if( NULL != proratedStartDate
           &&  NULL != startDatePlaceHolder ) {
@@ -424,7 +432,8 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                : proratedAmountDerived;
 
         startDate = calculateStartDate;
-        revrecstartdate = termStartDate = proratedStartDate;
+        revrecstartdate = getLatestDate( lstDates );
+        termStartDate = proratedStartDate;
         revrecenddate = (PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)) ? startDatePlaceHolder : proratedStartDate).addDays(PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)) ? -1 : 0);
         if ( revrecenddate < revrecstartdate ) {
           revrecenddate = revrecstartdate;
@@ -505,13 +514,6 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
         }
 
         if(isFirstBillingSchedule == true) {
-          List<Date> lstDates = new List<Date> {
-            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
-            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Software_Delivery_Date__c,
-            mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c,
-            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
-            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
-          };
 
           startDate = startDatePlaceHolder;
           termStartDate = startDatePlaceHolder;
@@ -523,8 +525,8 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
           }
           termEndDate = startDatePlaceHolder.addMonths(monthCount).addDays(-1);
 
-          startDateString = revrecstartdate != NULL
-                            ? DateTime.newInstance(revrecstartdate, Time.newInstance(0, 0, 0, 0)).format('d MMMM yyyy') + TO
+          startDateString = termStartDate != NULL
+                            ? DateTime.newInstance(termStartDate, Time.newInstance(0, 0, 0, 0)).format('d MMMM yyyy') + TO
                             : '';
           endDateString = termEndDate != NULL
                           ? DateTime.newInstance(termEndDate, Time.newInstance(0, 0, 0, 0)).format('d MMMM yyyy')
@@ -591,6 +593,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
           totalBillingPrice += billingSchedulePrice;
 
           System.debug('------ billingSchedulePrice ------ : ' + billingSchedulePrice);
+          System.debug('------ yearCounter ------ : ' + yearCounter);
           System.debug('------ totalBillingPrice ------ : ' + totalBillingPrice);
           System.debug('------ termStartDate ------ : ' + termStartDate + ' >= mapId_OrderWithOppData.get(orderItemIterator.OrderId).Optional_Support_Start_Date__c ------ : ' + mapId_OrderWithOppData.get(orderItemIterator.OrderId).Optional_Support_Start_Date__c);
           System.debug('------ productSkuType ------ : ' + mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId));
@@ -632,11 +635,17 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                            itemdesc_original__c = (String.isNotBlank(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c)
                                                                                                    && SBQQ_TYPE_RENEWAL.equalsIgnoreCase(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c))
                                                                                                   ? mapOrderLineId_OptionalSkuDesc.get(orderItemIterator.Id)
-                                                                                                  : orderItemIterator.itemdesc_original__c,
+                                                                                                  : (termStartDate >= mapId_OrderWithOppData.get(orderItemIterator.OrderId).Optional_Support_Start_Date__c
+                                                                                                                       && PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)))
+                                                                                                                       ? mapOrderLineId_OptionalSkuDesc.get(orderItemIterator.Id)
+                                                                                                                       : orderItemIterator.itemdesc_original__c,
                                                                            itemid__c = (String.isNotBlank(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c)
                                                                                         && SBQQ_TYPE_RENEWAL.equalsIgnoreCase(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c))
                                                                                        ? mapOrderLineId_OptionalSkuId.get(orderItemIterator.Id)
-                                                                                       : orderItemIterator.itemid__c,
+                                                                                       : (termStartDate >= mapId_OrderWithOppData.get(orderItemIterator.OrderId).Optional_Support_Start_Date__c
+                                                                                              && PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)))
+                                                                                              ? mapOrderLineId_OptionalSkuId.get(orderItemIterator.Id)
+                                                                                              : orderItemIterator.itemid__c,
                                                                            price__c = billingSchedulePrice
                                                                            ));
 
