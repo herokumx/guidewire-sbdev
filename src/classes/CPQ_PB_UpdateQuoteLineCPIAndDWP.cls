@@ -63,6 +63,7 @@ public with sharing class CPQ_PB_UpdateQuoteLineCPIAndDWP {
     System.debug('***calculateCPISupport '+optionName);
 
     lastQuoteInvoicedLicense = (lastQuoteInvoicedLicense == null) ? 0 : lastQuoteInvoicedLicense;
+    cpiUplift = (cpiUplift == null) ? 0 : cpiUplift;
 
     System.debug('***lastQuoteInvoicedLicense '+lastQuoteInvoicedLicense);
     System.debug('***supportPercent '+supportPercent);
