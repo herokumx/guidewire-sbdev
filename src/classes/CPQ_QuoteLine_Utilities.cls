@@ -21,7 +21,7 @@ public without sharing class CPQ_QuoteLine_Utilities {
     }
 
     // iterate quoteLineList and populate support percent & last quote invoiced license & last quote invoiced support
-    Decimal supportPercent = getSupportPercent(quoteId);
+    Decimal supportPercent = getSupportPercent(quote.CPQ_LastQuote__c);
     Map<String,SBQQ__QuoteLine__c> lastQuoteInvoicedInfoMap = getLastQuoteInvoicedInfoMap(quote);
     Map<String, SBQQ__QuoteLine__c> licenseAndSupportDistributionMap = getLicenseAndSupportDistributionMap(quote);
 
