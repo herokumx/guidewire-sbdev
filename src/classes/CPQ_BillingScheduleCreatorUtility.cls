@@ -252,6 +252,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
     orderItemQuery += ' , SBQQ__QuoteLine__r.SBQQ__Product__r.CPQ_Optional_Support_Plan__r.SKU_Description__c ';
     orderItemQuery += ' , SBQQ__QuoteLine__r.SBQQ__Product__r.CPQ_Optional_Support_Plan__r.SKU_ID__c ';
     orderItemQuery += ' , SBQQ__QuoteLine__r.SBQQ__Product__r.Sku_Type__c ';
+    orderItemQuery += ' , Order.CurrencyIsoCode ';
     orderItemQuery += ' FROM OrderItem WHERE OrderId IN ' + setOrderIds;
 
     System.debug('------ setOrderIds ------ : ' + setOrderIds);
@@ -451,11 +452,13 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
         System.debug('------ perYearPrice ------- : ' + perYearPrice);
         System.debug('------ proratedAmountOnOrder ------- : ' + proratedAmountOnOrder);
         System.debug('------ proratedAmountDerived ------- : ' + proratedAmountDerived);
+        System.debug('------ CurrencyIsoCode ------- : ' + orderItemIterator.getsObject('Order').get('CurrencyIsoCode'));
 
         mapOrderId_BillingSchedules.get(orderItemIterator.OrderId).add(new CPQ_Billing_Schedule__c(
                                                                          Order__c = orderItemIterator.OrderId,
                                                                          Order_Product__c = orderItemIterator.Id,
                                                                          Billing_Schedule_Type__c = 'Billing',
+                                                                         CurrencyIsoCode = String.valueOf(orderItemIterator.getsObject('Order').get('CurrencyIsoCode')),
                                                                          revrecstartdate__c = revrecstartdate,
                                                                          revrecenddate__c = revrecenddate,
                                                                          startdate__c = startDate,
@@ -549,11 +552,13 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
 
           System.debug('------ billingSchedulePrice ------ : ' + billingSchedulePrice);
           System.debug('------ totalBillingPrice ------ : ' + totalBillingPrice);
+          System.debug('------ CurrencyIsoCode ------- : ' + orderItemIterator.getsObject('Order').get('CurrencyIsoCode'));
 
           mapOrderId_BillingSchedules.get(orderItemIterator.OrderId).add(new CPQ_Billing_Schedule__c(
                                                                            Order__c = orderItemIterator.OrderId,
                                                                            Order_Product__c = orderItemIterator.Id,
                                                                            Billing_Schedule_Type__c = 'Billing',
+                                                                           CurrencyIsoCode = String.valueOf(orderItemIterator.getsObject('Order').get('CurrencyIsoCode')),
                                                                            revrecstartdate__c = revrecstartdate,
                                                                            revrecenddate__c = revrecenddate,
                                                                            startdate__c = startDate,
@@ -614,6 +619,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
           System.debug('------ productSkuType ------ : ' + mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId));
           System.debug('------ option sku check ------ : ' + (termStartDate >= mapId_OrderWithOppData.get(orderItemIterator.OrderId).Optional_Support_Start_Date__c && PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId))));
           System.debug('------ optional sku ------ : ' + mapOrderLineId_OptionalSkuDesc.get(orderItemIterator.Id));
+          System.debug('------ CurrencyIsoCode ------- : ' + orderItemIterator.getsObject('Order').get('CurrencyIsoCode'));
 
           if(totalBillingPrice > perYearPrice) {
             billingSchedulePrice = billingSchedulePrice - (totalBillingPrice - perYearPrice);
@@ -626,6 +632,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                            Order__c = orderItemIterator.OrderId,
                                                                            Order_Product__c = orderItemIterator.Id,
                                                                            Billing_Schedule_Type__c = 'Billing',
+                                                                           CurrencyIsoCode = String.valueOf(orderItemIterator.getsObject('Order').get('CurrencyIsoCode')),
                                                                            revrecstartdate__c = revrecstartdate,
                                                                            revrecenddate__c = revrecenddate,
                                                                            startdate__c = startDate,
