@@ -5,19 +5,29 @@ trigger CPQ_Order_BillingSchedule on Order (before insert, before update, after 
 
   CPQ_Order_BillingSchedule_Helper handler = new CPQ_Order_BillingSchedule_Helper(Trigger.isExecuting, Trigger.size);
 
-  if(Trigger.isUpdate && Trigger.isBefore) {
-    handler.OnBeforeUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
+  if(Trigger.isInsert && Trigger.isBefore) {
+    CPQ_Order_BillingSchedule_Helper.insertContext = true;
   }
 
-  if(Trigger.isInsert && Trigger.isAfter) {
-    if (CPQ_Order_BillingSchedule_Helper.runOnce() ) {
-      handler.OnAfterInsert(Trigger.new, Trigger.newMap);
+  if(Trigger.isUpdate && Trigger.isBefore) {
+    if(!CPQ_Order_BillingSchedule_Helper.insertContext) {
+      handler.OnBeforeUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
     }
   }
 
   if(Trigger.isUpdate && Trigger.isAfter) {
-    if (CPQ_Order_BillingSchedule_Helper.runOnce() ) {
-      handler.OnAfterUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
+    if(!CPQ_Order_BillingSchedule_Helper.insertContext) {
+      if (CPQ_Order_BillingSchedule_Helper.runForUpdateOnce() ) {
+        handler.OnAfterUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
+      }
     }
   }
+
+  if(Trigger.isInsert && Trigger.isAfter) {
+    CPQ_Order_BillingSchedule_Helper.insertContext = false;
+    if (CPQ_Order_BillingSchedule_Helper.runForInsertOnce() ) {
+      handler.OnAfterInsert(Trigger.new, Trigger.newMap);
+    }
+  }
+
 }

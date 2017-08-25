@@ -1,19 +1,33 @@
 public with sharing class CPQ_Order_BillingSchedule_Helper {
 
   //Static run variable
-  @TestVisible private static Boolean run = true;
+  @TestVisible private static Boolean runForInsertOnce = true;
+  @TestVisible private static Boolean runForUpdateOnce = true;
+
+  public static Boolean insertContext = false;
 
   private Boolean m_isExecuting = false;
   private Integer batchSize = 0;
 
-  public static Boolean runOnce() {
+  public static Boolean runForInsertOnce() {
 
-    if(run) {
-      run = false;
+    if(runForInsertOnce) {
+      runForInsertOnce = false;
       return true;
 
     } else {
-      return run;
+      return runForInsertOnce;
+    }
+  }
+
+  public static Boolean runForUpdateOnce() {
+
+    if(runForUpdateOnce) {
+      runForUpdateOnce = false;
+      return true;
+
+    } else {
+      return runForUpdateOnce;
     }
   }
 
@@ -33,21 +47,18 @@ public with sharing class CPQ_Order_BillingSchedule_Helper {
   }
 
   public void OnAfterInsert(List<Order> pLstNewOrders, Map<Id, Order> pId_NewOrder) {
-    // @TODO: Invoke BillingScheduleCreatorUtility
+    CPQ_BillingScheduleCreatorUtility.createBillingSchedules(NULL, pId_NewOrder,true);
   }
 
   public void OnAfterUpdate(List<Order> pLstOldOrders, List<Order> pLstNewOrders, Map<Id, Order> pId_OldOrder, Map<Id, Order> pId_NewOrder) {
-    // @TODO: Invoke BillingScheduleCreatorUtility
-    System.debug('------ arrived here! ------' + pId_NewOrder);
     CPQ_OrderActivationUtility.updateRelatedOrderStatus(pLstNewOrders, pId_OldOrder);
-    CPQ_BillingScheduleCreatorUtility.createBillingSchedules(pId_OldOrder, pId_NewOrder,true);
     updateBillingScheduleStatus(pId_OldOrder, pId_NewOrder);
   }
 
   private void updateBillingScheduleStatus(Map<Id, Order> pId_OldOrder, Map<Id, Order> pId_NewOrder){
     Set<Id> orderIdSet = new Set<Id>();
     for(Id orderId : pId_NewOrder.keySet()) {
-      if(pId_NewOrder.get(orderId).get('Status') == 'Rev Team Review Complete') {
+      if(pId_OldOrder.get(orderId).get('Status') != 'Rev Team Review Complete' && pId_NewOrder.get(orderId).get('Status') == 'Rev Team Review Complete') {
         orderIdSet.add(orderId);
       }
     }
