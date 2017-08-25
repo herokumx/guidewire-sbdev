@@ -40,8 +40,11 @@ public with sharing class CPQ_Order_BillingSchedule_Helper {
 
   public void OnBeforeUpdate(List<Order> pLstOldOrders, List<Order> pLstNewOrders, Map<Id, Order> pId_OldOrder, Map<Id, Order> pId_NewOrder) {
     for(Order o : pLstNewOrders) {
-      if(o.Status == 'Rev Team Review Complete') {
+      if(pId_OldOrder.get(o.Id).get('Status') != 'Rev Team Review Complete' && pId_NewOrder.get(o.Id).get('Status') == 'Rev Team Review Complete') {
         o.Order_Integration_Status__c = 'Eligible for Order Setup';
+      }
+      if(pId_OldOrder.get(o.Id).get('Order_Integration_Status__c') != 'Integrated' && pId_NewOrder.get(o.Id).get('Order_Integration_Status__c') == 'Integrated') {
+        o.Status = 'Activated';
       }
     }
   }
