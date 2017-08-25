@@ -499,27 +499,27 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
 
       while( startDatePlaceHolder < subscriptionEndDate
              && monthCount != 0 ) {
-            system.debug('perYearPrice'+perYearPrice);
-            system.debug('perYearPrice == 0'+(perYearPrice == 0));
-          System.debug('...monthCount: '+monthCount);
-          System.debug('...yearCount : '+yearCount); 
+        system.debug('perYearPrice'+perYearPrice);
+        system.debug('perYearPrice == 0'+(perYearPrice == 0));
+        System.debug('...monthCount: '+monthCount);
+        System.debug('...yearCount : '+yearCount);
         if(perYearPrice == NULL || perYearPrice == 0) {
           break;
         }
 
         billingSchedulePrice = 0.0;
         monthCounter += monthCount;
-        
-         System.debug('...monthCounter outside if: '+monthCounter);
-         System.debug('...yearCounter outside if: '+yearCounter); 
+
+        System.debug('...monthCounter outside if: '+monthCounter);
+        System.debug('...yearCounter outside if: '+yearCounter);
         if(monthCounter > 12) {
-        
+
           monthCounter = 3;
           yearCounter++;
           perYearPrice = mapOrderLineId_PerYearPrices.get(orderItemIterator.Id).get(yearCounter);
           totalBillingPrice = 0.0;
           System.debug('...monthCounter: '+monthCounter);
-          System.debug('...yearCounter : '+yearCounter); 
+          System.debug('...yearCounter : '+yearCounter);
         }
 
         if(isFirstBillingSchedule == true) {
@@ -542,7 +542,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                           : '';
 
           billingSchedulePrice = (perYearPrice / billingFrequency).setScale(2, System.RoundingMode.CEILING);
-          if(billingSchedulePrice == 0 ){
+          if(billingSchedulePrice == 0 ) {
             continue;
           }
           totalBillingPrice += billingSchedulePrice;
@@ -602,7 +602,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                           : '';
 
           billingSchedulePrice = (perYearPrice / billingFrequency).setScale(2, System.RoundingMode.CEILING);
-          if(billingSchedulePrice == 0 ){
+          if(billingSchedulePrice == 0 ) {
             continue;
           }
           totalBillingPrice += billingSchedulePrice;
@@ -618,7 +618,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
           if(totalBillingPrice > perYearPrice) {
             billingSchedulePrice = billingSchedulePrice - (totalBillingPrice - perYearPrice);
             if(billingSchedulePrice == 0) {
-                continue;
+              continue;
             }
           }
 
