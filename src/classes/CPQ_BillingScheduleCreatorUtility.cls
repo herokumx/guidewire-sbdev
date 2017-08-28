@@ -308,6 +308,25 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
             ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Renewal_License_Total__c
             : 0
           });
+
+        } else {
+            mapOrderLineId_PerYearPrices.put(orderItemIterator.Id, new List<Decimal>{
+              orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_1_Net_Amount__c != NULL
+              ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_1_Net_Amount__c
+              : 0,
+              orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_2_Net_Amount__c != NULL
+              ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_2_Net_Amount__c
+              : 0,
+              orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_3_Net_Amount__c != NULL
+              ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_3_Net_Amount__c
+              : 0,
+              orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_4_Net_Amount__c != NULL
+              ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_4_Net_Amount__c
+              : 0,
+              orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_5_Net_Amount__c != NULL
+              ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_5_Net_Amount__c
+              : 0
+            });
         }
       } else {
         mapOrderLineId_PerYearPrices.put(orderItemIterator.Id, new List<Decimal>{
