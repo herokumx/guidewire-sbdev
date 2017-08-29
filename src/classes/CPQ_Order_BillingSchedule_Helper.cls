@@ -44,7 +44,7 @@ public with sharing class CPQ_Order_BillingSchedule_Helper {
         o.Order_Integration_Status__c = 'Eligible for Order Setup';
       }
       if(pId_OldOrder.get(o.Id).get('Order_Integration_Status__c') != 'Integrated' && pId_NewOrder.get(o.Id).get('Order_Integration_Status__c') == 'Integrated') {
-        o.Status = 'Activated';
+        o.Status = Label.CPQ_Order_Status_Activated;
       }
     }
   }
