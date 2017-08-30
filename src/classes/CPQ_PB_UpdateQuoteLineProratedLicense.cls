@@ -24,7 +24,7 @@ public with sharing class CPQ_PB_UpdateQuoteLineProratedLicense {
     System.debug('***calculateLicense');
 
     if(proratedStartDate != null && startDate != null) {
-      return annualNetAmount / 365 * proratedStartDate.daysBetween(startDate);
+      return annualNetAmount / 365.4 * proratedStartDate.daysBetween(startDate);
     }else{
       return 0;
     }
@@ -34,7 +34,7 @@ public with sharing class CPQ_PB_UpdateQuoteLineProratedLicense {
     System.debug('***calculateCPI');
 
     if(proratedStartDate != null && startDate != null) {
-      return annualMaintenanceCost / 365 * proratedStartDate.daysBetween(startDate);
+      return annualMaintenanceCost / 365.4 * proratedStartDate.daysBetween(startDate);
     }else{
       return 0;
     }
