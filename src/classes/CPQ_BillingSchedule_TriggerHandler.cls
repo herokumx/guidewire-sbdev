@@ -16,12 +16,7 @@ public without sharing class CPQ_BillingSchedule_TriggerHandler implements CS_IT
     }
 
     if(Trigger.isUpdate) {
-      for (sObject so : Trigger.new) {
-        CPQ_Billing_Schedule__c bs = (CPQ_Billing_Schedule__c)so;
-        if(bs.Billing_Schedule_Status__c == 'Submitted to ERP' || bs.Billing_Schedule_Status__c == 'Terminated') {
-          bs.Billing_Schedule_Integration_Status__c = 'Eligible for Billing Schedule Setup';
-        }
-      }
+
     }
   }
 
