@@ -8,6 +8,9 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
   public static final String PRODUCT_SKU_TYPE_LICENSE = 'License';
   public static final String PRODUCT_SKU_TYPE_MAINTENANCE = 'Maintenance';
 
+  public static final String REVRECTEMPLATE_UPFRONT = 'For Upfront Recognition';
+  public static final String REVRECTEMPLATE_PRORATE = 'Exact Days Period Prorate Day';
+
   public static final Map<String, Integer> mapDuration_MonthCount = new Map<String, Integer> {
     'Monthly' => 1,
     'Quarterly' => 3,
@@ -397,11 +400,16 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
 
       startDatePlaceHolder = mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c;
 
-      calculateStartDate = mapId_OrderWithOppData.get(orderItemIterator.OrderId).First_Invoice_Date__c != NULL
+      /*calculateStartDate = mapId_OrderWithOppData.get(orderItemIterator.OrderId).First_Invoice_Date__c != NULL
                            ? mapId_OrderWithOppData.get(orderItemIterator.OrderId).First_Invoice_Date__c
                            : mapId_OrderWithOppData.get(orderItemIterator.OrderId).First_Period_Start_Date__c != NULL
                            ? mapId_OrderWithOppData.get(orderItemIterator.OrderId).First_Period_Start_Date__c
-                           : mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.CPQ_Prorated_Start_Date__c;
+                           : mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.CPQ_Prorated_Start_Date__c;*/
+      calculateStartDate = getLatestDate( new List<Date> {
+        mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
+        mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
+        mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
+      } );
 
       proratedStartDate = mapId_OrderWithOppData.get(orderItemIterator.OrderId).First_Period_Start_Date__c != NULL
                           ? mapId_OrderWithOppData.get(orderItemIterator.OrderId).First_Period_Start_Date__c
@@ -424,13 +432,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
       perYearPrice = mapOrderLineId_PerYearPrices.get(orderItemIterator.Id).get(yearCounter);
       perYearPriceFieldName = '';
 
-      List<Date> lstDates = new List<Date> {
-        mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
-        mapId_OrderWithOppData.get(orderItemIterator.OrderId).Software_Delivery_Date__c,
-        mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c,
-        mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
-        mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
-      };
+      List<Date> lstDates;
 
       if( NULL != proratedStartDate
           &&  NULL != startDatePlaceHolder ) {
@@ -447,6 +449,15 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
           &&  0 == yearCounter
           &&  0 < proratedAmountDerived ) {
 
+        lstDates = new List<Date> {
+          mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
+          mapId_OrderWithOppData.get(orderItemIterator.OrderId).Software_Delivery_Date__c,
+          proratedStartDate,
+          // mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c,
+          mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
+          mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
+        };
+
         billingSchedulePrice = NULL != proratedAmountOnOrder && 0 != proratedAmountOnOrder
                                ? proratedAmountOnOrder
                                : proratedAmountDerived;
@@ -454,7 +465,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
         startDate = calculateStartDate;
         revrecstartdate = getLatestDate( lstDates );
         termStartDate = proratedStartDate;
-        revrecenddate = (PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)) ? startDatePlaceHolder : proratedStartDate).addDays(PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)) ? -1 : 0);
+        revrecenddate = (REVRECTEMPLATE_PRORATE.equalsIgnoreCase(orderItemIterator.revrectemplate__c) ? startDatePlaceHolder : proratedStartDate).addDays(REVRECTEMPLATE_PRORATE.equalsIgnoreCase(orderItemIterator.revrectemplate__c) ? -1 : 0);
         if ( revrecenddate < revrecstartdate ) {
           revrecenddate = revrecstartdate;
         }
@@ -508,6 +519,14 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                      ));
       }
 
+      lstDates = new List<Date> {
+        mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
+        mapId_OrderWithOppData.get(orderItemIterator.OrderId).Software_Delivery_Date__c,
+        mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c,
+        mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
+        mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
+      };
+
       subscriptionEndDate = mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__EndDate__c != NULL
                             ? mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__EndDate__c
                             : mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c.addMonths(Integer.valueOf(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__SubscriptionTerm__c)).addDays(-1);
@@ -546,11 +565,15 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
 
         if(isFirstBillingSchedule == true) {
 
-          startDate = startDatePlaceHolder;
+          startDate = getLatestDate( new List<Date> {
+            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
+            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
+            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
+          } );
           termStartDate = startDatePlaceHolder;
           revrecstartdate = getLatestDate( lstDates );
           system.debug('----revrecstartdate: ' + revrecstartdate);
-          revrecenddate = startDatePlaceHolder.addMonths(PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)) ? monthCount : 0).addDays(PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)) ? -1 : 0);
+          revrecenddate = startDatePlaceHolder.addMonths(REVRECTEMPLATE_PRORATE.equalsIgnoreCase(orderItemIterator.revrectemplate__c) ? monthCount : 0).addDays(REVRECTEMPLATE_PRORATE.equalsIgnoreCase(orderItemIterator.revrectemplate__c) ? -1 : 0);
           if ( revrecenddate < revrecstartdate ) {
             revrecenddate = revrecstartdate;
           }
@@ -612,7 +635,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
 
           startDate = startDatePlaceHolder.addDays(mapPaymentTerm_DayCount.get(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__PaymentTerms__c));
           revrecstartdate = termStartDate = startDatePlaceHolder;
-          revrecenddate = startDatePlaceHolder.addMonths(PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)) ? monthCount : 0).addDays(PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)) ? -1 : 0);
+          revrecenddate = startDatePlaceHolder.addMonths(REVRECTEMPLATE_PRORATE.equalsIgnoreCase(orderItemIterator.revrectemplate__c) ? monthCount : 0).addDays(REVRECTEMPLATE_PRORATE.equalsIgnoreCase(orderItemIterator.revrectemplate__c) ? -1 : 0);
           if ( revrecenddate < revrecstartdate ) {
             revrecenddate = revrecstartdate;
           }
