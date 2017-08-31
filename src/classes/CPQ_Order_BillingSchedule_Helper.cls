@@ -43,7 +43,9 @@ public with sharing class CPQ_Order_BillingSchedule_Helper {
       if(pId_OldOrder.get(o.Id).get('Status') != 'Rev Team Review Complete' && pId_NewOrder.get(o.Id).get('Status') == 'Rev Team Review Complete') {
         o.Order_Integration_Status__c = 'Eligible for Order Setup';
       }
-      if(pId_OldOrder.get(o.Id).get('Order_Integration_Status__c') != 'Integrated' && pId_NewOrder.get(o.Id).get('Order_Integration_Status__c') == 'Integrated') {
+      if(pId_OldOrder.get(o.Id).get('Order_Integration_Status__c') != 'Integrated' && pId_NewOrder.get(o.Id).get('Order_Integration_Status__c') == 'Integrated'
+         || pId_OldOrder.get(o.Id).get('ERP_Sales_Order_Status__c') != 'Draft' && pId_NewOrder.get(o.Id).get('ERP_Sales_Order_Status__c') == 'Draft'
+         || pId_OldOrder.get(o.Id).get('ERP_Sales_Order_Status__c') != 'Processed' && pId_NewOrder.get(o.Id).get('ERP_Sales_Order_Status__c') == 'Processed') {
         o.Status = Label.CPQ_Order_Status_Activated;
       }
     }
@@ -59,16 +61,24 @@ public with sharing class CPQ_Order_BillingSchedule_Helper {
   }
 
   private void updateBillingScheduleStatus(Map<Id, Order> pId_OldOrder, Map<Id, Order> pId_NewOrder){
+    String statusValue = '';
     Set<Id> orderIdSet = new Set<Id>();
+
     for(Id orderId : pId_NewOrder.keySet()) {
       if(pId_OldOrder.get(orderId).get('Status') != 'Rev Team Review Complete' && pId_NewOrder.get(orderId).get('Status') == 'Rev Team Review Complete') {
+        statusValue = 'Submitted to ERP';
+        orderIdSet.add(orderId);
+      }
+      if(pId_OldOrder.get(orderId).get('Status') != 'Cancelled' && pId_NewOrder.get(orderId).get('Status') == 'Cancelled') {
+        statusValue = 'Cancelled';
         orderIdSet.add(orderId);
       }
     }
+
     List<CPQ_Billing_Schedule__c> billingScheduleList = [SELECT Id, Billing_Schedule_Status__c FROM CPQ_Billing_Schedule__c WHERE Order__c IN : orderIdSet];
     if(billingScheduleList.size() > 0) {
       for(CPQ_Billing_Schedule__c billingSchedule : billingScheduleList) {
-        billingSchedule.Billing_Schedule_Status__c = 'Submitted to ERP';
+        billingSchedule.Billing_Schedule_Status__c = statusValue;
       }
       update billingScheduleList;
     }
