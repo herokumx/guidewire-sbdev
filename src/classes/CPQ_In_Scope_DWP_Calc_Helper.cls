@@ -99,8 +99,8 @@ public with sharing class CPQ_In_Scope_DWP_Calc_Helper {
       //included by Hari to create Contracts and Contract Lines.
         List<ServiceContract> SCLst = new List<ServiceContract>();
         List<ContractLineItem> SClineLst = new List<ContractLineItem>();
-        List<opportunityLineItem> OppProdsLst = [select id,name,currencyIsoCode,OpportunityId,Product2Id,PricebookentryId,pricebookentry.Product2Id,PricebookEntry.Pricebook2Id,opportunity.Account.Name,opportunity.currencyIsocode,
-                                                 UnitPrice,Quantity,opportunity.Ship_To__c,opportunity.Ship_To__r.Participant_Account__c from opportunityLineItem where opportunityId =: newOpportunityMap.keyset() ];
+        List<opportunityLineItem> OppProdsLst = [select id,name,currencyIsoCode,OpportunityId,Product2Id,PricebookentryId,pricebookentry.Product2Id,PricebookEntry.Pricebook2Id,opportunity.Account.Name,opportunity.Account.CS_Account_Short_Name__c,
+                                                 opportunity.currencyIsocode,UnitPrice,Quantity,opportunity.Ship_To__c,opportunity.Ship_To__r.Participant_Account__c from opportunityLineItem where opportunityId =: newOpportunityMap.keyset() ];
 
         Map<id,string> AccountnamesMap = new Map<id,string>();
         Map<Id,Id> ShipToParticipants = new Map<Id,Id>();
@@ -120,10 +120,16 @@ public with sharing class CPQ_In_Scope_DWP_Calc_Helper {
           }
 
           System.debug('...AccountnamesMap: ' + line.opportunityId + ' '+ line.opportunity.Account.Name);
-          AccountnamesMap.put(line.opportunityId, line.opportunity.Account.Name);
+          if(line.opportunity.Account.CS_Account_Short_Name__c != null)
+          {
+              AccountnamesMap.put(line.opportunityId, line.opportunity.Account.CS_Account_Short_Name__c); 
+          }
+          if(line.opportunity.Account.CS_Account_Short_Name__c == null)
+          {
+              AccountnamesMap.put(line.opportunityId, line.opportunity.Account.Name.substringBefore(' ') );
+          }
           ShipToParticipants.put(line.opportunityId, line.opportunity.Ship_To__r.Participant_Account__c);
-         // ProductIds.add(line.Product2Id);
-       }
+      }
 
        // Updated code to fix query exception faced due to invisibility of data in test context.
        Pricebook2 activepbs;
@@ -140,12 +146,14 @@ public with sharing class CPQ_In_Scope_DWP_Calc_Helper {
           Opportunity oldOpp = oldOpportunityMap.get(opp.Id);
           if( opp.CPQ_Create_Service_Contract__c == True && opp.CPQ_Create_Service_Contract__c != oldOpp.CPQ_Create_Service_Contract__c ) {
               System.debug('...AccountnamesMap: ' + AccountnamesMap);
+              
             integer int1 = Math.round(Math.random()*100000);
-            string s = AccountnamesMap.get(opp.Id).substringBefore(' ');
+            string s= AccountnamesMap.get(opp.Id); 
             string s1 =opp.Name.substringBefore(' ');
-
+            string dt = date.today().format();
+            
            ServiceContract sc = new ServiceContract();
-            sc.Name = s+'SC'+int1;
+            sc.Name = s+'-SC-'+dt;
             sc.Accountid = ShipToParticipants.get(Opp.Id);
             sc.CPQ_Opportunity__c = Opp.Id;
             sc.CS_Ship_to_Contact__c = opp.Ship_To__c;

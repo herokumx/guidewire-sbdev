@@ -47,6 +47,7 @@ public with sharing class CPQ_Order_BillingSchedule_Helper {
         o.Status = Label.CPQ_Order_Status_Activated;
       }
     }
+    updateBillingScheduleStatus(pId_OldOrder, pId_NewOrder);
   }
 
   public void OnAfterInsert(List<Order> pLstNewOrders, Map<Id, Order> pId_NewOrder) {
@@ -55,7 +56,6 @@ public with sharing class CPQ_Order_BillingSchedule_Helper {
 
   public void OnAfterUpdate(List<Order> pLstOldOrders, List<Order> pLstNewOrders, Map<Id, Order> pId_OldOrder, Map<Id, Order> pId_NewOrder) {
     CPQ_OrderActivationUtility.updateRelatedOrderStatus(pLstNewOrders, pId_OldOrder);
-    updateBillingScheduleStatus(pId_OldOrder, pId_NewOrder);
   }
 
   private void updateBillingScheduleStatus(Map<Id, Order> pId_OldOrder, Map<Id, Order> pId_NewOrder){

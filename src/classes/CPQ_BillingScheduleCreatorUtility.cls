@@ -565,11 +565,20 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
 
         if(isFirstBillingSchedule == true) {
 
-          startDate = getLatestDate( new List<Date> {
-            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
-            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
-            mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
-          } );
+            if( NULL != proratedDurationInDays
+            &&  0 < proratedDurationInDays
+            &&  0 == yearCounter
+            &&  0 < proratedAmountDerived ) {
+                startDate = startDatePlaceHolder.addDays(mapPaymentTerm_DayCount.get(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__PaymentTerms__c));
+            } else {
+                startDate = getLatestDate( new List<Date> {
+                  mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
+                  mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
+                  mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
+                } );
+            }
+
+          
           termStartDate = startDatePlaceHolder;
           revrecstartdate = getLatestDate( lstDates );
           system.debug('----revrecstartdate: ' + revrecstartdate);
@@ -761,6 +770,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
     }
 
     lstDates.sort();
+    System.debug('------ lstDates[lstDates.size() - 1] ------ : ' + lstDates[lstDates.size() - 1]);
     return lstDates[lstDates.size() - 1];
   }
 }
