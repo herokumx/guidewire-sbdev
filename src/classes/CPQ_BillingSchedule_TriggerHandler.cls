@@ -2,6 +2,7 @@ public without sharing class CPQ_BillingSchedule_TriggerHandler implements CS_IT
 
   Set<Id> updateOrderIdSet = new Set<Id>();
   Map<Id, String> orderIdStatusMap = new Map<Id, String>();
+  Map<Id, String> orderIdERPSalesOrderStatusMap = new Map<Id, String>();
 
   public CPQ_BillingSchedule_TriggerHandler() {
 
@@ -18,15 +19,25 @@ public without sharing class CPQ_BillingSchedule_TriggerHandler implements CS_IT
 
     }
 
-    if(Trigger.isUpdate) {
+    if(Trigger.isUpdate || Trigger.isDelete) {
       Set<Id> orderIdSet = new Set<Id>();
-      for(SObject so : Trigger.new) {
-        CPQ_Billing_Schedule__c bs = (CPQ_Billing_Schedule__c)so;
-        orderIdSet.add(bs.Order__c);
+      if(Trigger.isUpdate) {
+        for(SObject so : Trigger.new) {
+          CPQ_Billing_Schedule__c bs = (CPQ_Billing_Schedule__c)so;
+          orderIdSet.add(bs.Order__c);
+        }
+      }else{
+        for(SObject so : Trigger.old) {
+          CPQ_Billing_Schedule__c bs = (CPQ_Billing_Schedule__c)so;
+          orderIdSet.add(bs.Order__c);
+        }
       }
-      Map<Id, Order> orderMap = new Map<Id, Order>([SELECT Id, Status FROM Order WHERE Id IN:orderIdSet]);
+      Map<Id, Order> orderMap = new Map<Id, Order>([SELECT Id, ERP_Sales_Order_Status__c, Status FROM Order WHERE Id IN:orderIdSet]);
       for(Id orderId : orderMap.keySet()) {
-        orderIdStatusMap.put(orderId, String.valueOf(orderMap.get(orderId).get('Status')));
+        String status = orderMap.get(orderId).get('Status') == null ? '' : String.valueOf(orderMap.get(orderId).get('Status'));
+        String erpSalesOrderstatus = orderMap.get(orderId).get('ERP_Sales_Order_Status__c') == null ? '' : String.valueOf(orderMap.get(orderId).get('ERP_Sales_Order_Status__c'));
+        orderIdStatusMap.put(orderId, status);
+        orderIdERPSalesOrderStatusMap.put(orderId, erpSalesOrderstatus);
       }
     }
   }
@@ -75,7 +86,14 @@ public without sharing class CPQ_BillingSchedule_TriggerHandler implements CS_IT
    * trigger.
    */
   public void beforeDelete(SObject so){
-
+    CPQ_Billing_Schedule__c bs = (CPQ_Billing_Schedule__c)so;
+    if(bs.Billing_Schedule_Type__c != 'Carving') {
+      bs.addError('You can only delete \'Carving\' Billing Schedule record.');
+    }else{
+      if(orderIdERPSalesOrderStatusMap.get(bs.Order__c) != '' && orderIdERPSalesOrderStatusMap.get(bs.Order__c) != 'Draft') {
+        bs.addError('You can only delete \'Carving\' Billing Schedule recordw when Order\'s ERP Sales Order Status is \'Draft\'.');
+      }
+    }
   }
 
   public void afterInsert(SObject so){
