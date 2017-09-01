@@ -201,7 +201,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
             quoteLineIterator.SBQQ__Product__r.RevRec_Template__c;
           orderProductPlaceHolder.SBQQ__QuoteLine__c = quoteLineIterator.Id;
           orderProductPlaceHolder.Quantity = quoteLineIterator.SBQQ__Quantity__c;
-          orderProductPlaceHolder.UnitPrice = quoteLineIterator.SBQQ__NetTotal__c + quoteLineIterator.CPQ_Prorated_Ramp_Up_Total__c;
+          orderProductPlaceHolder.UnitPrice = quoteLineIterator.SBQQ__NetTotal__c + (quoteLineIterator.CPQ_Prorated_Ramp_Up_Total__c != NULL ? quoteLineIterator.CPQ_Prorated_Ramp_Up_Total__c : 0);
           orderProductPlaceHolder.price__c = quoteLineIterator.SBQQ__NetTotal__c;
 
           orderProductPlaceHolder.revrecstartdate__c
