@@ -43,9 +43,7 @@ public with sharing class CPQ_Order_BillingSchedule_Helper {
       if(pId_OldOrder.get(o.Id).get('Status') != 'Rev Team Review Complete' && pId_NewOrder.get(o.Id).get('Status') == 'Rev Team Review Complete') {
         o.Order_Integration_Status__c = 'Eligible for Order Setup';
       }
-      if(pId_OldOrder.get(o.Id).get('Order_Integration_Status__c') != 'Integrated' && pId_NewOrder.get(o.Id).get('Order_Integration_Status__c') == 'Integrated'
-         || pId_OldOrder.get(o.Id).get('ERP_Sales_Order_Status__c') != 'Draft' && pId_NewOrder.get(o.Id).get('ERP_Sales_Order_Status__c') == 'Draft'
-         || pId_OldOrder.get(o.Id).get('ERP_Sales_Order_Status__c') != 'Processed' && pId_NewOrder.get(o.Id).get('ERP_Sales_Order_Status__c') == 'Processed') {
+      if(pId_NewOrder.get(o.Id).get('Order_Integration_Status__c') == 'Integrated' && (pId_NewOrder.get(o.Id).get('ERP_Sales_Order_Status__c') == 'Draft' || pId_NewOrder.get(o.Id).get('ERP_Sales_Order_Status__c') == 'Processed')) {
         o.Status = Label.CPQ_Order_Status_Activated;
       }
     }
