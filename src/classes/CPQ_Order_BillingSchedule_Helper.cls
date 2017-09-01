@@ -61,16 +61,18 @@ public with sharing class CPQ_Order_BillingSchedule_Helper {
   }
 
   private void updateBillingScheduleStatus(Map<Id, Order> pId_OldOrder, Map<Id, Order> pId_NewOrder){
-    String statusValue = '';
+    String billingScheduleStatusValue = '';
+    String billingScheduleIntegationStatusValue = '';
     Set<Id> orderIdSet = new Set<Id>();
 
     for(Id orderId : pId_NewOrder.keySet()) {
       if(pId_OldOrder.get(orderId).get('Status') != 'Rev Team Review Complete' && pId_NewOrder.get(orderId).get('Status') == 'Rev Team Review Complete') {
-        statusValue = 'Submitted to ERP';
+        billingScheduleStatusValue = 'Submitted to ERP';
+        billingScheduleIntegationStatusValue = 'Eligible for Billing Schedule Setup';
         orderIdSet.add(orderId);
       }
       if(pId_OldOrder.get(orderId).get('Status') != 'Cancelled' && pId_NewOrder.get(orderId).get('Status') == 'Cancelled') {
-        statusValue = 'Cancelled';
+        billingScheduleStatusValue = 'Cancelled';
         orderIdSet.add(orderId);
       }
     }
@@ -78,7 +80,8 @@ public with sharing class CPQ_Order_BillingSchedule_Helper {
     List<CPQ_Billing_Schedule__c> billingScheduleList = [SELECT Id, Billing_Schedule_Status__c FROM CPQ_Billing_Schedule__c WHERE Order__c IN : orderIdSet];
     if(billingScheduleList.size() > 0) {
       for(CPQ_Billing_Schedule__c billingSchedule : billingScheduleList) {
-        billingSchedule.Billing_Schedule_Status__c = statusValue;
+        billingSchedule.Billing_Schedule_Status__c = billingScheduleStatusValue;
+        billingSchedule.Billing_Schedule_Integration_Status__c = billingScheduleIntegationStatusValue;
       }
       update billingScheduleList;
     }
