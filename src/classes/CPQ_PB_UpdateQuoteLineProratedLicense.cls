@@ -8,11 +8,16 @@ public with sharing class CPQ_PB_UpdateQuoteLineProratedLicense {
     System.debug('***quoteIds[0] '+quoteIds[0]);
 
     SBQQ__Quote__c quote = [SELECT Id, CPQ_Prorated_Start_Date__c, SBQQ__StartDate__c FROM SBQQ__Quote__c WHERE Id =: quoteIds[0]];
-    List<SBQQ__QuoteLine__c> quoteLineList = [SELECT Id, CPQ_Prorated_License_Ramp_Up_Total__c, CPQ_Prorated_Support_Ramp_Up_Total__c, CPQ_Year_1_Net_Amount__c, Year_1_Support_Ramp_Up_Total__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quoteIds[0]];
+    List<SBQQ__QuoteLine__c> quoteLineList = [SELECT Id, CPQ_Prorated_License_Ramp_Up_Total__c, CPQ_Prorated_Support_Ramp_Up_Total__c, CPQ_Year_1_Net_Amount__c, Year_1_Support_Ramp_Up_Total__c,SBQQ__SubscriptionPricing__c FROM SBQQ__QuoteLine__c WHERE SBQQ__Quote__c =: quoteIds[0]];
 
     for(SBQQ__QuoteLine__c quoteline : quoteLineList) {
-      quoteline.CPQ_Prorated_License_Ramp_Up_Total__c = calculateLicense(quote.CPQ_Prorated_Start_Date__c, quote.SBQQ__StartDate__c, quoteline.CPQ_Year_1_Net_Amount__c);
-      quoteline.CPQ_Prorated_Support_Ramp_Up_Total__c = calculateSupport(quote.CPQ_Prorated_Start_Date__c, quote.SBQQ__StartDate__c, quoteline.Year_1_Support_Ramp_Up_Total__c);
+      if(quoteline.SBQQ__SubscriptionPricing__c == 'Fixed Price') {
+        quoteline.CPQ_Prorated_License_Ramp_Up_Total__c = calculateLicense(quote.CPQ_Prorated_Start_Date__c, quote.SBQQ__StartDate__c, quoteline.CPQ_Year_1_Net_Amount__c);
+        quoteline.CPQ_Prorated_Support_Ramp_Up_Total__c = calculateSupport(quote.CPQ_Prorated_Start_Date__c, quote.SBQQ__StartDate__c, quoteline.Year_1_Support_Ramp_Up_Total__c);
+      }else{
+        quoteline.CPQ_Prorated_License_Ramp_Up_Total__c = 0;
+        quoteline.CPQ_Prorated_Support_Ramp_Up_Total__c = 0;
+      }
     }
 
     update quoteLineList;
