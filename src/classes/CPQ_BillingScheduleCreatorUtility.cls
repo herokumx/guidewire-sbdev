@@ -442,7 +442,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
       if( NULL != proratedStartDate
           &&  NULL != startDatePlaceHolder ) {
         proratedDurationInDays = proratedStartDate.daysBetween(startDatePlaceHolder);
-        proratedAmountDerived = ((perYearPrice / 365.4) * proratedDurationInDays).setScale(2, System.RoundingMode.CEILING);
+        proratedAmountDerived = ((perYearPrice / 365) * proratedDurationInDays).setScale(2, System.RoundingMode.CEILING);
       }
 
       System.debug('...proratedDurationInDays: '+proratedDurationInDays);
