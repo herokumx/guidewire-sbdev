@@ -244,6 +244,11 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
     String orderItemQuery = 'SELECT ';
 
     orderItemQuery += String.join(new List<String>(setOrderItemFields), ', ');
+    orderItemQuery += ' , Order.Software_Delivery_Date__c ';
+    orderItemQuery += ' , Order.Out_Clause_date__c ';
+    orderItemQuery += ' , Order.CPQ_Royalties__c ';
+    orderItemQuery += ' , Order.Perpetual_Buyout_Option__c ';
+    orderItemQuery += ' , SBQQ__QuoteLine__r.CPQ_Distribution__c ';
     orderItemQuery += ' , SBQQ__QuoteLine__r.CPQ_Year_1_Net_Amount__c ';
     orderItemQuery += ' , SBQQ__QuoteLine__r.CPQ_Year_2_Net_Amount__c ';
     orderItemQuery += ' , SBQQ__QuoteLine__r.CPQ_Year_3_Net_Amount__c ';
@@ -488,6 +493,11 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                          Order__c = orderItemIterator.OrderId,
                                                                          Order_Product__c = orderItemIterator.Id,
                                                                          Billing_Schedule_Type__c = 'Billing',
+                                                                         Software_Delivery_Date__c = Date.valueOf(orderItemIterator.getsObject('Order').get('Software_Delivery_Date__c')),
+                                                                         Out_Clause_Date__c = Date.valueOf(orderItemIterator.getsObject('Order').get('Out_Clause_Date__c')),
+                                                                         Support_Distribution__c = Decimal.valueOf(String.valueOf(orderItemIterator.getsObject('SBQQ__QuoteLine__r').get('CPQ_Distribution__c'))),
+                                                                         Royalties__c = Boolean.valueOf(orderItemIterator.getsObject('Order').get('CPQ_Royalties__c')),
+                                                                         Perpetual_Buyout_Option__c = Boolean.valueOf(orderItemIterator.getsObject('Order').get('Perpetual_Buyout_Option__c')),
                                                                          CurrencyIsoCode = String.valueOf(orderItemIterator.getsObject('Order').get('CurrencyIsoCode')),
                                                                          revrecstartdate__c = revrecstartdate,
                                                                          revrecenddate__c = revrecenddate,
@@ -609,6 +619,11 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                            Order__c = orderItemIterator.OrderId,
                                                                            Order_Product__c = orderItemIterator.Id,
                                                                            Billing_Schedule_Type__c = 'Billing',
+                                                                           Software_Delivery_Date__c = Date.valueOf(orderItemIterator.getsObject('Order').get('Software_Delivery_Date__c')),
+                                                                           Out_Clause_Date__c = Date.valueOf(orderItemIterator.getsObject('Order').get('Out_Clause_Date__c')),
+                                                                           Support_Distribution__c = Decimal.valueOf(String.valueOf(orderItemIterator.getsObject('SBQQ__QuoteLine__r').get('CPQ_Distribution__c'))),
+                                                                           Royalties__c = Boolean.valueOf(orderItemIterator.getsObject('Order').get('CPQ_Royalties__c')),
+                                                                           Perpetual_Buyout_Option__c = Boolean.valueOf(orderItemIterator.getsObject('Order').get('Perpetual_Buyout_Option__c')),
                                                                            CurrencyIsoCode = String.valueOf(orderItemIterator.getsObject('Order').get('CurrencyIsoCode')),
                                                                            revrecstartdate__c = revrecstartdate,
                                                                            revrecenddate__c = revrecenddate,
@@ -683,6 +698,11 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                            Order__c = orderItemIterator.OrderId,
                                                                            Order_Product__c = orderItemIterator.Id,
                                                                            Billing_Schedule_Type__c = 'Billing',
+                                                                           Software_Delivery_Date__c = Date.valueOf(orderItemIterator.getsObject('Order').get('Software_Delivery_Date__c')),
+                                                                           Out_Clause_Date__c = Date.valueOf(orderItemIterator.getsObject('Order').get('Out_Clause_Date__c')),
+                                                                           Support_Distribution__c = Decimal.valueOf(String.valueOf(orderItemIterator.getsObject('SBQQ__QuoteLine__r').get('CPQ_Distribution__c'))),
+                                                                           Royalties__c = Boolean.valueOf(orderItemIterator.getsObject('Order').get('CPQ_Royalties__c')),
+                                                                           Perpetual_Buyout_Option__c = Boolean.valueOf(orderItemIterator.getsObject('Order').get('Perpetual_Buyout_Option__c')),
                                                                            CurrencyIsoCode = String.valueOf(orderItemIterator.getsObject('Order').get('CurrencyIsoCode')),
                                                                            revrecstartdate__c = revrecstartdate,
                                                                            revrecenddate__c = revrecenddate,
