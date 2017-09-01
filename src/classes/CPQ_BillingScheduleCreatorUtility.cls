@@ -201,7 +201,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
             quoteLineIterator.SBQQ__Product__r.RevRec_Template__c;
           orderProductPlaceHolder.SBQQ__QuoteLine__c = quoteLineIterator.Id;
           orderProductPlaceHolder.Quantity = quoteLineIterator.SBQQ__Quantity__c;
-          orderProductPlaceHolder.UnitPrice = quoteLineIterator.SBQQ__NetTotal__c;
+          orderProductPlaceHolder.UnitPrice = quoteLineIterator.SBQQ__NetTotal__c + quoteLineIterator.CPQ_Prorated_Ramp_Up_Total__c;
           orderProductPlaceHolder.price__c = quoteLineIterator.SBQQ__NetTotal__c;
 
           orderProductPlaceHolder.revrecstartdate__c
@@ -313,23 +313,23 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
           });
 
         } else {
-            mapOrderLineId_PerYearPrices.put(orderItemIterator.Id, new List<Decimal>{
-              orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_1_Net_Amount__c != NULL
-              ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_1_Net_Amount__c
-              : 0,
-              orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_2_Net_Amount__c != NULL
-              ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_2_Net_Amount__c
-              : 0,
-              orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_3_Net_Amount__c != NULL
-              ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_3_Net_Amount__c
-              : 0,
-              orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_4_Net_Amount__c != NULL
-              ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_4_Net_Amount__c
-              : 0,
-              orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_5_Net_Amount__c != NULL
-              ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_5_Net_Amount__c
-              : 0
-            });
+          mapOrderLineId_PerYearPrices.put(orderItemIterator.Id, new List<Decimal>{
+            orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_1_Net_Amount__c != NULL
+            ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_1_Net_Amount__c
+            : 0,
+            orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_2_Net_Amount__c != NULL
+            ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_2_Net_Amount__c
+            : 0,
+            orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_3_Net_Amount__c != NULL
+            ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_3_Net_Amount__c
+            : 0,
+            orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_4_Net_Amount__c != NULL
+            ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_4_Net_Amount__c
+            : 0,
+            orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_5_Net_Amount__c != NULL
+            ? orderItemIterator.SBQQ__QuoteLine__r.CPQ_Year_5_Net_Amount__c
+            : 0
+          });
         }
       } else {
         mapOrderLineId_PerYearPrices.put(orderItemIterator.Id, new List<Decimal>{
@@ -565,20 +565,20 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
 
         if(isFirstBillingSchedule == true) {
 
-            if( NULL != proratedDurationInDays
-            &&  0 < proratedDurationInDays
-            &&  0 == yearCounter
-            &&  0 < proratedAmountDerived ) {
-                startDate = startDatePlaceHolder.addDays(mapPaymentTerm_DayCount.get(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__PaymentTerms__c));
-            } else {
-                startDate = getLatestDate( new List<Date> {
-                  mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
-                  mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
-                  mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
-                } );
-            }
+          if( NULL != proratedDurationInDays
+              &&  0 < proratedDurationInDays
+              &&  0 == yearCounter
+              &&  0 < proratedAmountDerived ) {
+            startDate = startDatePlaceHolder.addDays(mapPaymentTerm_DayCount.get(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__PaymentTerms__c));
+          } else {
+            startDate = getLatestDate( new List<Date> {
+              mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
+              mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
+              mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
+            } );
+          }
 
-          
+
           termStartDate = startDatePlaceHolder;
           revrecstartdate = getLatestDate( lstDates );
           system.debug('----revrecstartdate: ' + revrecstartdate);
