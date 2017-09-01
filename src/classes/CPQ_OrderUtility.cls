@@ -110,7 +110,6 @@ global class CPQ_OrderUtility {
     objOrder.SBQQ__Quote__c = primaryQuoteId;
     objOrder.Is_Primary__c = true;
     objOrder.Status = STR_DRAFT;
-    objOrder.ERP_Sales_Order_Status__c = STR_DRAFT;
     objOrder.EffectiveDate = System.Date.Today();
     objOrder.OpportunityId = oppId;
     objOrder.Pricebook2Id = stdPricebookId;
