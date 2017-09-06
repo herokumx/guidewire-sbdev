@@ -11,6 +11,8 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
   public static final String REVRECTEMPLATE_UPFRONT = 'For Upfront Recognition';
   public static final String REVRECTEMPLATE_PRORATE = 'Exact Days Period Prorate Day';
 
+  public static Boolean generateBillingSchedule = false;
+
   public static final Map<String, Integer> mapDuration_MonthCount = new Map<String, Integer> {
     'Monthly' => 1,
     'Quarterly' => 3,
@@ -48,6 +50,8 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
 
     System.debug('------ pMapId_NewOrder ------ : ' + pMapId_NewOrder);
     System.debug('------ isGeneratingOrderItems ------ : ' + isGeneratingOrderItems);
+
+    generateBillingSchedule = true;
 
     Set<Id> setQuoteIds = new Set<Id>();
     Set<Id> setFilteredOrderIds = new Set<Id>();
@@ -641,16 +645,8 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                                      + mapDuration_DurationName.get(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c) + ' ' + ++billingScheduleCounter
                                                                                      + ': ' + startDateString
                                                                                      + endDateString,
-                                                                           /* itemdesc_original__c = orderItemIterator.itemdesc_original__c,
-                                                                              itemid__c = orderItemIterator.itemid__c, */
-                                                                           itemdesc_original__c = (String.isNotBlank(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c)
-                                                                                                   && SBQQ_TYPE_RENEWAL.equalsIgnoreCase(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c))
-                                                                                                  ? mapOrderLineId_OptionalSkuDesc.get(orderItemIterator.Id)
-                                                                                                  : orderItemIterator.itemdesc_original__c,
-                                                                           itemid__c = (String.isNotBlank(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c)
-                                                                                        && SBQQ_TYPE_RENEWAL.equalsIgnoreCase(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c))
-                                                                                       ? mapOrderLineId_OptionalSkuId.get(orderItemIterator.Id)
-                                                                                       : orderItemIterator.itemid__c,
+                                                                           itemdesc_original__c = getSKUInfo(mapId_OrderWithOppData, mapOrderLineId_OptionalSkuDesc, null, mapPbeId_ProductSkuType, orderItemIterator, termStartDate, isFirstBillingSchedule),
+                                                                           itemid__c = getSKUInfo(mapId_OrderWithOppData, null, mapOrderLineId_OptionalSkuId, mapPbeId_ProductSkuType, orderItemIterator, termStartDate, isFirstBillingSchedule),
                                                                            price__c = billingSchedulePrice
                                                                            ));
           isFirstBillingSchedule = false;
@@ -720,28 +716,8 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                                      + mapDuration_DurationName.get(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c) + ' ' + ++billingScheduleCounter
                                                                                      + ': ' + startDateString
                                                                                      + endDateString,
-                                                                           /* itemdesc_original__c = (termStartDate >= mapId_OrderWithOppData.get(orderItemIterator.OrderId).Optional_Support_Start_Date__c
-                                                                                                && PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)))
-                                                                                                ? mapOrderLineId_OptionalSkuDesc.get(orderItemIterator.Id)
-                                                                                                : orderItemIterator.itemdesc_original__c,
-                                                                              itemid__c = (termStartDate >= mapId_OrderWithOppData.get(orderItemIterator.OrderId).Optional_Support_Start_Date__c
-                                                                                     && PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)))
-                                                                                     ? mapOrderLineId_OptionalSkuId.get(orderItemIterator.Id)
-                                                                                     : orderItemIterator.itemid__c, */
-                                                                           itemdesc_original__c = (String.isNotBlank(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c)
-                                                                                                   && SBQQ_TYPE_RENEWAL.equalsIgnoreCase(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c))
-                                                                                                  ? mapOrderLineId_OptionalSkuDesc.get(orderItemIterator.Id)
-                                                                                                  : (termStartDate >= mapId_OrderWithOppData.get(orderItemIterator.OrderId).Optional_Support_Start_Date__c
-                                                                                                     && PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)))
-                                                                                                  ? mapOrderLineId_OptionalSkuDesc.get(orderItemIterator.Id)
-                                                                                                  : orderItemIterator.itemdesc_original__c,
-                                                                           itemid__c = (String.isNotBlank(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c)
-                                                                                        && SBQQ_TYPE_RENEWAL.equalsIgnoreCase(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c))
-                                                                                       ? mapOrderLineId_OptionalSkuId.get(orderItemIterator.Id)
-                                                                                       : (termStartDate >= mapId_OrderWithOppData.get(orderItemIterator.OrderId).Optional_Support_Start_Date__c
-                                                                                          && PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId)))
-                                                                                       ? mapOrderLineId_OptionalSkuId.get(orderItemIterator.Id)
-                                                                                       : orderItemIterator.itemid__c,
+                                                                           itemdesc_original__c = getSKUInfo(mapId_OrderWithOppData, mapOrderLineId_OptionalSkuDesc, null, mapPbeId_ProductSkuType, orderItemIterator, termStartDate, isFirstBillingSchedule),
+                                                                           itemid__c = getSKUInfo(mapId_OrderWithOppData, null, mapOrderLineId_OptionalSkuId, mapPbeId_ProductSkuType, orderItemIterator, termStartDate, isFirstBillingSchedule),
                                                                            price__c = billingSchedulePrice
                                                                            ));
 
@@ -764,6 +740,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
       }
       insert lstBillingSchedules;
     } catch(DmlException exceptionInstance) {
+      generateBillingSchedule = false;
       System.debug('------ Exception caught: ----- : ' + exceptionInstance.getMessage());
       Database.rollback(stableState); return;
     }
@@ -773,10 +750,12 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
     try {
       update mapOrderId_OrderRecord.values();
     } catch(DmlException exceptionInstance) {
+      generateBillingSchedule = false;
       Database.rollback(stableState);
       System.debug('...Exception caught: ----- : ' + exceptionInstance.getMessage()); return;
     }
     // System.debug('...mapOrderId_OrderRecord.values() Success' + mapOrderId_OrderRecord.values());
+    generateBillingSchedule = false;
 
   }
 
@@ -792,5 +771,50 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
     lstDates.sort();
     System.debug('------ lstDates[lstDates.size() - 1] ------ : ' + lstDates[lstDates.size() - 1]);
     return lstDates[lstDates.size() - 1];
+  }
+
+  @TestVisible private static String getSKUInfo(Map<Id, Order> mapId_OrderWithOppData, Map<Id, String> mapOrderLineId_OptionalSkuDesc, Map<Id, String> mapOrderLineId_OptionalSkuId, Map<Id, String> mapPbeId_ProductSkuType, OrderItem orderItemIterator, Date termStartDate, Boolean isFirstBillingSchedule) {
+
+    System.debug('***getSKUInfo');
+
+    if(isFirstBillingSchedule) {
+      System.debug('***first billing schedule');
+      if(String.isNotBlank(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c) && SBQQ_TYPE_RENEWAL.equalsIgnoreCase(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c)) {
+        System.debug('***renewal');
+        if(mapOrderLineId_OptionalSkuDesc != null && String.isNotBlank(mapOrderLineId_OptionalSkuDesc.get(orderItemIterator.Id))) {
+          return mapOrderLineId_OptionalSkuDesc.get(orderItemIterator.Id);
+        }
+        if(mapOrderLineId_OptionalSkuId != null && String.isNotBlank(mapOrderLineId_OptionalSkuId.get(orderItemIterator.Id))) {
+          return mapOrderLineId_OptionalSkuId.get(orderItemIterator.Id);
+        }
+      }
+    }else{
+      System.debug('***not first billing schedule');
+      if(String.isNotBlank(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c) && SBQQ_TYPE_RENEWAL.equalsIgnoreCase(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c)) {
+        System.debug('***renewal');
+        if(mapOrderLineId_OptionalSkuDesc != null && String.isNotBlank(mapOrderLineId_OptionalSkuDesc.get(orderItemIterator.Id))) {
+          return mapOrderLineId_OptionalSkuDesc.get(orderItemIterator.Id);
+        }
+        if(mapOrderLineId_OptionalSkuId != null && String.isNotBlank(mapOrderLineId_OptionalSkuId.get(orderItemIterator.Id))) {
+          return mapOrderLineId_OptionalSkuId.get(orderItemIterator.Id);
+        }
+      }
+      if(termStartDate >= mapId_OrderWithOppData.get(orderItemIterator.OrderId).Optional_Support_Start_Date__c && PRODUCT_SKU_TYPE_MAINTENANCE.equalsIgnoreCase(mapPbeId_ProductSkuType.get(orderItemIterator.PricebookEntryId))) {
+        System.debug('***start date ready');
+        if(mapOrderLineId_OptionalSkuDesc != null && String.isNotBlank(mapOrderLineId_OptionalSkuDesc.get(orderItemIterator.Id))) {
+          return mapOrderLineId_OptionalSkuDesc.get(orderItemIterator.Id);
+        }
+        if(mapOrderLineId_OptionalSkuId != null && String.isNotBlank(mapOrderLineId_OptionalSkuId.get(orderItemIterator.Id))) {
+          return mapOrderLineId_OptionalSkuId.get(orderItemIterator.Id);
+        }
+      }
+    }
+
+    System.debug('reached end');
+    if(mapOrderLineId_OptionalSkuDesc != null) {
+      return orderItemIterator.itemdesc_original__c;
+    }else{
+      return orderItemIterator.itemid__c;
+    }
   }
 }

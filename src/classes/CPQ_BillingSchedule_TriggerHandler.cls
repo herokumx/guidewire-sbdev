@@ -61,11 +61,7 @@ public without sharing class CPQ_BillingSchedule_TriggerHandler implements CS_IT
   public void beforeUpdate(SObject oldSo, SObject newSo){
     CPQ_Billing_Schedule__c oldBS = (CPQ_Billing_Schedule__c)oldSo;
     CPQ_Billing_Schedule__c newBS = (CPQ_Billing_Schedule__c)newSo;
-    if(oldBS.Revrectemplate__c != newBS.Revrectemplate__c
-       || oldBS.Revrecstartdate__c != newBS.Revrecstartdate__c
-       || oldBS.Revrecenddate__c != newBS.Revrecenddate__c
-       || oldBS.Software_Delivery_Date__c != newBS.Software_Delivery_Date__c
-       || oldBS.Billing_Schedule_Status__c != 'Terminated' && newBS.Billing_Schedule_Status__c == 'Terminated') {
+    if(oldBS.Billing_Schedule_Status__c != 'Terminated' && newBS.Billing_Schedule_Status__c == 'Terminated') {
       if(orderIdStatusMap.get(newBS.Order__c) == 'Rev Team Review Complete'
          || orderIdStatusMap.get(newBS.Order__c) == 'Terminated'
          || orderIdStatusMap.get(newBS.Order__c) == 'Order Activated') {
@@ -86,12 +82,14 @@ public without sharing class CPQ_BillingSchedule_TriggerHandler implements CS_IT
    * trigger.
    */
   public void beforeDelete(SObject so){
-    CPQ_Billing_Schedule__c bs = (CPQ_Billing_Schedule__c)so;
-    if(bs.Billing_Schedule_Type__c != 'Carving') {
-      bs.addError('You can only delete \'Carving\' Billing Schedule record.');
-    }else{
-      if(orderIdERPSalesOrderStatusMap.get(bs.Order__c) != '' && orderIdERPSalesOrderStatusMap.get(bs.Order__c) != 'Draft') {
-        bs.addError('You can only delete \'Carving\' Billing Schedule recordw when Order\'s ERP Sales Order Status is \'Draft\'.');
+    if(!CPQ_BillingScheduleCreatorUtility.generateBillingSchedule) {
+      CPQ_Billing_Schedule__c bs = (CPQ_Billing_Schedule__c)so;
+      if(bs.Billing_Schedule_Type__c != 'Carving') {
+        bs.addError('You can only delete \'Carving\' Billing Schedule record.');
+      }else{
+        if(orderIdERPSalesOrderStatusMap.get(bs.Order__c) != '' && orderIdERPSalesOrderStatusMap.get(bs.Order__c) != 'Draft') {
+          bs.addError('You can only delete \'Carving\' Billing Schedule recordw when Order\'s ERP Sales Order Status is \'Draft\'.');
+        }
       }
     }
   }
