@@ -457,7 +457,6 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
           &&  0 < proratedDurationInDays
           &&  0 == yearCounter
           &&  0 < proratedAmountDerived ) {
-
         lstDates = new List<Date> {
           mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
           mapId_OrderWithOppData.get(orderItemIterator.OrderId).Software_Delivery_Date__c,
@@ -472,6 +471,8 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                : proratedAmountDerived;
 
         startDate = calculateStartDate;
+        System.debug('***SCENARIO ONE');
+        System.debug('***startDate '+startDate);
         revrecstartdate = getLatestDate( lstDates );
         termStartDate = proratedStartDate;
         revrecenddate = (REVRECTEMPLATE_PRORATE.equalsIgnoreCase(orderItemIterator.revrectemplate__c) ? startDatePlaceHolder : proratedStartDate).addDays(REVRECTEMPLATE_PRORATE.equalsIgnoreCase(orderItemIterator.revrectemplate__c) ? -1 : 0);
@@ -578,18 +579,23 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
         }
 
         if(isFirstBillingSchedule == true) {
-
           if( NULL != proratedDurationInDays
               &&  0 < proratedDurationInDays
               &&  0 == yearCounter
               &&  0 < proratedAmountDerived ) {
             startDate = startDatePlaceHolder.addDays(mapPaymentTerm_DayCount.get(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__PaymentTerms__c));
+            System.debug('***SCENARIO TWO 1');
+            System.debug('***startDate '+startDate);
           } else {
             startDate = getLatestDate( new List<Date> {
               mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
               mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
-              mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
+              mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c,
+              mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c
             } );
+            startDate = startDate.addDays(mapPaymentTerm_DayCount.get(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__PaymentTerms__c));
+            System.debug('***SCENARIO TWO 2');
+            System.debug('***startDate '+startDate);
           }
 
 
@@ -652,8 +658,9 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
           isFirstBillingSchedule = false;
 
         } else {
-
           startDate = startDatePlaceHolder.addDays(mapPaymentTerm_DayCount.get(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__PaymentTerms__c));
+          System.debug('***SCENARIO THREE');
+          System.debug('***startDate '+startDate);
           revrecstartdate = termStartDate = startDatePlaceHolder;
           revrecenddate = startDatePlaceHolder.addMonths(REVRECTEMPLATE_PRORATE.equalsIgnoreCase(orderItemIterator.revrectemplate__c) ? monthCount : 0).addDays(REVRECTEMPLATE_PRORATE.equalsIgnoreCase(orderItemIterator.revrectemplate__c) ? -1 : 0);
           if ( revrecenddate < revrecstartdate ) {
