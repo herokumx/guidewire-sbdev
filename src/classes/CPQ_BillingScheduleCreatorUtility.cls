@@ -649,7 +649,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                                       ? SBQQ_TYPE_RENEWAL
                                                                                       : '')
                                                                                      + ' '
-                                                                                     + mapDuration_DurationName.get(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c) + ' ' + ++billingScheduleCounter
+                                                                                     + mapDuration_DurationName.get(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c) + ' Payment ' + ++billingScheduleCounter
                                                                                      + ': ' + startDateString
                                                                                      + endDateString,
                                                                            itemdesc_original__c = getSKUInfo(mapId_OrderWithOppData, mapOrderLineId_OptionalSkuDesc, null, mapPbeId_ProductSkuType, orderItemIterator, termStartDate, isFirstBillingSchedule),
@@ -721,7 +721,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                                       ? SBQQ_TYPE_RENEWAL
                                                                                       : '')
                                                                                      + ' '
-                                                                                     + mapDuration_DurationName.get(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c) + ' ' + ++billingScheduleCounter
+                                                                                     + mapDuration_DurationName.get(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c) + ' Payment ' + ++billingScheduleCounter
                                                                                      + ': ' + startDateString
                                                                                      + endDateString,
                                                                            itemdesc_original__c = getSKUInfo(mapId_OrderWithOppData, mapOrderLineId_OptionalSkuDesc, null, mapPbeId_ProductSkuType, orderItemIterator, termStartDate, isFirstBillingSchedule),
