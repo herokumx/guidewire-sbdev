@@ -418,7 +418,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
         mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
         mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
         mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c,
-        mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c
+        mapId_OrderWithOppData.get(orderItemIterator.OrderId).First_Period_Start_Date__c
       } );
 
       proratedStartDate = mapId_OrderWithOppData.get(orderItemIterator.OrderId).First_Period_Start_Date__c != NULL
