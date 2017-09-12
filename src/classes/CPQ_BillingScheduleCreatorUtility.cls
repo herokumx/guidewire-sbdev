@@ -742,6 +742,22 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
       lstBillingSchedules.addAll(billingSchedulesPerOrder);
     }
 
+    // update orderitem's unit price
+    List<OrderItem> lstOrderItem = [SELECT Id, UnitPrice, Quantity FROM OrderItem WHERE OrderId IN : setFilteredOrderIds];
+    List<CPQ_Billing_Schedule__c> lstBillingSchedule = [SELECT Id, Order_Product__c, Price__c FROM CPQ_Billing_Schedule__c WHERE Order__c IN : setFilteredOrderIds];
+
+    Map<Id, Decimal> mapOrderItemIdPriceSum = new Map<Id, Decimal>();
+    for(CPQ_Billing_Schedule__c billingSchedule : lstBillingSchedule) {
+      if(mapOrderItemIdPriceSum.get(billingSchedule.Order_Product__c) == NULL) {
+        mapOrderItemIdPriceSum.put(billingSchedule.Order_Product__c, billingSchedule.Price__c);
+      }else{
+        mapOrderItemIdPriceSum.put(billingSchedule.Order_Product__c, mapOrderItemIdPriceSum.get(billingSchedule.Order_Product__c) + billingSchedule.Price__c);
+      }
+    }
+    for(OrderItem oItem : lstOrderItem) {
+      oItem.UnitPrice = (mapOrderItemIdPriceSum.get(oItem.Id) == NULL ? 0 : mapOrderItemIdPriceSum.get(oItem.Id)) / oItem.Quantity;
+    }
+
     try {
       if( false == isGeneratingOrderItems ) {
         delete lstBillingSchedules_ToDelete;
@@ -762,7 +778,15 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
       Database.rollback(stableState);
       System.debug('...Exception caught: ----- : ' + exceptionInstance.getMessage()); return;
     }
-    // System.debug('...mapOrderId_OrderRecord.values() Success' + mapOrderId_OrderRecord.values());
+
+    try {
+      update lstOrderItem;
+    } catch(DmlException exceptionInstance) {
+      generateBillingSchedule = false;
+      System.debug('------ Exception caught: ----- : ' + exceptionInstance.getMessage());
+      Database.rollback(stableState); return;
+    }
+
     generateBillingSchedule = false;
 
   }
