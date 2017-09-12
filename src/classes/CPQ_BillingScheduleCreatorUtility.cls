@@ -378,7 +378,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
     }
 
     Boolean isFirstBillingSchedule = false;
-    Date startDate, revrecstartdate, revrecenddate, termStartDate, termEndDate, proratedStartDate, subscriptionEndDate, calculateStartDate;
+    Date startDate, revrecstartdate, revrecenddate, termStartDate, termEndDate, proratedStartDate, currentProratedStartDate, subscriptionEndDate, calculateStartDate;
     Integer yearCount = 1, yearCounter, monthCounter;
     Integer billingFrequency = 1;
     Integer billingScheduleCounter;
@@ -409,11 +409,6 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
 
       startDatePlaceHolder = mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c;
 
-      /*calculateStartDate = mapId_OrderWithOppData.get(orderItemIterator.OrderId).First_Invoice_Date__c != NULL
-                           ? mapId_OrderWithOppData.get(orderItemIterator.OrderId).First_Invoice_Date__c
-                           : mapId_OrderWithOppData.get(orderItemIterator.OrderId).First_Period_Start_Date__c != NULL
-                           ? mapId_OrderWithOppData.get(orderItemIterator.OrderId).First_Period_Start_Date__c
-                           : mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.CPQ_Prorated_Start_Date__c;*/
       calculateStartDate = getLatestDate( new List<Date> {
         mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
         mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
@@ -462,7 +457,6 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
           mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
           mapId_OrderWithOppData.get(orderItemIterator.OrderId).Software_Delivery_Date__c,
           proratedStartDate,
-          // mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c,
           mapId_OrderWithOppData.get(orderItemIterator.OrderId).Out_Clause_date__c,
           mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
         };
@@ -472,7 +466,8 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                : proratedAmountDerived;
 
         startDate = calculateStartDate;
-        System.debug('***SCENARIO ONE');
+        currentProratedStartDate = startDate;
+        System.debug('***SCENARIO: CREATE PRORATED BILLING SCHEDULES');
         System.debug('***startDate '+startDate);
         revrecstartdate = getLatestDate( lstDates );
         termStartDate = proratedStartDate;
@@ -585,7 +580,11 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
               &&  0 == yearCounter
               &&  0 < proratedAmountDerived ) {
             startDate = startDatePlaceHolder.addDays(mapPaymentTerm_DayCount.get(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__PaymentTerms__c));
-            System.debug('***SCENARIO TWO 1');
+            if(startDate < currentProratedStartDate) {
+              System.debug('***startDate is less than currentProratedStartDate');
+              startDate = currentProratedStartDate;
+            }
+            System.debug('***SCENARIO: CREATE 1st BILLING SCHEDULE WITH PRORATED PEIROD');
             System.debug('***startDate '+startDate);
           } else {
             startDate = getLatestDate( new List<Date> {
@@ -594,8 +593,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
               mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c,
               mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c
             } );
-            startDate = startDate.addDays(mapPaymentTerm_DayCount.get(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__PaymentTerms__c));
-            System.debug('***SCENARIO TWO 2');
+            System.debug('***SCENARIO: CREATE 1st BILLING SCHEDULE WITHOUT PRORATED PERIOD');
             System.debug('***startDate '+startDate);
           }
 
