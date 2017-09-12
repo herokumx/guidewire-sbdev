@@ -546,9 +546,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
         mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c
       };
 
-      subscriptionEndDate = mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__EndDate__c != NULL
-                            ? mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__EndDate__c
-                            : mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c.addMonths(Integer.valueOf(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__SubscriptionTerm__c)).addDays(-1);
+      subscriptionEndDate = mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c.addMonths(Integer.valueOf(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__SubscriptionTerm__c)).addDays(-1);
 
 
       System.debug('...startDatePlaceHolder: '+startDatePlaceHolder);
