@@ -14,8 +14,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
   public static Boolean generateBillingSchedule = false;
 
   public static Integer currentYear;
-  public static Integer lastTracker;
-  public static Date memoYearTracker;
+  public static Integer unitTracker;
 
   public static final Map<String, Integer> mapDuration_MonthCount = new Map<String, Integer> {
     'Monthly' => 1,
@@ -398,9 +397,8 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
 
     for(OrderItem orderItemIterator : lstOrderItems) {
 
-      memoYearTracker = NULL;
       currentYear = 1;
-      lastTracker = 1;
+      unitTracker = 0;
 
       if(NULL == mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__SubscriptionTerm__c) {
         continue;
@@ -592,7 +590,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
             }
             System.debug('***SCENARIO: CREATE 1st BILLING SCHEDULE WITH PRORATED PEIROD');
             System.debug('***startDate '+startDate);
-            currentYear = getCurrentYear(startDate);
+            currentYear = getCurrentYear(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c);
           } else {
             startDate = getLatestDate( new List<Date> {
               mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Sign_Date__c,
@@ -602,7 +600,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
             } );
             System.debug('***SCENARIO: CREATE 1st BILLING SCHEDULE WITHOUT PRORATED PERIOD');
             System.debug('***startDate '+startDate);
-            currentYear = getCurrentYear(startDate);
+            currentYear = getCurrentYear(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c);
           }
 
           termStartDate = startDatePlaceHolder;
@@ -656,7 +654,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                                      + ' Year ' + currentYear
                                                                                      + (pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c == 'Annual' ? ' ' : ', ')
                                                                                      + mapDuration_DurationName.get(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c) + ' '
-                                                                                     + (pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c == 'Annual' ? '' : String.valueOf(++billingScheduleCounter))
+                                                                                     + (pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c == 'Annual' ? '' : String.valueOf(unitTracker))
                                                                                      + ': ' + startDateString
                                                                                      + endDateString,
                                                                            itemdesc_original__c = getSKUInfo(mapId_OrderWithOppData, mapOrderLineId_OptionalSkuDesc, null, mapPbeId_ProductSkuType, orderItemIterator, termStartDate, isFirstBillingSchedule),
@@ -669,10 +667,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
           startDate = startDatePlaceHolder.addDays(mapPaymentTerm_DayCount.get(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__PaymentTerms__c));
           System.debug('***SCENARIO THREE');
           System.debug('***startDate '+startDate);
-          currentYear = getCurrentYear(startDate);
-          if(currentYear != lastTracker) {
-            billingScheduleCounter = 0;
-          }
+          currentYear = getCurrentYear(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c);
 
           revrecstartdate = termStartDate = startDatePlaceHolder;
           revrecenddate = startDatePlaceHolder.addMonths(REVRECTEMPLATE_PRORATE.equalsIgnoreCase(orderItemIterator.revrectemplate__c) ? monthCount : 0).addDays(REVRECTEMPLATE_PRORATE.equalsIgnoreCase(orderItemIterator.revrectemplate__c) ? -1 : 0);
@@ -735,7 +730,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                                      + ' Year ' + currentYear
                                                                                      + (pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c == 'Annual' ? ' ' : ', ')
                                                                                      + mapDuration_DurationName.get(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c) + ' '
-                                                                                     + (pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c == 'Annual' ? '' : String.valueOf(++billingScheduleCounter))
+                                                                                     + (pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c == 'Annual' ? '' : String.valueOf(unitTracker))
                                                                                      + ': ' + startDateString
                                                                                      + endDateString,
                                                                            itemdesc_original__c = getSKUInfo(mapId_OrderWithOppData, mapOrderLineId_OptionalSkuDesc, null, mapPbeId_ProductSkuType, orderItemIterator, termStartDate, isFirstBillingSchedule),
@@ -819,36 +814,45 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
     return lstDates[lstDates.size() - 1];
   }
 
-  @TestVisible private static Integer getCurrentYear(Date startDate){
+  @TestVisible private static Integer getCurrentYear(String billingFrequency){
     System.debug('***getCurrentYear');
-    System.debug('***memoYearTracker '+memoYearTracker);
+    System.debug('***billingFrequency '+ billingFrequency);
     System.debug('***currentYear before '+ currentYear);
-    System.debug('***lastTracker before '+ lastTracker);
+    System.debug('***unitTracker before '+ unitTracker);
 
-    if(memoYearTracker == NULL) {
-      memoYearTracker = startDate;
-      System.debug('***memoYearTracker is NULL');
-      System.debug('***currentYear after '+ currentYear);
-      System.debug('***lastTracker after '+ lastTracker);
-      return currentYear;
+    unitTracker++;
+
+    if(billingFrequency.equalsIgnoreCase('Annual')) {
+      if(unitTracker > 1) {
+        unitTracker = 1;
+        currentYear++;
+      }
     }
 
-    if(memoYearTracker.year() == startDate.year()) {
-      memoYearTracker = startDate;
-      lastTracker = currentYear;
-      System.debug('***memoYearTracker and startDate are in same year');
-      System.debug('***currentYear after '+ currentYear);
-      System.debug('***lastTracker after '+ lastTracker);
-      return currentYear;
-    }else{
-      memoYearTracker = startDate;
-      lastTracker = currentYear;
-      currentYear++;
-      System.debug('***entering a new year');
-      System.debug('***currentYear after '+ currentYear);
-      System.debug('***lastTracker after '+ lastTracker);
-      return currentYear;
+    if(billingFrequency.equalsIgnoreCase('Semiannual')) {
+      if(unitTracker > 2) {
+        unitTracker = 1;
+        currentYear++;
+      }
     }
+
+    if(billingFrequency.equalsIgnoreCase('Quarterly')) {
+      if(unitTracker > 4) {
+        unitTracker = 1;
+        currentYear++;
+      }
+    }
+
+    if(billingFrequency.equalsIgnoreCase('Monthly')) {
+      if(unitTracker > 12) {
+        unitTracker = 1;
+        currentYear++;
+      }
+    }
+
+    System.debug('***unitTracker after '+ unitTracker);
+    System.debug('***currentYear after '+ currentYear);
+    return currentYear;
   }
 
   @TestVisible private static String getSKUInfo(Map<Id, Order> mapId_OrderWithOppData, Map<Id, String> mapOrderLineId_OptionalSkuDesc, Map<Id, String> mapOrderLineId_OptionalSkuId, Map<Id, String> mapPbeId_ProductSkuType, OrderItem orderItemIterator, Date termStartDate, Boolean isFirstBillingSchedule) {
