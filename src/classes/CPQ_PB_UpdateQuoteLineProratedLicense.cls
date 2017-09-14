@@ -29,7 +29,7 @@ public with sharing class CPQ_PB_UpdateQuoteLineProratedLicense {
     System.debug('***calculateLicense');
 
     if(proratedStartDate != null && startDate != null) {
-      return (annualNetAmount / 365 * proratedStartDate.daysBetween(startDate)).setScale(2, System.RoundingMode.CEILING);
+      return (annualNetAmount / 365 * (proratedStartDate.daysBetween(startDate) + 1)).setScale(2, System.RoundingMode.CEILING);
     }else{
       return 0;
     }
@@ -39,7 +39,7 @@ public with sharing class CPQ_PB_UpdateQuoteLineProratedLicense {
     System.debug('***calculateCPI');
 
     if(proratedStartDate != null && startDate != null) {
-      return (annualMaintenanceCost / 365 * proratedStartDate.daysBetween(startDate)).setScale(2, System.RoundingMode.CEILING);
+      return (annualMaintenanceCost / 365 * (proratedStartDate.daysBetween(startDate) + 1)).setScale(2, System.RoundingMode.CEILING);
     }else{
       return 0;
     }
