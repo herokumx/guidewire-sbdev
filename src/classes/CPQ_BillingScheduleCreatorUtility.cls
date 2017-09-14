@@ -850,7 +850,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
              + ': ' + startDateString
              + endDateString;
     }else{
-      memo = 'Renewal'
+      memo = 'Renewal Term'
              + ': ' + startDateString
              + endDateString;
     }
