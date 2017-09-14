@@ -125,7 +125,7 @@ global class CPQ_OrderUtility {
       objOrder.Sales_Order_Date__c = objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__StartDate__c;
       objOrder.EffectiveDate = objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__StartDate__c;
       objOrder.Subscription_Term_Duration__c = objOpportunity.SBQQ__PrimaryQuote__r.SBQQ__SubscriptionTerm__c;
-      objOrder.CPQ_Royalties__c = objOpportunity.SBQQ__PrimaryQuote__r.CPQ_Royalties__c;
+      objOrder.CPQ_Royalties__c = false;
       objOrder.TaxCode__c = System.Label.CPQ_OpportunityTypeNetNew.equalsIgnoreCase(objOpportunity.Opportunity_Type__c)
                             ? System.Label.CPQ_MandatorySupport
                             : System.Label.CPQ_OptionalSupport;
