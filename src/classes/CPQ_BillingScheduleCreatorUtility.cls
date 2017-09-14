@@ -646,17 +646,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                            Term_End_Date__c = termEndDate,
                                                                            revrectemplate__c = orderItemIterator.revrectemplate__c,
                                                                            termname__c = mapId_OrderWithOppData.get(orderItemIterator.OrderId).termname__c,
-                                                                           memo__c = ((String.isNotBlank(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c) && !SBQQ_TYPE_RENEWAL.equalsIgnoreCase(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c))
-                                                                                      ? 'Order'
-                                                                                      : (String.isNotBlank(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c) && SBQQ_TYPE_RENEWAL.equalsIgnoreCase(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c))
-                                                                                      ? SBQQ_TYPE_RENEWAL
-                                                                                      : '')
-                                                                                     + ' Year ' + currentYear
-                                                                                     + (pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c == 'Annual' ? ' ' : ', ')
-                                                                                     + mapDuration_DurationName.get(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c) + ' '
-                                                                                     + (pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c == 'Annual' ? '' : String.valueOf(unitTracker))
-                                                                                     + ': ' + startDateString
-                                                                                     + endDateString,
+                                                                           memo__c = getMemo(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c, pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c, currentYear, unitTracker, startDateString, endDateString),
                                                                            itemdesc_original__c = getSKUInfo(mapId_OrderWithOppData, mapOrderLineId_OptionalSkuDesc, null, mapPbeId_ProductSkuType, orderItemIterator, termStartDate, isFirstBillingSchedule),
                                                                            itemid__c = getSKUInfo(mapId_OrderWithOppData, null, mapOrderLineId_OptionalSkuId, mapPbeId_ProductSkuType, orderItemIterator, termStartDate, isFirstBillingSchedule),
                                                                            price__c = billingSchedulePrice
@@ -722,17 +712,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                            Term_End_Date__c = termEndDate,
                                                                            revrectemplate__c = orderItemIterator.revrectemplate__c,
                                                                            termname__c = mapId_OrderWithOppData.get(orderItemIterator.OrderId).termname__c,
-                                                                           memo__c = ((String.isNotBlank(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c) && !SBQQ_TYPE_RENEWAL.equalsIgnoreCase(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c))
-                                                                                      ? 'Order'
-                                                                                      : (String.isNotBlank(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c) && SBQQ_TYPE_RENEWAL.equalsIgnoreCase(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c))
-                                                                                      ? SBQQ_TYPE_RENEWAL
-                                                                                      : '')
-                                                                                     + ' Year ' + currentYear
-                                                                                     + (pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c == 'Annual' ? ' ' : ', ')
-                                                                                     + mapDuration_DurationName.get(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c) + ' '
-                                                                                     + (pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c == 'Annual' ? '' : String.valueOf(unitTracker))
-                                                                                     + ': ' + startDateString
-                                                                                     + endDateString,
+                                                                           memo__c = getMemo(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__Type__c, pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c, currentYear, unitTracker, startDateString, endDateString),
                                                                            itemdesc_original__c = getSKUInfo(mapId_OrderWithOppData, mapOrderLineId_OptionalSkuDesc, null, mapPbeId_ProductSkuType, orderItemIterator, termStartDate, isFirstBillingSchedule),
                                                                            itemid__c = getSKUInfo(mapId_OrderWithOppData, null, mapOrderLineId_OptionalSkuId, mapPbeId_ProductSkuType, orderItemIterator, termStartDate, isFirstBillingSchedule),
                                                                            price__c = billingSchedulePrice
@@ -853,6 +833,29 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
     System.debug('***unitTracker after '+ unitTracker);
     System.debug('***currentYear after '+ currentYear);
     return currentYear;
+  }
+
+  @TestVisible private static String getMemo(String quoteType, String quoteBillingFrequency, Integer currentYear, Integer unitTracker, String startDateString, String endDateString){
+
+    System.debug('***getMemo');
+
+    String memo;
+
+    if(String.isNotBlank(quoteType) && !SBQQ_TYPE_RENEWAL.equalsIgnoreCase(quoteType)) {
+      memo = 'Order'
+             + ' Year ' + currentYear
+             + (quoteBillingFrequency == 'Annual' ? ' ' : ', ')
+             + mapDuration_DurationName.get(quoteBillingFrequency) + ' '
+             + (quoteBillingFrequency == 'Annual' ? '' : String.valueOf(unitTracker))
+             + ': ' + startDateString
+             + endDateString;
+    }else{
+      memo = 'Renewal'
+             + ': ' + startDateString
+             + endDateString;
+    }
+
+    return memo;
   }
 
   @TestVisible private static String getSKUInfo(Map<Id, Order> mapId_OrderWithOppData, Map<Id, String> mapOrderLineId_OptionalSkuDesc, Map<Id, String> mapOrderLineId_OptionalSkuId, Map<Id, String> mapPbeId_ProductSkuType, OrderItem orderItemIterator, Date termStartDate, Boolean isFirstBillingSchedule) {
