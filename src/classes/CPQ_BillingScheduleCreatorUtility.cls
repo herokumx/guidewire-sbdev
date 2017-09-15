@@ -31,6 +31,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
   };
 
   public static final Map<String, Integer> mapPaymentTerm_DayCount = new Map<String, Integer> {
+    'Due on receipt' => 0,
     'Net 15' => -15,
     'Net 30' => -30,
     'Net 45' => -45,
