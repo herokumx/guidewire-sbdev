@@ -599,6 +599,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
               mapId_OrderWithOppData.get(orderItemIterator.OrderId).Contract_Effective_Date__c,
               mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__StartDate__c
             } );
+            startDate = startDate.addDays(mapPaymentTerm_DayCount.get(mapId_OrderWithOppData.get(orderItemIterator.OrderId).SBQQ__Quote__r.SBQQ__PaymentTerms__c));
             System.debug('***SCENARIO: CREATE 1st BILLING SCHEDULE WITHOUT PRORATED PERIOD');
             System.debug('***startDate '+startDate);
             currentYear = getCurrentYear(pMapId_NewOrder.get(orderItemIterator.OrderId).Quote_Billing_Frequency__c);
