@@ -265,6 +265,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
     orderItemQuery += ' , SBQQ__QuoteLine__r.SBQQ__Quote__r.SBQQ__Type__c ';
     orderItemQuery += ' , SBQQ__QuoteLine__r.CPQ_Renewal_License_Total__c ';
     orderItemQuery += ' , SBQQ__QuoteLine__r.CPQ_Renewal_Support_Total__c ';
+    orderItemQuery += ' , SBQQ__QuoteLine__r.CS_Software_Delivery_Date__c ';
     orderItemQuery += ' , SBQQ__QuoteLine__r.SBQQ__Product__r.CPQ_Optional_Support_Plan__r.SKU_Description__c ';
     orderItemQuery += ' , SBQQ__QuoteLine__r.SBQQ__Product__r.CPQ_Optional_Support_Plan__r.SKU_ID__c ';
     orderItemQuery += ' , SBQQ__QuoteLine__r.SBQQ__Product__r.Sku_Type__c ';
@@ -501,7 +502,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                          Order__c = orderItemIterator.OrderId,
                                                                          Order_Product__c = orderItemIterator.Id,
                                                                          Billing_Schedule_Type__c = 'Billing',
-                                                                         Software_Delivery_Date__c = Date.valueOf(orderItemIterator.getsObject('Order').get('Software_Delivery_Date__c')),
+                                                                         Software_Delivery_Date__c = Date.valueOf(orderItemIterator.getsObject('SBQQ__QuoteLine__r').get('CS_Software_Delivery_Date__c')),
                                                                          Out_Clause_Date__c = Date.valueOf(orderItemIterator.getsObject('Order').get('Out_Clause_Date__c')),
                                                                          Support_Distribution__c = Decimal.valueOf(String.valueOf(orderItemIterator.getsObject('SBQQ__QuoteLine__r').get('CPQ_Distribution__c'))),
                                                                          Royalties__c = Boolean.valueOf(orderItemIterator.getsObject('Order').get('CPQ_Royalties__c')),
@@ -635,7 +636,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                            Order__c = orderItemIterator.OrderId,
                                                                            Order_Product__c = orderItemIterator.Id,
                                                                            Billing_Schedule_Type__c = 'Billing',
-                                                                           Software_Delivery_Date__c = Date.valueOf(orderItemIterator.getsObject('Order').get('Software_Delivery_Date__c')),
+                                                                           Software_Delivery_Date__c = Date.valueOf(orderItemIterator.getsObject('SBQQ__QuoteLine__r').get('CS_Software_Delivery_Date__c')),
                                                                            Out_Clause_Date__c = Date.valueOf(orderItemIterator.getsObject('Order').get('Out_Clause_Date__c')),
                                                                            Support_Distribution__c = Decimal.valueOf(String.valueOf(orderItemIterator.getsObject('SBQQ__QuoteLine__r').get('CPQ_Distribution__c'))),
                                                                            Royalties__c = Boolean.valueOf(orderItemIterator.getsObject('Order').get('CPQ_Royalties__c')),
@@ -701,7 +702,7 @@ public with sharing class CPQ_BillingScheduleCreatorUtility {
                                                                            Order__c = orderItemIterator.OrderId,
                                                                            Order_Product__c = orderItemIterator.Id,
                                                                            Billing_Schedule_Type__c = 'Billing',
-                                                                           Software_Delivery_Date__c = Date.valueOf(orderItemIterator.getsObject('Order').get('Software_Delivery_Date__c')),
+                                                                           Software_Delivery_Date__c = Date.valueOf(orderItemIterator.getsObject('SBQQ__QuoteLine__r').get('CS_Software_Delivery_Date__c')),
                                                                            Out_Clause_Date__c = Date.valueOf(orderItemIterator.getsObject('Order').get('Out_Clause_Date__c')),
                                                                            Support_Distribution__c = Decimal.valueOf(String.valueOf(orderItemIterator.getsObject('SBQQ__QuoteLine__r').get('CPQ_Distribution__c'))),
                                                                            Royalties__c = Boolean.valueOf(orderItemIterator.getsObject('Order').get('CPQ_Royalties__c')),
