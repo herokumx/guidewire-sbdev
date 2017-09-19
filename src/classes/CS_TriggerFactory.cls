@@ -142,6 +142,9 @@ public class CS_TriggerFactory {
     if (soType == ContentDocumentLink.sObjectType) {
       return new CS_ContentDocumentTriggerHandler();
     }
+    if (soType == ServiceContract.sObjectType) {
+      return new CS_ServiceContractTriggerHandler();
+    }
     if (soType == ContractlineItem.sObjectType) {
       return new CS_ContractLineItemTriggerHandler();
     }

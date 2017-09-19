@@ -16,7 +16,7 @@
 
  *****************************************************************************************************************************
  */
-trigger GW_ContractLineItemTrigger on ContractLineItem (after insert) {
+trigger GW_ContractLineItemTrigger on ContractLineItem (after insert, after update) {
   // Read the value of the custom setting to Bypass Trigger
   CS_ByPass__c bypass = CS_ByPass__c.getInstance(UserInfo.getUserId());
   // Exit the Trigger if the customsetting value is set to True
